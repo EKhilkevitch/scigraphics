@@ -7,14 +7,14 @@
 
 // ============================================================
 
-bool graphics::numberLimits::isValidInterval( interval<number> I )
+bool scigraphics::numberLimits::isValidInterval( interval<number> I )
 {
   return isValidNumbers( I.min(), I.max() );
 }
 
 // ------------------------------------------------------------
       
-void graphics::numberLimits::updateLimits( number Number ) 
+void scigraphics::numberLimits::updateLimits( number Number ) 
 {
   updateInterval( &TotalLimits, Number );
   if ( Number > 0 )
@@ -25,7 +25,7 @@ void graphics::numberLimits::updateLimits( number Number )
 
 // ------------------------------------------------------------
 
-void graphics::numberLimits::updateInterval( interval<number> *Interval, number Number )
+void scigraphics::numberLimits::updateInterval( interval<number> *Interval, number Number )
 {
   assert( Interval != NULL );
   if ( ! isValidNumber(Number) )
@@ -39,7 +39,7 @@ void graphics::numberLimits::updateInterval( interval<number> *Interval, number 
 
 // ------------------------------------------------------------
 
-void graphics::numberLimits::clear()
+void scigraphics::numberLimits::clear()
 {
   TotalLimits    = invalidInterval();
   PositiveLimits = invalidInterval();
@@ -48,7 +48,7 @@ void graphics::numberLimits::clear()
       
 // ------------------------------------------------------------
 
-void graphics::numberLimits::setPositiveInterval( interval<number> Interval )
+void scigraphics::numberLimits::setPositiveInterval( interval<number> Interval )
 {
   if ( ! isValidInterval(Interval) )
     PositiveLimits = invalidInterval();
@@ -60,7 +60,7 @@ void graphics::numberLimits::setPositiveInterval( interval<number> Interval )
 
 // ------------------------------------------------------------
 
-void graphics::numberLimits::setNegativeInterval( interval<number> Interval )
+void scigraphics::numberLimits::setNegativeInterval( interval<number> Interval )
 {
   if ( ! isValidInterval(Interval) )
     NegativeLimits = invalidInterval();
@@ -72,7 +72,7 @@ void graphics::numberLimits::setNegativeInterval( interval<number> Interval )
       
 // ------------------------------------------------------------
 
-void graphics::numberLimits::setTotalInterval( interval<number> Interval )
+void scigraphics::numberLimits::setTotalInterval( interval<number> Interval )
 {
   if ( ! isValidInterval(Interval) )
     TotalLimits = invalidInterval();
@@ -82,7 +82,7 @@ void graphics::numberLimits::setTotalInterval( interval<number> Interval )
   
 // ============================================================
 
-std::ostream& graphics::operator<<( std::ostream& Stream, const graphics::numberLimits &Limits )
+std::ostream& scigraphics::operator<<( std::ostream& Stream, const scigraphics::numberLimits &Limits )
 {
   Stream << "<< " << Limits.negativeLimits() << "; " << Limits.positiveLimits() << "; " << Limits.totalLimits() << " >>";
   return Stream;

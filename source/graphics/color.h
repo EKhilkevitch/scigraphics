@@ -10,7 +10,7 @@
 
 #include "graphics/interval.h"
 
-namespace graphics
+namespace scigraphics
 {
 
 // ============================================================

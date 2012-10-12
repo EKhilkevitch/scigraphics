@@ -14,7 +14,7 @@
 
 // ============================================================
       
-void graphics::painter::flush() 
+void scigraphics::painter::flush() 
 { 
   if ( ableToDraw() ) 
     Drawer->flush(); 
@@ -22,7 +22,7 @@ void graphics::painter::flush()
 
 // ------------------------------------------------------------
       
-void graphics::painter::updatePlotRectangle()
+void scigraphics::painter::updatePlotRectangle()
 {
   if ( ableToDraw() )
     PlotRectangle = Indents.apply( Drawer->plotRectangle() );
@@ -32,21 +32,21 @@ void graphics::painter::updatePlotRectangle()
 
 // ------------------------------------------------------------
 
-graphics::wcoord graphics::painter::fcoord2wcoordX( fcoord X ) const
+scigraphics::wcoord scigraphics::painter::fcoord2wcoordX( fcoord X ) const
 {
   return X * PlotRectangle.width() + Indents.left();
 }
 
 // ------------------------------------------------------------
 
-graphics::wcoord graphics::painter::fcoord2wcoordY( fcoord Y ) const
+scigraphics::wcoord scigraphics::painter::fcoord2wcoordY( fcoord Y ) const
 {
   return ( 1.0 - Y ) * PlotRectangle.height() + Indents.up();
 }
 
 // ------------------------------------------------------------
 
-graphics::wpoint graphics::painter::fpoint2wpoint( fpoint Pt ) const
+scigraphics::wpoint scigraphics::painter::fpoint2wpoint( fpoint Pt ) const
 {
   wcoord X = fcoord2wcoordX(Pt.x()); 
   wcoord Y = fcoord2wcoordY(Pt.y()); 
@@ -55,7 +55,7 @@ graphics::wpoint graphics::painter::fpoint2wpoint( fpoint Pt ) const
       
 // ------------------------------------------------------------
       
-graphics::fcoord graphics::painter::wcoord2fcoordX( wcoord X ) const
+scigraphics::fcoord scigraphics::painter::wcoord2fcoordX( wcoord X ) const
 {
   if ( PlotRectangle.width() <= 0 || PlotRectangle.height() <= 0 )
     return 0;
@@ -64,7 +64,7 @@ graphics::fcoord graphics::painter::wcoord2fcoordX( wcoord X ) const
 
 // ------------------------------------------------------------
  
-graphics::fcoord graphics::painter::wcoord2fcoordY( wcoord Y ) const
+scigraphics::fcoord scigraphics::painter::wcoord2fcoordY( wcoord Y ) const
 {
   if ( PlotRectangle.width() <= 0 || PlotRectangle.height() <= 0 )
     return 0;
@@ -73,7 +73,7 @@ graphics::fcoord graphics::painter::wcoord2fcoordY( wcoord Y ) const
 
 // ------------------------------------------------------------
 
-graphics::fpoint graphics::painter::wpoint2fpoint( wpoint Pt ) const
+scigraphics::fpoint scigraphics::painter::wpoint2fpoint( wpoint Pt ) const
 {
   if ( PlotRectangle.width() <= 0 || PlotRectangle.height() <= 0 )
     return fpoint(0,0);
@@ -86,7 +86,7 @@ graphics::fpoint graphics::painter::wpoint2fpoint( wpoint Pt ) const
       
 // ------------------------------------------------------------
 
-bool graphics::painter::canSeparatePointsF( fpoint Pt1, fpoint Pt2 ) const
+bool scigraphics::painter::canSeparatePointsF( fpoint Pt1, fpoint Pt2 ) const
 {
   wpoint WPt1 = fpoint2wpoint( Pt1 );
   wpoint WPt2 = fpoint2wpoint( Pt2 );
@@ -97,7 +97,7 @@ bool graphics::painter::canSeparatePointsF( fpoint Pt1, fpoint Pt2 ) const
 
 // ------------------------------------------------------------
 
-bool graphics::painter::canSepareteXcoordsF( fcoord X1, fcoord X2 ) const
+bool scigraphics::painter::canSepareteXcoordsF( fcoord X1, fcoord X2 ) const
 {
   double ApproxStepX = 1.0 / (double)PlotRectangle.width();
   if ( std::fabs(X1-X2) < ApproxStepX/3.0 )
@@ -107,7 +107,7 @@ bool graphics::painter::canSepareteXcoordsF( fcoord X1, fcoord X2 ) const
 
 // ------------------------------------------------------------
 
-void graphics::painter::clearPlotArea()
+void scigraphics::painter::clearPlotArea()
 {
   if ( ableToDraw() )
     Drawer->eraseAll();
@@ -115,7 +115,7 @@ void graphics::painter::clearPlotArea()
       
 // ------------------------------------------------------------
 
-void graphics::painter::clearBordersArea()
+void scigraphics::painter::clearBordersArea()
 {
   if ( ! ableToDraw() )
     return;
@@ -138,7 +138,7 @@ void graphics::painter::clearBordersArea()
 
 // ------------------------------------------------------------
 
-void graphics::painter::drawLineW( wpoint A, wpoint B, const lineStyle &Style ) 
+void scigraphics::painter::drawLineW( wpoint A, wpoint B, const lineStyle &Style ) 
 { 
   //std::cout << "painter::drawCoordLine()" << A.x() << " " << A.y() << " " << Style.getColor().name() << std::endl;
   if ( ableToDraw() )
@@ -147,7 +147,7 @@ void graphics::painter::drawLineW( wpoint A, wpoint B, const lineStyle &Style )
 
 // ------------------------------------------------------------
 
-void graphics::painter::drawLineF( fpoint A, fpoint B, const lineStyle &Style )
+void scigraphics::painter::drawLineF( fpoint A, fpoint B, const lineStyle &Style )
 {
   if ( ! ableToDraw() )
     return;
@@ -158,7 +158,7 @@ void graphics::painter::drawLineF( fpoint A, fpoint B, const lineStyle &Style )
       
 // ------------------------------------------------------------
 
-void graphics::painter::drawTextW( const std::string &String, wpoint Point, unsigned Position, 
+void scigraphics::painter::drawTextW( const std::string &String, wpoint Point, unsigned Position, 
         const textStyle &Style, int ShiftLeft, int ShiftUp, double Angle )
 {
   if ( ! ableToDraw() )
@@ -189,7 +189,7 @@ void graphics::painter::drawTextW( const std::string &String, wpoint Point, unsi
 
 // ------------------------------------------------------------
 
-void graphics::painter::drawTextF( const std::string &String, fpoint Point, unsigned PositionFlags, 
+void scigraphics::painter::drawTextF( const std::string &String, fpoint Point, unsigned PositionFlags, 
         const textStyle &Style, int ShiftLeft, int ShiftUp, double Angle )
 {
   wpoint WPoint = fpoint2wpoint( Point );
@@ -198,7 +198,7 @@ void graphics::painter::drawTextF( const std::string &String, fpoint Point, unsi
       
 // ------------------------------------------------------------
 
-void graphics::painter::drawRectangleF( const frectangle &Rect, const brushStyle &BrushStyle )
+void scigraphics::painter::drawRectangleF( const frectangle &Rect, const brushStyle &BrushStyle )
 {
   lineStyle LineStyle( BrushStyle.getColor() );
   LineStyle.setWidth(0);
@@ -207,7 +207,7 @@ void graphics::painter::drawRectangleF( const frectangle &Rect, const brushStyle
       
 // ------------------------------------------------------------
 
-void graphics::painter::drawRectangleF( const frectangle &Rect, const brushStyle &BrushStyle, const lineStyle &LineStyle )
+void scigraphics::painter::drawRectangleF( const frectangle &Rect, const brushStyle &BrushStyle, const lineStyle &LineStyle )
 {
   wpoint LU = fpoint2wpoint( Rect.leftUp() );
   wpoint RD = fpoint2wpoint( Rect.rightDown() );
@@ -218,7 +218,7 @@ void graphics::painter::drawRectangleF( const frectangle &Rect, const brushStyle
 
 // ------------------------------------------------------------
 
-void graphics::painter::drawRectangleW( const wrectangle &Rect, const brushStyle &BrushStyle, const lineStyle &LineStyle )
+void scigraphics::painter::drawRectangleW( const wrectangle &Rect, const brushStyle &BrushStyle, const lineStyle &LineStyle )
 {
   if ( ableToDraw() )
     Drawer->drawRectangle( Rect, BrushStyle, LineStyle );
@@ -226,7 +226,7 @@ void graphics::painter::drawRectangleW( const wrectangle &Rect, const brushStyle
       
 // ------------------------------------------------------------
 
-void graphics::painter::drawPointF( const fpoint &Point, const pointStyle &Style )
+void scigraphics::painter::drawPointF( const fpoint &Point, const pointStyle &Style )
 {
   wpoint WPoint = fpoint2wpoint(Point);
   drawPointW( WPoint, Style );
@@ -234,7 +234,7 @@ void graphics::painter::drawPointF( const fpoint &Point, const pointStyle &Style
 
 // ------------------------------------------------------------
 
-void graphics::painter::drawPointW( const wpoint &Point, const pointStyle &Style )
+void scigraphics::painter::drawPointW( const wpoint &Point, const pointStyle &Style )
 {
   if ( ! ableToDraw() )
     return;
@@ -261,7 +261,7 @@ void graphics::painter::drawPointW( const wpoint &Point, const pointStyle &Style
 
 // ------------------------------------------------------------
       
-void graphics::painter::drawVerticalErrorBarF( const fpoint &Min, const fpoint &Max, const errorBarStyle &Style )
+void scigraphics::painter::drawVerticalErrorBarF( const fpoint &Min, const fpoint &Max, const errorBarStyle &Style )
 {
   wpoint WMin = fpoint2wpoint(Min);
   wpoint WMax = fpoint2wpoint(Max);
@@ -270,7 +270,7 @@ void graphics::painter::drawVerticalErrorBarF( const fpoint &Min, const fpoint &
 
 // ------------------------------------------------------------
 
-void graphics::painter::drawHorizontalErrorBarF( const fpoint &Min, const fpoint &Max, const errorBarStyle &Style )
+void scigraphics::painter::drawHorizontalErrorBarF( const fpoint &Min, const fpoint &Max, const errorBarStyle &Style )
 {
   wpoint WMin = fpoint2wpoint(Min);
   wpoint WMax = fpoint2wpoint(Max);
@@ -279,7 +279,7 @@ void graphics::painter::drawHorizontalErrorBarF( const fpoint &Min, const fpoint
 
 // ------------------------------------------------------------
 
-void graphics::painter::drawVecticalErrorBarW( const wpoint &Min, const wpoint &Max, const errorBarStyle &Style )
+void scigraphics::painter::drawVecticalErrorBarW( const wpoint &Min, const wpoint &Max, const errorBarStyle &Style )
 {
   assert( Min.x() == Max.x() );
   
@@ -294,7 +294,7 @@ void graphics::painter::drawVecticalErrorBarW( const wpoint &Min, const wpoint &
 
 // ------------------------------------------------------------
 
-void graphics::painter::drawHorizontalErrorBarW( const wpoint &Min, const wpoint &Max, const errorBarStyle &Style )
+void scigraphics::painter::drawHorizontalErrorBarW( const wpoint &Min, const wpoint &Max, const errorBarStyle &Style )
 {
   assert( Min.y() == Max.y() );
   
@@ -309,7 +309,7 @@ void graphics::painter::drawHorizontalErrorBarW( const wpoint &Min, const wpoint
       
 // ------------------------------------------------------------
 
-void graphics::painter::drawPolygonF( const std::vector<fpoint> &FPoints, const brushStyle &Style )
+void scigraphics::painter::drawPolygonF( const std::vector<fpoint> &FPoints, const brushStyle &Style )
 {
   std::vector<wpoint> WPoints;
   WPoints.reserve( FPoints.size() );
@@ -323,7 +323,7 @@ void graphics::painter::drawPolygonF( const std::vector<fpoint> &FPoints, const 
 
 // ------------------------------------------------------------
 
-void graphics::painter::drawPolygonW( const std::vector<wpoint> &Points, const brushStyle &Style )
+void scigraphics::painter::drawPolygonW( const std::vector<wpoint> &Points, const brushStyle &Style )
 {
   if ( ! ableToDraw() )
     return;
@@ -336,7 +336,7 @@ void graphics::painter::drawPolygonW( const std::vector<wpoint> &Points, const b
 
 // ------------------------------------------------------------
 
-graphics::wcoord graphics::painter::textWidth( const std::string &Text, const textStyle &Style )
+scigraphics::wcoord scigraphics::painter::textWidth( const std::string &Text, const textStyle &Style )
 {
   if ( ableToDraw() )
     return Drawer->textWidth( Text, Style );
@@ -345,7 +345,7 @@ graphics::wcoord graphics::painter::textWidth( const std::string &Text, const te
 
 // ------------------------------------------------------------
 
-graphics::wcoord graphics::painter::textHeight( const std::string &Text, const textStyle &Style )
+scigraphics::wcoord scigraphics::painter::textHeight( const std::string &Text, const textStyle &Style )
 {
   if ( ableToDraw() )
     return Drawer->textHeight( Text, Style);

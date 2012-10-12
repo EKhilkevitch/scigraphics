@@ -8,56 +8,56 @@
 
 // ============================================================
 
-graphics::fpoint graphics::mouse::mouseHandler::wpoint2fpoint( wpoint Point ) const
+scigraphics::fpoint scigraphics::mouse::mouseHandler::wpoint2fpoint( wpoint Point ) const
 {
   return Plot.getPainter().wpoint2fpoint(Point);
 }
 
 // ------------------------------------------------------------
 
-double graphics::mouse::mouseHandler::plotWidth()  const
+double scigraphics::mouse::mouseHandler::plotWidth()  const
 {
   return Plot.getPainter().width();
 }
 
 // ------------------------------------------------------------
 
-double graphics::mouse::mouseHandler::plotHeight() const
+double scigraphics::mouse::mouseHandler::plotHeight() const
 {
   return Plot.getPainter().height();
 }
 
 // ------------------------------------------------------------
 
-void graphics::mouse::mouseHandler::mulZoomX( double Z )
+void scigraphics::mouse::mouseHandler::mulZoomX( double Z )
 {
   Plot.mulScalesZoom( Z, axisSet::DirectionX );
 }
 
 // ------------------------------------------------------------
 
-void graphics::mouse::mouseHandler::mulZoomY( double Z )
+void scigraphics::mouse::mouseHandler::mulZoomY( double Z )
 {
   Plot.mulScalesZoom( Z, axisSet::DirectionY );
 }
 
 // ------------------------------------------------------------
 
-void graphics::mouse::mouseHandler::addShiftX( double S )
+void scigraphics::mouse::mouseHandler::addShiftX( double S )
 {
   Plot.addScalesShift( S, axisSet::DirectionX );
 }
 
 // ------------------------------------------------------------
 
-void graphics::mouse::mouseHandler::addShiftY( double S )
+void scigraphics::mouse::mouseHandler::addShiftY( double S )
 {
   Plot.addScalesShift( S, axisSet::DirectionY );
 }
 
 // ------------------------------------------------------------
           
-void graphics::mouse::mouseHandler::resetScales()
+void scigraphics::mouse::mouseHandler::resetScales()
 {
   Plot.resetScales( axisSet::DirectionX );
   Plot.resetScales( axisSet::DirectionY );
@@ -65,7 +65,7 @@ void graphics::mouse::mouseHandler::resetScales()
 
 // ============================================================
 
-void graphics::mouse::moveAction::moved( wpoint Point )
+void scigraphics::mouse::moveAction::moved( wpoint Point )
 {
   double DeltaX = Point.x() - lastPoint().x();
   double DeltaY = Point.y() - lastPoint().y();
@@ -78,7 +78,7 @@ void graphics::mouse::moveAction::moved( wpoint Point )
 
 // ============================================================
 
-graphics::mouse::zoomAction::zoomAction( plot &P, wpoint Point )
+scigraphics::mouse::zoomAction::zoomAction( plot &P, wpoint Point )
   : mouseActionHandler(P,Point)
 {
   Plot.getZoomRectangle().show( Point );
@@ -86,14 +86,14 @@ graphics::mouse::zoomAction::zoomAction( plot &P, wpoint Point )
 
 // ------------------------------------------------------------
 
-void graphics::mouse::zoomAction::moved( wpoint Point )
+void scigraphics::mouse::zoomAction::moved( wpoint Point )
 {
   Plot.getZoomRectangle().pull( Point );
 }
 
 // ------------------------------------------------------------
 
-void graphics::mouse::zoomAction::released( wpoint Point )
+void scigraphics::mouse::zoomAction::released( wpoint Point )
 {
   if ( needToApplyChanges(Point) )
   {
@@ -106,7 +106,7 @@ void graphics::mouse::zoomAction::released( wpoint Point )
           
 // ------------------------------------------------------------
 
-bool graphics::mouse::zoomAction::needToApplyChanges( wpoint Point )
+bool scigraphics::mouse::zoomAction::needToApplyChanges( wpoint Point )
 {
   double DeltaX = std::fabs((double)(Point.x()-initPoint().x()));
   double DeltaY = std::fabs((double)(Point.y()-initPoint().y()));
@@ -118,7 +118,7 @@ bool graphics::mouse::zoomAction::needToApplyChanges( wpoint Point )
 
 // ------------------------------------------------------------
 
-void graphics::mouse::zoomAction::applyShifts( wpoint Point )
+void scigraphics::mouse::zoomAction::applyShifts( wpoint Point )
 {
   wpoint XPoint( std::min(Point.x(),initPoint().x()), 
                  std::max(Point.y(),initPoint().y()) );
@@ -132,7 +132,7 @@ void graphics::mouse::zoomAction::applyShifts( wpoint Point )
 
 // ------------------------------------------------------------
 
-void graphics::mouse::zoomAction::applyZooms( wpoint Point )
+void scigraphics::mouse::zoomAction::applyZooms( wpoint Point )
 {
   double DeltaX = std::fabs((double)(Point.x()-initPoint().x()));
   double DeltaY = std::fabs((double)(Point.y()-initPoint().y()));
@@ -143,21 +143,21 @@ void graphics::mouse::zoomAction::applyZooms( wpoint Point )
 
 // ============================================================
 
-void graphics::mouse::resetAction::reset()
+void scigraphics::mouse::resetAction::reset()
 {
   resetScales();
 }
 
 // ------------------------------------------------------------
 
-void graphics::mouse::resetAction::released( wpoint )
+void scigraphics::mouse::resetAction::released( wpoint )
 {
   reset();
 }
 
 // ============================================================
 
-graphics::mouse::moveFloatAction::moveFloatAction( plot &P, wpoint Point )
+scigraphics::mouse::moveFloatAction::moveFloatAction( plot &P, wpoint Point )
   : mouseActionHandler(P,Point)
 {
   Float = Plot.getFloatRectangle( Point );
@@ -165,7 +165,7 @@ graphics::mouse::moveFloatAction::moveFloatAction( plot &P, wpoint Point )
 
 // ------------------------------------------------------------
 
-void graphics::mouse::moveFloatAction::moved( wpoint Point )
+void scigraphics::mouse::moveFloatAction::moved( wpoint Point )
 {
   if ( Float != NULL )
   {
@@ -179,7 +179,7 @@ void graphics::mouse::moveFloatAction::moved( wpoint Point )
 
 // ============================================================
 
-graphics::mouse::selectAction::selectAction( plot &P, wpoint Point ) 
+scigraphics::mouse::selectAction::selectAction( plot &P, wpoint Point ) 
   : mouseActionHandler(P,Point),
   Selection(NULL)
 {
@@ -187,7 +187,7 @@ graphics::mouse::selectAction::selectAction( plot &P, wpoint Point )
 
 // ------------------------------------------------------------
 
-void graphics::mouse::selectAction::initSelection()
+void scigraphics::mouse::selectAction::initSelection()
 {
   Plot.clearSelections();
   Selection = createSelection();
@@ -195,7 +195,7 @@ void graphics::mouse::selectAction::initSelection()
 
 // ------------------------------------------------------------
 
-void graphics::mouse::selectAction::moved( wpoint Point )
+void scigraphics::mouse::selectAction::moved( wpoint Point )
 {
   if ( Selection != NULL )
     setSelectionInterval( Point );
@@ -203,7 +203,7 @@ void graphics::mouse::selectAction::moved( wpoint Point )
 
 // ------------------------------------------------------------
 
-void graphics::mouse::selectAction::setSelectionInterval( wpoint Point )
+void scigraphics::mouse::selectAction::setSelectionInterval( wpoint Point )
 {
   assert( Selection != NULL );
   Plot.setSelectionInterval( Selection, Point, initPoint() );
@@ -211,7 +211,7 @@ void graphics::mouse::selectAction::setSelectionInterval( wpoint Point )
           
 // ------------------------------------------------------------
 
-void graphics::mouse::selectAction::released( wpoint )
+void scigraphics::mouse::selectAction::released( wpoint )
 {
   if ( Selection == NULL )
     return;
@@ -226,21 +226,21 @@ void graphics::mouse::selectAction::released( wpoint )
 
 // ============================================================
 
-graphics::selectionStrip* graphics::mouse::selectHorizontalAction::createSelection()
+scigraphics::selectionStrip* scigraphics::mouse::selectHorizontalAction::createSelection()
 {
   return Plot.createSelection<selectionHorizontal>();
 }
 
 // ============================================================
 
-graphics::selectionStrip* graphics::mouse::selectVerticalAction::createSelection()
+scigraphics::selectionStrip* scigraphics::mouse::selectVerticalAction::createSelection()
 {
   return Plot.createSelection<selectionVertical>();
 }
 
 // ============================================================
 
-graphics::mouse::moveSelectionAction::moveSelectionAction( plot &P, wpoint Point )
+scigraphics::mouse::moveSelectionAction::moveSelectionAction( plot &P, wpoint Point )
   : mouseActionHandler( P, Point ),
   Selection( getSelection(Point) )
 {
@@ -248,7 +248,7 @@ graphics::mouse::moveSelectionAction::moveSelectionAction( plot &P, wpoint Point
 
 // ------------------------------------------------------------
 
-graphics::selectionStrip* graphics::mouse::moveSelectionAction::getSelection( wpoint Point )
+scigraphics::selectionStrip* scigraphics::mouse::moveSelectionAction::getSelection( wpoint Point )
 {
   selection *S = Plot.getSelection(Point);
   return dynamic_cast<selectionStrip*>( S );
@@ -256,7 +256,7 @@ graphics::selectionStrip* graphics::mouse::moveSelectionAction::getSelection( wp
 
 // ------------------------------------------------------------
 
-void graphics::mouse::moveSelectionAction::moved( wpoint Point )
+void scigraphics::mouse::moveSelectionAction::moved( wpoint Point )
 {
   if ( Selection != NULL )
     changeSelectionInterval( Point );
@@ -265,7 +265,7 @@ void graphics::mouse::moveSelectionAction::moved( wpoint Point )
 
 // ------------------------------------------------------------
 
-void graphics::mouse::moveSelectionAction::changeSelectionInterval( wpoint Point )
+void scigraphics::mouse::moveSelectionAction::changeSelectionInterval( wpoint Point )
 {
   assert( Selection != NULL );
   Plot.shiftSelection( Selection, lastPoint(), Point );
@@ -273,28 +273,28 @@ void graphics::mouse::moveSelectionAction::changeSelectionInterval( wpoint Point
 
 // ============================================================
 
-void graphics::mouse::resetSelectionAction::released( wpoint )
+void scigraphics::mouse::resetSelectionAction::released( wpoint )
 {
   Plot.clearSelections();
 }
 
 // ============================================================
 
-void graphics::mouse::mouseHorizontalWheel::wheel( wpoint, wheeldelta Delta )
+void scigraphics::mouse::mouseHorizontalWheel::wheel( wpoint, wheeldelta Delta )
 {
   addShiftX( - (double)( Delta * deltaDumpFactor() )/plotWidth() );
 }
 
 // ============================================================
 
-void graphics::mouse::mouseVerticalWheel::wheel( wpoint, wheeldelta Delta )
+void scigraphics::mouse::mouseVerticalWheel::wheel( wpoint, wheeldelta Delta )
 {
   addShiftY( + (double)( Delta * deltaDumpFactor() )/plotHeight() );
 }
 
 // ============================================================
 
-void graphics::mouse::mouseZoomWheel::wheel( wpoint Point, wheeldelta Delta )
+void scigraphics::mouse::mouseZoomWheel::wheel( wpoint Point, wheeldelta Delta )
 {
   fpoint FPoint = Plot.getPainter().wpoint2fpoint( Point );
   
@@ -309,7 +309,7 @@ void graphics::mouse::mouseZoomWheel::wheel( wpoint Point, wheeldelta Delta )
 
 // ============================================================
 
-graphics::mouse::mouse( plot &P ) : 
+scigraphics::mouse::mouse( plot &P ) : 
   Plot(P),
   ReplotOnMouseActions( true ),
   ActionHandler( new noneAction(P) ),
@@ -320,7 +320,7 @@ graphics::mouse::mouse( plot &P ) :
 
 // ------------------------------------------------------------
 
-graphics::mouse::~mouse()
+scigraphics::mouse::~mouse()
 {
   delete ActionHandler;
   delete WheelHandler;
@@ -328,7 +328,7 @@ graphics::mouse::~mouse()
 
 // ------------------------------------------------------------
 
-void graphics::mouse::replaceActionHandler( mouseActionHandler *NewHandler )
+void scigraphics::mouse::replaceActionHandler( mouseActionHandler *NewHandler )
 {
   if ( NewHandler != NULL && NewHandler->isAllowed(AllowedOperations) )
   {
@@ -343,7 +343,7 @@ void graphics::mouse::replaceActionHandler( mouseActionHandler *NewHandler )
 
 // ------------------------------------------------------------
 
-void graphics::mouse::replaceActionHandler( wpoint Point, unsigned Buttons )
+void scigraphics::mouse::replaceActionHandler( wpoint Point, unsigned Buttons )
 {
   mouseActionHandler *Handler = createMouseActionHandler(Point,Buttons);
   replaceActionHandler( Handler );
@@ -351,7 +351,7 @@ void graphics::mouse::replaceActionHandler( wpoint Point, unsigned Buttons )
 
 // ------------------------------------------------------------
 
-void graphics::mouse::setNoneActionHandler()
+void scigraphics::mouse::setNoneActionHandler()
 {
   replaceActionHandler( NULL );
   assert( isNoneHandler() );
@@ -359,7 +359,7 @@ void graphics::mouse::setNoneActionHandler()
 
 // ------------------------------------------------------------
 
-void graphics::mouse::replaceWheelHandler( mouseWheelHandler *NewHandler )
+void scigraphics::mouse::replaceWheelHandler( mouseWheelHandler *NewHandler )
 {
   if ( NewHandler != NULL && NewHandler->isAllowed(AllowedOperations) ) 
   {
@@ -378,7 +378,7 @@ void graphics::mouse::replaceWheelHandler( mouseWheelHandler *NewHandler )
 
 // ------------------------------------------------------------
 
-void graphics::mouse::replaceWheelHandler( unsigned Buttons )
+void scigraphics::mouse::replaceWheelHandler( unsigned Buttons )
 {
   mouseWheelHandler *Handler = createMouseWheelHandler(Buttons);
   replaceWheelHandler( Handler );
@@ -386,14 +386,14 @@ void graphics::mouse::replaceWheelHandler( unsigned Buttons )
 
 // ------------------------------------------------------------
 
-void graphics::mouse::setNoneWheelHandler()
+void scigraphics::mouse::setNoneWheelHandler()
 {
   replaceWheelHandler( (mouseWheelHandler*)(0) );
 }
 
 // ------------------------------------------------------------
 
-bool graphics::mouse::isNoneHandler() const
+bool scigraphics::mouse::isNoneHandler() const
 {
   if ( ActionHandler == NULL )
     return true;
@@ -402,7 +402,7 @@ bool graphics::mouse::isNoneHandler() const
 
 // ------------------------------------------------------------
       
-void graphics::mouse::mousePressed( wpoint Point, unsigned Buttons )
+void scigraphics::mouse::mousePressed( wpoint Point, unsigned Buttons )
 { 
   updateLastPosition(Point);
   replaceActionHandler(Point,Buttons); 
@@ -414,7 +414,7 @@ void graphics::mouse::mousePressed( wpoint Point, unsigned Buttons )
 
 // ------------------------------------------------------------
 
-void graphics::mouse::mouseMoved( wpoint Point )
+void scigraphics::mouse::mouseMoved( wpoint Point )
 {
   updateLastPosition(Point);
   assert( ActionHandler != NULL );
@@ -427,7 +427,7 @@ void graphics::mouse::mouseMoved( wpoint Point )
 
 // ------------------------------------------------------------
       
-void graphics::mouse::mouseReleased( wpoint Point )
+void scigraphics::mouse::mouseReleased( wpoint Point )
 { 
   updateLastPosition(Point);
   assert( ActionHandler != NULL );
@@ -441,7 +441,7 @@ void graphics::mouse::mouseReleased( wpoint Point )
       
 // ------------------------------------------------------------
 
-void graphics::mouse::mouseDoubleClicked( wpoint Point ) 
+void scigraphics::mouse::mouseDoubleClicked( wpoint Point ) 
 { 
   mousePressed(Point,Middle); 
   replot();
@@ -449,7 +449,7 @@ void graphics::mouse::mouseDoubleClicked( wpoint Point )
 
 // ------------------------------------------------------------
 
-void graphics::mouse::mouseWheel( wpoint Point, wheeldelta Delta, unsigned Buttons )
+void scigraphics::mouse::mouseWheel( wpoint Point, wheeldelta Delta, unsigned Buttons )
 {
   replaceWheelHandler( Buttons );
   assert( WheelHandler != NULL );
@@ -460,7 +460,7 @@ void graphics::mouse::mouseWheel( wpoint Point, wheeldelta Delta, unsigned Butto
 
 // ------------------------------------------------------------
 
-void graphics::mouse::updateLastPosition( wpoint Point )
+void scigraphics::mouse::updateLastPosition( wpoint Point )
 {
   LastPosition = Point;
   Plot.replotFloatRectangles();
@@ -468,7 +468,7 @@ void graphics::mouse::updateLastPosition( wpoint Point )
 
 // ------------------------------------------------------------
 
-void graphics::mouse::replot()
+void scigraphics::mouse::replot()
 {
   if ( replotOnMouseActions() )
     Plot.replot();
@@ -476,7 +476,7 @@ void graphics::mouse::replot()
 
 // ------------------------------------------------------------
 
-graphics::mouse::mouseActionHandler* graphics::mouse::createMouseActionHandler( wpoint Point, unsigned Buttons )
+scigraphics::mouse::mouseActionHandler* scigraphics::mouse::createMouseActionHandler( wpoint Point, unsigned Buttons )
 {
   switch ( Buttons )
   {
@@ -510,7 +510,7 @@ graphics::mouse::mouseActionHandler* graphics::mouse::createMouseActionHandler( 
 
 // ------------------------------------------------------------
 
-graphics::mouse::mouseWheelHandler* graphics::mouse::createMouseWheelHandler( unsigned Buttons )
+scigraphics::mouse::mouseWheelHandler* scigraphics::mouse::createMouseWheelHandler( unsigned Buttons )
 {
   switch ( Buttons )
   {

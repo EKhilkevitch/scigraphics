@@ -8,11 +8,11 @@
 
 // ============================================================
 
-const graphics::textStyle graphics::axisLabels::DefaultAxisTextStyle( 10 );
+const scigraphics::textStyle scigraphics::axisLabels::DefaultAxisTextStyle( 10 );
 
 // ------------------------------------------------------------
 
-void graphics::axisLabels::draw( painter &Painter, const scale &Scale, const std::vector<number> &Marks )
+void scigraphics::axisLabels::draw( painter &Painter, const scale &Scale, const std::vector<number> &Marks )
 {
   for ( std::vector<number>::const_iterator m = Marks.begin(); m != Marks.end(); ++m )
     drawOneLabel( Painter, Scale, *m );
@@ -20,7 +20,7 @@ void graphics::axisLabels::draw( painter &Painter, const scale &Scale, const std
 
 // ------------------------------------------------------------
 
-void graphics::axisLabelsX::drawOneLabel( painter &Painter, const scale &Scale, number Value )
+void scigraphics::axisLabelsX::drawOneLabel( painter &Painter, const scale &Scale, number Value )
 {
   fcoord X = Scale.numberToFraction( Value );
   std::string Text = getNumberStyle().numberText( Value );
@@ -33,7 +33,7 @@ void graphics::axisLabelsX::drawOneLabel( painter &Painter, const scale &Scale, 
 
 // ------------------------------------------------------------
 
-void graphics::axisLabelsY::drawOneLabel( painter &Painter, const scale &Scale, number Value )
+void scigraphics::axisLabelsY::drawOneLabel( painter &Painter, const scale &Scale, number Value )
 {
   fcoord Y = Scale.numberToFraction( Value );
   std::string Text = getNumberStyle().numberText( Value );

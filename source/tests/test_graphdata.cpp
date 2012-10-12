@@ -12,12 +12,12 @@
 
 // =========================================================
 
-CPPUNIT_TEST_SUITE_REGISTRATION( graphics::tests::test_dataSequenceVector );
-CPPUNIT_TEST_SUITE_REGISTRATION( graphics::tests::test_dataMap );
+CPPUNIT_TEST_SUITE_REGISTRATION( scigraphics::tests::test_dataSequenceVector );
+CPPUNIT_TEST_SUITE_REGISTRATION( scigraphics::tests::test_dataMap );
 
 // =========================================================
 
-void graphics::tests::test_dataSequenceVector::point()
+void scigraphics::tests::test_dataSequenceVector::point()
 {
   typedef dataSequence::point point;
 
@@ -36,7 +36,7 @@ void graphics::tests::test_dataSequenceVector::point()
 
 // ---------------------------------------------------------
 
-void graphics::tests::test_dataSequenceVector::append()
+void scigraphics::tests::test_dataSequenceVector::append()
 {
   dataSequenceVector Data;
   
@@ -71,7 +71,7 @@ void graphics::tests::test_dataSequenceVector::append()
         
 // ---------------------------------------------------------
 
-void graphics::tests::test_dataSequenceVector::iterator()
+void scigraphics::tests::test_dataSequenceVector::iterator()
 {
   dataSequenceVector Data;
   CPPUNIT_ASSERT( Data.begin() == Data.end() );
@@ -98,7 +98,7 @@ void graphics::tests::test_dataSequenceVector::iterator()
 
 // ---------------------------------------------------------
 
-void graphics::tests::test_dataSequenceVector::limitsX()
+void scigraphics::tests::test_dataSequenceVector::limitsX()
 {
   dataSequenceVector Data;
   CPPUNIT_ASSERT( ! Data.limitsX().isValid() );
@@ -163,7 +163,7 @@ void graphics::tests::test_dataSequenceVector::limitsX()
 
 // ---------------------------------------------------------
 
-void graphics::tests::test_dataSequenceVector::limitsY()
+void scigraphics::tests::test_dataSequenceVector::limitsY()
 {
   dataSequenceVector Data;
   CPPUNIT_ASSERT( ! Data.limitsY( interval<number>(0,1) ).isValid() );
@@ -222,7 +222,7 @@ void graphics::tests::test_dataSequenceVector::limitsY()
 
 // ---------------------------------------------------------
 
-void graphics::tests::test_dataSequenceVector::clear()
+void scigraphics::tests::test_dataSequenceVector::clear()
 {
   dataSequenceVector Data;
   CPPUNIT_ASSERT( Data.empty() );
@@ -242,7 +242,7 @@ void graphics::tests::test_dataSequenceVector::clear()
 
 // ---------------------------------------------------------
         
-void graphics::tests::test_dataSequenceVector::isOrderedByX()
+void scigraphics::tests::test_dataSequenceVector::isOrderedByX()
 {
   dataSequenceVector Data;
 
@@ -284,7 +284,7 @@ void graphics::tests::test_dataSequenceVector::isOrderedByX()
 
 // =========================================================
 
-void graphics::tests::test_dataMap::limits()
+void scigraphics::tests::test_dataMap::limits()
 {
   dataMapVector Data( 10, interval<number>( 1, 5 ), 5, interval<number>(-10,-4) );
 
@@ -324,7 +324,7 @@ void graphics::tests::test_dataMap::limits()
 
 // ---------------------------------------------------------
 
-void graphics::tests::test_dataMap::set()
+void scigraphics::tests::test_dataMap::set()
 {
   dataMapVector Data( 10, interval<number>( 1, 5 ), 5, interval<number>(-10,-4) );
  
@@ -336,7 +336,7 @@ void graphics::tests::test_dataMap::set()
 
 // ---------------------------------------------------------
 
-void graphics::tests::test_dataMap::resize()
+void scigraphics::tests::test_dataMap::resize()
 {
   dataMapVector Data;
 

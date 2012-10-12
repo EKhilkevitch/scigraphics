@@ -22,7 +22,7 @@ int main( int argc, char *argv[] )
 
   qt4plot Plot;
 
-  graphics::graphSequenceVector *Sin = Plot.createGraphSequenceVector( "Sinus" );
+  scigraphics::graphSequenceVector *Sin = Plot.createGraphSequenceVector( "Sinus" );
   for ( double x = -M_PI; x <= M_PI; x+= 0.1 )
     Sin->append( x, std::sin(x) );
 

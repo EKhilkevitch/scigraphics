@@ -5,18 +5,18 @@
 
 // ============================================================
 
-const graphics::lineStyle graphics::axis::DefaultAxisLineStyle( 3, color::Black );
+const scigraphics::lineStyle scigraphics::axis::DefaultAxisLineStyle( 3, color::Black );
 
 // ------------------------------------------------------------
 
-void graphics::axisX::draw( painter &Painter )
+void scigraphics::axisX::draw( painter &Painter )
 {
   Painter.drawLineF( fpoint(0,BaseY), fpoint(1,BaseY), getLineStyle() );
 }
 
 // ------------------------------------------------------------
 
-void graphics::axisY::draw( painter &Painter )
+void scigraphics::axisY::draw( painter &Painter )
 {
   Painter.drawLineF( fpoint(BaseX,0), fpoint(BaseX,1), getLineStyle() );
 }

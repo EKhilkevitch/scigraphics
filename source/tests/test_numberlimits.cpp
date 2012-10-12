@@ -9,11 +9,11 @@
 
 // =========================================================
 
-CPPUNIT_TEST_SUITE_REGISTRATION( graphics::tests::test_numberLimits );
+CPPUNIT_TEST_SUITE_REGISTRATION( scigraphics::tests::test_numberLimits );
 
 // =========================================================
 
-void graphics::tests::test_numberLimits::isValidInterval()
+void scigraphics::tests::test_numberLimits::isValidInterval()
 {
   interval<number> I1(1,2), I2( invalidNumber(), invalidNumber() );
 
@@ -23,7 +23,7 @@ void graphics::tests::test_numberLimits::isValidInterval()
 
 // ------------------------------------------------------------
 
-void graphics::tests::test_numberLimits::clear()
+void scigraphics::tests::test_numberLimits::clear()
 {
   numberLimits Limits;
   CPPUNIT_ASSERT( ! numberLimits::isValidInterval(Limits.totalLimits()) );
@@ -40,7 +40,7 @@ void graphics::tests::test_numberLimits::clear()
 
 // ------------------------------------------------------------
 
-void graphics::tests::test_numberLimits::updateLimitsPosNums()
+void scigraphics::tests::test_numberLimits::updateLimitsPosNums()
 {
   numberLimits Limits;
   CPPUNIT_ASSERT_EQUAL( invalidNumber(), Limits.positiveLimits().min() );
@@ -71,7 +71,7 @@ void graphics::tests::test_numberLimits::updateLimitsPosNums()
 
 // ------------------------------------------------------------
 
-void graphics::tests::test_numberLimits::updateLimitsNegNums()
+void scigraphics::tests::test_numberLimits::updateLimitsNegNums()
 {
   numberLimits Limits;
   Limits.updateLimits(-3.5);
@@ -95,7 +95,7 @@ void graphics::tests::test_numberLimits::updateLimitsNegNums()
 
 // ------------------------------------------------------------
 
-void graphics::tests::test_numberLimits::updateLimitsZero()
+void scigraphics::tests::test_numberLimits::updateLimitsZero()
 {
   numberLimits Limits;
   
@@ -124,7 +124,7 @@ void graphics::tests::test_numberLimits::updateLimitsZero()
 
 // ------------------------------------------------------------
 
-void graphics::tests::test_numberLimits::updateLimits()
+void scigraphics::tests::test_numberLimits::updateLimits()
 {
   numberLimits Limits;
   CPPUNIT_ASSERT( ! numberLimits::isValidInterval(Limits.totalLimits()) );

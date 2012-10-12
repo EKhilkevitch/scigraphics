@@ -10,11 +10,11 @@
 
 // =========================================================
 
-CPPUNIT_TEST_SUITE_REGISTRATION( graphics::tests::test_legend );
+CPPUNIT_TEST_SUITE_REGISTRATION( scigraphics::tests::test_legend );
 
 // =========================================================
         
-void graphics::tests::test_legend::setUp()
+void scigraphics::tests::test_legend::setUp()
 {
   auto Drawer = new mockDrawer();
   Drawer->setWidth(400);
@@ -25,7 +25,7 @@ void graphics::tests::test_legend::setUp()
 
 // ---------------------------------------------------------
 
-void graphics::tests::test_legend::shouldDrawGraphLegend()
+void scigraphics::tests::test_legend::shouldDrawGraphLegend()
 {
   graphSequenceVector Graph;
 
@@ -40,7 +40,7 @@ void graphics::tests::test_legend::shouldDrawGraphLegend()
 
 // ---------------------------------------------------------
 
-void graphics::tests::test_legend::legendsList()
+void scigraphics::tests::test_legend::legendsList()
 {
   graphCollection Graphics;
   axisSetX SetX(0);
@@ -67,7 +67,7 @@ void graphics::tests::test_legend::legendsList()
 
 // ---------------------------------------------------------
 
-void graphics::tests::test_legend::sizesForLegendRectangle()
+void scigraphics::tests::test_legend::sizesForLegendRectangle()
 {
   textStyle TextStyle;
   TextStyle.setFontSize(10);
@@ -97,7 +97,7 @@ void graphics::tests::test_legend::sizesForLegendRectangle()
 
 // ---------------------------------------------------------
 
-void graphics::tests::test_legend::updateLegendRectangleShortList()
+void scigraphics::tests::test_legend::updateLegendRectangleShortList()
 {
   graphCollection Graphics;
   axisSetX SetX(0);
@@ -134,7 +134,7 @@ void graphics::tests::test_legend::updateLegendRectangleShortList()
 
 // ---------------------------------------------------------
 
-void graphics::tests::test_legend::updateLegendRectangleLongList()
+void scigraphics::tests::test_legend::updateLegendRectangleLongList()
 {
   graphCollection Graphics;
   axisSetX SetX(0);
@@ -161,7 +161,7 @@ void graphics::tests::test_legend::updateLegendRectangleLongList()
 
 // ---------------------------------------------------------
 
-void graphics::tests::test_legend::updateLegendRectangleVeryLongList()
+void scigraphics::tests::test_legend::updateLegendRectangleVeryLongList()
 {
   graphCollection Graphics;
   axisSetX SetX(0);

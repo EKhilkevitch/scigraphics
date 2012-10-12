@@ -13,7 +13,7 @@
 
 // ============================================================
 
-graphics::scale::scale() : 
+scigraphics::scale::scale() : 
   Shift(0), 
   Zoom(1), 
   Locked(false), 
@@ -23,14 +23,14 @@ graphics::scale::scale() :
 
 // ------------------------------------------------------------
 
-graphics::scale::~scale() 
+scigraphics::scale::~scale() 
 { 
   delete Marker; 
 }
       
 // ------------------------------------------------------------
 
-void graphics::scale::setMarker( marker *M ) 
+void scigraphics::scale::setMarker( marker *M ) 
 { 
   if ( M == NULL )
     throw std::invalid_argument( "Marker can not be NULL" );
@@ -41,7 +41,7 @@ void graphics::scale::setMarker( marker *M )
 
 // ------------------------------------------------------------
       
-void graphics::scale::setShift( double S ) 
+void scigraphics::scale::setShift( double S ) 
 { 
   if ( ! isLocked() ) 
     Shift = S; 
@@ -49,7 +49,7 @@ void graphics::scale::setShift( double S )
 
 // ------------------------------------------------------------
      
-void graphics::scale::setZoom( double Z )  
+void scigraphics::scale::setZoom( double Z )  
 { 
   if ( ! isLocked() ) 
     Zoom  = Z; 
@@ -57,7 +57,7 @@ void graphics::scale::setZoom( double Z )
 
 // ------------------------------------------------------------
 
-void graphics::scale::reset() 
+void scigraphics::scale::reset() 
 { 
   setZoom(1); 
   setShift(0); 
@@ -65,7 +65,7 @@ void graphics::scale::reset()
 
 // ------------------------------------------------------------
 
-void graphics::scale::setLock( bool L )
+void scigraphics::scale::setLock( bool L )
 {
   Locked = L;
   if ( Locked )
@@ -74,7 +74,7 @@ void graphics::scale::setLock( bool L )
 
 // ------------------------------------------------------------
 
-graphics::fcoord graphics::scale::numberToFraction( number Number ) const 
+scigraphics::fcoord scigraphics::scale::numberToFraction( number Number ) const 
 {
   if ( Number > + std::numeric_limits<number>::max()/4 )
     return +1000;
@@ -89,7 +89,7 @@ graphics::fcoord graphics::scale::numberToFraction( number Number ) const
 
 // ------------------------------------------------------------
 
-graphics::number graphics::scale::fractionToNumber( fcoord Coordinate ) const 
+scigraphics::number scigraphics::scale::fractionToNumber( fcoord Coordinate ) const 
 {
   double Number = Coordinate;
   Number = ( Zoom == 0 ) ? 0 : Number/Zoom;
@@ -100,7 +100,7 @@ graphics::number graphics::scale::fractionToNumber( fcoord Coordinate ) const
             
 // ------------------------------------------------------------
 
-graphics::interval<graphics::number> graphics::scale::getVisivleInterval() const
+scigraphics::interval<scigraphics::number> scigraphics::scale::getVisivleInterval() const
 {
   number Min = fractionToNumber(0);
   number Max = fractionToNumber(1);
@@ -109,7 +109,7 @@ graphics::interval<graphics::number> graphics::scale::getVisivleInterval() const
 
 // ------------------------------------------------------------
 
-void graphics::scale::setNumberOfMarks( unsigned Min, unsigned Max )
+void scigraphics::scale::setNumberOfMarks( unsigned Min, unsigned Max )
 {
   assert( Marker != NULL );
   Marker->setNumberOfMarks( Min, Max );
@@ -117,7 +117,7 @@ void graphics::scale::setNumberOfMarks( unsigned Min, unsigned Max )
 
 // ------------------------------------------------------------
 
-std::vector<graphics::number> graphics::scale::marks() const
+std::vector<scigraphics::number> scigraphics::scale::marks() const
 {
   assert( Marker != NULL );
   interval<number> Interval = getVisivleInterval();
@@ -126,7 +126,7 @@ std::vector<graphics::number> graphics::scale::marks() const
 
 // ------------------------------------------------------------
       
-void graphics::scale::addScaleShift( scale *Scale, double Shift )
+void scigraphics::scale::addScaleShift( scale *Scale, double Shift )
 {
   if ( Scale == NULL )
     return;
@@ -135,7 +135,7 @@ void graphics::scale::addScaleShift( scale *Scale, double Shift )
 
 // ------------------------------------------------------------
 
-void graphics::scale::mulScaleZoom( scale *Scale, double Zoom )
+void scigraphics::scale::mulScaleZoom( scale *Scale, double Zoom )
 {
   if ( Scale == NULL )
     return;
@@ -144,7 +144,7 @@ void graphics::scale::mulScaleZoom( scale *Scale, double Zoom )
 
 // ------------------------------------------------------------
 
-void graphics::scale::resetScale( scale *Scale, double )
+void scigraphics::scale::resetScale( scale *Scale, double )
 {
   if ( Scale == NULL )
     return;
@@ -153,21 +153,21 @@ void graphics::scale::resetScale( scale *Scale, double )
 
 // ============================================================
 
-double graphics::scaleLinear::numberToPartOfDistance( number Number ) const 
+double scigraphics::scaleLinear::numberToPartOfDistance( number Number ) const 
 { 
   return getNumberLimits().totalLimits().partOfDistance(Number); 
 }
 
 // ------------------------------------------------------------
 
-graphics::number graphics::scaleLinear::partOfDistanceToNumber( double Part ) const 
+scigraphics::number scigraphics::scaleLinear::partOfDistanceToNumber( double Part ) const 
 { 
   return getNumberLimits().totalLimits().partToDistance(Part); 
 }
 
 // ============================================================
 
-double graphics::scaleLogarithm::logDistance( interval<number> Interval )
+double scigraphics::scaleLogarithm::logDistance( interval<number> Interval )
 {
   double Min = Interval.min();
   double Max = Interval.max();
@@ -188,7 +188,7 @@ double graphics::scaleLogarithm::logDistance( interval<number> Interval )
 
 // ============================================================
 
-double graphics::scaleLogarithmPositive::numberToPartOfDistance( number Number ) const 
+double scigraphics::scaleLogarithmPositive::numberToPartOfDistance( number Number ) const 
 { 
   if ( Number <= 0 ) 
     return -10;
@@ -201,7 +201,7 @@ double graphics::scaleLogarithmPositive::numberToPartOfDistance( number Number )
 
 // ------------------------------------------------------------
 
-graphics::number graphics::scaleLogarithmPositive::partOfDistanceToNumber( double Part ) const 
+scigraphics::number scigraphics::scaleLogarithmPositive::partOfDistanceToNumber( double Part ) const 
 { 
   interval<number> Limits = getNumberLimits().positiveLimits();
         
@@ -211,7 +211,7 @@ graphics::number graphics::scaleLogarithmPositive::partOfDistanceToNumber( doubl
 
 // ============================================================
 
-double graphics::scaleLogarithmNegative::numberToPartOfDistance( number Number ) const 
+double scigraphics::scaleLogarithmNegative::numberToPartOfDistance( number Number ) const 
 {
   if ( Number >= 0 ) 
     return +10;
@@ -224,7 +224,7 @@ double graphics::scaleLogarithmNegative::numberToPartOfDistance( number Number )
 
 // ------------------------------------------------------------
 
-graphics::number graphics::scaleLogarithmNegative::partOfDistanceToNumber( double Part ) const 
+scigraphics::number scigraphics::scaleLogarithmNegative::partOfDistanceToNumber( double Part ) const 
 { 
   interval<number> Limits = getNumberLimits().negativeLimits();
         
@@ -234,14 +234,14 @@ graphics::number graphics::scaleLogarithmNegative::partOfDistanceToNumber( doubl
 
 // ============================================================
 
-graphics::number graphics::scaleSquare::signsqrt( number Val ) 
+scigraphics::number scigraphics::scaleSquare::signsqrt( number Val ) 
 { 
   return std::sqrt( std::fabs(Val) ) * sign(Val); 
 }
 
 // ------------------------------------------------------------
 
-double  graphics::scaleSquare::numberToPartOfDistance( number Number ) const
+double  scigraphics::scaleSquare::numberToPartOfDistance( number Number ) const
 {
   interval<number> Limits = getNumberLimits().totalLimits();
 
@@ -252,7 +252,7 @@ double  graphics::scaleSquare::numberToPartOfDistance( number Number ) const
 
 // ------------------------------------------------------------
 
-graphics::number graphics::scaleSquare::partOfDistanceToNumber( double Part ) const
+scigraphics::number scigraphics::scaleSquare::partOfDistanceToNumber( double Part ) const
 {
   interval<number> Limits = getNumberLimits().totalLimits();
   
@@ -263,7 +263,7 @@ graphics::number graphics::scaleSquare::partOfDistanceToNumber( double Part ) co
 
 // ============================================================
 
-graphics::pairScales::pairScales( const scale &SX, const scale &SY ) :
+scigraphics::pairScales::pairScales( const scale &SX, const scale &SY ) :
   ScaleX(SX),
   ScaleY(SY) 
 {
@@ -271,7 +271,7 @@ graphics::pairScales::pairScales( const scale &SX, const scale &SY ) :
 
 // ------------------------------------------------------------
 
-graphics::point<graphics::fcoord> graphics::pairScales::npoint2fpoint( point<number> Point ) const
+scigraphics::point<scigraphics::fcoord> scigraphics::pairScales::npoint2fpoint( point<number> Point ) const
 {
   fcoord X = numberToFractionX( Point.x() );
   fcoord Y = numberToFractionY( Point.y() );
@@ -280,7 +280,7 @@ graphics::point<graphics::fcoord> graphics::pairScales::npoint2fpoint( point<num
       
 // ------------------------------------------------------------
 
-graphics::point<graphics::number> graphics::pairScales::fpoint2npoint( point<fcoord> Point ) const
+scigraphics::point<scigraphics::number> scigraphics::pairScales::fpoint2npoint( point<fcoord> Point ) const
 {
   number X = fractionToNumberX( Point.x() );
   number Y = fractionToNumberY( Point.y() );
@@ -289,7 +289,7 @@ graphics::point<graphics::number> graphics::pairScales::fpoint2npoint( point<fco
 
 // ------------------------------------------------------------
 
-graphics::point<graphics::number> graphics::pairScales::wpoint2npoint( point<wcoord> Point, const painter &Painter ) const
+scigraphics::point<scigraphics::number> scigraphics::pairScales::wpoint2npoint( point<wcoord> Point, const painter &Painter ) const
 {
   fpoint FPoint = Painter.wpoint2fpoint(Point);
   npoint NPoint = fpoint2npoint(FPoint);

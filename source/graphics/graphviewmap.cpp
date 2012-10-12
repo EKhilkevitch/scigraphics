@@ -17,7 +17,7 @@
 
 // ============================================================
 
-double graphics::graphViewRectangleMap::pointColorStrategy::relativePointValue( const dataMap::point &Point, interval<number> IntervalZ )
+double scigraphics::graphViewRectangleMap::pointColorStrategy::relativePointValue( const dataMap::point &Point, interval<number> IntervalZ )
 {
   if ( ! Point.isValid() )
     return invalidNumber();
@@ -29,7 +29,7 @@ double graphics::graphViewRectangleMap::pointColorStrategy::relativePointValue( 
 
 // ------------------------------------------------------------
 
-double graphics::graphViewRectangleMap::pointColorStrategy::relativeValueToUnitInterval( double Value )
+double scigraphics::graphViewRectangleMap::pointColorStrategy::relativeValueToUnitInterval( double Value )
 {
   if ( ! isValidNumber(Value) )
     return 0;
@@ -40,14 +40,14 @@ double graphics::graphViewRectangleMap::pointColorStrategy::relativeValueToUnitI
 
 // ------------------------------------------------------------
 
-graphics::color graphics::graphViewRectangleMap::pointColorStrategy::invalidValueColor() const
+scigraphics::color scigraphics::graphViewRectangleMap::pointColorStrategy::invalidValueColor() const
 {
   return color( 0xFF, 0xFF, 0xFF, 0xFF );
 }
 
 // ------------------------------------------------------------
 
-graphics::color graphics::graphViewRectangleMap::pointColorStrategy::pointColor( const dataMap::point &Point, interval<number> IntervalZ ) const
+scigraphics::color scigraphics::graphViewRectangleMap::pointColorStrategy::pointColor( const dataMap::point &Point, interval<number> IntervalZ ) const
 {
   if ( ! Point.isValid() )
     return invalidValueColor();
@@ -58,7 +58,7 @@ graphics::color graphics::graphViewRectangleMap::pointColorStrategy::pointColor(
 
 // ------------------------------------------------------------
 
-graphics::color graphics::graphViewRectangleMap::grayscalePointColorStrategy::relativeValueColor( double Value ) const
+scigraphics::color scigraphics::graphViewRectangleMap::grayscalePointColorStrategy::relativeValueColor( double Value ) const
 {
   if ( Value < 0 || 1 < Value )
     return invalidValueColor();
@@ -69,7 +69,7 @@ graphics::color graphics::graphViewRectangleMap::grayscalePointColorStrategy::re
 
 // ------------------------------------------------------------
 
-graphics::color graphics::graphViewRectangleMap::redYellowBluePointColorStrategy::relativeValueColor( double Value ) const
+scigraphics::color scigraphics::graphViewRectangleMap::redYellowBluePointColorStrategy::relativeValueColor( double Value ) const
 {
   if ( Value < 0 || 1 < Value )
     return invalidValueColor();
@@ -83,7 +83,7 @@ graphics::color graphics::graphViewRectangleMap::redYellowBluePointColorStrategy
 
 // ------------------------------------------------------------
 
-graphics::color graphics::graphViewRectangleMap::yellowRedBluePointColorStrategy::relativeValueColor( double Value ) const
+scigraphics::color scigraphics::graphViewRectangleMap::yellowRedBluePointColorStrategy::relativeValueColor( double Value ) const
 {
   
   if ( Value < 0 || 1 < Value )
@@ -99,7 +99,7 @@ graphics::color graphics::graphViewRectangleMap::yellowRedBluePointColorStrategy
 
 // ------------------------------------------------------------
       
-graphics::graphViewRectangleMap::graphViewRectangleMap() : 
+scigraphics::graphViewRectangleMap::graphViewRectangleMap() : 
   PointColorStrategy(NULL),
   ScaleZ(NULL)
 {
@@ -109,7 +109,7 @@ graphics::graphViewRectangleMap::graphViewRectangleMap() :
 
 // ------------------------------------------------------------
 
-graphics::graphViewRectangleMap::~graphViewRectangleMap()
+scigraphics::graphViewRectangleMap::~graphViewRectangleMap()
 {
   delete PointColorStrategy;
   delete ScaleZ;
@@ -117,7 +117,7 @@ graphics::graphViewRectangleMap::~graphViewRectangleMap()
 
 // ------------------------------------------------------------
 
-void graphics::graphViewRectangleMap::setColorStrategy( pointColorStrategy *Strategy )
+void scigraphics::graphViewRectangleMap::setColorStrategy( pointColorStrategy *Strategy )
 {
   if ( Strategy == NULL )
     throw std::invalid_argument( "Strategy argument must be not NULL" );
@@ -128,7 +128,7 @@ void graphics::graphViewRectangleMap::setColorStrategy( pointColorStrategy *Stra
 
 // ------------------------------------------------------------
 
-void graphics::graphViewRectangleMap::draw( painter &Painter, const pairScales& Scales, const dataMap &Data ) const
+void scigraphics::graphViewRectangleMap::draw( painter &Painter, const pairScales& Scales, const dataMap &Data ) const
 {
   assert( PointColorStrategy != NULL );
 
@@ -143,7 +143,7 @@ void graphics::graphViewRectangleMap::draw( painter &Painter, const pairScales& 
 
 // ------------------------------------------------------------
       
-void graphics::graphViewRectangleMap::drawPoint( painter &Painter, const pairScales& Scales, const dataMap::point &Point, interval<number> IntervalZ ) const
+void scigraphics::graphViewRectangleMap::drawPoint( painter &Painter, const pairScales& Scales, const dataMap::point &Point, interval<number> IntervalZ ) const
 {
   if ( ! Point.isValid() )
     return;
@@ -158,7 +158,7 @@ void graphics::graphViewRectangleMap::drawPoint( painter &Painter, const pairSca
 
 // ------------------------------------------------------------
 
-void graphics::graphViewRectangleMap::drawLegendExample( painter &Painter, const wrectangle &Rectangle, const numberLimits &DataLimits ) const
+void scigraphics::graphViewRectangleMap::drawLegendExample( painter &Painter, const wrectangle &Rectangle, const numberLimits &DataLimits ) const
 {
   wpoint LeftUp = Rectangle.leftUp();
   wpoint RightDown = Rectangle.rightDown();
@@ -175,7 +175,7 @@ void graphics::graphViewRectangleMap::drawLegendExample( painter &Painter, const
 
 // ------------------------------------------------------------
       
-void graphics::graphViewRectangleMap::drawRainbowRectangleBorder( painter &Painter, const wrectangle &Rectangle ) const
+void scigraphics::graphViewRectangleMap::drawRainbowRectangleBorder( painter &Painter, const wrectangle &Rectangle ) const
 {
   lineStyle BorderLineStyle( color::Black );
   brushStyle BrushStyle( color::Yellow, brushStyle::None );
@@ -186,7 +186,7 @@ void graphics::graphViewRectangleMap::drawRainbowRectangleBorder( painter &Paint
 
 // ------------------------------------------------------------
 
-void graphics::graphViewRectangleMap::drawRainbowRectangle( painter &Painter, const wrectangle &Rectangle ) const
+void scigraphics::graphViewRectangleMap::drawRainbowRectangle( painter &Painter, const wrectangle &Rectangle ) const
 {
   assert( PointColorStrategy != NULL );
   assert( Rectangle.up() >= Rectangle.down() );
@@ -215,7 +215,7 @@ void graphics::graphViewRectangleMap::drawRainbowRectangle( painter &Painter, co
 
 // ------------------------------------------------------------
       
-void graphics::graphViewRectangleMap::drawRainbowMarkers( painter &Painter, const wrectangle &Rectangle, const numberLimits &DataLimits ) const
+void scigraphics::graphViewRectangleMap::drawRainbowMarkers( painter &Painter, const wrectangle &Rectangle, const numberLimits &DataLimits ) const
 {
   assert( ScaleZ != NULL );
  

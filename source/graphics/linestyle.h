@@ -5,7 +5,7 @@
 
 #include "graphics/color.h"
 
-namespace graphics
+namespace scigraphics
 {
 
 // ============================================================

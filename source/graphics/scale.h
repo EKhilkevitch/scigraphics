@@ -10,7 +10,7 @@
 
 // ============================================================
 
-namespace graphics
+namespace scigraphics
 {
 
   class painter;

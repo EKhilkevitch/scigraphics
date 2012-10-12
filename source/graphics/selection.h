@@ -8,7 +8,7 @@
 
 #include <limits>
 
-namespace graphics 
+namespace scigraphics 
 {
 
 // ============================================================

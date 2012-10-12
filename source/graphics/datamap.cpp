@@ -10,7 +10,7 @@
 
 // ============================================================
 
-graphics::numberLimits graphics::dataMap::limitsForInterval( interval<number> Interval )
+scigraphics::numberLimits scigraphics::dataMap::limitsForInterval( interval<number> Interval )
 {
   numberLimits Limits;
   if ( ! numberLimits::isValidInterval(Interval) )
@@ -27,21 +27,21 @@ graphics::numberLimits graphics::dataMap::limitsForInterval( interval<number> In
 
 // ------------------------------------------------------------
 
-graphics::numberLimits graphics::dataMap::limitsX() const
+scigraphics::numberLimits scigraphics::dataMap::limitsX() const
 {
   return limitsForInterval( intervalX() );
 }
 
 // ------------------------------------------------------------
 
-graphics::numberLimits graphics::dataMap::limitsY( const interval<number> & ) const
+scigraphics::numberLimits scigraphics::dataMap::limitsY( const interval<number> & ) const
 {
   return limitsForInterval( intervalY() );
 }
 
 // ------------------------------------------------------------
 
-graphics::numberLimits graphics::dataMap::limitsZ() const
+scigraphics::numberLimits scigraphics::dataMap::limitsZ() const
 {
   numberLimits Limits;
   for ( iterator p = begin(); p != end(); ++p )
@@ -51,7 +51,7 @@ graphics::numberLimits graphics::dataMap::limitsZ() const
 
 // ============================================================
 
-graphics::dataMapVector::dataMapVector( size_t SX, interval<number> IX, size_t SY, interval<number> IY ) :
+scigraphics::dataMapVector::dataMapVector( size_t SX, interval<number> IX, size_t SY, interval<number> IY ) :
   dataMap( IX, IY ),
   SizeX(0), 
   SizeY(0)
@@ -61,7 +61,7 @@ graphics::dataMapVector::dataMapVector( size_t SX, interval<number> IX, size_t S
 
 // ------------------------------------------------------------
 
-graphics::dataMapVector::dataMapVector() :
+scigraphics::dataMapVector::dataMapVector() :
   dataMap( interval<number>(0,1), interval<number>(0,1) ),
   SizeX(0), 
   SizeY(0)
@@ -70,7 +70,7 @@ graphics::dataMapVector::dataMapVector() :
 
 // ------------------------------------------------------------
 
-void graphics::dataMapVector::resize( size_t SX, size_t SY )
+void scigraphics::dataMapVector::resize( size_t SX, size_t SY )
 {
   std::vector< value > NewValues( SX * SY );
   
@@ -90,7 +90,7 @@ void graphics::dataMapVector::resize( size_t SX, size_t SY )
 
 // ------------------------------------------------------------
 
-size_t graphics::dataMapVector::size() const
+size_t scigraphics::dataMapVector::size() const
 {
   assert( sizeX()*sizeY() == Values.size() );
   return Values.size();
@@ -98,7 +98,7 @@ size_t graphics::dataMapVector::size() const
 
 // ------------------------------------------------------------
 
-graphics::dataMapVector::point graphics::dataMapVector::at( int Index ) const
+scigraphics::dataMapVector::point scigraphics::dataMapVector::at( int Index ) const
 {
   value Val = Values.at(Index);
   number X = coordinateX(indexX(Index));
@@ -110,7 +110,7 @@ graphics::dataMapVector::point graphics::dataMapVector::at( int Index ) const
 
 // ------------------------------------------------------------
       
-void graphics::dataMapVector::set( int IndexX, int IndexY, number Z, number ErrZ )
+void scigraphics::dataMapVector::set( int IndexX, int IndexY, number Z, number ErrZ )
 {
   unsigned Index = index( IndexX, IndexY );
   Values.at(Index) = value( Z, ErrZ );
@@ -119,7 +119,7 @@ void graphics::dataMapVector::set( int IndexX, int IndexY, number Z, number ErrZ
 
 // ------------------------------------------------------------
 
-graphics::numberLimits graphics::dataMapVector::limitsZ() const 
+scigraphics::numberLimits scigraphics::dataMapVector::limitsZ() const 
 {
   if ( ! LimitsZCache.isValid )
   {
@@ -134,19 +134,19 @@ graphics::numberLimits graphics::dataMapVector::limitsZ() const
 
 // ------------------------------------------------------------
 
-std::ostream& graphics::operator<<( std::ostream& Stream, const graphics::pointMap& Point )
+std::ostream& scigraphics::operator<<( std::ostream& Stream, const scigraphics::pointMap& Point )
 {
   return ( Stream << "( " << Point.x0() << " " << Point.x1() << " " << Point.y0() << " " << Point.y1() << " : " << Point.z() << " )" );
 }
 
 // ------------------------------------------------------------
 
-std::ostream& graphics::operator<<( std::ostream& Stream, const graphics::dataMap& Data )
+std::ostream& scigraphics::operator<<( std::ostream& Stream, const scigraphics::dataMap& Data )
 {
   std::streamsize Width = Stream.width();
   Stream.width( 12 );
   Stream << "Size " << Data.size() << std::endl;
-  for ( graphics::dataMap::iterator i = Data.begin(); i != Data.end(); ++i )
+  for ( scigraphics::dataMap::iterator i = Data.begin(); i != Data.end(); ++i )
     Stream << (*i) << std::endl;
   //Stream << "Limits: X" << Data.limitsX() << " Y" << Data.limitsY( Data.limitsX().totalLimits() ) << std::endl;
   Stream.width( Width );

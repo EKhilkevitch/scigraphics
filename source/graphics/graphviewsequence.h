@@ -10,7 +10,7 @@
 #include "graphics/errorbarstyle.h"
 #include "graphics/brushstyle.h"
 
-namespace graphics 
+namespace scigraphics 
 {
  
   // ============================================================

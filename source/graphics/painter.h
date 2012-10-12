@@ -16,7 +16,7 @@
 #include <vector>
 #include <cstdio>
 
-namespace graphics
+namespace scigraphics
 {
 
 // ============================================================

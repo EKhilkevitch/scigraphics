@@ -9,7 +9,7 @@
 
 // ============================================================
 
-void graphics::graphSequence::draw( painter &Painter, const pairScales& Scales ) const
+void scigraphics::graphSequence::draw( painter &Painter, const pairScales& Scales ) const
 {
   assert( Views != NULL );
   assert( Data != NULL );
@@ -19,7 +19,7 @@ void graphics::graphSequence::draw( painter &Painter, const pairScales& Scales )
 
 // ------------------------------------------------------------
 
-void graphics::graphSequence::drawLegendExample( painter &Painter, const wrectangle &Rectangle ) const
+void scigraphics::graphSequence::drawLegendExample( painter &Painter, const wrectangle &Rectangle ) const
 {
   assert( Views != NULL );
   Views->drawLegendExample( Painter, Rectangle );
@@ -27,7 +27,7 @@ void graphics::graphSequence::drawLegendExample( painter &Painter, const wrectan
       
 // ------------------------------------------------------------
 
-graphics::wcoord graphics::graphSequence::legendExampleWidth()  const
+scigraphics::wcoord scigraphics::graphSequence::legendExampleWidth()  const
 {
   assert( Views != NULL );
   return Views->legendExampleWidth();
@@ -35,7 +35,7 @@ graphics::wcoord graphics::graphSequence::legendExampleWidth()  const
 
 // ------------------------------------------------------------
 
-graphics::wcoord graphics::graphSequence::legendExampleHeight() const
+scigraphics::wcoord scigraphics::graphSequence::legendExampleHeight() const
 {
   assert( Views != NULL );
   return Views->legendExampleHeight();
@@ -43,14 +43,14 @@ graphics::wcoord graphics::graphSequence::legendExampleHeight() const
 
 // ------------------------------------------------------------
 
-graphics::graphSequence::graphSequence( const std::string &Lgnd ) : Views(NULL), Data(NULL)
+scigraphics::graphSequence::graphSequence( const std::string &Lgnd ) : Views(NULL), Data(NULL)
 {
   setLegend( Lgnd );
 }
 
 // ------------------------------------------------------------
 
-void graphics::graphSequence::init( const color &Color )
+void scigraphics::graphSequence::init( const color &Color )
 {
   assert( Data == NULL );
   assert( Views == NULL );
@@ -67,7 +67,7 @@ void graphics::graphSequence::init( const color &Color )
 
 // ------------------------------------------------------------
 
-graphics::graphSequence::~graphSequence()
+scigraphics::graphSequence::~graphSequence()
 {
   delete Views;
   delete Data;

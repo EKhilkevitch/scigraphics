@@ -11,7 +11,7 @@
 
 // ============================================================
 
-graphics::settings::settings() : GraphType(Individual)
+scigraphics::settings::settings() : GraphType(Individual)
 {
   for ( unsigned i = 0; i < axisSetCollection::PositionsCount; i++ )
   {
@@ -22,7 +22,7 @@ graphics::settings::settings() : GraphType(Individual)
 
 // ------------------------------------------------------------
 
-graphics::scale* graphics::settings::createScale( scaleType Type )
+scigraphics::scale* scigraphics::settings::createScale( scaleType Type )
 {
   switch ( Type )
   {
@@ -46,7 +46,7 @@ graphics::scale* graphics::settings::createScale( scaleType Type )
 
 // ------------------------------------------------------------
 
-void graphics::settings::apply( plot &Plot ) const
+void scigraphics::settings::apply( plot &Plot ) const
 {
   applyScaleType(Plot);
   applyGraphType(Plot);
@@ -57,7 +57,7 @@ void graphics::settings::apply( plot &Plot ) const
 
 // ------------------------------------------------------------
 
-void graphics::settings::applyGraphType( plot &Plot ) const
+void scigraphics::settings::applyGraphType( plot &Plot ) const
 {
   for ( graphCollection::iterator Graph = Plot.beginGraph(); Graph != Plot.endGraph(); ++Graph )
     applyGraphTypeToGraph( dynamic_cast< graphSequence* >( *Graph ) );
@@ -65,7 +65,7 @@ void graphics::settings::applyGraphType( plot &Plot ) const
       
 // ------------------------------------------------------------
 
-void graphics::settings::applyGraphTypeToGraph( graphSequence *Graph ) const
+void scigraphics::settings::applyGraphTypeToGraph( graphSequence *Graph ) const
 {
   if ( Graph == NULL )
     return;
@@ -80,7 +80,7 @@ void graphics::settings::applyGraphTypeToGraph( graphSequence *Graph ) const
 
 // ------------------------------------------------------------
 
-void graphics::settings::applyScaleType( plot &Plot ) const
+void scigraphics::settings::applyScaleType( plot &Plot ) const
 {
   for ( unsigned i = 0; i < axisSetCollection::PositionsCount; i++ )
   {
@@ -99,7 +99,7 @@ void graphics::settings::applyScaleType( plot &Plot ) const
 
 // ------------------------------------------------------------
       
-void graphics::settings::applyLimits( plot &Plot ) const
+void scigraphics::settings::applyLimits( plot &Plot ) const
 {
   for ( unsigned i = 0; i < axisSetCollection::PositionsCount; i++ )
   {
@@ -110,7 +110,7 @@ void graphics::settings::applyLimits( plot &Plot ) const
       
 // ------------------------------------------------------------
 
-graphics::interval<graphics::number> graphics::settings::correctLimits( interval<number> Limits )
+scigraphics::interval<scigraphics::number> scigraphics::settings::correctLimits( interval<number> Limits )
 {
   if ( Limits.isSingular() )
     return interval<number>( Limits.min() * 0.9, Limits.max()* 1.1 );
@@ -119,7 +119,7 @@ graphics::interval<graphics::number> graphics::settings::correctLimits( interval
 
 // ------------------------------------------------------------
 
-bool graphics::settings::equalScaleTypes( const scale *S1, const scale *S2 )
+bool scigraphics::settings::equalScaleTypes( const scale *S1, const scale *S2 )
 {
   assert( S1 != NULL );
   assert( S2 != NULL );
@@ -128,7 +128,7 @@ bool graphics::settings::equalScaleTypes( const scale *S1, const scale *S2 )
 
 // ------------------------------------------------------------
 
-void graphics::settings::setScaleType( scaleType Type, axisSetCollection::axisPosition AxisPos ) 
+void scigraphics::settings::setScaleType( scaleType Type, axisSetCollection::axisPosition AxisPos ) 
 {
   if ( AxisPos >= axisSetCollection::PositionsCount )
     throw std::invalid_argument( "Axis position is invalid" );
@@ -138,7 +138,7 @@ void graphics::settings::setScaleType( scaleType Type, axisSetCollection::axisPo
 
 // ------------------------------------------------------------
       
-void graphics::settings::setLimits( const interval<number> &Limits, axisSetCollection::axisPosition AxisPos ) 
+void scigraphics::settings::setLimits( const interval<number> &Limits, axisSetCollection::axisPosition AxisPos ) 
 { 
   if ( AxisPos >= axisSetCollection::PositionsCount )
     throw std::invalid_argument( "Axis position is invalid" );

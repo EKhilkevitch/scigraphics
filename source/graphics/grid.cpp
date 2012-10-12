@@ -6,18 +6,18 @@
 
 // ============================================================
 
-const graphics::lineStyle graphics::grid::DefaultGridLineStyle = lineStyle( graphics::lineStyle::Dash );
+const scigraphics::lineStyle scigraphics::grid::DefaultGridLineStyle = lineStyle( scigraphics::lineStyle::Dash );
 
 // ------------------------------------------------------------
 
-void graphics::grid::draw( painter &Painter, const scale &Scale, const std::vector<number> &Ticks )
+void scigraphics::grid::draw( painter &Painter, const scale &Scale, const std::vector<number> &Ticks )
 {
   drawMajorGrids( Painter, Scale, Ticks );
 }
 
 // ------------------------------------------------------------
 
-void graphics::grid::drawMajorGrids( painter &Painter, const scale &Scale, const std::vector<number> &Ticks )
+void scigraphics::grid::drawMajorGrids( painter &Painter, const scale &Scale, const std::vector<number> &Ticks )
 {
   for ( std::vector<number>::const_iterator t = Ticks.begin(); t != Ticks.end(); ++t )
     drawMajorGridOneLine( Painter, Scale, *t );
@@ -25,7 +25,7 @@ void graphics::grid::drawMajorGrids( painter &Painter, const scale &Scale, const
 
 // ------------------------------------------------------------
 
-void graphics::gridX::drawMajorGridOneLine( painter &Painter, const scale &Scale, const number Value )
+void scigraphics::gridX::drawMajorGridOneLine( painter &Painter, const scale &Scale, const number Value )
 {
   fcoord Coord = Scale.numberToFraction(Value);
   fpoint A( Coord, 0 );
@@ -35,7 +35,7 @@ void graphics::gridX::drawMajorGridOneLine( painter &Painter, const scale &Scale
 
 // ------------------------------------------------------------
 
-void graphics::gridY::drawMajorGridOneLine( painter &Painter, const scale &Scale, const number Value )
+void scigraphics::gridY::drawMajorGridOneLine( painter &Painter, const scale &Scale, const number Value )
 {
   fcoord Coord = Scale.numberToFraction(Value);
   fpoint A( 0, Coord );

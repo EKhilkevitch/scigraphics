@@ -10,7 +10,7 @@
 #include <string>
 #include <vector>
 
-namespace graphics
+namespace scigraphics
 {
 
 // ============================================================

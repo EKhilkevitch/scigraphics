@@ -11,11 +11,11 @@
 
 // =========================================================
 
-CPPUNIT_TEST_SUITE_REGISTRATION( graphics::tests::test_color );
+CPPUNIT_TEST_SUITE_REGISTRATION( scigraphics::tests::test_color );
 
 // =========================================================
 
-void graphics::tests::test_color::hsv()
+void scigraphics::tests::test_color::hsv()
 {
   color C( 200, 20, 50, 10 );
  
@@ -37,7 +37,7 @@ void graphics::tests::test_color::hsv()
 
 // ---------------------------------------------------------
 
-void graphics::tests::test_color::transparency()
+void scigraphics::tests::test_color::transparency()
 {
   color C = color::Magenta;
 

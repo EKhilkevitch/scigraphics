@@ -33,7 +33,7 @@ int main( int argc, char **argv )
 
   auto Sin = Manager.getPlot(1)->createGraphSequenceVector( "Sinus" );
   for ( double x = -M_PI; x <= M_PI; x+= 0.1 )
-    Sin->append( std::fabs(x) < 0.3 || x < -2.4 ? graphics::invalidNumber() : x, std::sin(x) );
+    Sin->append( std::fabs(x) < 0.3 || x < -2.4 ? scigraphics::invalidNumber() : x, std::sin(x) );
   Sin->setVisiblePoints(true);
   Sin->setVisibleLineHystogram(true);
   Sin->setVisibleLines(false);
@@ -41,7 +41,7 @@ int main( int argc, char **argv )
   auto Abs = Manager.getPlot(2)->createGraphSequenceVector( "Abs" );
   for ( double x = -1; x <= 1; x+= 0.1 )
     Abs->append( x, std::fabs(x) );
-  Manager.getPlot(2)->scaleWithPosition( graphics::axisSetCollection::Left )->lock();
+  Manager.getPlot(2)->scaleWithPosition( scigraphics::axisSetCollection::Left )->lock();
   
   auto Exp = Manager.getPlot(3)->createGraphSequenceVector( "Exp" );
   for ( double x = -2; x <= 10; x+= 0.1 )
@@ -50,7 +50,7 @@ int main( int argc, char **argv )
   auto Rounds = Manager.getPlot(4)->createGraphSequenceVector( "Ellipses" );
   for ( double Phi = 0; Phi <= 2*M_PI; Phi+=0.01 )
     Rounds->appendPolar( Phi, (1+sin(Phi)) * (1+0.9*cos(8*Phi)) * (1+0.1*cos(24*Phi)) );
-  Rounds->append( graphics::invalidNumber(), graphics::invalidNumber() );
+  Rounds->append( scigraphics::invalidNumber(), scigraphics::invalidNumber() );
   for ( double t = 0; t < 2*M_PI; t+=0.01 )
     Rounds->append( 0.4 * cos(t) + 4, 0.7 * sin(t) - 2 );
 
@@ -62,7 +62,7 @@ int main( int argc, char **argv )
   for ( double Phi = 0; Phi <= 10*M_PI; Phi += 0.05 )
     SpiralNg->appendPolar( Phi, -2 * sqrt( Phi ) );
 
-  auto Polygons = Manager.getPlot(6)->createGraph<graphics::graphAreaVector>("Polygons");
+  auto Polygons = Manager.getPlot(6)->createGraph<scigraphics::graphAreaVector>("Polygons");
   Polygons->append( 0, 0 );
   Polygons->append( 0, 2 );
   Polygons->append( 2, 2 );

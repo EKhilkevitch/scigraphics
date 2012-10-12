@@ -7,14 +7,14 @@
 
 // =========================================================
 
-CPPUNIT_TEST_SUITE_REGISTRATION( graphics::tests::test_scaleLinear );
-CPPUNIT_TEST_SUITE_REGISTRATION( graphics::tests::test_scaleLogPositive );
-CPPUNIT_TEST_SUITE_REGISTRATION( graphics::tests::test_scaleLogNegative );
-CPPUNIT_TEST_SUITE_REGISTRATION( graphics::tests::test_scaleSquare );
+CPPUNIT_TEST_SUITE_REGISTRATION( scigraphics::tests::test_scaleLinear );
+CPPUNIT_TEST_SUITE_REGISTRATION( scigraphics::tests::test_scaleLogPositive );
+CPPUNIT_TEST_SUITE_REGISTRATION( scigraphics::tests::test_scaleLogNegative );
+CPPUNIT_TEST_SUITE_REGISTRATION( scigraphics::tests::test_scaleSquare );
 
 // =========================================================
         
-graphics::numberLimits graphics::tests::test_scaleLinear::createNumberLimits()
+scigraphics::numberLimits scigraphics::tests::test_scaleLinear::createNumberLimits()
 {
   numberLimits Limits;
   Limits.updateLimits( 1 );
@@ -24,7 +24,7 @@ graphics::numberLimits graphics::tests::test_scaleLinear::createNumberLimits()
 
 // ---------------------------------------------------------
 
-void graphics::tests::test_scaleLinear::numberToPartOfDistance()
+void scigraphics::tests::test_scaleLinear::numberToPartOfDistance()
 {
   scaleLinearMorozov  Scale;
   Scale.setNumberLimits( createNumberLimits() );
@@ -39,7 +39,7 @@ void graphics::tests::test_scaleLinear::numberToPartOfDistance()
 
 // ---------------------------------------------------------
 
-void graphics::tests::test_scaleLinear::partOfDistanceToNumber()
+void scigraphics::tests::test_scaleLinear::partOfDistanceToNumber()
 {
   scaleLinearMorozov  Scale;
   Scale.setNumberLimits( createNumberLimits() );
@@ -54,7 +54,7 @@ void graphics::tests::test_scaleLinear::partOfDistanceToNumber()
 
 // ---------------------------------------------------------
 
-void graphics::tests::test_scaleLinear::numberToFraction()
+void scigraphics::tests::test_scaleLinear::numberToFraction()
 {
   scaleLinearMorozov  Scale;
   Scale.setNumberLimits( createNumberLimits() );
@@ -67,7 +67,7 @@ void graphics::tests::test_scaleLinear::numberToFraction()
 
 // ---------------------------------------------------------
 
-void graphics::tests::test_scaleLinear::numberToFractionZoom()
+void scigraphics::tests::test_scaleLinear::numberToFractionZoom()
 {
   scaleLinearMorozov  Scale;
   Scale.setNumberLimits( createNumberLimits() );
@@ -81,7 +81,7 @@ void graphics::tests::test_scaleLinear::numberToFractionZoom()
 
 // ---------------------------------------------------------
 
-void graphics::tests::test_scaleLinear::numberToFractionShift()
+void scigraphics::tests::test_scaleLinear::numberToFractionShift()
 {
   scaleLinearMorozov  Scale;
   Scale.setNumberLimits( createNumberLimits() );
@@ -95,7 +95,7 @@ void graphics::tests::test_scaleLinear::numberToFractionShift()
 
 // ---------------------------------------------------------
 
-void graphics::tests::test_scaleLinear::numberToFractionZoomShift()
+void scigraphics::tests::test_scaleLinear::numberToFractionZoomShift()
 {
   scaleLinearMorozov  Scale;
   Scale.setNumberLimits( createNumberLimits() );
@@ -110,7 +110,7 @@ void graphics::tests::test_scaleLinear::numberToFractionZoomShift()
 
 // ---------------------------------------------------------
 
-void graphics::tests::test_scaleLinear::fractionToNumber()
+void scigraphics::tests::test_scaleLinear::fractionToNumber()
 {
   scaleLinearMorozov  Scale;
   Scale.setNumberLimits( createNumberLimits() );
@@ -123,7 +123,7 @@ void graphics::tests::test_scaleLinear::fractionToNumber()
 
 // ---------------------------------------------------------
 
-void graphics::tests::test_scaleLinear::marks()
+void scigraphics::tests::test_scaleLinear::marks()
 {
   scaleLinearMorozov  Scale;
   Scale.setNumberLimits( createNumberLimits() );
@@ -136,7 +136,7 @@ void graphics::tests::test_scaleLinear::marks()
 
 // =========================================================
 
-graphics::numberLimits graphics::tests::test_scaleLogPositive::createNumberLimits()
+scigraphics::numberLimits scigraphics::tests::test_scaleLogPositive::createNumberLimits()
 {
   numberLimits Limits;
   Limits.updateLimits( -1 );
@@ -148,7 +148,7 @@ graphics::numberLimits graphics::tests::test_scaleLogPositive::createNumberLimit
 
 // ---------------------------------------------------------
 
-void graphics::tests::test_scaleLogPositive::numberToFraction()
+void scigraphics::tests::test_scaleLogPositive::numberToFraction()
 {
   scaleLogarithmPositive Scale;
   Scale.setNumberLimits( createNumberLimits() );
@@ -165,7 +165,7 @@ void graphics::tests::test_scaleLogPositive::numberToFraction()
 
 // ---------------------------------------------------------
 
-void graphics::tests::test_scaleLogPositive::fractionToNumber()
+void scigraphics::tests::test_scaleLogPositive::fractionToNumber()
 {
   scaleLogarithmPositive Scale;
   Scale.setNumberLimits( createNumberLimits() );
@@ -178,7 +178,7 @@ void graphics::tests::test_scaleLogPositive::fractionToNumber()
 
 // ---------------------------------------------------------
 
-void graphics::tests::test_scaleLogPositive::marks()
+void scigraphics::tests::test_scaleLogPositive::marks()
 {
   scaleLogarithmPositive Scale;
   Scale.setNumberLimits( createNumberLimits() );
@@ -194,7 +194,7 @@ void graphics::tests::test_scaleLogPositive::marks()
 
 // =========================================================
 
-graphics::numberLimits graphics::tests::test_scaleLogNegative::createNumberLimits()
+scigraphics::numberLimits scigraphics::tests::test_scaleLogNegative::createNumberLimits()
 {
   numberLimits Limits;
   Limits.updateLimits( +1 );
@@ -207,7 +207,7 @@ graphics::numberLimits graphics::tests::test_scaleLogNegative::createNumberLimit
 
 // ---------------------------------------------------------
 
-void graphics::tests::test_scaleLogNegative::numberToFraction()
+void scigraphics::tests::test_scaleLogNegative::numberToFraction()
 {
   scaleLogarithmNegative Scale;
   Scale.setNumberLimits( createNumberLimits() );
@@ -224,7 +224,7 @@ void graphics::tests::test_scaleLogNegative::numberToFraction()
 
 // ---------------------------------------------------------
 
-void graphics::tests::test_scaleLogNegative::fractionToNumber()
+void scigraphics::tests::test_scaleLogNegative::fractionToNumber()
 {
   scaleLogarithmNegative Scale;
   Scale.setNumberLimits( createNumberLimits() );
@@ -237,7 +237,7 @@ void graphics::tests::test_scaleLogNegative::fractionToNumber()
 
 // ---------------------------------------------------------
 
-void graphics::tests::test_scaleLogNegative::marks()
+void scigraphics::tests::test_scaleLogNegative::marks()
 {
   scaleLogarithmNegative Scale;
   Scale.setNumberLimits( createNumberLimits() );
@@ -254,7 +254,7 @@ void graphics::tests::test_scaleLogNegative::marks()
 
 // =========================================================
 
-graphics::numberLimits graphics::tests::test_scaleSquare::createNumberLimits()
+scigraphics::numberLimits scigraphics::tests::test_scaleSquare::createNumberLimits()
 {
   numberLimits Limits;
   Limits.updateLimits(  0 );
@@ -264,7 +264,7 @@ graphics::numberLimits graphics::tests::test_scaleSquare::createNumberLimits()
 
 // ---------------------------------------------------------
 
-void graphics::tests::test_scaleSquare::numberToFraction()
+void scigraphics::tests::test_scaleSquare::numberToFraction()
 {
   scaleSquare Scale;
   Scale.setNumberLimits( createNumberLimits() );
@@ -279,7 +279,7 @@ void graphics::tests::test_scaleSquare::numberToFraction()
 
 // ---------------------------------------------------------
 
-void graphics::tests::test_scaleSquare::fractionToNumber()
+void scigraphics::tests::test_scaleSquare::fractionToNumber()
 {
   scaleSquare Scale;
   Scale.setNumberLimits( createNumberLimits() );
@@ -291,7 +291,7 @@ void graphics::tests::test_scaleSquare::fractionToNumber()
 
 // ---------------------------------------------------------
 
-void graphics::tests::test_scaleSquare::marks()
+void scigraphics::tests::test_scaleSquare::marks()
 {
   scaleSquare Scale;
   Scale.setNumberLimits( createNumberLimits() );

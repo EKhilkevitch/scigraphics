@@ -6,11 +6,11 @@
 
 // =========================================================
 
-CPPUNIT_TEST_SUITE_REGISTRATION( graphics::tests::test_geometry );
+CPPUNIT_TEST_SUITE_REGISTRATION( scigraphics::tests::test_geometry );
 
 // =========================================================
 
-void graphics::tests::test_geometry::tpoint()
+void scigraphics::tests::test_geometry::tpoint()
 {
   point<number> Point( 1, 2 );
 
@@ -35,7 +35,7 @@ void graphics::tests::test_geometry::tpoint()
 
 // ---------------------------------------------------------
 
-void graphics::tests::test_geometry::trectangle()
+void scigraphics::tests::test_geometry::trectangle()
 {
   rectangle<number> Rect( point<number>(6,2), point<number>(1,8) );
 
@@ -65,7 +65,7 @@ void graphics::tests::test_geometry::trectangle()
 
 // ---------------------------------------------------------
 
-void graphics::tests::test_geometry::tindents()
+void scigraphics::tests::test_geometry::tindents()
 {
   indents<number> Indents( 0.5, 1.5, 2, 3 );
   rectangle<number> Rect( point<number>(6,2), point<number>(1,8) );

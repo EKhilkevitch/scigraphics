@@ -3,7 +3,7 @@
 
 #include "graphics/plot.h"
 
-namespace graphics
+namespace scigraphics
 {
 
 // ============================================================

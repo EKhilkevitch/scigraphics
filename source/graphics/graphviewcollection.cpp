@@ -10,7 +10,7 @@
 
 // ============================================================
 
-void graphics::graphViewSequencesCollection::erase( graphViewSequence *View ) 
+void scigraphics::graphViewSequencesCollection::erase( graphViewSequence *View ) 
 {  
   viewsList::iterator Iterator = Views.find(View);
   Views.erase( Iterator ); 
@@ -18,7 +18,7 @@ void graphics::graphViewSequencesCollection::erase( graphViewSequence *View )
 
 // ------------------------------------------------------------
       
-void graphics::graphViewSequencesCollection::addView( graphViewSequence *View, bool Show ) 
+void scigraphics::graphViewSequencesCollection::addView( graphViewSequence *View, bool Show ) 
 { 
   if ( View == NULL )
     return;
@@ -30,7 +30,7 @@ void graphics::graphViewSequencesCollection::addView( graphViewSequence *View, b
 
 // ------------------------------------------------------------
       
-void graphics::graphViewSequencesCollection::draw( painter &Painter, const pairScales& Scales, const dataSequence &Data ) const
+void scigraphics::graphViewSequencesCollection::draw( painter &Painter, const pairScales& Scales, const dataSequence &Data ) const
 {
   for ( viewsList::const_iterator View = Views.begin(); View != Views.end(); ++View )
     if ( (*View)->isVisible() )
@@ -39,7 +39,7 @@ void graphics::graphViewSequencesCollection::draw( painter &Painter, const pairS
 
 // ------------------------------------------------------------
 
-void graphics::graphViewSequencesCollection::drawLegendExample( painter &Painter, const wrectangle &Rectangle ) const
+void scigraphics::graphViewSequencesCollection::drawLegendExample( painter &Painter, const wrectangle &Rectangle ) const
 {
   for ( viewsList::const_iterator View = Views.begin(); View != Views.end(); ++View )
     if ( (*View)->isVisible() )
@@ -48,21 +48,21 @@ void graphics::graphViewSequencesCollection::drawLegendExample( painter &Painter
       
 // ------------------------------------------------------------
       
-graphics::color graphics::graphViewSequencesCollection::getColor() const 
+scigraphics::color scigraphics::graphViewSequencesCollection::getColor() const 
 { 
   return DefaultColor; 
 }
 
 // ------------------------------------------------------------
 
-void graphics::graphViewSequencesCollection::setDefaultColor( const color &Color ) 
+void scigraphics::graphViewSequencesCollection::setDefaultColor( const color &Color ) 
 { 
   DefaultColor = Color; 
 }
 
 // ------------------------------------------------------------
 
-void graphics::graphViewSequencesCollection::setColor( const color &Color )
+void scigraphics::graphViewSequencesCollection::setColor( const color &Color )
 {
   setDefaultColor( Color );
   for ( viewsList::const_iterator View = Views.begin(); View != Views.end(); ++View )
@@ -71,7 +71,7 @@ void graphics::graphViewSequencesCollection::setColor( const color &Color )
 
 // ------------------------------------------------------------
 
-graphics::wcoord graphics::graphViewSequencesCollection::legendExampleWidth() const
+scigraphics::wcoord scigraphics::graphViewSequencesCollection::legendExampleWidth() const
 {
   wcoord Width = 0;
   for ( viewsList::const_iterator View = Views.begin(); View != Views.end(); ++View )
@@ -81,7 +81,7 @@ graphics::wcoord graphics::graphViewSequencesCollection::legendExampleWidth() co
 
 // ------------------------------------------------------------
 
-graphics::wcoord graphics::graphViewSequencesCollection::legendExampleHeight() const
+scigraphics::wcoord scigraphics::graphViewSequencesCollection::legendExampleHeight() const
 {
   wcoord Height = 0;
   for ( viewsList::const_iterator View = Views.begin(); View != Views.end(); ++View )
@@ -91,7 +91,7 @@ graphics::wcoord graphics::graphViewSequencesCollection::legendExampleHeight() c
 
 // ============================================================
 
-graphics::ordinarGraphSequenceViewCollection::ordinarGraphSequenceViewCollection()
+scigraphics::ordinarGraphSequenceViewCollection::ordinarGraphSequenceViewCollection()
 {
   color Color = getColor();
   addView<graphViewLine>( lineStyle(Color), true );
@@ -102,7 +102,7 @@ graphics::ordinarGraphSequenceViewCollection::ordinarGraphSequenceViewCollection
 
 // ------------------------------------------------------------
 
-void graphics::ordinarGraphSequenceViewCollection::setLineWidth( unsigned Width )
+void scigraphics::ordinarGraphSequenceViewCollection::setLineWidth( unsigned Width )
 {
   lineStyle Style = getViewStyle<graphViewLine>();
   Style.setWidth( Width );
@@ -111,7 +111,7 @@ void graphics::ordinarGraphSequenceViewCollection::setLineWidth( unsigned Width 
 
 // ------------------------------------------------------------
 
-void graphics::ordinarGraphSequenceViewCollection::setPointSize( unsigned Size )
+void scigraphics::ordinarGraphSequenceViewCollection::setPointSize( unsigned Size )
 {
   pointStyle Style = getViewStyle<graphViewPoints>();
   Style.setWidth( Size );
@@ -120,7 +120,7 @@ void graphics::ordinarGraphSequenceViewCollection::setPointSize( unsigned Size )
 
 // ============================================================
 
-graphics::coveredAreaGraphSequenceViewCollection::coveredAreaGraphSequenceViewCollection()
+scigraphics::coveredAreaGraphSequenceViewCollection::coveredAreaGraphSequenceViewCollection()
 {
   color Color = getColor();
   addView<graphViewCoveredArea>( brushStyle(Color), true );

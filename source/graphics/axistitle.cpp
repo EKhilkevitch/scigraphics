@@ -5,11 +5,11 @@
 
 // ============================================================
 
-const graphics::textStyle graphics::axisTitle::DefaultAxisTextStyle( 12 );
+const scigraphics::textStyle scigraphics::axisTitle::DefaultAxisTextStyle( 12 );
 
 // ============================================================
 
-void graphics::axisTitleX::draw( painter &Painter ) const 
+void scigraphics::axisTitleX::draw( painter &Painter ) const 
 {
   if ( title().empty() )
     return;
@@ -22,7 +22,7 @@ void graphics::axisTitleX::draw( painter &Painter ) const
 
 // ============================================================
 
-void graphics::axisTitleY::draw( painter &Painter ) const 
+void scigraphics::axisTitleY::draw( painter &Painter ) const 
 {
   if ( title().empty() )
     return;

@@ -5,7 +5,7 @@
 #include "graphics/linestyle.h"
 #include "graphics/painter.h"
 
-namespace graphics
+namespace scigraphics
 {
 
 // ============================================================

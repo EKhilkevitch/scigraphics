@@ -13,18 +13,18 @@
 
 // ============================================================
 
-static const graphics::color Colors[] = 
+static const scigraphics::color Colors[] = 
 {
-  graphics::color::Red,
-  graphics::color::Blue,
-  graphics::color::Green,
-  graphics::color::Cyan,
-  graphics::color::Magenta,
-  graphics::color::DarkRed,
-  graphics::color::DarkBlue,
-  graphics::color::DarkGreen,
-  graphics::color::DarkMagenta,
-  graphics::color::DarkYellow
+  scigraphics::color::Red,
+  scigraphics::color::Blue,
+  scigraphics::color::Green,
+  scigraphics::color::Cyan,
+  scigraphics::color::Magenta,
+  scigraphics::color::DarkRed,
+  scigraphics::color::DarkBlue,
+  scigraphics::color::DarkGreen,
+  scigraphics::color::DarkMagenta,
+  scigraphics::color::DarkYellow
 };
   
 static const unsigned ColorsSize = sizeof(Colors)/sizeof(Colors[0]);
@@ -33,7 +33,7 @@ static unsigned ColorIndex = BeginColorIndex;
 
 // ------------------------------------------------------------
 
-void graphics::color::setTransparency( double Part ) 
+void scigraphics::color::setTransparency( double Part ) 
 { 
   if ( Part < 0 ) return setTransparency(0); 
   else if ( Part > 1 ) return setTransparency(1);
@@ -42,7 +42,7 @@ void graphics::color::setTransparency( double Part )
 
 // ------------------------------------------------------------
 
-std::string graphics::color::name( bool WithPrefix ) const 
+std::string scigraphics::color::name( bool WithPrefix ) const 
 { 
   char Name[32];
   snprintf(Name,sizeof(Name)-1, WithPrefix ? "0x%08X" : "%08X",valueRgb());
@@ -51,14 +51,14 @@ std::string graphics::color::name( bool WithPrefix ) const
 
 // ------------------------------------------------------------
 
-graphics::color graphics::color::fromRGB( unsigned R, unsigned G, unsigned B, unsigned T )
+scigraphics::color scigraphics::color::fromRGB( unsigned R, unsigned G, unsigned B, unsigned T )
 {
   return color( R, G, B, T );
 }
 
 // ------------------------------------------------------------
 
-graphics::color graphics::color::fromHSV( unsigned H, unsigned S, unsigned V, unsigned T )
+scigraphics::color scigraphics::color::fromHSV( unsigned H, unsigned S, unsigned V, unsigned T )
 {
   /* http://ru.wikipedia.org/wiki/HSV_(%D1%86%D0%B2%D0%B5%D1%82%D0%BE%D0%B2%D0%B0%D1%8F_%D0%BC%D0%BE%D0%B4%D0%B5%D0%BB%D1%8C) */
 
@@ -91,21 +91,21 @@ graphics::color graphics::color::fromHSV( unsigned H, unsigned S, unsigned V, un
 
 // ------------------------------------------------------------
 
-unsigned graphics::color::maxRGB() const
+unsigned scigraphics::color::maxRGB() const
 {
   return std::max( std::max( red(), green() ), blue() );
 }
 
 // ------------------------------------------------------------
 
-unsigned graphics::color::minRGB() const
+unsigned scigraphics::color::minRGB() const
 {
   return std::min( std::min( red(), green() ), blue() );
 }
 
 // ------------------------------------------------------------
 
-unsigned graphics::color::hue() const
+unsigned scigraphics::color::hue() const
 {
   unsigned Min = minRGB();
   unsigned Max = maxRGB();
@@ -127,7 +127,7 @@ unsigned graphics::color::hue() const
 
 // ------------------------------------------------------------
 
-unsigned graphics::color::saturation() const
+unsigned scigraphics::color::saturation() const
 {
   unsigned Min = minRGB();
   unsigned Max = maxRGB();
@@ -139,14 +139,14 @@ unsigned graphics::color::saturation() const
 
 // ------------------------------------------------------------
 
-unsigned graphics::color::value() const
+unsigned scigraphics::color::value() const
 {
   return 100.0 * (double)maxRGB()/0xFF;
 }
 
 // ------------------------------------------------------------
 
-graphics::color graphics::color::nextColor()
+scigraphics::color scigraphics::color::nextColor()
 {
   ColorIndex = ( ColorIndex + 1 ) % ColorsSize;
   color NextColor = Colors[ ColorIndex ];
@@ -156,21 +156,21 @@ graphics::color graphics::color::nextColor()
 
 // ------------------------------------------------------------
 
-graphics::color graphics::color::predefinedColor( unsigned Index )
+scigraphics::color scigraphics::color::predefinedColor( unsigned Index )
 {
   return Colors[ Index % ColorsSize ];
 }
 
 // ------------------------------------------------------------
 
-graphics::color graphics::color::thisColor()
+scigraphics::color scigraphics::color::thisColor()
 {
   return Colors[ ColorIndex==BeginColorIndex ? 0 : ColorIndex ];
 }
 
 // ------------------------------------------------------------
 
-void graphics::color::resetNextColorSequence()
+void scigraphics::color::resetNextColorSequence()
 {
   ColorIndex = BeginColorIndex;
 }

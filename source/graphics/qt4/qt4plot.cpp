@@ -8,7 +8,7 @@
 
 // ================================================================
 
-//typedef graphics::mouse mouse;
+//typedef scigraphics::mouse mouse;
 
 // ----------------------------------------------------------------
 
@@ -45,24 +45,24 @@ void qt4plotView::dropEvent( QDropEvent *Event )
 
 // ================================================================
     
-QRect  drawerQt::rectangleQt( const graphics::wrectangle& Rect ) 
+QRect  drawerQt::rectangleQt( const scigraphics::wrectangle& Rect ) 
 { 
   return QRect( Rect.left(), Rect.down(), Rect.width(), Rect.height() );
 }
 
 // ----------------------------------------------------------------
 
-QPen drawerQt::penQt( const graphics::lineStyle& Style )
+QPen drawerQt::penQt( const scigraphics::lineStyle& Style )
 {
   QPen Pen;
   Pen.setColor( colorQt(Style.getColor()) );
   Qt::PenStyle PenStyle = Qt::NoPen;
   switch ( Style.getStyle() )
   {
-    case graphics::lineStyle::Solid:
+    case scigraphics::lineStyle::Solid:
       PenStyle = Qt::SolidLine;
       break;
-    case graphics::lineStyle::Dash:
+    case scigraphics::lineStyle::Dash:
       PenStyle = Qt::DashLine;
       break;
     default:
@@ -76,14 +76,14 @@ QPen drawerQt::penQt( const graphics::lineStyle& Style )
 
 // ----------------------------------------------------------------
 
-QBrush drawerQt::brushQt( const graphics::brushStyle &Style )
+QBrush drawerQt::brushQt( const scigraphics::brushStyle &Style )
 {
   QBrush Brush;
   Brush.setColor( colorQt( Style.getColor() ) );
   Qt::BrushStyle BrushStyle = Qt::SolidPattern;
   switch ( Style.getStyle() )
   {
-    case graphics::brushStyle::Solid:
+    case scigraphics::brushStyle::Solid:
       BrushStyle = Qt::SolidPattern;
       break;
     default:
@@ -96,7 +96,7 @@ QBrush drawerQt::brushQt( const graphics::brushStyle &Style )
 
 // ----------------------------------------------------------------
 
-QFont drawerQt::fontQt( const graphics::textStyle &Style ) 
+QFont drawerQt::fontQt( const scigraphics::textStyle &Style ) 
 { 
   QString FontName = Style.getFontName().empty() ? "Times" : Style.getFontName().c_str();
   return QFont( FontName, Style.getFontSize() ); 
@@ -104,7 +104,7 @@ QFont drawerQt::fontQt( const graphics::textStyle &Style )
 
 // ----------------------------------------------------------------
     
-QPolygon drawerQt::polygonQt( const std::vector<graphics::wpoint> &Points )
+QPolygon drawerQt::polygonQt( const std::vector<scigraphics::wpoint> &Points )
 {
   QPolygon Polygon;
   for ( unsigned i = 0; i < Points.size(); i++ )
@@ -123,7 +123,7 @@ void drawerQt::eraseAll()
 
 // ----------------------------------------------------------------
 
-void drawerQt::eraseRectangle( const graphics::wrectangle& Rectangle )
+void drawerQt::eraseRectangle( const scigraphics::wrectangle& Rectangle )
 {
   if ( Painter == NULL )
     return;
@@ -132,7 +132,7 @@ void drawerQt::eraseRectangle( const graphics::wrectangle& Rectangle )
 
 // ----------------------------------------------------------------
 
-void drawerQt::drawLine( const graphics::wpoint &A, const graphics::wpoint &B, const graphics::lineStyle &Style )
+void drawerQt::drawLine( const scigraphics::wpoint &A, const scigraphics::wpoint &B, const scigraphics::lineStyle &Style )
 {
   if ( Painter == NULL )
     return;
@@ -142,7 +142,7 @@ void drawerQt::drawLine( const graphics::wpoint &A, const graphics::wpoint &B, c
 
 // ----------------------------------------------------------------
 
-void drawerQt::drawRectangle( const graphics::wrectangle& Rectangle, const graphics::brushStyle& BrushStyle, const graphics::lineStyle &LineStyle )
+void drawerQt::drawRectangle( const scigraphics::wrectangle& Rectangle, const scigraphics::brushStyle& BrushStyle, const scigraphics::lineStyle &LineStyle )
 {
   if ( Painter == NULL )
     return;
@@ -157,7 +157,7 @@ void drawerQt::drawRectangle( const graphics::wrectangle& Rectangle, const graph
 
 // ----------------------------------------------------------------
     
-void drawerQt::drawPolygon( const std::vector<graphics::wpoint> &Points, const graphics::brushStyle& BrushStyle )
+void drawerQt::drawPolygon( const std::vector<scigraphics::wpoint> &Points, const scigraphics::brushStyle& BrushStyle )
 {
   if ( Painter == NULL )
     return;
@@ -173,14 +173,14 @@ void drawerQt::drawPolygon( const std::vector<graphics::wpoint> &Points, const g
 
 // ----------------------------------------------------------------
     
-void drawerQt::drawText( const std::string &Text, const graphics::wrectangle& Rectangle, const graphics::textStyle &Style, double Angle )
+void drawerQt::drawText( const std::string &Text, const scigraphics::wrectangle& Rectangle, const scigraphics::textStyle &Style, double Angle )
 {
   const bool DrawDebugRectangle = false;
   if ( Painter == NULL )
     return;
 
   Painter->setFont( fontQt(Style) );
-  Painter->setPen( penQt( graphics::lineStyle( Style.getColor() ) ) );
+  Painter->setPen( penQt( scigraphics::lineStyle( Style.getColor() ) ) );
   Painter->setBrush( Qt::NoBrush );
   Painter->save();
   Painter->rotate( Angle );
@@ -194,7 +194,7 @@ void drawerQt::drawText( const std::string &Text, const graphics::wrectangle& Re
 
 // ----------------------------------------------------------------
 
-graphics::wcoord drawerQt::textWidth( const std::string &Text, const graphics::textStyle &Style )
+scigraphics::wcoord drawerQt::textWidth( const std::string &Text, const scigraphics::textStyle &Style )
 {
   QFontMetrics Metrics( fontQt(Style) );
   return Metrics.size( 0, Text.c_str() ).width();
@@ -202,7 +202,7 @@ graphics::wcoord drawerQt::textWidth( const std::string &Text, const graphics::t
 
 // ----------------------------------------------------------------
 
-graphics::wcoord drawerQt::textHeight( const std::string &Text, const graphics::textStyle &Style )
+scigraphics::wcoord drawerQt::textHeight( const std::string &Text, const scigraphics::textStyle &Style )
 {
   QFontMetrics Metrics( fontQt(Style) );
   return Metrics.size( 0, Text.c_str() ).height();
@@ -268,9 +268,9 @@ unsigned qt4plot::plotMouseModifiers( Qt::KeyboardModifiers Modifiers )
 {
   unsigned Result = 0;
 
-  if ( Modifiers & Qt::ShiftModifier )    Result |= graphics::mouse::Shift;
-  if ( Modifiers & Qt::ControlModifier )  Result |= graphics::mouse::Ctrl;
-  if ( Modifiers & Qt::AltModifier )      Result |= graphics::mouse::Alt;
+  if ( Modifiers & Qt::ShiftModifier )    Result |= scigraphics::mouse::Shift;
+  if ( Modifiers & Qt::ControlModifier )  Result |= scigraphics::mouse::Ctrl;
+  if ( Modifiers & Qt::AltModifier )      Result |= scigraphics::mouse::Alt;
 
   return Result;
 }
@@ -283,9 +283,9 @@ unsigned qt4plot::plotMouseButtons( const QMouseEvent *Event )
   
   unsigned Result = 0;
 
-  if ( Event->button() & Qt::LeftButton )    Result |= graphics::mouse::Left;
-  if ( Event->button() & Qt::RightButton )   Result |= graphics::mouse::Right;
-  if ( Event->button() & Qt::MidButton )     Result |= graphics::mouse::Middle;
+  if ( Event->button() & Qt::LeftButton )    Result |= scigraphics::mouse::Left;
+  if ( Event->button() & Qt::RightButton )   Result |= scigraphics::mouse::Right;
+  if ( Event->button() & Qt::MidButton )     Result |= scigraphics::mouse::Middle;
 
   Result |= plotMouseModifiers( Event->modifiers() );
 
@@ -294,25 +294,25 @@ unsigned qt4plot::plotMouseButtons( const QMouseEvent *Event )
 
 // ----------------------------------------------------------------
 
-graphics::wpoint qt4plot::plotMousePoisition( const QMouseEvent *Event )
+scigraphics::wpoint qt4plot::plotMousePoisition( const QMouseEvent *Event )
 {
   Q_ASSERT( Event != NULL );
-  return graphics::wpoint( Event->x(), Event->y() );
+  return scigraphics::wpoint( Event->x(), Event->y() );
 }
 
 // ----------------------------------------------------------------
 
-graphics::wpoint qt4plot::plotMousePoisition( const QWheelEvent *Event )
+scigraphics::wpoint qt4plot::plotMousePoisition( const QWheelEvent *Event )
 {
   Q_ASSERT( Event != NULL );
-  return graphics::wpoint( Event->x(), Event->y() );
+  return scigraphics::wpoint( Event->x(), Event->y() );
 }
 
 // ----------------------------------------------------------------
 
 void qt4plot::printTestCornerRectangles()
 {
-  using namespace graphics;
+  using namespace scigraphics;
 
   int W = getDrawerQt()->width();
   int H = getDrawerQt()->height();
@@ -336,7 +336,7 @@ void qt4plot::resizePlot()
 
 void qt4plot::mousePressed( QMouseEvent *Event )   
 { 
-  graphics::wpoint Point = plotMousePoisition( Event );
+  scigraphics::wpoint Point = plotMousePoisition( Event );
   unsigned Buttons = plotMouseButtons(Event);
   mouseHandler().mousePressed( Point, Buttons ); 
   emitPositionObtained(Event); 
@@ -346,7 +346,7 @@ void qt4plot::mousePressed( QMouseEvent *Event )
 
 void qt4plot::mouseMoved( QMouseEvent *Event )     
 { 
-  graphics::wpoint Point = plotMousePoisition( Event );
+  scigraphics::wpoint Point = plotMousePoisition( Event );
   mouseHandler().mouseMoved( Point ); 
 }
 
@@ -354,7 +354,7 @@ void qt4plot::mouseMoved( QMouseEvent *Event )
 
 void qt4plot::mouseReleased( QMouseEvent *Event )  
 { 
-  graphics::wpoint Point = plotMousePoisition( Event );
+  scigraphics::wpoint Point = plotMousePoisition( Event );
   mouseHandler().mouseReleased( Point ); 
 }
 
@@ -362,7 +362,7 @@ void qt4plot::mouseReleased( QMouseEvent *Event )
 
 void qt4plot::mouseDoubleClicked( QMouseEvent *Event )  
 {
-  graphics::wpoint Point = plotMousePoisition( Event );
+  scigraphics::wpoint Point = plotMousePoisition( Event );
   mouseHandler().mouseDoubleClicked( Point ); 
 }
 
@@ -372,7 +372,7 @@ void qt4plot::mouseWheel( QWheelEvent *Event )
 { 
   int Delta = Event->delta();
   unsigned Buttons = plotMouseButtons(Event);
-  graphics::wpoint Point = plotMousePoisition( Event );
+  scigraphics::wpoint Point = plotMousePoisition( Event );
   mouseHandler().mouseWheel( Point, Delta, Buttons ); 
 }
 
@@ -411,10 +411,10 @@ void qt4plot::setCrossCursor( bool Set )
 void qt4plot::emitPositionObtained( const QMouseEvent *Event )
 {
   assert( Event != NULL );
-  if ( plotMouseButtons(Event) == graphics::mouse::Left )
+  if ( plotMouseButtons(Event) == scigraphics::mouse::Left )
   {
-    graphics::wpoint MousePos = plotMousePoisition(Event);
-    graphics::npoint Point = getBottomLeftPairScales().wpoint2npoint( MousePos, getPainter() );
+    scigraphics::wpoint MousePos = plotMousePoisition(Event);
+    scigraphics::npoint Point = getBottomLeftPairScales().wpoint2npoint( MousePos, getPainter() );
     emit positionObtained( Point.x(), Point.y() );
   }
 }
@@ -428,7 +428,7 @@ void qt4plot::emitPlotChangedByMouse()
 
 // ================================================================
 
-qt4plotMouseCallBack::qt4plotMouseCallBack( qt4plot &Plot ) : graphics::mouseCallBack(Plot) 
+qt4plotMouseCallBack::qt4plotMouseCallBack( qt4plot &Plot ) : scigraphics::mouseCallBack(Plot) 
 {
 }
 
@@ -441,14 +441,14 @@ qt4plot& qt4plotMouseCallBack::getQt4Plot()
 
 // ----------------------------------------------------------------
     
-void qt4plotMouseCallBack::onPressed( graphics::mouse::mouseActionHandler* )
+void qt4plotMouseCallBack::onPressed( scigraphics::mouse::mouseActionHandler* )
 {
   getQt4Plot().emitPlotChangedByMouse();
 }
 
 // ----------------------------------------------------------------
 
-void qt4plotMouseCallBack::onMoved( graphics::mouse::mouseActionHandler *Handler )
+void qt4plotMouseCallBack::onMoved( scigraphics::mouse::mouseActionHandler *Handler )
 {
   if ( isSelectionMouseAction(Handler) )
     getQt4Plot().emitSelectionChanged();
@@ -457,7 +457,7 @@ void qt4plotMouseCallBack::onMoved( graphics::mouse::mouseActionHandler *Handler
 
 // ----------------------------------------------------------------
 
-void qt4plotMouseCallBack::onRelease( graphics::mouse::mouseActionHandler *Handler )
+void qt4plotMouseCallBack::onRelease( scigraphics::mouse::mouseActionHandler *Handler )
 {
   if ( isSelectionMouseAction(Handler) )
   {
@@ -469,19 +469,19 @@ void qt4plotMouseCallBack::onRelease( graphics::mouse::mouseActionHandler *Handl
 
 // ----------------------------------------------------------------
     
-void qt4plotMouseCallBack::onWheel( graphics::mouse::mouseWheelHandler* )
+void qt4plotMouseCallBack::onWheel( scigraphics::mouse::mouseWheelHandler* )
 {
   getQt4Plot().emitPlotChangedByMouse();
 }
 
 // ----------------------------------------------------------------
 
-bool qt4plotMouseCallBack::isSelectionMouseAction( graphics::mouse::mouseActionHandler *Handler )
+bool qt4plotMouseCallBack::isSelectionMouseAction( scigraphics::mouse::mouseActionHandler *Handler )
 {
   return ( 
-            dynamic_cast< graphics::mouse::selectAction* >(Handler)         != NULL   ||
-            dynamic_cast< graphics::mouse::moveSelectionAction* >(Handler)  != NULL   ||
-            dynamic_cast< graphics::mouse::resetSelectionAction* >(Handler) != NULL   
+            dynamic_cast< scigraphics::mouse::selectAction* >(Handler)         != NULL   ||
+            dynamic_cast< scigraphics::mouse::moveSelectionAction* >(Handler)  != NULL   ||
+            dynamic_cast< scigraphics::mouse::resetSelectionAction* >(Handler) != NULL   
          );
 }
 

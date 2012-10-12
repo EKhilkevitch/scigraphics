@@ -10,7 +10,7 @@
 
 #include <ostream>
 
-namespace graphics
+namespace scigraphics
 {
 
 // ============================================================

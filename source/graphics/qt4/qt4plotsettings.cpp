@@ -8,14 +8,14 @@
 
 // ================================================================
     
-QString qt4plotSettingsGroupBox::axisPositionString( graphics::axisSetCollection::axisPosition Axis )
+QString qt4plotSettingsGroupBox::axisPositionString( scigraphics::axisSetCollection::axisPosition Axis )
 {
   switch ( Axis )
   {
-    case graphics::axisSetCollection::Left:      return "Y axis";
-    case graphics::axisSetCollection::Right:     return "Y axis (right)";
-    case graphics::axisSetCollection::Bottom:    return "X axis";
-    case graphics::axisSetCollection::Top:       return "X axis (top)";
+    case scigraphics::axisSetCollection::Left:      return "Y axis";
+    case scigraphics::axisSetCollection::Right:     return "Y axis (right)";
+    case scigraphics::axisSetCollection::Bottom:    return "X axis";
+    case scigraphics::axisSetCollection::Top:       return "X axis (top)";
     default:                                     return "Unknown axis";
   }
 
@@ -23,7 +23,7 @@ QString qt4plotSettingsGroupBox::axisPositionString( graphics::axisSetCollection
 
 // ================================================================
     
-void qt4plotSettingsGroupSuperBox::init( const QList<graphics::axisSetCollection::axisPosition> &AxisPositions )
+void qt4plotSettingsGroupSuperBox::init( const QList<scigraphics::axisSetCollection::axisPosition> &AxisPositions )
 {
   if ( numOfRowsInLayout() <= 0 )
     return;
@@ -31,7 +31,7 @@ void qt4plotSettingsGroupSuperBox::init( const QList<graphics::axisSetCollection
   QGridLayout *Layout = new QGridLayout();
 
   int CurrRow = 0, CurrCol = 0;
-  foreach ( graphics::axisSetCollection::axisPosition Position, AxisPositions )
+  foreach ( scigraphics::axisSetCollection::axisPosition Position, AxisPositions )
   {
     qt4plotSettingsGroupBox *Box = createBoxForAxisPosition( Position );
     if ( Box == NULL )
@@ -52,11 +52,11 @@ void qt4plotSettingsGroupSuperBox::init( const QList<graphics::axisSetCollection
 
 // ----------------------------------------------------------------
     
-QList<graphics::axisSetCollection::axisPosition> qt4plotSettingsGroupSuperBox::defaultAxisPositions()
+QList<scigraphics::axisSetCollection::axisPosition> qt4plotSettingsGroupSuperBox::defaultAxisPositions()
 {
-  QList< graphics::axisSetCollection::axisPosition > Positions;
-  Positions << graphics::axisSetCollection::Bottom;
-  Positions << graphics::axisSetCollection::Left;
+  QList< scigraphics::axisSetCollection::axisPosition > Positions;
+  Positions << scigraphics::axisSetCollection::Bottom;
+  Positions << scigraphics::axisSetCollection::Left;
   return Positions;
 }
 
@@ -70,7 +70,7 @@ void qt4plotSettingsGroupSuperBox::addToList( qt4plotSettingsGroupBox *B )
 
 // ----------------------------------------------------------------
 
-void qt4plotSettingsGroupSuperBox::apply( graphics::settings &Settings ) 
+void qt4plotSettingsGroupSuperBox::apply( scigraphics::settings &Settings ) 
 {
   foreach ( qt4plotSettingsGroupBox *Box, Boxes )
     Box->apply( Settings );
@@ -107,7 +107,7 @@ void qt4plotSettingsGroupSuperBox::updateWidgets()
 
 // ================================================================
 
-qt4plotSettingsScaleIntervals::qt4plotSettingsScaleIntervals( const graphics::axisSetCollection::axisPosition Axis, QWidget *Parent ) 
+qt4plotSettingsScaleIntervals::qt4plotSettingsScaleIntervals( const scigraphics::axisSetCollection::axisPosition Axis, QWidget *Parent ) 
    : qt4plotSettingsGroupBox( axisPositionString(Axis) + " scale", Parent ), AxisType(Axis)
 {
   ManualScaleBox = new QCheckBox("Manual");
@@ -142,11 +142,11 @@ qt4plotSettingsScaleIntervals::qt4plotSettingsScaleIntervals( const graphics::ax
 
 // ----------------------------------------------------------------
 
-graphics::interval<graphics::number> qt4plotSettingsScaleIntervals::getLimits() const
+scigraphics::interval<scigraphics::number> qt4plotSettingsScaleIntervals::getLimits() const
 {
   if ( ! ManualScaleBox->isChecked() )
-    return graphics::interval<graphics::number>( graphics::plotLimits::AutoScaleMin, graphics::plotLimits::AutoScaleMax );
-  return graphics::interval<graphics::number>( MinScaleEdit->text().toDouble(), MaxScaleEdit->text().toDouble() );
+    return scigraphics::interval<scigraphics::number>( scigraphics::plotLimits::AutoScaleMin, scigraphics::plotLimits::AutoScaleMax );
+  return scigraphics::interval<scigraphics::number>( MinScaleEdit->text().toDouble(), MaxScaleEdit->text().toDouble() );
 }
 
 // ----------------------------------------------------------------
@@ -219,11 +219,11 @@ qt4plotSettingsGraphType::qt4plotSettingsGraphType( QWidget *Parent ) : qt4plotS
 unsigned qt4plotSettingsGraphType::getGraphType() const
 {
   unsigned Result = 0;
-  if ( ShowPointsBtn->isChecked() )             Result |= graphics::settings::Points;
-  if ( ShowLinesBtn->isChecked()  )             Result |= graphics::settings::Lines;
-  if ( ShowLinesAndPointsBtn->isChecked() )     Result |= graphics::settings::LinesAndPoints;
-  if ( ShowLineHystogramBtn->isChecked() )      Result |= graphics::settings::LinesHystogram;
-  if ( ErrorBarsChk->isChecked() )              Result |= graphics::settings::ErrorBars;
+  if ( ShowPointsBtn->isChecked() )             Result |= scigraphics::settings::Points;
+  if ( ShowLinesBtn->isChecked()  )             Result |= scigraphics::settings::Lines;
+  if ( ShowLinesAndPointsBtn->isChecked() )     Result |= scigraphics::settings::LinesAndPoints;
+  if ( ShowLineHystogramBtn->isChecked() )      Result |= scigraphics::settings::LinesHystogram;
+  if ( ErrorBarsChk->isChecked() )              Result |= scigraphics::settings::ErrorBars;
   return Result;
 }
 
@@ -271,7 +271,7 @@ void qt4plotSettingsGraphType::loadSettings( QSettings* Settings )
 
 // ================================================================
 
-qt4plotSettingsScaleType::qt4plotSettingsScaleType( const graphics::axisSetCollection::axisPosition Axis, QWidget *Parent ) 
+qt4plotSettingsScaleType::qt4plotSettingsScaleType( const scigraphics::axisSetCollection::axisPosition Axis, QWidget *Parent ) 
    : qt4plotSettingsGroupBox( axisPositionString(Axis) + " type", Parent ), AxisType(Axis) 
 {
 
@@ -301,13 +301,13 @@ qt4plotSettingsScaleType::qt4plotSettingsScaleType( const graphics::axisSetColle
 
 // ----------------------------------------------------------------
 
-graphics::settings::scaleType qt4plotSettingsScaleType::getScaleType() const
+scigraphics::settings::scaleType qt4plotSettingsScaleType::getScaleType() const
 {
-  if ( LinearBtn->isChecked() )                 return graphics::settings::Linear;
-  if ( LogarithmPositiveBtn->isChecked() )      return graphics::settings::LogarithmPositive;
-  if ( LogarithmNegativeBtn->isChecked() )      return graphics::settings::LogarithmNegative;
-  if ( SquareBtn->isChecked() )                 return graphics::settings::Square;
-  return graphics::settings::Linear;
+  if ( LinearBtn->isChecked() )                 return scigraphics::settings::Linear;
+  if ( LogarithmPositiveBtn->isChecked() )      return scigraphics::settings::LogarithmPositive;
+  if ( LogarithmNegativeBtn->isChecked() )      return scigraphics::settings::LogarithmNegative;
+  if ( SquareBtn->isChecked() )                 return scigraphics::settings::Square;
+  return scigraphics::settings::Linear;
 }
 
 // ----------------------------------------------------------------
@@ -375,14 +375,14 @@ void qt4plotSettingsSelections::updateWidgetsEnables()
 
 // ----------------------------------------------
     
-graphics::selectionStrip* qt4plotSettingsSelections::getFirstStripSelection( graphics::plot *Plot )
+scigraphics::selectionStrip* qt4plotSettingsSelections::getFirstStripSelection( scigraphics::plot *Plot )
 {
   if ( Plot == NULL )
     return NULL;
     
-  for ( graphics::selectionCollection::iterator Sel = Plot->beginSelection(); Sel != Plot->endSelection(); ++Sel )
+  for ( scigraphics::selectionCollection::iterator Sel = Plot->beginSelection(); Sel != Plot->endSelection(); ++Sel )
   {
-    graphics::selectionStrip *Selection = dynamic_cast< graphics::selectionStrip* >( *Sel );
+    scigraphics::selectionStrip *Selection = dynamic_cast< scigraphics::selectionStrip* >( *Sel );
     if ( Selection != NULL )
       return Selection;
   }
@@ -396,7 +396,7 @@ void qt4plotSettingsSelections::getLimitsFromPlot()
 {
   foreach ( qt4plot *Plot, Plots )
   {
-    graphics::selectionStrip *Selection = getFirstStripSelection(Plot);
+    scigraphics::selectionStrip *Selection = getFirstStripSelection(Plot);
     if ( Selection == NULL )
     {
       EnableSelectionBox->setChecked(false);
@@ -413,15 +413,15 @@ void qt4plotSettingsSelections::getLimitsFromPlot()
 
 // ----------------------------------------------
 
-void qt4plotSettingsSelections::apply( graphics::settings & )
+void qt4plotSettingsSelections::apply( scigraphics::settings & )
 {
   foreach ( qt4plot *Plot, Plots )
   {
     if ( EnableSelectionBox->isChecked() )
     {
-      graphics::selectionStrip *Selection = getFirstStripSelection(Plot);
+      scigraphics::selectionStrip *Selection = getFirstStripSelection(Plot);
       if ( Selection == NULL )
-        Selection = Plot->createSelection<graphics::selectionVertical>();
+        Selection = Plot->createSelection<scigraphics::selectionVertical>();
 
       double Min = MinValueEdit->text().toDouble();
       double Max = MaxValueEdit->text().toDouble(); 
@@ -759,7 +759,7 @@ void qt4plotSettings::collectSettings()
 
 void qt4plotSettings::applySettings()
 {
-  foreach ( graphics::plot *Plot, Plots )
+  foreach ( scigraphics::plot *Plot, Plots )
     settings::apply(*Plot);
 }
 

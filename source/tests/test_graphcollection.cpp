@@ -8,16 +8,16 @@
 
 // =========================================================
 
-CPPUNIT_TEST_SUITE_REGISTRATION( graphics::tests::test_graphCollection );
+CPPUNIT_TEST_SUITE_REGISTRATION( scigraphics::tests::test_graphCollection );
 
 // =========================================================
 
-void graphics::tests::test_graphCollection::scales()
+void scigraphics::tests::test_graphCollection::scales()
 {
   graphCollection Collection;
   
-  CPPUNIT_ASSERT_EQUAL( (const graphics::scale*)NULL, Collection.graphScaleX(NULL) );
-  CPPUNIT_ASSERT_EQUAL( (const graphics::scale*)NULL, Collection.graphScaleY(NULL) );
+  CPPUNIT_ASSERT_EQUAL( (const scigraphics::scale*)NULL, Collection.graphScaleX(NULL) );
+  CPPUNIT_ASSERT_EQUAL( (const scigraphics::scale*)NULL, Collection.graphScaleY(NULL) );
 
 
   axisSet *AxisX = new axisSetX(0);
@@ -26,10 +26,10 @@ void graphics::tests::test_graphCollection::scales()
  
   graph *Graph = Collection.create<graphSequenceVector>();
   
-  CPPUNIT_ASSERT_EQUAL( (const graphics::scale*)AxisX->getScale(), Collection.graphScaleX(Graph) );
-  CPPUNIT_ASSERT_EQUAL( (const graphics::scale*)AxisY->getScale(), Collection.graphScaleY(Graph) );
-  CPPUNIT_ASSERT_EQUAL( (const graphics::axisSet*)AxisX, Collection.graphAxisSetX(Graph) );
-  CPPUNIT_ASSERT_EQUAL( (const graphics::axisSet*)AxisY, Collection.graphAxisSetY(Graph) );
+  CPPUNIT_ASSERT_EQUAL( (const scigraphics::scale*)AxisX->getScale(), Collection.graphScaleX(Graph) );
+  CPPUNIT_ASSERT_EQUAL( (const scigraphics::scale*)AxisY->getScale(), Collection.graphScaleY(Graph) );
+  CPPUNIT_ASSERT_EQUAL( (const scigraphics::axisSet*)AxisX, Collection.graphAxisSetX(Graph) );
+  CPPUNIT_ASSERT_EQUAL( (const scigraphics::axisSet*)AxisY, Collection.graphAxisSetY(Graph) );
 
   delete AxisX;
   delete AxisY;
@@ -37,7 +37,7 @@ void graphics::tests::test_graphCollection::scales()
 
 // ---------------------------------------------------------
 
-void graphics::tests::test_graphCollection::bindGraphToAxisSet()
+void scigraphics::tests::test_graphCollection::bindGraphToAxisSet()
 {
   graphCollection Collection;
   axisSetX SetX(0);
@@ -45,15 +45,15 @@ void graphics::tests::test_graphCollection::bindGraphToAxisSet()
   Collection.setDefaultAxisSets( &SetX, &SetY );
 
   graph *Graph = Collection.create<graphSequenceVector>();
-  CPPUNIT_ASSERT_EQUAL( (const graphics::scale*)(SetX.getScale()), Collection.graphScaleX(Graph) );
-  CPPUNIT_ASSERT_EQUAL( (const graphics::scale*)(SetY.getScale()), Collection.graphScaleY(Graph) );
+  CPPUNIT_ASSERT_EQUAL( (const scigraphics::scale*)(SetX.getScale()), Collection.graphScaleX(Graph) );
+  CPPUNIT_ASSERT_EQUAL( (const scigraphics::scale*)(SetY.getScale()), Collection.graphScaleY(Graph) );
 
   axisSet *AxisX = new axisSetX(0);
   axisSet *AxisY = new axisSetY(0);
   Collection.bindGraphToAxisSet( Graph, AxisX, AxisY );
 
-  CPPUNIT_ASSERT_EQUAL( (const graphics::scale*)AxisX->getScale(), Collection.graphScaleX(Graph) );
-  CPPUNIT_ASSERT_EQUAL( (const graphics::scale*)AxisY->getScale(), Collection.graphScaleY(Graph) );
+  CPPUNIT_ASSERT_EQUAL( (const scigraphics::scale*)AxisX->getScale(), Collection.graphScaleX(Graph) );
+  CPPUNIT_ASSERT_EQUAL( (const scigraphics::scale*)AxisY->getScale(), Collection.graphScaleY(Graph) );
 
   delete AxisX;
   delete AxisY;
@@ -61,7 +61,7 @@ void graphics::tests::test_graphCollection::bindGraphToAxisSet()
 
 // ---------------------------------------------------------
 
-void graphics::tests::test_graphCollection::append()
+void scigraphics::tests::test_graphCollection::append()
 {
   graphCollection Collection;
   axisSetX SetX(0);
@@ -102,7 +102,7 @@ void graphics::tests::test_graphCollection::append()
 
 // ---------------------------------------------------------
 
-void graphics::tests::test_graphCollection::create()
+void scigraphics::tests::test_graphCollection::create()
 {
   graphCollection Collection;
   axisSetX SetX(0);
@@ -130,7 +130,7 @@ void graphics::tests::test_graphCollection::create()
 
 // ---------------------------------------------------------
 
-void graphics::tests::test_graphCollection::clear()
+void scigraphics::tests::test_graphCollection::clear()
 {
   graphCollection Collection;
   axisSetX SetX(0);
@@ -150,7 +150,7 @@ void graphics::tests::test_graphCollection::clear()
 
 // ---------------------------------------------------------
 
-void graphics::tests::test_graphCollection::exist()
+void scigraphics::tests::test_graphCollection::exist()
 {
   graphCollection Collection;
   axisSetX SetX(0);
@@ -167,7 +167,7 @@ void graphics::tests::test_graphCollection::exist()
 
 // ---------------------------------------------------------
 
-void graphics::tests::test_graphCollection::iterators()
+void scigraphics::tests::test_graphCollection::iterators()
 {
   graphCollection Collection;
   axisSetX SetX(0);

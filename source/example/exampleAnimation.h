@@ -22,7 +22,7 @@ class plotAnimator : public QObject
 
   private:
     qt4plot *Plot;
-    graphics::graphSequenceVector *Sin, *Sqr, *SpiralPl, *SpiralNg;
+    scigraphics::graphSequenceVector *Sin, *Sqr, *SpiralPl, *SpiralNg;
 
     unsigned Count;
 
@@ -32,7 +32,7 @@ class plotAnimator : public QObject
       Sin->clear();
       
       for ( double x = -M_PI; x <= M_PI; x+= 0.001 )
-        Sin->append( std::fabs(x) < 0.3 || x < -2.4 ? graphics::invalidNumber() : x, std::sin(x+Count/100.0) );
+        Sin->append( std::fabs(x) < 0.3 || x < -2.4 ? scigraphics::invalidNumber() : x, std::sin(x+Count/100.0) );
       //Sin->setVisiblePoints(true);
       //Sin->setVisibleLineHystogram(true);
       //Sin->setVisibleLines(false);
@@ -85,8 +85,8 @@ class plotAnimator : public QObject
 
       fillGraphics();
 
-      Plot->setScaleIntervalX( graphics::interval<graphics::number>( -4, 4 ) );
-      Plot->setScaleIntervalY( graphics::interval<graphics::number>( -1.5, 4.5 ) );
+      Plot->setScaleIntervalX( scigraphics::interval<scigraphics::number>( -4, 4 ) );
+      Plot->setScaleIntervalY( scigraphics::interval<scigraphics::number>( -1.5, 4.5 ) );
     };
 
     unsigned count() const { return Count; }

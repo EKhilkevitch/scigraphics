@@ -13,12 +13,12 @@
 
 // ============================================================
 
-const graphics::number graphics::plotLimits::AutoScaleMin = - std::numeric_limits<graphics::number>::max();
-const graphics::number graphics::plotLimits::AutoScaleMax = + std::numeric_limits<graphics::number>::max();
+const scigraphics::number scigraphics::plotLimits::AutoScaleMin = - std::numeric_limits<scigraphics::number>::max();
+const scigraphics::number scigraphics::plotLimits::AutoScaleMax = + std::numeric_limits<scigraphics::number>::max();
 
 // ============================================================
 
-void graphics::plotLimits::limits::updateLimits( const numberLimits &NewLimits )
+void scigraphics::plotLimits::limits::updateLimits( const numberLimits &NewLimits )
 {
   updateLimitsByInterval( &Limits, NewLimits.totalLimits() );
   updateLimitsByInterval( &Limits, NewLimits.positiveLimits() );
@@ -27,7 +27,7 @@ void graphics::plotLimits::limits::updateLimits( const numberLimits &NewLimits )
 
 // ------------------------------------------------------------
 
-void graphics::plotLimits::limits::updateLimitsByInterval( numberLimits *Limits, interval<number> Interval )
+void scigraphics::plotLimits::limits::updateLimitsByInterval( numberLimits *Limits, interval<number> Interval )
 {
   Limits->updateLimits( Interval.min() );
   Limits->updateLimits( Interval.max() );
@@ -35,7 +35,7 @@ void graphics::plotLimits::limits::updateLimitsByInterval( numberLimits *Limits,
 
 // ------------------------------------------------------------
 
-void graphics::plotLimits::limits::applyStretch( double Stretch )
+void scigraphics::plotLimits::limits::applyStretch( double Stretch )
 {
   assert( Limits.totalLimits().min() != AutoScaleMin );
   assert( Limits.totalLimits().max() != AutoScaleMax );
@@ -63,7 +63,7 @@ void graphics::plotLimits::limits::applyStretch( double Stretch )
 
 // ------------------------------------------------------------
           
-graphics::interval<graphics::number> graphics::plotLimits::limits::applyStretchToTotalInterval( interval<number> Interval, double Stretch )
+scigraphics::interval<scigraphics::number> scigraphics::plotLimits::limits::applyStretchToTotalInterval( interval<number> Interval, double Stretch )
 {
   number Distance = Interval.distance();
 
@@ -79,7 +79,7 @@ graphics::interval<graphics::number> graphics::plotLimits::limits::applyStretchT
 
 // ------------------------------------------------------------
      
-graphics::interval<graphics::number> graphics::plotLimits::limits::applyStretchToPositiveInterval( interval<number> Interval, double Stretch )
+scigraphics::interval<scigraphics::number> scigraphics::plotLimits::limits::applyStretchToPositiveInterval( interval<number> Interval, double Stretch )
 {
   number Min = Interval.min() / Stretch;
   number Max = Interval.max() * Stretch;
@@ -88,7 +88,7 @@ graphics::interval<graphics::number> graphics::plotLimits::limits::applyStretchT
 
 // ------------------------------------------------------------
      
-graphics::interval<graphics::number> graphics::plotLimits::limits::applyStretchToNegativeInterval( interval<number> Interval, double Stretch )
+scigraphics::interval<scigraphics::number> scigraphics::plotLimits::limits::applyStretchToNegativeInterval( interval<number> Interval, double Stretch )
 {
   number Min = Interval.min() * Stretch;
   number Max = Interval.max() / Stretch;
@@ -97,21 +97,21 @@ graphics::interval<graphics::number> graphics::plotLimits::limits::applyStretchT
 
 // ============================================================
 
-bool graphics::plotLimits::limitsXY::isAxisSetX( const axisSet *Axis ) 
+bool scigraphics::plotLimits::limitsXY::isAxisSetX( const axisSet *Axis ) 
 { 
   return Axis != NULL && Axis->getDirection() == axisSet::DirectionX;  
 }
 
 // ------------------------------------------------------------
 
-bool graphics::plotLimits::limitsXY::isAxisSetY( const axisSet *Axis ) 
+bool scigraphics::plotLimits::limitsXY::isAxisSetY( const axisSet *Axis ) 
 { 
   return Axis != NULL && Axis->getDirection() == axisSet::DirectionY;  
 }
 
 // ------------------------------------------------------------
 
-void graphics::plotLimits::limitsXY::updateLimits( const axisSet* AxisSet, const numberLimits &L )
+void scigraphics::plotLimits::limitsXY::updateLimits( const axisSet* AxisSet, const numberLimits &L )
 {
   assert( AxisSet != NULL );
   Limits[ AxisSet ].updateLimits(L);
@@ -119,7 +119,7 @@ void graphics::plotLimits::limitsXY::updateLimits( const axisSet* AxisSet, const
 
 // ------------------------------------------------------------
 
-void graphics::plotLimits::limitsXY::applyStretch( double StretchX, double StretchY )
+void scigraphics::plotLimits::limitsXY::applyStretch( double StretchX, double StretchY )
 {
   for ( limitsMap::iterator L = Limits.begin(); L != Limits.end(); ++L )
   {
@@ -138,7 +138,7 @@ void graphics::plotLimits::limitsXY::applyStretch( double StretchX, double Stret
 
 // ------------------------------------------------------------
 
-void graphics::plotLimits::limitsXY::set( const axisSet* AxisSet, const numberLimits &L ) 
+void scigraphics::plotLimits::limitsXY::set( const axisSet* AxisSet, const numberLimits &L ) 
 {
   assert( AxisSet != NULL );
   Limits[ AxisSet ].set(L);
@@ -146,7 +146,7 @@ void graphics::plotLimits::limitsXY::set( const axisSet* AxisSet, const numberLi
 
 // ------------------------------------------------------------
           
-graphics::numberLimits graphics::plotLimits::limitsXY::get( const axisSet* AxisSet ) const
+scigraphics::numberLimits scigraphics::plotLimits::limitsXY::get( const axisSet* AxisSet ) const
 {
   assert( AxisSet != NULL );
   limitsMap::const_iterator L = Limits.find( AxisSet ); 
@@ -158,7 +158,7 @@ graphics::numberLimits graphics::plotLimits::limitsXY::get( const axisSet* AxisS
 
 // ------------------------------------------------------------
 
-graphics::numberLimits graphics::plotLimits::limitsXY::defaultAxisNumberLimits()
+scigraphics::numberLimits scigraphics::plotLimits::limitsXY::defaultAxisNumberLimits()
 {
   numberLimits Result;
   Result.setNegativeInterval( interval<number>(-1,-0.1) );
@@ -169,7 +169,7 @@ graphics::numberLimits graphics::plotLimits::limitsXY::defaultAxisNumberLimits()
 
 // ------------------------------------------------------------
 
-graphics::numberLimits graphics::plotLimits::limitsXY::getX() const
+scigraphics::numberLimits scigraphics::plotLimits::limitsXY::getX() const
 {
   for ( limitsMap::const_iterator L = Limits.begin(); L != Limits.end(); ++L )
     if ( isAxisSetX( L->first ) )
@@ -179,7 +179,7 @@ graphics::numberLimits graphics::plotLimits::limitsXY::getX() const
 
 // ------------------------------------------------------------
 
-graphics::numberLimits graphics::plotLimits::limitsXY::getY() const
+scigraphics::numberLimits scigraphics::plotLimits::limitsXY::getY() const
 {
   for ( limitsMap::const_iterator L = Limits.begin(); L != Limits.end(); ++L )
     if ( isAxisSetY( L->first ) )
@@ -189,7 +189,7 @@ graphics::numberLimits graphics::plotLimits::limitsXY::getY() const
 
 // ------------------------------------------------------------
           
-void graphics::plotLimits::limitsXY::setAxisNumberLimits( axisSet* AxisSet ) const
+void scigraphics::plotLimits::limitsXY::setAxisNumberLimits( axisSet* AxisSet ) const
 {
   assert( AxisSet != NULL );
   numberLimits Limits = get( AxisSet );
@@ -198,14 +198,14 @@ void graphics::plotLimits::limitsXY::setAxisNumberLimits( axisSet* AxisSet ) con
 
 // ============================================================
 
-graphics::plotLimits::plotLimits()
+scigraphics::plotLimits::plotLimits()
 {
   setStretchFactor(1.01);
 }
 
 // ------------------------------------------------------------
 
-graphics::interval<graphics::number> graphics::plotLimits::getInterval( const axisSet *AxisSet ) const
+scigraphics::interval<scigraphics::number> scigraphics::plotLimits::getInterval( const axisSet *AxisSet ) const
 {
   assert( AxisSet != NULL );
 
@@ -217,7 +217,7 @@ graphics::interval<graphics::number> graphics::plotLimits::getInterval( const ax
 
 // ------------------------------------------------------------
 
-graphics::numberLimits graphics::plotLimits::applyForcedLimits( const axisSet *AxisSet, const numberLimits &Limits ) const
+scigraphics::numberLimits scigraphics::plotLimits::applyForcedLimits( const axisSet *AxisSet, const numberLimits &Limits ) const
 {
   assert( AxisSet != NULL );
   interval<number> Interval = getInterval(AxisSet);
@@ -226,7 +226,7 @@ graphics::numberLimits graphics::plotLimits::applyForcedLimits( const axisSet *A
 
 // ------------------------------------------------------------
 
-bool graphics::plotLimits::isNumberHaveSignum( number Number, int Signum )
+bool scigraphics::plotLimits::isNumberHaveSignum( number Number, int Signum )
 {
   if ( Signum == 0 )
     return true;
@@ -239,7 +239,7 @@ bool graphics::plotLimits::isNumberHaveSignum( number Number, int Signum )
 
 // ------------------------------------------------------------
 
-graphics::interval<graphics::number> graphics::plotLimits::applyForcedLimitsToSubintervalMinMax( interval<number> LInterval, interval<number> ForceInterval, int Signum )
+scigraphics::interval<scigraphics::number> scigraphics::plotLimits::applyForcedLimitsToSubintervalMinMax( interval<number> LInterval, interval<number> ForceInterval, int Signum )
 {
   if ( numberLimits::isValidInterval(LInterval) )
   {
@@ -252,7 +252,7 @@ graphics::interval<graphics::number> graphics::plotLimits::applyForcedLimitsToSu
 
 // ------------------------------------------------------------
 
-graphics::numberLimits graphics::plotLimits::applyForcedLimitsMinMax( const numberLimits &Limits, interval<number> ForceInterval )
+scigraphics::numberLimits scigraphics::plotLimits::applyForcedLimitsMinMax( const numberLimits &Limits, interval<number> ForceInterval )
 {
   numberLimits Result = Limits;
   if ( ForceInterval.min() == AutoScaleMin && ForceInterval.max() == AutoScaleMax )
@@ -275,7 +275,7 @@ graphics::numberLimits graphics::plotLimits::applyForcedLimitsMinMax( const numb
 
 // ------------------------------------------------------------
       
-graphics::numberLimits graphics::plotLimits::correctInvalidLimits( const numberLimits &Limits ) const
+scigraphics::numberLimits scigraphics::plotLimits::correctInvalidLimits( const numberLimits &Limits ) const
 {
   numberLimits Result = Limits;
  
@@ -293,7 +293,7 @@ graphics::numberLimits graphics::plotLimits::correctInvalidLimits( const numberL
 
 // ------------------------------------------------------------
 
-graphics::plotLimits::limitsXY graphics::plotLimits::limitsForGraphics( const graphCollection& Graphics ) const
+scigraphics::plotLimits::limitsXY scigraphics::plotLimits::limitsForGraphics( const graphCollection& Graphics ) const
 {
   limitsXY Result;
 
@@ -311,7 +311,7 @@ graphics::plotLimits::limitsXY graphics::plotLimits::limitsForGraphics( const gr
 
 // ------------------------------------------------------------
       
-void graphics::plotLimits::updateLimitsXYForGraphic( limitsXY *Limits, const graph &Graph, const graphCollection &GraphCollection ) const
+void scigraphics::plotLimits::updateLimitsXYForGraphic( limitsXY *Limits, const graph &Graph, const graphCollection &GraphCollection ) const
 {
   assert( Limits != NULL );
 
@@ -333,7 +333,7 @@ void graphics::plotLimits::updateLimitsXYForGraphic( limitsXY *Limits, const gra
 
 // ------------------------------------------------------------
       
-void graphics::plotLimits::correctLimitsXYForAxisSet( limitsXY *Limits, const axisSet *AxisSet ) const
+void scigraphics::plotLimits::correctLimitsXYForAxisSet( limitsXY *Limits, const axisSet *AxisSet ) const
 {
   assert( Limits != NULL );
     

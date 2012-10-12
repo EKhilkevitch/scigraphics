@@ -5,7 +5,7 @@
 
 // =========================================================
 
-namespace graphics
+namespace scigraphics
 {
   namespace tests
   {

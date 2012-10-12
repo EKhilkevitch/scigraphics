@@ -12,12 +12,12 @@
 
 // =========================================================
 
-CPPUNIT_TEST_SUITE_REGISTRATION( graphics::tests::test_plotLimits_limitsXY );
-CPPUNIT_TEST_SUITE_REGISTRATION( graphics::tests::test_plotLimits );
+CPPUNIT_TEST_SUITE_REGISTRATION( scigraphics::tests::test_plotLimits_limitsXY );
+CPPUNIT_TEST_SUITE_REGISTRATION( scigraphics::tests::test_plotLimits );
 
 // =========================================================
 
-void graphics::tests::test_plotLimits_limitsXY::isAxisSetXY()
+void scigraphics::tests::test_plotLimits_limitsXY::isAxisSetXY()
 {
   CPPUNIT_ASSERT_EQUAL( false, plotLimits::limitsXY::isAxisSetX(NULL) );
   CPPUNIT_ASSERT_EQUAL( false, plotLimits::limitsXY::isAxisSetY(NULL) );
@@ -36,7 +36,7 @@ void graphics::tests::test_plotLimits_limitsXY::isAxisSetXY()
 
 // ------------------------------------------------------------
 
-void graphics::tests::test_plotLimits_limitsXY::set()
+void scigraphics::tests::test_plotLimits_limitsXY::set()
 {
   axisSet *AxisX = new axisSetX(0);
   axisSet *AxisY = new axisSetY(0);
@@ -78,7 +78,7 @@ void graphics::tests::test_plotLimits_limitsXY::set()
 
 // ------------------------------------------------------------
 
-void graphics::tests::test_plotLimits_limitsXY::applyStretch()
+void scigraphics::tests::test_plotLimits_limitsXY::applyStretch()
 {
   axisSet *AxisX = new axisSetX(0);
   axisSet *AxisY = new axisSetY(0);
@@ -105,13 +105,13 @@ void graphics::tests::test_plotLimits_limitsXY::applyStretch()
 
 // =========================================================
 
-void graphics::tests::test_plotLimits::setUp()
+void scigraphics::tests::test_plotLimits::setUp()
 {
   AxisX = new axisSetX(0);
   AxisY = new axisSetY(0);
 }
 
-void graphics::tests::test_plotLimits::tearDown()
+void scigraphics::tests::test_plotLimits::tearDown()
 {
   delete AxisX;
   delete AxisY;
@@ -119,7 +119,7 @@ void graphics::tests::test_plotLimits::tearDown()
 
 // ------------------------------------------------------------
 
-void graphics::tests::test_plotLimits::limitsForGraphics()
+void scigraphics::tests::test_plotLimits::limitsForGraphics()
 {
   graphCollection Graphics;
   Graphics.setDefaultAxisSets( AxisX, AxisY );
@@ -179,7 +179,7 @@ void graphics::tests::test_plotLimits::limitsForGraphics()
 
 // ------------------------------------------------------------
 
-void graphics::tests::test_plotLimits::limitsForEmptyGraphics()
+void scigraphics::tests::test_plotLimits::limitsForEmptyGraphics()
 {
   graphCollection Graphics;
   Graphics.setDefaultAxisSets( AxisX, AxisY );
@@ -242,7 +242,7 @@ void graphics::tests::test_plotLimits::limitsForEmptyGraphics()
 
 // ------------------------------------------------------------
 
-void graphics::tests::test_plotLimits::limitsForGraphicsPositive()
+void scigraphics::tests::test_plotLimits::limitsForGraphicsPositive()
 {
   graphCollection Graphics;
   Graphics.setDefaultAxisSets( AxisX, AxisY );
@@ -294,7 +294,7 @@ void graphics::tests::test_plotLimits::limitsForGraphicsPositive()
 
 // ------------------------------------------------------------
 
-void graphics::tests::test_plotLimits::limitsForGraphicsNegative()
+void scigraphics::tests::test_plotLimits::limitsForGraphicsNegative()
 {
   graphCollection Graphics;
   Graphics.setDefaultAxisSets( AxisX, AxisY );
@@ -348,7 +348,7 @@ void graphics::tests::test_plotLimits::limitsForGraphicsNegative()
 
 // ------------------------------------------------------------
 
-void graphics::tests::test_plotLimits::limitsForGraphicsCloseToZero()
+void scigraphics::tests::test_plotLimits::limitsForGraphicsCloseToZero()
 {
   graphCollection Graphics;
   Graphics.setDefaultAxisSets( AxisX, AxisY );
@@ -391,7 +391,7 @@ void graphics::tests::test_plotLimits::limitsForGraphicsCloseToZero()
 
 // ------------------------------------------------------------
 
-void graphics::tests::test_plotLimits::limitsForGraphicsStretch()
+void scigraphics::tests::test_plotLimits::limitsForGraphicsStretch()
 { 
   graphCollection Graphics;
   Graphics.setDefaultAxisSets( AxisX, AxisY );

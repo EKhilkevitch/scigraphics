@@ -9,7 +9,7 @@
 
 // ============================================================
 
-graphics::zoomRectangle::zoomRectangle() :
+scigraphics::zoomRectangle::zoomRectangle() :
   InitPoint(0,0),
   CursorPoint(0,0),
   Visible(false)
@@ -18,7 +18,7 @@ graphics::zoomRectangle::zoomRectangle() :
       
 // ------------------------------------------------------------
 
-void graphics::zoomRectangle::show( wpoint Point )
+void scigraphics::zoomRectangle::show( wpoint Point )
 {
   InitPoint = CursorPoint = Point;
   Visible = true;
@@ -26,7 +26,7 @@ void graphics::zoomRectangle::show( wpoint Point )
 
 // ------------------------------------------------------------
 
-void graphics::zoomRectangle::pull( wpoint Point )
+void scigraphics::zoomRectangle::pull( wpoint Point )
 {
   if ( ! Visible )
     show(Point);
@@ -35,14 +35,14 @@ void graphics::zoomRectangle::pull( wpoint Point )
 
 // ------------------------------------------------------------
 
-void graphics::zoomRectangle::hide()
+void scigraphics::zoomRectangle::hide()
 {
   Visible = false;
 }
 
 // ------------------------------------------------------------
 
-void graphics::zoomRectangle::draw( painter &Painter )
+void scigraphics::zoomRectangle::draw( painter &Painter )
 {
   if ( Visible )
   {

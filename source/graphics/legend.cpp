@@ -7,11 +7,11 @@
 
 // ============================================================
 
-const graphics::wrectangle graphics::legend::InitLegendRectangle( wpoint(0,0), wpoint(0,0) );
+const scigraphics::wrectangle scigraphics::legend::InitLegendRectangle( wpoint(0,0), wpoint(0,0) );
 
 // ------------------------------------------------------------
 
-bool graphics::legend::shouldDrawGraphLegend( const graph &Graph ) 
+bool scigraphics::legend::shouldDrawGraphLegend( const graph &Graph ) 
 { 
   if ( ! Graph.showLegend() )
     return false;
@@ -22,7 +22,7 @@ bool graphics::legend::shouldDrawGraphLegend( const graph &Graph )
 
 // ------------------------------------------------------------
 
-graphics::textStyle graphics::legend::updateLegendRectangle( painter &Painter, const graphCollection &Graphics )
+scigraphics::textStyle scigraphics::legend::updateLegendRectangle( painter &Painter, const graphCollection &Graphics )
 {
   if ( getRectangle() == InitLegendRectangle )
     setRectangle( createInitialRectangle(Painter) );
@@ -51,7 +51,7 @@ graphics::textStyle graphics::legend::updateLegendRectangle( painter &Painter, c
 
 // ------------------------------------------------------------
 
-graphics::wrectangle graphics::legend::createInitialRectangle( painter &Painter ) 
+scigraphics::wrectangle scigraphics::legend::createInitialRectangle( painter &Painter ) 
 {
   wpoint Point( Painter.width() - 30, 90 );
   return wrectangle( Point, Point );
@@ -59,7 +59,7 @@ graphics::wrectangle graphics::legend::createInitialRectangle( painter &Painter 
 
 // ------------------------------------------------------------
       
-graphics::legend::legendSize graphics::legend::sizesForLegendRectangle( painter &Painter, const textStyle &Style, const graphCollection &Graphics )
+scigraphics::legend::legendSize scigraphics::legend::sizesForLegendRectangle( painter &Painter, const textStyle &Style, const graphCollection &Graphics )
 {
   const wcoord VerticalDistance = interTextVerticalDistance(Style);
   
@@ -86,7 +86,7 @@ graphics::legend::legendSize graphics::legend::sizesForLegendRectangle( painter 
 
 // ------------------------------------------------------------
 
-void graphics::legend::setRectangleFromLegendSize( painter &Painter, const legendSize &LegendSize )
+void scigraphics::legend::setRectangleFromLegendSize( painter &Painter, const legendSize &LegendSize )
 {
   wpoint LeftUp = getRectangle().leftUp();
   wpoint RightDown( LeftUp.x() + LegendSize.width(), LeftUp.y() - LegendSize.height() );
@@ -106,7 +106,7 @@ void graphics::legend::setRectangleFromLegendSize( painter &Painter, const legen
 
 // ------------------------------------------------------------
 
-std::list<std::string> graphics::legend::legendsList( const graphCollection &Graphics )
+std::list<std::string> scigraphics::legend::legendsList( const graphCollection &Graphics )
 {
   std::list< std::string > Legends;
   for ( graphCollection::const_iterator g = Graphics.begin(); g != Graphics.end(); ++g )
@@ -118,7 +118,7 @@ std::list<std::string> graphics::legend::legendsList( const graphCollection &Gra
 
 // ------------------------------------------------------------
 
-bool graphics::legend::shouldDrawLegend( const graphCollection &Graphics )
+bool scigraphics::legend::shouldDrawLegend( const graphCollection &Graphics )
 {
   for ( graphCollection::const_iterator g = Graphics.begin(); g != Graphics.end(); ++g )
     if ( shouldDrawGraphLegend(**g) )
@@ -128,7 +128,7 @@ bool graphics::legend::shouldDrawLegend( const graphCollection &Graphics )
 
 // ------------------------------------------------------------
 
-graphics::wcoord graphics::legend::drawGraphLegend( painter &Painter, wcoord y, const graph &Graph, const textStyle &Style )
+scigraphics::wcoord scigraphics::legend::drawGraphLegend( painter &Painter, wcoord y, const graph &Graph, const textStyle &Style )
 {
   const wcoord TextHeight = textHeight( Painter, Graph.legend(), Style );
 
@@ -146,7 +146,7 @@ graphics::wcoord graphics::legend::drawGraphLegend( painter &Painter, wcoord y, 
       
 // ------------------------------------------------------------
 
-void graphics::legend::drawAllLegends( painter &Painter, const graphCollection &Graphics, const textStyle &Style )
+void scigraphics::legend::drawAllLegends( painter &Painter, const graphCollection &Graphics, const textStyle &Style )
 {
   wcoord y = getRectangle().up() - interTextVerticalDistance(Style);
   for ( graphCollection::const_reverse_iterator Graph = Graphics.rbegin(); Graph != Graphics.rend(); ++Graph )
@@ -161,7 +161,7 @@ void graphics::legend::drawAllLegends( painter &Painter, const graphCollection &
 
 // ------------------------------------------------------------
 
-void graphics::legend::draw( painter &Painter, const graphCollection &Graphics ) 
+void scigraphics::legend::draw( painter &Painter, const graphCollection &Graphics ) 
 {
   if ( ! isVisible() )
     return;

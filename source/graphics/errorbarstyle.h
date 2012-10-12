@@ -4,7 +4,7 @@
 #include "graphics/color.h"
 #include "graphics/linestyle.h"
 
-namespace graphics
+namespace scigraphics
 {
 
 // ============================================================

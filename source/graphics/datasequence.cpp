@@ -10,7 +10,7 @@
 
 // ============================================================
 
-graphics::numberLimits graphics::dataSequence::limitsX() const
+scigraphics::numberLimits scigraphics::dataSequence::limitsX() const
 {
   numberLimits Result;
   
@@ -31,7 +31,7 @@ graphics::numberLimits graphics::dataSequence::limitsX() const
 
 // ------------------------------------------------------------
 
-graphics::numberLimits graphics::dataSequence::limitsY( const interval<number> &LimitsX ) const
+scigraphics::numberLimits scigraphics::dataSequence::limitsY( const interval<number> &LimitsX ) const
 {
   if ( ! numberLimits::isValidInterval(LimitsX) )
     return numberLimits();
@@ -58,7 +58,7 @@ graphics::numberLimits graphics::dataSequence::limitsY( const interval<number> &
 
 // ============================================================
 
-void graphics::dataSequenceVector::append( const point &Point )
+void scigraphics::dataSequenceVector::append( const point &Point )
 { 
   appendPoint( Point );
   if ( Points.size() >= (size_t)std::numeric_limits<int>::max() - 2 )
@@ -74,7 +74,7 @@ void graphics::dataSequenceVector::append( const point &Point )
 
 // ------------------------------------------------------------
 
-void graphics::dataSequenceVector::updateOrderedByX()
+void scigraphics::dataSequenceVector::updateOrderedByX()
 {
   if ( ! OrderedByX )                   return;
   if ( size() <= 1 )                    return; 
@@ -100,7 +100,7 @@ void graphics::dataSequenceVector::updateOrderedByX()
 
 // ------------------------------------------------------------
 
-void graphics::dataSequenceVector::updateLimitsXY( const point &Point, const coordinateType Type )
+void scigraphics::dataSequenceVector::updateLimitsXY( const point &Point, const coordinateType Type )
 {
   if ( ! Point.isValid() )
     return;
@@ -115,7 +115,7 @@ void graphics::dataSequenceVector::updateLimitsXY( const point &Point, const coo
 
 // ------------------------------------------------------------
 
-void graphics::dataSequenceVector::updateLimits( number Number, coordinateType Coordinate, numberLimits *Limits )
+void scigraphics::dataSequenceVector::updateLimits( number Number, coordinateType Coordinate, numberLimits *Limits )
 {
   assert( Limits != NULL );
   assert( isValidNumber(Number) );
@@ -128,7 +128,7 @@ void graphics::dataSequenceVector::updateLimits( number Number, coordinateType C
 
 // ------------------------------------------------------------
 
-void graphics::dataSequenceVector::recalculateLimits( coordinateType Coordinate, numberLimits *Limits )
+void scigraphics::dataSequenceVector::recalculateLimits( coordinateType Coordinate, numberLimits *Limits )
 {
   assert( Limits != NULL );
 
@@ -156,7 +156,7 @@ void graphics::dataSequenceVector::recalculateLimits( coordinateType Coordinate,
 
 // ------------------------------------------------------------
 
-void graphics::dataSequenceVector::updateLimitsByValue( numberLimits *Limits, number Value, number PosDistance, number NegDistance )
+void scigraphics::dataSequenceVector::updateLimitsByValue( numberLimits *Limits, number Value, number PosDistance, number NegDistance )
 {
   assert( Limits != NULL );
   assert( PosDistance >= 0 );
@@ -175,7 +175,7 @@ void graphics::dataSequenceVector::updateLimitsByValue( numberLimits *Limits, nu
 
 // ------------------------------------------------------------
 
-bool graphics::dataSequenceVector::needToRecalculateLimits( const interval<number> Interval )
+bool scigraphics::dataSequenceVector::needToRecalculateLimits( const interval<number> Interval )
 {
   const double Epsilon = 1e-14;
 
@@ -191,7 +191,7 @@ bool graphics::dataSequenceVector::needToRecalculateLimits( const interval<numbe
 
 // ------------------------------------------------------------
 
-graphics::numberLimits graphics::dataSequenceVector::limitsY( const interval<number> &LimitsX ) const
+scigraphics::numberLimits scigraphics::dataSequenceVector::limitsY( const interval<number> &LimitsX ) const
 {
   if ( LimitsX.min() <= limitsX().totalLimits().min() &&
        LimitsX.max() >= limitsX().totalLimits().max() )
@@ -201,7 +201,7 @@ graphics::numberLimits graphics::dataSequenceVector::limitsY( const interval<num
 
 // ------------------------------------------------------------
 
-graphics::number graphics::dataSequenceVector::pointValue( const point &Point, coordinateType Type )
+scigraphics::number scigraphics::dataSequenceVector::pointValue( const point &Point, coordinateType Type )
 {
   switch ( Type )
   {
@@ -213,7 +213,7 @@ graphics::number graphics::dataSequenceVector::pointValue( const point &Point, c
 
 // ------------------------------------------------------------
 
-graphics::number graphics::dataSequenceVector::pointError( const point &Point, coordinateType Type )
+scigraphics::number scigraphics::dataSequenceVector::pointError( const point &Point, coordinateType Type )
 {
   if ( ! Point.isValidError() )
     return 0;
@@ -228,7 +228,7 @@ graphics::number graphics::dataSequenceVector::pointError( const point &Point, c
 
 // ------------------------------------------------------------
 
-void graphics::dataSequenceVector::clear()
+void scigraphics::dataSequenceVector::clear()
 {
   LimitsX = LimitsY = numberLimits();
   OrderedByX = true;
@@ -237,21 +237,21 @@ void graphics::dataSequenceVector::clear()
 
 // ------------------------------------------------------------
 
-std::ostream& graphics::operator<<( std::ostream& Stream, const graphics::pointSequence& Point )
+std::ostream& scigraphics::operator<<( std::ostream& Stream, const scigraphics::pointSequence& Point )
 {
   return ( Stream << "( " << Point.x() << " " << Point.y() << " " << Point.errX() << " " << Point.errY() << " )" );
 }
   
 // ------------------------------------------------------------
 
-std::ostream& operator<<( std::ostream& Stream, const graphics::dataSequence& Data )
+std::ostream& operator<<( std::ostream& Stream, const scigraphics::dataSequence& Data )
 {
   std::streamsize Width = Stream.width();
 
   Stream.width( 12 );
   Stream << "Size ";
   Stream << Data.size() << std::endl;
-  for ( graphics::dataSequence::iterator i = Data.begin(); i != Data.end(); ++i )
+  for ( scigraphics::dataSequence::iterator i = Data.begin(); i != Data.end(); ++i )
     Stream << (*i) << std::endl;
   Stream.width( Width );
 

@@ -6,11 +6,11 @@
 
 // =========================================================
 
-CPPUNIT_TEST_SUITE_REGISTRATION( graphics::tests::test_painter );
+CPPUNIT_TEST_SUITE_REGISTRATION( scigraphics::tests::test_painter );
 
 // =========================================================
 
-void graphics::tests::mockDrawer::drawLine( const wpoint &A, const wpoint &B, const lineStyle& Style )
+void scigraphics::tests::mockDrawer::drawLine( const wpoint &A, const wpoint &B, const lineStyle& Style )
 {
   action Act;
   Act.Type = action::DrawLine;
@@ -22,7 +22,7 @@ void graphics::tests::mockDrawer::drawLine( const wpoint &A, const wpoint &B, co
 
 // ---------------------------------------------------------
 
-void graphics::tests::mockDrawer::drawRectangle( const wrectangle& Rectangle, const brushStyle& BrushStyle, const lineStyle &LineStyle )
+void scigraphics::tests::mockDrawer::drawRectangle( const wrectangle& Rectangle, const brushStyle& BrushStyle, const lineStyle &LineStyle )
 {
   action Act;
   Act.Type = action::DrawRectangle;
@@ -34,13 +34,13 @@ void graphics::tests::mockDrawer::drawRectangle( const wrectangle& Rectangle, co
 
 // ---------------------------------------------------------
 
-void graphics::tests::mockDrawer::drawText( const std::string &Text, const wrectangle& Rectangle, const textStyle &Style, double Angle )
+void scigraphics::tests::mockDrawer::drawText( const std::string &Text, const wrectangle& Rectangle, const textStyle &Style, double Angle )
 {
 }
 
 // =========================================================
 
-void graphics::tests::test_painter::setDrawer()
+void scigraphics::tests::test_painter::setDrawer()
 {
   painterMorozov Painter;
   CPPUNIT_ASSERT( Painter.getDrawer() == nullptr );
@@ -54,7 +54,7 @@ void graphics::tests::test_painter::setDrawer()
 
 // ---------------------------------------------------------
 
-void graphics::tests::test_painter::setIndents()
+void scigraphics::tests::test_painter::setIndents()
 {
   auto Drawer = new mockDrawer();
   painterMorozov Painter;
@@ -76,7 +76,7 @@ void graphics::tests::test_painter::setIndents()
 
 // ---------------------------------------------------------
 
-void graphics::tests::test_painter::update()
+void scigraphics::tests::test_painter::update()
 {
   auto Drawer = new mockDrawer();
   painterMorozov Painter( Drawer );
@@ -95,7 +95,7 @@ void graphics::tests::test_painter::update()
 
 // ---------------------------------------------------------
 
-void graphics::tests::test_painter::fpoint2wpoint()
+void scigraphics::tests::test_painter::fpoint2wpoint()
 {
   auto Drawer = new mockDrawer();
   painterMorozov Painter( Drawer );
@@ -126,7 +126,7 @@ void graphics::tests::test_painter::fpoint2wpoint()
 
 // ---------------------------------------------------------
 
-void graphics::tests::test_painter::canSeparatePoints()
+void scigraphics::tests::test_painter::canSeparatePoints()
 {
 #if 0
   auto Drawer = new mockDrawer();
@@ -146,7 +146,7 @@ void graphics::tests::test_painter::canSeparatePoints()
         
 // ---------------------------------------------------------
 
-void graphics::tests::test_painter::textWidth()
+void scigraphics::tests::test_painter::textWidth()
 {
   auto Drawer = new mockDrawer();
   painterMorozov Painter( Drawer );
@@ -160,7 +160,7 @@ void graphics::tests::test_painter::textWidth()
         
 // ---------------------------------------------------------
 
-void graphics::tests::test_painter::textHeight()
+void scigraphics::tests::test_painter::textHeight()
 {
   auto Drawer = new mockDrawer();
   painterMorozov Painter( Drawer );

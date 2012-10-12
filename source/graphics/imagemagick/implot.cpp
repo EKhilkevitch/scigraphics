@@ -11,7 +11,7 @@
 
 // ================================================================
 
-Magick::Color drawerIm::colorIm( const graphics::color& Color )
+Magick::Color drawerIm::colorIm( const scigraphics::color& Color )
 {
   Magick::Color ImColor; 
   ImColor.redQuantum( (double)Color.red()/0xFF * MaxRGB );
@@ -23,14 +23,14 @@ Magick::Color drawerIm::colorIm( const graphics::color& Color )
 
 // ----------------------------------------------------------------
     
-Magick::Coordinate drawerIm::coordinateIm( const graphics::wpoint &Point )
+Magick::Coordinate drawerIm::coordinateIm( const scigraphics::wpoint &Point )
 {
   return Magick::Coordinate( Point.x(), Point.y() );
 }
 
 // ----------------------------------------------------------------
     
-std::list< Magick::Coordinate > drawerIm::polygonIm( const std::vector<graphics::wpoint> &Points )
+std::list< Magick::Coordinate > drawerIm::polygonIm( const std::vector<scigraphics::wpoint> &Points )
 {
   std::list< Magick::Coordinate > Polygon;
   for ( unsigned i = 0; i < Points.size(); i++ )
@@ -40,12 +40,12 @@ std::list< Magick::Coordinate > drawerIm::polygonIm( const std::vector<graphics:
 
 // ----------------------------------------------------------------
     
-void drawerIm::prepareForLineStyle( const graphics::lineStyle &Style )
+void drawerIm::prepareForLineStyle( const scigraphics::lineStyle &Style )
 {
   if ( Image == NULL )
     return;
 
-  Image->fillColor( colorIm( graphics::color::Transparency ) );
+  Image->fillColor( colorIm( scigraphics::color::Transparency ) );
   Image->strokeColor( colorIm( Style.getColor() ) );
   Image->strokeWidth( 0 );
   Image->lineWidth( Style.width() );
@@ -54,10 +54,10 @@ void drawerIm::prepareForLineStyle( const graphics::lineStyle &Style )
 
   switch ( Style.getStyle() )
   {
-    case graphics::lineStyle::Solid:
+    case scigraphics::lineStyle::Solid:
       Image->strokeDashArray( NULL );
       break;
-    case graphics::lineStyle::Dash:
+    case scigraphics::lineStyle::Dash:
       Image->strokeDashArray( DashPattern );
       break;
     default:
@@ -69,19 +69,19 @@ void drawerIm::prepareForLineStyle( const graphics::lineStyle &Style )
 
 // ----------------------------------------------------------------
 
-void drawerIm::prepareForBrushStyle( const graphics::brushStyle& Style )
+void drawerIm::prepareForBrushStyle( const scigraphics::brushStyle& Style )
 {
   if ( Image == NULL )
     return;
 
-  graphics::color Color = Style.getColor();
+  scigraphics::color Color = Style.getColor();
   switch ( Style.getStyle() )
   {
-    case graphics::brushStyle::Solid:
+    case scigraphics::brushStyle::Solid:
       break;
 
     default:
-    case graphics::brushStyle::None:
+    case scigraphics::brushStyle::None:
       Color.setTransparency( 1 );
       break;
   }
@@ -92,7 +92,7 @@ void drawerIm::prepareForBrushStyle( const graphics::brushStyle& Style )
 
 // ----------------------------------------------------------------
 
-void drawerIm::prepareForTextStyle( const graphics::textStyle &Style )
+void drawerIm::prepareForTextStyle( const scigraphics::textStyle &Style )
 {
   if ( Image == NULL )
     return;
@@ -107,7 +107,7 @@ void drawerIm::prepareForTextStyle( const graphics::textStyle &Style )
 
 // ----------------------------------------------------------------
     
-void drawerIm::drawLine( const graphics::wpoint &A, const graphics::wpoint &B, const graphics::lineStyle &Style )
+void drawerIm::drawLine( const scigraphics::wpoint &A, const scigraphics::wpoint &B, const scigraphics::lineStyle &Style )
 {
   if ( Image == NULL )
     return;
@@ -118,7 +118,7 @@ void drawerIm::drawLine( const graphics::wpoint &A, const graphics::wpoint &B, c
 
 // ----------------------------------------------------------------
 
-void drawerIm::drawRectangle( const graphics::wrectangle& Rectangle, const graphics::brushStyle& BrushStyle, const graphics::lineStyle &LineStyle )
+void drawerIm::drawRectangle( const scigraphics::wrectangle& Rectangle, const scigraphics::brushStyle& BrushStyle, const scigraphics::lineStyle &LineStyle )
 {
   if ( Image == NULL )
     return;
@@ -131,7 +131,7 @@ void drawerIm::drawRectangle( const graphics::wrectangle& Rectangle, const graph
     
 // ----------------------------------------------------------------
     
-void drawerIm::drawPolygon( const std::vector<graphics::wpoint> &Points, const graphics::brushStyle& BrushStyle ) 
+void drawerIm::drawPolygon( const std::vector<scigraphics::wpoint> &Points, const scigraphics::brushStyle& BrushStyle ) 
 {
   if ( Points.size() < 3 )
     return;
@@ -148,7 +148,7 @@ void drawerIm::drawPolygon( const std::vector<graphics::wpoint> &Points, const g
 
 // ----------------------------------------------------------------
 
-void drawerIm::drawText( const std::string &Text, const graphics::wrectangle& Rectangle, const graphics::textStyle &Style, double RotAngle )
+void drawerIm::drawText( const std::string &Text, const scigraphics::wrectangle& Rectangle, const scigraphics::textStyle &Style, double RotAngle )
 {
   if ( Image == NULL )
     return;
@@ -167,7 +167,7 @@ void drawerIm::drawText( const std::string &Text, const graphics::wrectangle& Re
 
 // ----------------------------------------------------------------
 
-graphics::wcoord drawerIm::textWidth( const std::string &Text, const graphics::textStyle &Style )
+scigraphics::wcoord drawerIm::textWidth( const std::string &Text, const scigraphics::textStyle &Style )
 {
   if ( Image == NULL )
     return drawer::textWidth( Text, Style );
@@ -181,7 +181,7 @@ graphics::wcoord drawerIm::textWidth( const std::string &Text, const graphics::t
 
 // ----------------------------------------------------------------
 
-graphics::wcoord drawerIm::textHeight( const std::string &Text, const graphics::textStyle &Style )
+scigraphics::wcoord drawerIm::textHeight( const std::string &Text, const scigraphics::textStyle &Style )
 {
   if ( Image == NULL )
     return drawer::textHeight( Text, Style );
@@ -195,14 +195,14 @@ graphics::wcoord drawerIm::textHeight( const std::string &Text, const graphics::
 
 // ----------------------------------------------------------------
 
-graphics::wcoord drawerIm::width()  const 
+scigraphics::wcoord drawerIm::width()  const 
 { 
   return Image == NULL ? 0 : Image->columns(); 
 };
 
 // ----------------------------------------------------------------
 
-graphics::wcoord drawerIm::height() const 
+scigraphics::wcoord drawerIm::height() const 
 { 
   return Image == NULL ? 0 : Image->rows(); 
 };

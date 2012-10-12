@@ -5,7 +5,7 @@
 
 // ============================================================
       
-graphics::selection* graphics::selectionCollection::getSelectionOnPoint( const fpoint &Point )
+scigraphics::selection* scigraphics::selectionCollection::getSelectionOnPoint( const fpoint &Point )
 {
   for ( iterator s = begin(); s != end(); ++s )
   {
@@ -19,7 +19,7 @@ graphics::selection* graphics::selectionCollection::getSelectionOnPoint( const f
 
 // ------------------------------------------------------------
       
-void graphics::selectionCollection::setSelectionInterval( selectionStrip *Selection, fpoint Pt1, fpoint Pt2 )
+void scigraphics::selectionCollection::setSelectionInterval( selectionStrip *Selection, fpoint Pt1, fpoint Pt2 )
 {
   if ( ! exist(Selection) )
     throw std::invalid_argument( "Selection not exist in collection (in setSelectionInterval)" );
@@ -30,7 +30,7 @@ void graphics::selectionCollection::setSelectionInterval( selectionStrip *Select
 
 // ------------------------------------------------------------
       
-void graphics::selectionCollection::shiftSelection( selectionStrip *Selection, fpoint From, fpoint To )
+void scigraphics::selectionCollection::shiftSelection( selectionStrip *Selection, fpoint From, fpoint To )
 {
   if ( ! exist(Selection) )
     throw std::invalid_argument( "Selection not exist in collection (in shiftSelection)" );

@@ -11,18 +11,18 @@
 
 // ============================================================
 
-const graphics::wrectangle graphics::cursorPositionViewer::InitCursorRectangle( wpoint(30,30), wpoint(30,30) );
+const scigraphics::wrectangle scigraphics::cursorPositionViewer::InitCursorRectangle( wpoint(30,30), wpoint(30,30) );
 
 // ============================================================
       
-graphics::cursorPositionViewer::cursorPositionViewer() : 
+scigraphics::cursorPositionViewer::cursorPositionViewer() : 
   floatRectangle(InitCursorRectangle)
 {
 }
 
 // ------------------------------------------------------------
 
-void graphics::cursorPositionViewer::draw( painter &Painter, const pairScales &Scales, const wpoint &Point )
+void scigraphics::cursorPositionViewer::draw( painter &Painter, const pairScales &Scales, const wpoint &Point )
 {
   if ( ! isVisible() )
     return;
@@ -36,7 +36,7 @@ void graphics::cursorPositionViewer::draw( painter &Painter, const pairScales &S
 
 // ------------------------------------------------------------
 
-void graphics::cursorPositionViewer::updateRectangle( painter &Painter, const std::string &Text )
+void scigraphics::cursorPositionViewer::updateRectangle( painter &Painter, const std::string &Text )
 {
   unsigned TextWidth  = Painter.textWidth( Text, getTextStyle() );
   unsigned TextHeight = Painter.textHeight( Text, getTextStyle() );
@@ -48,7 +48,7 @@ void graphics::cursorPositionViewer::updateRectangle( painter &Painter, const st
 
 // ------------------------------------------------------------
 
-void graphics::cursorPositionViewer::drawText( painter &Painter, const std::string &Text )
+void scigraphics::cursorPositionViewer::drawText( painter &Painter, const std::string &Text )
 {
   wpoint Point = getRectangle().leftUp();
   Point.moveY( -(int)textVerticalIndent() );
@@ -58,7 +58,7 @@ void graphics::cursorPositionViewer::drawText( painter &Painter, const std::stri
 
 // ------------------------------------------------------------
       
-std::string graphics::cursorPositionViewer::pointText( painter &Painter, const pairScales &Scales, const wpoint &Point ) const
+std::string scigraphics::cursorPositionViewer::pointText( painter &Painter, const pairScales &Scales, const wpoint &Point ) const
 {
   npoint NPoint = Scales.wpoint2npoint( Point, Painter );
 

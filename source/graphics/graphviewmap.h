@@ -5,7 +5,7 @@
 #include "graphics/numbers.h"
 #include "graphics/painter.h"
 
-namespace graphics 
+namespace scigraphics 
 {
 
   class scale;

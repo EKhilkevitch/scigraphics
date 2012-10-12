@@ -9,7 +9,7 @@
 
 // ============================================================
 
-graphics::axisSet::axisSet( axis *A, axisTicks *T, axisLabels *L, axisTitle *H, grid *G, scale *S ) :
+scigraphics::axisSet::axisSet( axis *A, axisTicks *T, axisLabels *L, axisTitle *H, grid *G, scale *S ) :
   Visible(true),
   Axis(A),
   AxisTicks(T),
@@ -22,7 +22,7 @@ graphics::axisSet::axisSet( axis *A, axisTicks *T, axisLabels *L, axisTitle *H, 
 
 // ------------------------------------------------------------
 
-graphics::axisSet::~axisSet()
+scigraphics::axisSet::~axisSet()
 {
   delete Axis;
   delete AxisTicks;
@@ -34,7 +34,7 @@ graphics::axisSet::~axisSet()
 
 // ------------------------------------------------------------
 
-void graphics::axisSet::replaceScale( scale *S )
+void scigraphics::axisSet::replaceScale( scale *S )
 {
   if ( S == NULL )
     throw std::invalid_argument("Scale must be not NULL");
@@ -45,7 +45,7 @@ void graphics::axisSet::replaceScale( scale *S )
 
 // ------------------------------------------------------------
       
-void graphics::axisSet::drawAxis( painter &Painter ) 
+void scigraphics::axisSet::drawAxis( painter &Painter ) 
 { 
   if ( ! isVisible() )
     return;
@@ -56,7 +56,7 @@ void graphics::axisSet::drawAxis( painter &Painter )
 
 // ------------------------------------------------------------
 
-void graphics::axisSet::drawAxisTicks( painter &Painter )
+void scigraphics::axisSet::drawAxisTicks( painter &Painter )
 {
   if ( ! isVisible() )
     return;
@@ -70,7 +70,7 @@ void graphics::axisSet::drawAxisTicks( painter &Painter )
       
 // ------------------------------------------------------------
 
-void graphics::axisSet::drawAxisLabels( painter &Painter )
+void scigraphics::axisSet::drawAxisLabels( painter &Painter )
 {
   if ( ! isVisible() )
     return;
@@ -84,7 +84,7 @@ void graphics::axisSet::drawAxisLabels( painter &Painter )
 
 // ------------------------------------------------------------
       
-void graphics::axisSet::drawAxisTitle( painter &Painter )
+void scigraphics::axisSet::drawAxisTitle( painter &Painter )
 {
   if ( ! isVisible() )
     return;
@@ -95,7 +95,7 @@ void graphics::axisSet::drawAxisTitle( painter &Painter )
 
 // ------------------------------------------------------------
 
-void graphics::axisSet::drawGrid( painter &Painter )
+void scigraphics::axisSet::drawGrid( painter &Painter )
 {
   if ( ! isVisible() )
     return;
@@ -109,14 +109,14 @@ void graphics::axisSet::drawGrid( painter &Painter )
       
 // ------------------------------------------------------------
       
-graphics::wcoord graphics::axisSet::wcoordDimension( const painter &Painter ) const
+scigraphics::wcoord scigraphics::axisSet::wcoordDimension( const painter &Painter ) const
 {
   return ( getDirection() == axisSet::DirectionX ) ? Painter.width() : Painter.height();;
 }
 
 // ------------------------------------------------------------
 
-double graphics::axisSet::wpointsPerNumber( const painter &Painter ) const
+double scigraphics::axisSet::wpointsPerNumber( const painter &Painter ) const
 {
   assert( Scale != NULL );
   interval<number> NumberInterval = Scale->getNumberInterval();
@@ -132,7 +132,7 @@ double graphics::axisSet::wpointsPerNumber( const painter &Painter ) const
 
 // ============================================================
 
-graphics::axisSetX::axisSetX( fcoord BaseY ) : 
+scigraphics::axisSetX::axisSetX( fcoord BaseY ) : 
   axisSet( 
     new axisX(BaseY), 
     new axisTicksX(BaseY), 
@@ -145,7 +145,7 @@ graphics::axisSetX::axisSetX( fcoord BaseY ) :
 
 // ------------------------------------------------------------
       
-graphics::wcoord graphics::axisSetX::requiredIndent( bool Used ) const
+scigraphics::wcoord scigraphics::axisSetX::requiredIndent( bool Used ) const
 {
   wcoord Indent = 7;
 
@@ -162,7 +162,7 @@ graphics::wcoord graphics::axisSetX::requiredIndent( bool Used ) const
 
 // ============================================================
 
-graphics::axisSetY::axisSetY( fcoord BaseX ) : 
+scigraphics::axisSetY::axisSetY( fcoord BaseX ) : 
   axisSet( 
     new axisY(BaseX), 
     new axisTicksY(BaseX), 
@@ -175,7 +175,7 @@ graphics::axisSetY::axisSetY( fcoord BaseX ) :
 
 // ------------------------------------------------------------
       
-graphics::wcoord graphics::axisSetY::requiredIndent( bool Used ) const
+scigraphics::wcoord scigraphics::axisSetY::requiredIndent( bool Used ) const
 {
   wcoord Indent = 7;
   
@@ -192,7 +192,7 @@ graphics::wcoord graphics::axisSetY::requiredIndent( bool Used ) const
 
 // ============================================================
 
-graphics::axisSetCollection::axisSetCollection()
+scigraphics::axisSetCollection::axisSetCollection()
 {
   assert( PositionsCount == 4 );
   AxisSets.resize( PositionsCount );
@@ -204,13 +204,13 @@ graphics::axisSetCollection::axisSetCollection()
 
 // ------------------------------------------------------------
 
-graphics::axisSetCollection::~axisSetCollection()
+scigraphics::axisSetCollection::~axisSetCollection()
 {
 }
       
 // ------------------------------------------------------------
 
-graphics::axisSet& graphics::axisSetCollection::at( axisPosition Position )
+scigraphics::axisSet& scigraphics::axisSetCollection::at( axisPosition Position )
 {
   unsigned Index = (unsigned)Position;
   if ( Index >= AxisSets.size() )
@@ -220,21 +220,21 @@ graphics::axisSet& graphics::axisSetCollection::at( axisPosition Position )
 
 // ------------------------------------------------------------
       
-graphics::pairScales graphics::axisSetCollection::getBottomLeftPairScales()
+scigraphics::pairScales scigraphics::axisSetCollection::getBottomLeftPairScales()
 {
   return pairScales( *(AxisSets[Bottom]->getScale()), *(AxisSets[Left]->getScale()) ); 
 }
 
 // ------------------------------------------------------------
 
-const graphics::axisSet& graphics::axisSetCollection::at( axisPosition Position ) const
+const scigraphics::axisSet& scigraphics::axisSetCollection::at( axisPosition Position ) const
 {
   return ( const_cast<axisSetCollection*>(this) )->at(Position);
 }
 
 // ------------------------------------------------------------
       
-void graphics::axisSetCollection::setAxisNumberLimits( plotLimits::limitsXY *Limits )
+void scigraphics::axisSetCollection::setAxisNumberLimits( plotLimits::limitsXY *Limits )
 {
   if ( Limits == NULL )
     throw std::invalid_argument( "Limits pointer must be not NULL" );
@@ -245,7 +245,7 @@ void graphics::axisSetCollection::setAxisNumberLimits( plotLimits::limitsXY *Lim
 
 // ------------------------------------------------------------
       
-void graphics::axisSetCollection::drawGrid( painter &Painter )
+void scigraphics::axisSetCollection::drawGrid( painter &Painter )
 {
   at( Left ).drawGrid(Painter);
   at( Bottom ).drawGrid(Painter);
@@ -253,7 +253,7 @@ void graphics::axisSetCollection::drawGrid( painter &Painter )
 
 // ------------------------------------------------------------
 
-void graphics::axisSetCollection::drawAxis( painter &Painter )
+void scigraphics::axisSetCollection::drawAxis( painter &Painter )
 {
   for ( axis_iterator Axis = AxisSets.begin(); Axis != AxisSets.end(); ++Axis )
     (*Axis)->drawAxis(Painter);
@@ -261,7 +261,7 @@ void graphics::axisSetCollection::drawAxis( painter &Painter )
 
 // ------------------------------------------------------------
 
-void graphics::axisSetCollection::drawAxisTicks( painter &Painter )
+void scigraphics::axisSetCollection::drawAxisTicks( painter &Painter )
 {
   for ( axis_iterator Axis = AxisSets.begin(); Axis != AxisSets.end(); ++Axis )
     (*Axis)->drawAxisTicks(Painter);
@@ -269,7 +269,7 @@ void graphics::axisSetCollection::drawAxisTicks( painter &Painter )
 
 // ------------------------------------------------------------
 
-void graphics::axisSetCollection::drawAxisLabels( painter &Painter )
+void scigraphics::axisSetCollection::drawAxisLabels( painter &Painter )
 {
   for ( axis_iterator Axis = AxisSets.begin(); Axis != AxisSets.end(); ++Axis )
     (*Axis)->drawAxisLabels(Painter);
@@ -277,7 +277,7 @@ void graphics::axisSetCollection::drawAxisLabels( painter &Painter )
 
 // ------------------------------------------------------------
 
-void graphics::axisSetCollection::drawAxisTitles( painter &Painter )
+void scigraphics::axisSetCollection::drawAxisTitles( painter &Painter )
 {
   for ( axis_iterator Axis = AxisSets.begin(); Axis != AxisSets.end(); ++Axis )
     (*Axis)->drawAxisTitle(Painter);
@@ -285,7 +285,7 @@ void graphics::axisSetCollection::drawAxisTitles( painter &Painter )
 
 // ------------------------------------------------------------
 
-void graphics::axisSetCollection::applyScalesChanging( double Value, axisSet::direction Direction, void (*Operation)( scale *Scale, double Value ) )
+void scigraphics::axisSetCollection::applyScalesChanging( double Value, axisSet::direction Direction, void (*Operation)( scale *Scale, double Value ) )
 {
   if ( Operation == NULL )
     throw std::invalid_argument( "Operation pointer must be not NULL" );
@@ -305,28 +305,28 @@ void graphics::axisSetCollection::applyScalesChanging( double Value, axisSet::di
 
 // ------------------------------------------------------------
 
-void graphics::axisSetCollection::addScalesShift( double Shift, axisSet::direction Direction )
+void scigraphics::axisSetCollection::addScalesShift( double Shift, axisSet::direction Direction )
 {
   applyScalesChanging( Shift, Direction, scale::addScaleShift );
 }
 
 // ------------------------------------------------------------
 
-void graphics::axisSetCollection::mulScalesZoom( double Zoom, axisSet::direction Direction )
+void scigraphics::axisSetCollection::mulScalesZoom( double Zoom, axisSet::direction Direction )
 {
   applyScalesChanging( Zoom, Direction, scale::mulScaleZoom );
 }
 
 // ------------------------------------------------------------
 
-void graphics::axisSetCollection::resetScales( axisSet::direction Direction )
+void scigraphics::axisSetCollection::resetScales( axisSet::direction Direction )
 {
   applyScalesChanging( 0, Direction, scale::resetScale );
 }
 
 // ------------------------------------------------------------
 
-void graphics::axisSetCollection::resetAllScales()
+void scigraphics::axisSetCollection::resetAllScales()
 {
   applyScalesChanging( 0, axisSet::DirectionX, scale::resetScale );
   applyScalesChanging( 0, axisSet::DirectionY, scale::resetScale );
@@ -334,7 +334,7 @@ void graphics::axisSetCollection::resetAllScales()
 
 // ------------------------------------------------------------
 
-void graphics::axisSetCollection::resetScalesTo1x1( painter &Painter )
+void scigraphics::axisSetCollection::resetScalesTo1x1( painter &Painter )
 {
   resetAllScales();
 
@@ -358,7 +358,7 @@ void graphics::axisSetCollection::resetScalesTo1x1( painter &Painter )
 
 // ------------------------------------------------------------
       
-double graphics::axisSetCollection::minWPointsPerNPoints( painter &Painter ) const
+double scigraphics::axisSetCollection::minWPointsPerNPoints( painter &Painter ) const
 {
   double MinWPointsPerNPoints = 1e100;
   for ( axis_const_iterator a = AxisSets.begin(); a != AxisSets.end(); ++a )

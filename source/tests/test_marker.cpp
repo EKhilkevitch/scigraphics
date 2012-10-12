@@ -6,13 +6,13 @@
 
 // =========================================================
 
-CPPUNIT_TEST_SUITE_REGISTRATION( graphics::tests::test_markerLinear );
-CPPUNIT_TEST_SUITE_REGISTRATION( graphics::tests::test_markerLogPositive );
-CPPUNIT_TEST_SUITE_REGISTRATION( graphics::tests::test_markerLogNegative );
+CPPUNIT_TEST_SUITE_REGISTRATION( scigraphics::tests::test_markerLinear );
+CPPUNIT_TEST_SUITE_REGISTRATION( scigraphics::tests::test_markerLogPositive );
+CPPUNIT_TEST_SUITE_REGISTRATION( scigraphics::tests::test_markerLogNegative );
 
 // =========================================================
 
-void graphics::tests::test_markerLinear::marks()
+void scigraphics::tests::test_markerLinear::marks()
 {
   markerLinear Marker;
   Marker.setNumberOfMarks( 3, 7 );
@@ -51,7 +51,7 @@ void graphics::tests::test_markerLinear::marks()
 
 // =========================================================
 
-void graphics::tests::test_markerLogPositive::marks()
+void scigraphics::tests::test_markerLogPositive::marks()
 {
   markerLogarithmPositive Marker;
   
@@ -82,7 +82,7 @@ void graphics::tests::test_markerLogPositive::marks()
 
 // =========================================================
 
-void graphics::tests::test_markerLogNegative::marks()
+void scigraphics::tests::test_markerLogNegative::marks()
 {
   markerLogarithmNegative Marker;
   

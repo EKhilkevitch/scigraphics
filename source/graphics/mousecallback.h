@@ -5,7 +5,7 @@
 
 #include "graphics/mouse.h"
 
-namespace graphics
+namespace scigraphics
 {
 
 // ============================================================

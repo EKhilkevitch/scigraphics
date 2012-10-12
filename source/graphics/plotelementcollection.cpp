@@ -8,21 +8,21 @@
 
 // ============================================================
 
-const graphics::scale* graphics::plotElementsCollection::axisSetsPair::scaleX() const
+const scigraphics::scale* scigraphics::plotElementsCollection::axisSetsPair::scaleX() const
 { 
   return isZero() ? NULL : AxisX->getScale(); 
 } 
 
 // ------------------------------------------------------------
 
-const graphics::scale* graphics::plotElementsCollection::axisSetsPair::scaleY() const 
+const scigraphics::scale* scigraphics::plotElementsCollection::axisSetsPair::scaleY() const 
 { 
   return isZero() ? NULL : AxisY->getScale(); 
 } 
 
 // ------------------------------------------------------------
           
-graphics::pairScales graphics::plotElementsCollection::axisSetsPair::createPairScales() const
+scigraphics::pairScales scigraphics::plotElementsCollection::axisSetsPair::createPairScales() const
 {
   if ( isZero() )
     throw std::runtime_error("No scales for graphic");
@@ -38,7 +38,7 @@ graphics::pairScales graphics::plotElementsCollection::axisSetsPair::createPairS
 
 // ============================================================
 
-void graphics::plotElementsCollection::append( plotElement *PlotElement )
+void scigraphics::plotElementsCollection::append( plotElement *PlotElement )
 {
   if ( PlotElement == NULL )
     throw std::invalid_argument("Object must be not NULL");
@@ -57,7 +57,7 @@ void graphics::plotElementsCollection::append( plotElement *PlotElement )
 
 // ------------------------------------------------------------
 
-void graphics::plotElementsCollection::erase( plotElement *PlotElement )
+void scigraphics::plotElementsCollection::erase( plotElement *PlotElement )
 {
   plotElementList::iterator PlotIterator = std::find( PlotElementsList.begin(), PlotElementsList.end(), PlotElement );
   if ( PlotIterator == PlotElementsList.end() )
@@ -68,7 +68,7 @@ void graphics::plotElementsCollection::erase( plotElement *PlotElement )
 
 // ------------------------------------------------------------
       
-void graphics::plotElementsCollection::clear() 
+void scigraphics::plotElementsCollection::clear() 
 { 
   PlotElementsList.clear(); 
   AxisBindMap.clear(); 
@@ -76,14 +76,14 @@ void graphics::plotElementsCollection::clear()
 
 // ------------------------------------------------------------
       
-bool graphics::plotElementsCollection::exist( const plotElement *PlotElement ) const
+bool scigraphics::plotElementsCollection::exist( const plotElement *PlotElement ) const
 {
   return std::find( PlotElementsList.begin(), PlotElementsList.end(), PlotElement ) != PlotElementsList.end();
 }
 
 // ------------------------------------------------------------
 
-void graphics::plotElementsCollection::setDefaultAxisSets( const axisSet *X, const axisSet *Y ) 
+void scigraphics::plotElementsCollection::setDefaultAxisSets( const axisSet *X, const axisSet *Y ) 
 { 
   if ( X == NULL || Y == NULL )
     throw std::invalid_argument("Argument must be not NULL");
@@ -92,7 +92,7 @@ void graphics::plotElementsCollection::setDefaultAxisSets( const axisSet *X, con
 
 // ------------------------------------------------------------
 
-void graphics::plotElementsCollection::draw( painter &Painter ) const
+void scigraphics::plotElementsCollection::draw( painter &Painter ) const
 {
   for ( plotElementList::const_iterator p = PlotElementsList.begin(); p != PlotElementsList.end(); ++p )
   {
@@ -103,7 +103,7 @@ void graphics::plotElementsCollection::draw( painter &Painter ) const
 
 // ------------------------------------------------------------
 
-graphics::pairScales graphics::plotElementsCollection::getPairScales( const plotElement *PlotElement ) const
+scigraphics::pairScales scigraphics::plotElementsCollection::getPairScales( const plotElement *PlotElement ) const
 {
   const axisSetsPair *Axis = getAxisSetsPair( PlotElement );
   assert( Axis != NULL );
@@ -112,7 +112,7 @@ graphics::pairScales graphics::plotElementsCollection::getPairScales( const plot
 
 // ------------------------------------------------------------
 
-const graphics::plotElementsCollection::axisSetsPair* graphics::plotElementsCollection::getAxisSetsPair( const plotElement *PlotElement ) const
+const scigraphics::plotElementsCollection::axisSetsPair* scigraphics::plotElementsCollection::getAxisSetsPair( const plotElement *PlotElement ) const
 {
   axisBindMap::const_iterator Axis = AxisBindMap.find( PlotElement );
   return Axis == AxisBindMap.end() ? NULL : &( Axis->second );
@@ -120,7 +120,7 @@ const graphics::plotElementsCollection::axisSetsPair* graphics::plotElementsColl
 
 // ------------------------------------------------------------
 
-const graphics::scale* graphics::plotElementsCollection::graphScaleX( const plotElement *PlotElement ) const
+const scigraphics::scale* scigraphics::plotElementsCollection::graphScaleX( const plotElement *PlotElement ) const
 {
   const axisSetsPair *Axis = getAxisSetsPair( PlotElement );
   if ( Axis == NULL )
@@ -130,7 +130,7 @@ const graphics::scale* graphics::plotElementsCollection::graphScaleX( const plot
 
 // ------------------------------------------------------------
 
-const graphics::scale* graphics::plotElementsCollection::graphScaleY( const plotElement *PlotElement ) const
+const scigraphics::scale* scigraphics::plotElementsCollection::graphScaleY( const plotElement *PlotElement ) const
 {
   const axisSetsPair *Axis = getAxisSetsPair( PlotElement );
   if ( Axis == NULL )
@@ -140,7 +140,7 @@ const graphics::scale* graphics::plotElementsCollection::graphScaleY( const plot
 
 // ------------------------------------------------------------
 
-const graphics::axisSet* graphics::plotElementsCollection::graphAxisSetX( const plotElement *PlotElement ) const
+const scigraphics::axisSet* scigraphics::plotElementsCollection::graphAxisSetX( const plotElement *PlotElement ) const
 {
   const axisSetsPair *Axis = getAxisSetsPair( PlotElement );
   if ( Axis == NULL )
@@ -150,7 +150,7 @@ const graphics::axisSet* graphics::plotElementsCollection::graphAxisSetX( const 
 
 // ------------------------------------------------------------
 
-const graphics::axisSet* graphics::plotElementsCollection::graphAxisSetY( const plotElement *PlotElement ) const
+const scigraphics::axisSet* scigraphics::plotElementsCollection::graphAxisSetY( const plotElement *PlotElement ) const
 {
   const axisSetsPair *Axis = getAxisSetsPair( PlotElement );
   if ( Axis == NULL )
@@ -160,7 +160,7 @@ const graphics::axisSet* graphics::plotElementsCollection::graphAxisSetY( const 
 
 // ------------------------------------------------------------
 
-std::set< const graphics::axisSet* > graphics::plotElementsCollection::setOfGraphAxisSet() const
+std::set< const scigraphics::axisSet* > scigraphics::plotElementsCollection::setOfGraphAxisSet() const
 {
   std::set< const axisSet* > Result;
 
@@ -178,7 +178,7 @@ std::set< const graphics::axisSet* > graphics::plotElementsCollection::setOfGrap
 
 // ------------------------------------------------------------
       
-void graphics::plotElementsCollection::bindGraphToAxisSet( const plotElement *PlotElement, const axisSet *X, const axisSet *Y )
+void scigraphics::plotElementsCollection::bindGraphToAxisSet( const plotElement *PlotElement, const axisSet *X, const axisSet *Y )
 {
   if ( X == NULL || Y == NULL || PlotElement == NULL )
     throw std::invalid_argument("Argument must be not NULL");

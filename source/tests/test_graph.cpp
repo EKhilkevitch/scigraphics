@@ -11,11 +11,11 @@
 
 // =========================================================
 
-CPPUNIT_TEST_SUITE_REGISTRATION( graphics::tests::test_graphSequenceVector );
+CPPUNIT_TEST_SUITE_REGISTRATION( scigraphics::tests::test_graphSequenceVector );
 
 // =========================================================
 
-void graphics::tests::test_graphSequenceVector::getView()
+void scigraphics::tests::test_graphSequenceVector::getView()
 {
   graphSequenceVector Graph;
 
@@ -25,7 +25,7 @@ void graphics::tests::test_graphSequenceVector::getView()
 
 // ------------------------------------------------------------
 
-void graphics::tests::test_graphSequenceVector::setViewVisible()
+void scigraphics::tests::test_graphSequenceVector::setViewVisible()
 {
   graphSequenceVector Graph;
 
@@ -37,7 +37,7 @@ void graphics::tests::test_graphSequenceVector::setViewVisible()
 
 // ------------------------------------------------------------
 
-void graphics::tests::test_graphSequenceVector::isViewExist()
+void scigraphics::tests::test_graphSequenceVector::isViewExist()
 {
   graphSequenceVector Graph;
 
@@ -46,7 +46,7 @@ void graphics::tests::test_graphSequenceVector::isViewExist()
 
 // ------------------------------------------------------------
 
-void graphics::tests::test_graphSequenceVector::limitsX()
+void scigraphics::tests::test_graphSequenceVector::limitsX()
 {
   graphSequenceVector Graph;
   Graph.append( 0, 0 );
@@ -62,7 +62,7 @@ void graphics::tests::test_graphSequenceVector::limitsX()
 
 // ------------------------------------------------------------
 
-void graphics::tests::test_graphSequenceVector::limitsY()
+void scigraphics::tests::test_graphSequenceVector::limitsY()
 {
   graphSequenceVector Graph;
   Graph.append( 0, 0 );
@@ -75,7 +75,7 @@ void graphics::tests::test_graphSequenceVector::limitsY()
 
 // ------------------------------------------------------------
 
-void graphics::tests::test_graphSequenceVector::legend()
+void scigraphics::tests::test_graphSequenceVector::legend()
 {
   const std::string Legend = "Legend";
   graphSequenceVector Graph( Legend );

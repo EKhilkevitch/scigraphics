@@ -17,7 +17,7 @@
 
 // ============================================================
 
-void graphics::sprintfNumberStyle::fillBuffer( char *Buf, size_t Size, number Value )  const
+void scigraphics::sprintfNumberStyle::fillBuffer( char *Buf, size_t Size, number Value )  const
 { 
   assert( Buf != NULL );
   assert( Size > 0 );
@@ -27,7 +27,7 @@ void graphics::sprintfNumberStyle::fillBuffer( char *Buf, size_t Size, number Va
   
 // ------------------------------------------------------
       
-std::string graphics::sprintfNumberStyle::numberText( const number Number ) const
+std::string scigraphics::sprintfNumberStyle::numberText( const number Number ) const
 {
   char Buf[64];
   fillBuffer( Buf, sizeof(Buf), Number );

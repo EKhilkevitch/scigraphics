@@ -7,7 +7,7 @@
 
 // ============================================================
 
-unsigned graphics::drawer::numOfLinesInString( const std::string &String )
+unsigned scigraphics::drawer::numOfLinesInString( const std::string &String )
 {
   unsigned Count = 0;
   for ( std::string::const_iterator c = String.begin(); c != String.end(); ++c ) 
@@ -18,7 +18,7 @@ unsigned graphics::drawer::numOfLinesInString( const std::string &String )
 
 // ------------------------------------------------------------
 
-void graphics::drawer::eraseRectangle( const wrectangle& Rectangle )
+void scigraphics::drawer::eraseRectangle( const wrectangle& Rectangle )
 {
   color Color = color::White;
   brushStyle BrushStyle( Color );
@@ -29,14 +29,14 @@ void graphics::drawer::eraseRectangle( const wrectangle& Rectangle )
 
 // ------------------------------------------------------------
       
-graphics::wcoord graphics::drawer::textWidth( const std::string &Text, const textStyle &Style )       
+scigraphics::wcoord scigraphics::drawer::textWidth( const std::string &Text, const textStyle &Style )       
 { 
   return Text.length() * Style.getFontSize(); 
 }
 
 // ------------------------------------------------------------
 
-graphics::wcoord graphics::drawer::textHeight( const std::string &Text, const textStyle &Style )
+scigraphics::wcoord scigraphics::drawer::textHeight( const std::string &Text, const textStyle &Style )
 { 
   return Style.getFontSize() * numOfLinesInString(Text); 
 }

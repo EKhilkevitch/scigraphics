@@ -17,34 +17,34 @@ int main()
 {
   implot Plot( 900, 700 );
 
-  graphics::graphSequenceVector *Sqr = Plot.createGraphSequenceVector( "x^2" );
+  scigraphics::graphSequenceVector *Sqr = Plot.createGraphSequenceVector( "x^2" );
   
   for ( double x = -0.4; x <= 2; x+= 0.05 )
     Sqr->append( x, x*x, 0.5, std::sqrt(std::fabs(x)) );
   Sqr->setVisibleErrorBars(true);
 
-  graphics::graphSequenceVector *Sin = Plot.createGraphSequenceVector( "Sinus" );
+  scigraphics::graphSequenceVector *Sin = Plot.createGraphSequenceVector( "Sinus" );
   for ( double x = -M_PI; x <= M_PI; x+= 0.1 )
-    Sin->append( std::fabs(x) < 0.3 || x < -2.4 ? graphics::invalidNumber() : x, std::sin(x) );
+    Sin->append( std::fabs(x) < 0.3 || x < -2.4 ? scigraphics::invalidNumber() : x, std::sin(x) );
   Sin->setVisiblePoints(true);
   Sin->setVisibleLineHystogram(true);
   Sin->setVisibleLines(false);
 
-  graphics::graphSequenceVector *Abs = Plot.createGraphSequenceVector( "Abs" );
+  scigraphics::graphSequenceVector *Abs = Plot.createGraphSequenceVector( "Abs" );
   for ( double x = -1; x <= 1; x+= 0.1 )
     Abs->append( x, std::fabs(x) );
   Abs->setLineWidth( 10 );
-  graphics::color Color = graphics::color::Green;
+  scigraphics::color Color = scigraphics::color::Green;
   Color.setTransparency( 0.3 );
   Abs->setColor( Color );
-  Plot.bindGraphToAxis( Abs, graphics::axisSetCollection::Bottom, graphics::axisSetCollection::Right );
+  Plot.bindGraphToAxis( Abs, scigraphics::axisSetCollection::Bottom, scigraphics::axisSetCollection::Right );
   
-  graphics::graphSequenceVector *Cos = Plot.createGraphSequenceVector( "Cos+1" );
+  scigraphics::graphSequenceVector *Cos = Plot.createGraphSequenceVector( "Cos+1" );
   for ( double x = 0; x <= 3; x+= 0.1 )
     Cos->append( x, std::cos(x)+1 );
-  Plot.bindGraphToAxis( Cos, graphics::axisSetCollection::Top, graphics::axisSetCollection::Right );
+  Plot.bindGraphToAxis( Cos, scigraphics::axisSetCollection::Top, scigraphics::axisSetCollection::Right );
 
-  graphics::graphAreaVector *Polygons = Plot.createGraph<graphics::graphAreaVector>("Polygons");
+  scigraphics::graphAreaVector *Polygons = Plot.createGraph<scigraphics::graphAreaVector>("Polygons");
   Polygons->append( 0, 0 );
   Polygons->append( 0, 2 );
   Polygons->append( 2, 2 );
@@ -56,7 +56,7 @@ int main()
   Polygons->append( 3.1, 3.7 );
  
 #if 1
-  graphics::graphMapVector *Map = Plot.createGraph<graphics::graphMapVector>( "Map" );
+  scigraphics::graphMapVector *Map = Plot.createGraph<scigraphics::graphMapVector>( "Map" );
   Map->resize( 30, 30 );
   Map->setIntervalX( 2, 3 );
   Map->setIntervalY( 2, 3 );
@@ -72,12 +72,12 @@ int main()
   }
 #endif
 
-  Plot.setDisallowedMouseOperations( graphics::mouse::allowing::SelectH );
+  Plot.setDisallowedMouseOperations( scigraphics::mouse::allowing::SelectH );
   
-  Plot.setAxisTitle( graphics::axisSetCollection::Bottom, "This is axis X bottom" " -> \xce\xbc" );
-  Plot.setAxisTitle( graphics::axisSetCollection::Top, "This is axis X top" );
-  Plot.setAxisTitle( graphics::axisSetCollection::Left, "This is axis Y left" );
-  Plot.setAxisTitle( graphics::axisSetCollection::Right, "This is axis Y right" );
+  Plot.setAxisTitle( scigraphics::axisSetCollection::Bottom, "This is axis X bottom" " -> \xce\xbc" );
+  Plot.setAxisTitle( scigraphics::axisSetCollection::Top, "This is axis X top" );
+  Plot.setAxisTitle( scigraphics::axisSetCollection::Left, "This is axis Y left" );
+  Plot.setAxisTitle( scigraphics::axisSetCollection::Right, "This is axis Y right" );
 
   //Plot.display();
   Plot.write("TestIM.png");

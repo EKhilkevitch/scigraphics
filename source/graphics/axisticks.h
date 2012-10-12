@@ -6,7 +6,7 @@
 #include "graphics/linestyle.h"
 #include "graphics/scale.h"
 
-namespace graphics
+namespace scigraphics
 {
 
 // ============================================================

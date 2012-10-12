@@ -25,11 +25,11 @@ class qt4plotSettingsGroupBox : public QGroupBox
   Q_OBJECT
 
   protected:
-    static QString axisPositionString( graphics::axisSetCollection::axisPosition Axis );
+    static QString axisPositionString( scigraphics::axisSetCollection::axisPosition Axis );
 
   public:
     qt4plotSettingsGroupBox( const QString &Name = QString(), QWidget *Parent = NULL ) : QGroupBox(Name,Parent) {}
-    virtual void apply( graphics::settings & ) {}
+    virtual void apply( scigraphics::settings & ) {}
     virtual void saveSettings( QSettings* ) {}
     virtual void loadSettings( QSettings* ) {}
 
@@ -50,7 +50,7 @@ class qt4plotSettingsGroupSuperBox : public qt4plotSettingsGroupBox
   Q_OBJECT
 
   public:
-    typedef QList<graphics::axisSetCollection::axisPosition> axisPositionsList;
+    typedef QList<scigraphics::axisSetCollection::axisPosition> axisPositionsList;
     
     static axisPositionsList defaultAxisPositions();
 
@@ -62,14 +62,14 @@ class qt4plotSettingsGroupSuperBox : public qt4plotSettingsGroupBox
     void addToList( qt4plotSettingsGroupBox *B );
 
     virtual int numOfRowsInLayout() { return 0; }
-    virtual qt4plotSettingsGroupBox* createBoxForAxisPosition( graphics::axisSetCollection::axisPosition ) { return NULL; }
+    virtual qt4plotSettingsGroupBox* createBoxForAxisPosition( scigraphics::axisSetCollection::axisPosition ) { return NULL; }
 
     void init( const axisPositionsList &AxisPositions = defaultAxisPositions() );
 
   public:
     qt4plotSettingsGroupSuperBox( const QString &Name = QString(), QWidget *Parent = NULL ) : qt4plotSettingsGroupBox(Name,Parent) {}
 
-    void apply( graphics::settings &Settings );
+    void apply( scigraphics::settings &Settings );
     void saveSettings( QSettings* Settings );
     void loadSettings( QSettings* Settings );
   
@@ -84,18 +84,18 @@ class qt4plotSettingsScaleIntervals : public qt4plotSettingsGroupBox
   Q_OBJECT
 
   private:
-    graphics::axisSetCollection::axisPosition AxisType;
+    scigraphics::axisSetCollection::axisPosition AxisType;
 
     QCheckBox *ManualScaleBox;
     labelEdit *MinScaleEdit, *MaxScaleEdit;
 
   protected:
-    graphics::interval<graphics::number> getLimits() const;
+    scigraphics::interval<scigraphics::number> getLimits() const;
 
   public:
-    qt4plotSettingsScaleIntervals( const graphics::axisSetCollection::axisPosition Axis, QWidget *Parent = NULL );
+    qt4plotSettingsScaleIntervals( const scigraphics::axisSetCollection::axisPosition Axis, QWidget *Parent = NULL );
     
-    void apply( graphics::settings &Settings ) { Settings.setLimits(getLimits(),AxisType); }
+    void apply( scigraphics::settings &Settings ) { Settings.setLimits(getLimits(),AxisType); }
     void saveSettings( QSettings* );
     void loadSettings( QSettings* );
   
@@ -111,7 +111,7 @@ class qt4plotSettingsScaleIntervalsAllAxis : public qt4plotSettingsGroupSuperBox
 
   protected:
     int numOfRowsInLayout() { return 2; }
-    qt4plotSettingsGroupBox* createBoxForAxisPosition( graphics::axisSetCollection::axisPosition Pos ) { return new qt4plotSettingsScaleIntervals(Pos,this); }
+    qt4plotSettingsGroupBox* createBoxForAxisPosition( scigraphics::axisSetCollection::axisPosition Pos ) { return new qt4plotSettingsScaleIntervals(Pos,this); }
     static QString name() { return "Scale intervals"; }
 
   public:
@@ -138,7 +138,7 @@ class qt4plotSettingsGraphType : public qt4plotSettingsGroupBox
   public:
     qt4plotSettingsGraphType( QWidget *Parent = NULL );
 
-    void apply( graphics::settings &Settings ) { Settings.setGraphType(getGraphType()); }
+    void apply( scigraphics::settings &Settings ) { Settings.setGraphType(getGraphType()); }
 
     void showLineHystogramControl( bool S );
     void showErrorBarsControl( bool S );
@@ -154,17 +154,17 @@ class qt4plotSettingsScaleType : public qt4plotSettingsGroupBox
   Q_OBJECT
 
   private:
-    graphics::axisSetCollection::axisPosition AxisType;
+    scigraphics::axisSetCollection::axisPosition AxisType;
 
     QRadioButton *LinearBtn, *LogarithmPositiveBtn, *LogarithmNegativeBtn, *SquareBtn;
 
   protected:
-    graphics::settings::scaleType getScaleType() const;
+    scigraphics::settings::scaleType getScaleType() const;
 
   public:
-    qt4plotSettingsScaleType( const graphics::axisSetCollection::axisPosition Axis, QWidget *Parent = NULL );
+    qt4plotSettingsScaleType( const scigraphics::axisSetCollection::axisPosition Axis, QWidget *Parent = NULL );
     
-    void apply( graphics::settings &Settings ) { Settings.setScaleType(getScaleType(),AxisType); }
+    void apply( scigraphics::settings &Settings ) { Settings.setScaleType(getScaleType(),AxisType); }
     
     void saveSettings( QSettings* Settings );
     void loadSettings( QSettings* Settings );
@@ -178,7 +178,7 @@ class qt4plotSettingsScaleTypeAllAxis : public qt4plotSettingsGroupSuperBox
 
   protected:
     int numOfRowsInLayout() { return 1; }
-    qt4plotSettingsGroupBox* createBoxForAxisPosition( graphics::axisSetCollection::axisPosition Pos ) { return new qt4plotSettingsScaleType(Pos,this); }
+    qt4plotSettingsGroupBox* createBoxForAxisPosition( scigraphics::axisSetCollection::axisPosition Pos ) { return new qt4plotSettingsScaleType(Pos,this); }
     static QString name() { return "Scale types"; }
 
   public:
@@ -199,12 +199,12 @@ class qt4plotSettingsSelections : public qt4plotSettingsGroupBox
     labelEdit *MinValueEdit, *MaxValueEdit;
 
   private:
-    graphics::selectionStrip* getFirstStripSelection( graphics::plot *Plot );
+    scigraphics::selectionStrip* getFirstStripSelection( scigraphics::plot *Plot );
 
   public:
     qt4plotSettingsSelections( QWidget *Parent = NULL );
 
-    void apply( graphics::settings & );
+    void apply( scigraphics::settings & );
     
     void saveSettings( QSettings* ) {}
     void loadSettings( QSettings* ) {}
@@ -286,7 +286,7 @@ class qt4plotSettingsComposerTabs : public qt4plotSettingsComposer
 
 // ================================================================
 
-class qt4plotSettings : public QWidget, public graphics::settings
+class qt4plotSettings : public QWidget, public scigraphics::settings
 {
   Q_OBJECT
 

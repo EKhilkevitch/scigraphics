@@ -70,7 +70,7 @@ class qt4plotView : public QGraphicsView
 
 // ----------------------------------------------------------------
 
-class drawerQt : public graphics::drawer
+class drawerQt : public scigraphics::drawer
 {
   private:
     QWidget *const Parent;
@@ -82,28 +82,28 @@ class drawerQt : public graphics::drawer
     QPixmap *PlotPixmap;
 
   public:
-    static QColor colorQt( const graphics::color& Color )         { return QColor( Color.red(), Color.green(), Color.blue(), 0xFF - Color.transparency() ); }
-    static QPoint pointQt( const graphics::wpoint& Point )        { return QPoint(Point.x(),Point.y()); }
-    static QRect  rectangleQt( const graphics::wrectangle& Rect );
-    static QPen   penQt( const graphics::lineStyle& Style );
-    static QFont  fontQt( const graphics::textStyle &Style );
-    static QBrush brushQt( const graphics::brushStyle &Style );
-    static QPolygon polygonQt( const std::vector<graphics::wpoint> &Points );
+    static QColor colorQt( const scigraphics::color& Color )         { return QColor( Color.red(), Color.green(), Color.blue(), 0xFF - Color.transparency() ); }
+    static QPoint pointQt( const scigraphics::wpoint& Point )        { return QPoint(Point.x(),Point.y()); }
+    static QRect  rectangleQt( const scigraphics::wrectangle& Rect );
+    static QPen   penQt( const scigraphics::lineStyle& Style );
+    static QFont  fontQt( const scigraphics::textStyle &Style );
+    static QBrush brushQt( const scigraphics::brushStyle &Style );
+    static QPolygon polygonQt( const std::vector<scigraphics::wpoint> &Points );
    
   public:
-    void drawLine( const graphics::wpoint &A, const graphics::wpoint &B, const graphics::lineStyle &Style );
-    void drawRectangle( const graphics::wrectangle& Rectangle, const graphics::brushStyle& BrushStyle, const graphics::lineStyle &LineStyle );
-    void drawPolygon( const std::vector<graphics::wpoint> &Points, const graphics::brushStyle& BrushStyle );
-    void drawText( const std::string &Text, const graphics::wrectangle& Rectangle, const graphics::textStyle &Style, double RotAngle );
-    void eraseRectangle( const graphics::wrectangle& Rectangle );
+    void drawLine( const scigraphics::wpoint &A, const scigraphics::wpoint &B, const scigraphics::lineStyle &Style );
+    void drawRectangle( const scigraphics::wrectangle& Rectangle, const scigraphics::brushStyle& BrushStyle, const scigraphics::lineStyle &LineStyle );
+    void drawPolygon( const std::vector<scigraphics::wpoint> &Points, const scigraphics::brushStyle& BrushStyle );
+    void drawText( const std::string &Text, const scigraphics::wrectangle& Rectangle, const scigraphics::textStyle &Style, double RotAngle );
+    void eraseRectangle( const scigraphics::wrectangle& Rectangle );
     void eraseAll();
     void flush();
 
-    graphics::wcoord textWidth( const std::string &Text, const graphics::textStyle &Style );
-    graphics::wcoord textHeight( const std::string &Text, const graphics::textStyle &Style );
+    scigraphics::wcoord textWidth( const std::string &Text, const scigraphics::textStyle &Style );
+    scigraphics::wcoord textHeight( const std::string &Text, const scigraphics::textStyle &Style );
     
-    graphics::wcoord width()  const { return Scene == NULL ? 0 : Scene->width(); };
-    graphics::wcoord height() const { return Scene == NULL ? 0 : Scene->height(); };
+    scigraphics::wcoord width()  const { return Scene == NULL ? 0 : Scene->width(); };
+    scigraphics::wcoord height() const { return Scene == NULL ? 0 : Scene->height(); };
 
   public:
     drawerQt( QWidget *Parent );
@@ -115,25 +115,25 @@ class drawerQt : public graphics::drawer
 
 // ----------------------------------------------------------------
 
-class qt4plotMouseCallBack : public graphics::mouseCallBack
+class qt4plotMouseCallBack : public scigraphics::mouseCallBack
 {
   protected:
     qt4plot& getQt4Plot(); 
     
-    static bool isSelectionMouseAction( graphics::mouse::mouseActionHandler* );
+    static bool isSelectionMouseAction( scigraphics::mouse::mouseActionHandler* );
 
   public:
     qt4plotMouseCallBack( qt4plot &Plot );
 
-    void onPressed( graphics::mouse::mouseActionHandler* );
-    void onMoved( graphics::mouse::mouseActionHandler* );
-    void onRelease( graphics::mouse::mouseActionHandler* );
-    void onWheel( graphics::mouse::mouseWheelHandler* );
+    void onPressed( scigraphics::mouse::mouseActionHandler* );
+    void onMoved( scigraphics::mouse::mouseActionHandler* );
+    void onRelease( scigraphics::mouse::mouseActionHandler* );
+    void onWheel( scigraphics::mouse::mouseWheelHandler* );
 };
 
 // ----------------------------------------------------------------
 
-class qt4plot : public QWidget, public graphics::plot
+class qt4plot : public QWidget, public scigraphics::plot
 {
   Q_OBJECT
 
@@ -150,8 +150,8 @@ class qt4plot : public QWidget, public graphics::plot
     static unsigned plotMouseModifiers( Qt::KeyboardModifiers Modifiers );
     static unsigned plotMouseButtons( const QMouseEvent *Event );
     static unsigned plotMouseButtons( QWheelEvent *Event ) { return plotMouseModifiers(Event->modifiers()); }
-    static graphics::wpoint plotMousePoisition( const QMouseEvent *Event );
-    static graphics::wpoint plotMousePoisition( const QWheelEvent *Event );
+    static scigraphics::wpoint plotMousePoisition( const QMouseEvent *Event );
+    static scigraphics::wpoint plotMousePoisition( const QWheelEvent *Event );
 
     static QPixmap createTranspPixmap( const int Width, const int Height );
     

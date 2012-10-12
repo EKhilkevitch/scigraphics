@@ -10,21 +10,21 @@
 
 // ============================================================
       
-graphics::number graphics::marker::baseOrder( number Value )
+scigraphics::number scigraphics::marker::baseOrder( number Value )
 { 
   return std::floor( std::log10( Value ) ); 
 }
 
 // ------------------------------------------------------------
 
-graphics::number graphics::marker::epsilonForInterval( interval<number> Interval )
+scigraphics::number scigraphics::marker::epsilonForInterval( interval<number> Interval )
 {
   return std::numeric_limits<number>::epsilon() * Interval.distance() * 3;
 }
 
 // ------------------------------------------------------------
 
-bool graphics::marker::inInterval( number Value, interval<number> Interval )
+bool scigraphics::marker::inInterval( number Value, interval<number> Interval )
 {
   number Epsilon = 3*epsilonForInterval(Interval);
   interval<number> ExtendedInterval( Interval.min() - Epsilon, Interval.max() + Epsilon );
@@ -33,18 +33,18 @@ bool graphics::marker::inInterval( number Value, interval<number> Interval )
 
 // ------------------------------------------------------------
 
-bool graphics::marker::vectorInMarkLimits( const std::vector<number> &Marks ) const
+bool scigraphics::marker::vectorInMarkLimits( const std::vector<number> &Marks ) const
 {
   return numberOfMarks().inInterval( Marks.size() );
 }
 
 // ============================================================
       
-std::vector<graphics::number> graphics::markerLinear::marksWithStep( const interval<number> Interval, number Step ) const
+std::vector<scigraphics::number> scigraphics::markerLinear::marksWithStep( const interval<number> Interval, number Step ) const
 {
   assert( Step > 0 );
 
-  std::vector<graphics::number> Result;
+  std::vector<scigraphics::number> Result;
   
   number MinValue = std::ceil( Interval.min() / Step - 1.0 ) * Step;
   number MaxValue = Interval.max() + 2*Step;
@@ -71,7 +71,7 @@ std::vector<graphics::number> graphics::markerLinear::marksWithStep( const inter
 
 // ------------------------------------------------------------
 
-std::vector<graphics::number> graphics::markerLinear::marksWithStepVector( const interval<number> Interval, const number Steps[] ) const
+std::vector<scigraphics::number> scigraphics::markerLinear::marksWithStepVector( const interval<number> Interval, const number Steps[] ) const
 {
   assert( Steps != NULL );
   
@@ -92,7 +92,7 @@ std::vector<graphics::number> graphics::markerLinear::marksWithStepVector( const
 
 // ------------------------------------------------------------
 
-std::vector<graphics::number> graphics::markerLinear::marks( const interval<number> Interval ) const 
+std::vector<scigraphics::number> scigraphics::markerLinear::marks( const interval<number> Interval ) const 
 { 
   std::vector<number> Result;
 
@@ -108,7 +108,7 @@ std::vector<graphics::number> graphics::markerLinear::marks( const interval<numb
 
 // ============================================================
 
-std::vector<graphics::number> graphics::markerLogarithm::marksInPositiveInterval( const interval<number> Interval ) const
+std::vector<scigraphics::number> scigraphics::markerLogarithm::marksInPositiveInterval( const interval<number> Interval ) const
 {
   assert( Interval.min() > 0 );
   assert( Interval.max() > 0 );
@@ -145,12 +145,12 @@ std::vector<graphics::number> graphics::markerLogarithm::marksInPositiveInterval
 
 // ------------------------------------------------------------
       
-std::vector<graphics::number> graphics::markerLogarithm::marksWithSteps( const interval<number> Interval, const number Steps[], number OrderStep ) const
+std::vector<scigraphics::number> scigraphics::markerLogarithm::marksWithSteps( const interval<number> Interval, const number Steps[], number OrderStep ) const
 {
   assert( Steps != NULL );
   assert( OrderStep > 1 );
   
-  std::vector<graphics::number> Result;
+  std::vector<scigraphics::number> Result;
 
   for ( number Order  = std::pow( 10, baseOrder( Interval.min() ) - 2.0 ); Order <= Interval.max(); Order *= OrderStep )
   {
@@ -167,7 +167,7 @@ std::vector<graphics::number> graphics::markerLogarithm::marksWithSteps( const i
 
 // ============================================================
 
-std::vector<graphics::number> graphics::markerLogarithmPositive::marks( const interval<number> Interval ) const
+std::vector<scigraphics::number> scigraphics::markerLogarithmPositive::marks( const interval<number> Interval ) const
 {
   if ( Interval.max() <= 0 )
     return marks( interval<number>(0.1,1) );
@@ -178,7 +178,7 @@ std::vector<graphics::number> graphics::markerLogarithmPositive::marks( const in
 
 // ============================================================
 
-std::vector<graphics::number> graphics::markerLogarithmNegative::marks( const interval<number> Interval ) const
+std::vector<scigraphics::number> scigraphics::markerLogarithmNegative::marks( const interval<number> Interval ) const
 {
   std::vector<number> Result;
   if ( Interval.min() >= 0 )

@@ -7,7 +7,7 @@
 #include <list>
 #include <stdexcept>
 
-namespace graphics 
+namespace scigraphics 
 {
 
 // ============================================================

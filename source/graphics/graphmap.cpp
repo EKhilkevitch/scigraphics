@@ -9,7 +9,7 @@
 
 // ============================================================
 
-graphics::graphMap::graphMap( const std::string &Legend ) : 
+scigraphics::graphMap::graphMap( const std::string &Legend ) : 
   View(NULL),
   Data(NULL)
 {
@@ -18,14 +18,14 @@ graphics::graphMap::graphMap( const std::string &Legend ) :
 
 // ------------------------------------------------------------
 
-graphics::graphMap::~graphMap()
+scigraphics::graphMap::~graphMap()
 {
   delete Data;
 }
 
 // ------------------------------------------------------------
 
-void graphics::graphMap::init()
+void scigraphics::graphMap::init()
 {
   assert( Data == NULL );
   assert( View == NULL );
@@ -41,7 +41,7 @@ void graphics::graphMap::init()
 
 // ------------------------------------------------------------
 
-void graphics::graphMap::draw( painter &Painter, const pairScales& Scales ) const
+void scigraphics::graphMap::draw( painter &Painter, const pairScales& Scales ) const
 {
   assert( View != NULL );
   assert( Data != NULL );
@@ -51,7 +51,7 @@ void graphics::graphMap::draw( painter &Painter, const pairScales& Scales ) cons
 
 // ------------------------------------------------------------
 
-void graphics::graphMap::drawLegendExample( painter &Painter, const wrectangle &Rectangle ) const
+void scigraphics::graphMap::drawLegendExample( painter &Painter, const wrectangle &Rectangle ) const
 {
   assert( View != NULL );
   assert( Data != NULL );
@@ -61,7 +61,7 @@ void graphics::graphMap::drawLegendExample( painter &Painter, const wrectangle &
       
 // ------------------------------------------------------------
 
-graphics::wcoord graphics::graphMap::legendExampleWidth()  const
+scigraphics::wcoord scigraphics::graphMap::legendExampleWidth()  const
 {
   assert( View != NULL );
   return View->legendExampleWidth();
@@ -69,7 +69,7 @@ graphics::wcoord graphics::graphMap::legendExampleWidth()  const
 
 // ------------------------------------------------------------
 
-graphics::wcoord graphics::graphMap::legendExampleHeight() const
+scigraphics::wcoord scigraphics::graphMap::legendExampleHeight() const
 {
   assert( View != NULL );
   return View->legendExampleHeight();

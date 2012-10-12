@@ -11,7 +11,7 @@
 #include <typeinfo>
 
 
-namespace graphics
+namespace scigraphics
 {
 
 // ============================================================
