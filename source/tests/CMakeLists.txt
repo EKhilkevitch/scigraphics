@@ -24,7 +24,7 @@ include_directories( "${PROJECT_SOURCE_DIR}/../graphics/" )
 
 if ( UNIX )
   add_executable( selfTest ${tests_source_files} )
-  target_link_libraries( selfTest cppunit graphics )
+  target_link_libraries( selfTest cppunit scigraphics )
   set_target_properties( selfTest PROPERTIES COMPILE_FLAGS "-std=c++0x")
 endif()
 

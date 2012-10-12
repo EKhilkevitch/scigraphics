@@ -20,6 +20,6 @@ set( moc_headers
 
 qt4_wrap_cpp( moc_sources ${moc_headers} )
 
-add_library( graphicsQt ${library_type} ${graphics_qt_source_files} ${moc_sources} )
-target_link_libraries( graphicsQt ${QT_LIBRARIES} graphics )
+add_library( scigraphicsQt ${library_type} ${graphics_qt_source_files} ${moc_sources} )
+target_link_libraries( scigraphicsQt ${QT_LIBRARIES} scigraphics )
 

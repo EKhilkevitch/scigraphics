@@ -38,5 +38,5 @@ set( graphics_source_files
         settings.cpp
    )
 
-add_library( graphics ${library_type} ${graphics_source_files} )
+add_library( scigraphics ${library_type} ${graphics_source_files} )
 
