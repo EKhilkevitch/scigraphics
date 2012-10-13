@@ -3,9 +3,9 @@
 
 // ============================================================
 
-#include "graphics/plotelement.h"
-#include "graphics/numlimits.h"
-#include "graphics/painter.h"
+#include "scigraphics/plotelement.h"
+#include "scigraphics/numlimits.h"
+#include "scigraphics/painter.h"
 
 #include <string>
 

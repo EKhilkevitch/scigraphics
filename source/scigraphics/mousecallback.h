@@ -3,7 +3,7 @@
 
 #include <cassert>
 
-#include "graphics/mouse.h"
+#include "scigraphics/mouse.h"
 
 namespace scigraphics
 {

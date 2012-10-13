@@ -1,7 +1,7 @@
 
 // ============================================================
 
-#include "graphics/axisticks.h"
+#include "scigraphics/axisticks.h"
 
 #include <cstdio>
 #include <iostream>

@@ -1,7 +1,7 @@
 
 // ============================================================
 
-#include "graphics/plot.h"
+#include "scigraphics/plot.h"
 
 #include <stdexcept>
 #include <iostream>

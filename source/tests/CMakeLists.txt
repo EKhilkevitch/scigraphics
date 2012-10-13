@@ -20,7 +20,7 @@ set ( tests_source_files
 set( CMAKE_CXX_COMPILER "icpc" )
 set( CMAKE_C_COMPILER "icc" )
 
-include_directories( "${PROJECT_SOURCE_DIR}/../graphics/" )
+include_directories( "${PROJECT_SOURCE_DIR}/../scigraphics/" )
 
 if ( UNIX )
   add_executable( selfTest ${tests_source_files} )

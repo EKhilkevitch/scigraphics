@@ -1,7 +1,7 @@
 
 // ============================================================
 
-#include "graphics/datamap.h"
+#include "scigraphics/datamap.h"
 
 #include <limits>
 #include <cmath>

@@ -3,8 +3,8 @@
 
 // ============================================================
 
-#include "graphics/graph.h"
-#include "graphics/plotelementcollection.h"
+#include "scigraphics/graph.h"
+#include "scigraphics/plotelementcollection.h"
 
 #if _WIN32
   #pragma warning(1 : 4519)

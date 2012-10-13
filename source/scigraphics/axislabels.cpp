@@ -1,7 +1,7 @@
 
 // ============================================================
 
-#include "graphics/axislabels.h"
+#include "scigraphics/axislabels.h"
 
 #include <cstdio>
 #include <iostream>

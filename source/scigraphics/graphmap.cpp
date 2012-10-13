@@ -1,7 +1,7 @@
 
 // ============================================================
 
-#include "graphics/graphmap.h"
+#include "scigraphics/graphmap.h"
 
 #include <cassert>
 #include <iostream>

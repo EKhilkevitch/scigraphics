@@ -3,9 +3,9 @@
 
 // ============================================================
 
-#include "graphics/numbers.h"
-#include "graphics/numlimits.h"
-#include "graphics/graphcollection.h"
+#include "scigraphics/numbers.h"
+#include "scigraphics/numlimits.h"
+#include "scigraphics/graphcollection.h"
 
 #include <map>
 

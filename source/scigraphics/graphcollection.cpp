@@ -1,7 +1,7 @@
 
 // ============================================================
 
-#include "graphics/graphcollection.h"
+#include "scigraphics/graphcollection.h"
 
 // ============================================================
 

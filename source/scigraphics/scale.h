@@ -3,10 +3,10 @@
 
 // ============================================================
 
-#include "graphics/numbers.h"
-#include "graphics/numlimits.h"
-#include "graphics/geometry.h"
-#include "graphics/marker.h"
+#include "scigraphics/numbers.h"
+#include "scigraphics/numlimits.h"
+#include "scigraphics/geometry.h"
+#include "scigraphics/marker.h"
 
 // ============================================================
 

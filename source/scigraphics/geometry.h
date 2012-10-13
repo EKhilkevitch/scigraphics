@@ -5,7 +5,7 @@
 
 // ============================================================
 
-#include "graphics/numbers.h"
+#include "scigraphics/numbers.h"
 #include <algorithm>
 #include <ostream>
 

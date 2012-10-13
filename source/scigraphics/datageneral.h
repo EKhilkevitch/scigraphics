@@ -1,7 +1,7 @@
 
 #pragma once
 
-#include "graphics/numlimits.h"
+#include "scigraphics/numlimits.h"
 
 #include <iostream>
 #include <algorithm>

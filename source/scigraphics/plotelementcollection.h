@@ -3,9 +3,9 @@
 
 // ============================================================
 
-#include "graphics/plotelement.h"
-#include "graphics/container_ptr.h"
-#include "graphics/scale.h"
+#include "scigraphics/plotelement.h"
+#include "scigraphics/container_ptr.h"
+#include "scigraphics/scale.h"
 
 #include <list>
 #include <map>

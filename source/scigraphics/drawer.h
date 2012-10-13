@@ -1,11 +1,11 @@
 
 #pragma once
 
-#include "graphics/numbers.h"
-#include "graphics/geometry.h"
-#include "graphics/linestyle.h"
-#include "graphics/brushstyle.h"
-#include "graphics/textstyle.h"
+#include "scigraphics/numbers.h"
+#include "scigraphics/geometry.h"
+#include "scigraphics/linestyle.h"
+#include "scigraphics/brushstyle.h"
+#include "scigraphics/textstyle.h"
 
 #include <string>
 #include <vector>

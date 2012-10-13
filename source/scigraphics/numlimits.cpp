@@ -1,7 +1,7 @@
 
 // ============================================================
 
-#include "graphics/numlimits.h"
+#include "scigraphics/numlimits.h"
 #include <cassert>
 #include <stdexcept>
 

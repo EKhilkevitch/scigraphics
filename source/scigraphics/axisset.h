@@ -3,15 +3,15 @@
 
 // ============================================================
 
-#include "graphics/axis.h"
-#include "graphics/axislabels.h"
-#include "graphics/axisticks.h"
-#include "graphics/axistitle.h"
-#include "graphics/grid.h"
-#include "graphics/scale.h"
-#include "graphics/painter.h"
-#include "graphics/container_ptr.h"
-#include "graphics/plotlimits.h"
+#include "scigraphics/axis.h"
+#include "scigraphics/axislabels.h"
+#include "scigraphics/axisticks.h"
+#include "scigraphics/axistitle.h"
+#include "scigraphics/grid.h"
+#include "scigraphics/scale.h"
+#include "scigraphics/painter.h"
+#include "scigraphics/container_ptr.h"
+#include "scigraphics/plotlimits.h"
 
 #include <vector>
 #include <algorithm>

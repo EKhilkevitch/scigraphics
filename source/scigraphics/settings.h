@@ -1,7 +1,7 @@
 
 #pragma once
 
-#include "graphics/plot.h"
+#include "scigraphics/plot.h"
 
 namespace scigraphics
 {

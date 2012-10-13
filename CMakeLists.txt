@@ -15,9 +15,9 @@ else()
   set( library_type SHARED )
 endif()
 
-add_subdirectory( ./source/graphics/ )
-add_subdirectory( ./source/graphics/qt4/ )
-add_subdirectory( ./source/graphics/imagemagick/ )
+add_subdirectory( ./source/scigraphics/ )
+add_subdirectory( ./source/scigraphics/qt4/ )
+add_subdirectory( ./source/scigraphics/imagemagick/ )
 add_subdirectory( ./source/example/ )
 add_subdirectory( ./source/tests/ )
 

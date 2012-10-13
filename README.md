@@ -19,3 +19,9 @@ Building
 You need cmake program for building. Run build.sh on Linux platform or build.bat on Windows (you need MSVC). Tests are based on CppUnit framework and not necessary for library.
 
 
+Author
+=====================
+Evgeniy Khilkevitch,
+e-mail evgeniy-hila@yandex.ru
+
+

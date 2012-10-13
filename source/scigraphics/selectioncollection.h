@@ -3,9 +3,9 @@
 
 // ============================================================
 
-#include "graphics/selection.h"
-#include "graphics/plotelementcollection.h"
-#include "graphics/painter.h"
+#include "scigraphics/selection.h"
+#include "scigraphics/plotelementcollection.h"
+#include "scigraphics/painter.h"
 
 // ============================================================
 

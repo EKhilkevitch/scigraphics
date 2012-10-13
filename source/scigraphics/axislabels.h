@@ -1,11 +1,11 @@
 
 #pragma once
 
-#include "graphics/numbers.h"
-#include "graphics/painter.h"
-#include "graphics/textstyle.h"
-#include "graphics/numberstyle.h"
-#include "graphics/scale.h"
+#include "scigraphics/numbers.h"
+#include "scigraphics/painter.h"
+#include "scigraphics/textstyle.h"
+#include "scigraphics/numberstyle.h"
+#include "scigraphics/scale.h"
 
 namespace scigraphics
 {

@@ -1,8 +1,8 @@
 
 #pragma once
 
-#include "graphics/color.h"
-#include "graphics/linestyle.h"
+#include "scigraphics/color.h"
+#include "scigraphics/linestyle.h"
 
 namespace scigraphics
 {

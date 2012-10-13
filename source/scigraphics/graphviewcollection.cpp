@@ -1,7 +1,7 @@
 
 // ============================================================
 
-#include "graphics/graphviewcollection.h"
+#include "scigraphics/graphviewcollection.h"
 
 #include <iostream>
 #include <cmath>

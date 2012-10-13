@@ -3,9 +3,9 @@
 
 // ============================================================
 
-#include "graphics/graph.h"
-#include "graphics/graphviewmap.h"
-#include "graphics/datamap.h"
+#include "scigraphics/graph.h"
+#include "scigraphics/graphviewmap.h"
+#include "scigraphics/datamap.h"
 
 #include <string>
 

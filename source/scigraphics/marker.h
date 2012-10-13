@@ -3,8 +3,8 @@
 
 // ============================================================
 
-#include "graphics/numbers.h"
-#include "graphics/numlimits.h"
+#include "scigraphics/numbers.h"
+#include "scigraphics/numlimits.h"
 
 #include <vector>
 

@@ -5,7 +5,7 @@
 #  define _CRT_SECURE_NO_WARNINGS 1
 #endif
 
-#include "graphics/numberstyle.h"
+#include "scigraphics/numberstyle.h"
 
 #include <cstdio>
 #include <string>

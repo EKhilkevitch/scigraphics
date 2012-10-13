@@ -3,9 +3,9 @@
 
 // ============================================================
 
-#include "graphics/plot.h"
-#include "graphics/color.h"
-#include "graphics/drawer.h"
+#include "scigraphics/plot.h"
+#include "scigraphics/color.h"
+#include "scigraphics/drawer.h"
 
 #include <QLabel>
 #include <QWidget>

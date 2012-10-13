@@ -1,8 +1,8 @@
 
 // ============================================================
 
-#include "graphics/scale.h"
-#include "graphics/painter.h"
+#include "scigraphics/scale.h"
+#include "scigraphics/painter.h"
 
 #include <cmath>
 #include <algorithm>

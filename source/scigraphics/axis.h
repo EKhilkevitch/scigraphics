@@ -1,9 +1,9 @@
 
 #pragma once
 
-#include "graphics/numbers.h"
-#include "graphics/linestyle.h"
-#include "graphics/painter.h"
+#include "scigraphics/numbers.h"
+#include "scigraphics/linestyle.h"
+#include "scigraphics/painter.h"
 
 namespace scigraphics
 {

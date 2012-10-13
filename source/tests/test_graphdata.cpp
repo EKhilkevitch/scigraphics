@@ -2,8 +2,8 @@
 // =========================================================
 
 #include "test_graphdata.h"
-#include "graphics/datasequence.h"
-#include "graphics/datamap.h"
+#include "scigraphics/datasequence.h"
+#include "scigraphics/datamap.h"
 
 #include <algorithm>
 #include <cstring>

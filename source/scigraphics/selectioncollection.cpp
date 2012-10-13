@@ -1,7 +1,7 @@
 
 // ============================================================
 
-#include "graphics/selectioncollection.h"
+#include "scigraphics/selectioncollection.h"
 
 // ============================================================
       

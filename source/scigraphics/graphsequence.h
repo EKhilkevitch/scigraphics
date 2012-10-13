@@ -3,9 +3,9 @@
 
 // ============================================================
 
-#include "graphics/graph.h"
-#include "graphics/graphviewcollection.h"
-#include "graphics/datasequence.h"
+#include "scigraphics/graph.h"
+#include "scigraphics/graphviewcollection.h"
+#include "scigraphics/datasequence.h"
 
 // ============================================================
 

@@ -1,7 +1,7 @@
 
 // ============================================================
 
-#include "graphics/drawer.h"
+#include "scigraphics/drawer.h"
 
 #include <cassert>
 

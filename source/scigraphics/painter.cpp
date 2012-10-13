@@ -1,7 +1,7 @@
 
 // ============================================================
 
-#include "graphics/painter.h"
+#include "scigraphics/painter.h"
 
 #include <iostream>
 #include <cassert>

@@ -5,8 +5,8 @@
 #include <QtGui>
 #include <cmath>
 
-#include "graphics/plot.h"
-#include "graphics/qt4/qt4plot.h"
+#include "scigraphics/plot.h"
+#include "scigraphics/qt4/qt4plot.h"
 
 // ======================================================
 

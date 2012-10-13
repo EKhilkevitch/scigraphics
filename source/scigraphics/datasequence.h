@@ -1,9 +1,9 @@
 
 #pragma once
 
-#include "graphics/numbers.h"
-#include "graphics/numlimits.h"
-#include "graphics/datageneral.h"
+#include "scigraphics/numbers.h"
+#include "scigraphics/numlimits.h"
+#include "scigraphics/datageneral.h"
 
 #include <vector>
 

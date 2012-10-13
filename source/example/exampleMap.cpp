@@ -5,10 +5,10 @@
 #include <QtGui>
 #include <cmath>
 
-#include "graphics/plot.h"
-#include "graphics/graphmap.h"
-#include "graphics/qt4/qt4plot.h"
-#include "graphics/qt4/qt4plotsettings.h"
+#include "scigraphics/plot.h"
+#include "scigraphics/graphmap.h"
+#include "scigraphics/qt4/qt4plot.h"
+#include "scigraphics/qt4/qt4plotsettings.h"
 
 // ======================================================
 

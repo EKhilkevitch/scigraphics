@@ -1,10 +1,10 @@
 
 #pragma once
 
-#include "graphics/selectionstyle.h"
-#include "graphics/scale.h"
-#include "graphics/painter.h"
-#include "graphics/plotelement.h"
+#include "scigraphics/selectionstyle.h"
+#include "scigraphics/scale.h"
+#include "scigraphics/painter.h"
+#include "scigraphics/plotelement.h"
 
 #include <limits>
 

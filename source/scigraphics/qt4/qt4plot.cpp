@@ -1,7 +1,7 @@
 
 // ================================================================
 
-#include "graphics/qt4/qt4plot.h"
+#include "scigraphics/qt4/qt4plot.h"
 
 #include <QtGui>
 #include <QDebug>

@@ -1,7 +1,7 @@
 
 #pragma once
 
-#include "graphics/color.h"
+#include "scigraphics/color.h"
 
 #include <cstdio>
 #include <string>

@@ -1,7 +1,7 @@
 
 // ============================================================
 
-#include "graphics/datasequence.h"
+#include "scigraphics/datasequence.h"
 
 #include <limits>
 #include <cmath>

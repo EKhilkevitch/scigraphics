@@ -1,8 +1,8 @@
 
 // ============================================================
 
-#include "graphics/floatrect.h"
-#include "graphics/brushstyle.h"
+#include "scigraphics/floatrect.h"
+#include "scigraphics/brushstyle.h"
 
 // ============================================================
      

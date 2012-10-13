@@ -3,10 +3,10 @@
 
 #include "test_painter.h"
 #include "test_legend.h"
-#include "graphics/legend.h"
-#include "graphics/axisset.h"
-#include "graphics/color.h"
-#include "graphics/graphsequence.h"
+#include "scigraphics/legend.h"
+#include "scigraphics/axisset.h"
+#include "scigraphics/color.h"
+#include "scigraphics/graphsequence.h"
 
 // =========================================================
 

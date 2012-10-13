@@ -1,7 +1,7 @@
 
 #pragma once
 
-#include "graphics/numbers.h"
+#include "scigraphics/numbers.h"
 
 #include <string>
 

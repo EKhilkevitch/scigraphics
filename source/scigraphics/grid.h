@@ -1,10 +1,10 @@
 
 #pragma once
 
-#include "graphics/numbers.h"
-#include "graphics/linestyle.h"
-#include "graphics/painter.h"
-#include "graphics/scale.h"
+#include "scigraphics/numbers.h"
+#include "scigraphics/linestyle.h"
+#include "scigraphics/painter.h"
+#include "scigraphics/scale.h"
 
 namespace scigraphics
 {

@@ -3,8 +3,8 @@
 
 // ================================================================
 
-#include "graphics/settings.h"
-#include "graphics/qt4/labelinput.h"
+#include "scigraphics/settings.h"
+#include "scigraphics/qt4/labelinput.h"
 
 #include <QList>
 #include <QWidget>

@@ -2,9 +2,9 @@
 
 // ============================================================
 
-#include "graphics/plotelementcollection.h"
-#include "graphics/axisset.h"
-#include "graphics/scale.h"
+#include "scigraphics/plotelementcollection.h"
+#include "scigraphics/axisset.h"
+#include "scigraphics/scale.h"
 
 // ============================================================
 

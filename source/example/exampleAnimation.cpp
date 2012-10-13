@@ -6,8 +6,8 @@
 
 #include "exampleAnimation.h"
 
-#include "graphics/qt4/qt4plot.h"
-#include "graphics/qt4/qt4plotsettings.h"
+#include "scigraphics/qt4/qt4plot.h"
+#include "scigraphics/qt4/qt4plotsettings.h"
 
 // ======================================================
 

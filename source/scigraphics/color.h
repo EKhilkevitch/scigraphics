@@ -8,7 +8,7 @@
 #  define snprintf _snprintf
 #endif
 
-#include "graphics/interval.h"
+#include "scigraphics/interval.h"
 
 namespace scigraphics
 {

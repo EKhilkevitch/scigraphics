@@ -3,17 +3,17 @@
 
 // ============================================================
 
-#include "graphics/axisset.h"
-#include "graphics/painter.h"
-#include "graphics/graphcollection.h"
-#include "graphics/graphsequence.h"
-#include "graphics/selectioncollection.h"
-#include "graphics/plotlimits.h"
-#include "graphics/zoomrect.h"
-#include "graphics/mouse.h"
-#include "graphics/mousecallback.h"
-#include "graphics/legend.h"
-#include "graphics/cursorpoint.h"
+#include "scigraphics/axisset.h"
+#include "scigraphics/painter.h"
+#include "scigraphics/graphcollection.h"
+#include "scigraphics/graphsequence.h"
+#include "scigraphics/selectioncollection.h"
+#include "scigraphics/plotlimits.h"
+#include "scigraphics/zoomrect.h"
+#include "scigraphics/mouse.h"
+#include "scigraphics/mousecallback.h"
+#include "scigraphics/legend.h"
+#include "scigraphics/cursorpoint.h"
 
 // ============================================================
 

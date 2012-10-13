@@ -2,9 +2,9 @@
 // =========================================================
 
 #include "test_graphcollection.h"
-#include "graphics/graphcollection.h"
-#include "graphics/graphsequence.h"
-#include "graphics/axisset.h"
+#include "scigraphics/graphcollection.h"
+#include "scigraphics/graphsequence.h"
+#include "scigraphics/axisset.h"
 
 // =========================================================
 

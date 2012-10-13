@@ -1,9 +1,9 @@
 
 // ======================================================
 
-#include "graphics/plot.h"
-#include "graphics/imagemagick/implot.h"
-#include "graphics/graphmap.h"
+#include "scigraphics/plot.h"
+#include "scigraphics/imagemagick/implot.h"
+#include "scigraphics/graphmap.h"
 
 // ======================================================
 

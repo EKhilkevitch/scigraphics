@@ -1,9 +1,9 @@
 
 // ============================================================
 
-#include "graphics/zoomrect.h"
-#include "graphics/brushstyle.h"
-#include "graphics/linestyle.h"
+#include "scigraphics/zoomrect.h"
+#include "scigraphics/brushstyle.h"
+#include "scigraphics/linestyle.h"
 
 #include <iostream>
 

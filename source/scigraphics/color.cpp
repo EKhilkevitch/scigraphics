@@ -6,7 +6,7 @@
 #  define _CRT_SECURE_NO_WARNINGS 1
 #endif
 
-#include "graphics/color.h"
+#include "scigraphics/color.h"
 
 #include <algorithm>
 #include <cstdlib>

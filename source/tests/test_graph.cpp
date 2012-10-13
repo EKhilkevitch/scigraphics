@@ -1,7 +1,7 @@
 
 #include "test_graph.h"
-#include "graphics/graph.h"
-#include "graphics/graphsequence.h"
+#include "scigraphics/graph.h"
+#include "scigraphics/graphsequence.h"
 
 #include <algorithm>
 #include <cstring>

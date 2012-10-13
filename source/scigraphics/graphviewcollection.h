@@ -1,8 +1,8 @@
 
 #pragma once
 
-#include "graphics/container_ptr.h"
-#include "graphics/graphviewsequence.h"
+#include "scigraphics/container_ptr.h"
+#include "scigraphics/graphviewsequence.h"
 
 #include <list>
 #include <stdexcept>

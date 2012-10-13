@@ -3,9 +3,9 @@
 
 // ============================================================
 
-#include "graphics/floatrect.h"
-#include "graphics/textstyle.h"
-#include "graphics/graphcollection.h"
+#include "scigraphics/floatrect.h"
+#include "scigraphics/textstyle.h"
+#include "scigraphics/graphcollection.h"
 
 #include <list>
 #include <string>

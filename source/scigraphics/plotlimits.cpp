@@ -1,9 +1,9 @@
 
 // ============================================================
 
-#include "graphics/plotlimits.h"
-#include "graphics/numbers.h"
-#include "graphics/axisset.h"
+#include "scigraphics/plotlimits.h"
+#include "scigraphics/numbers.h"
+#include "scigraphics/axisset.h"
 
 #include <limits>
 #include <cassert>

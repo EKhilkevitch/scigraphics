@@ -1,5 +1,5 @@
 
-#include "graphics/settings.h"
+#include "scigraphics/settings.h"
 
 #if _WIN32
 #  pragma warning( disable : 4800 )

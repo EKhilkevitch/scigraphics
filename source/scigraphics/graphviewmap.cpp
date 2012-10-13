@@ -1,10 +1,10 @@
 
 // ============================================================
 
-#include "graphics/graphviewmap.h"
-#include "graphics/painter.h"
-#include "graphics/scale.h"
-#include "graphics/numberstyle.h"
+#include "scigraphics/graphviewmap.h"
+#include "scigraphics/painter.h"
+#include "scigraphics/scale.h"
+#include "scigraphics/numberstyle.h"
 
 #include <iostream>
 #include <cmath>

@@ -1,7 +1,7 @@
 
 // ============================================================
 
-#include "graphics/axisset.h"
+#include "scigraphics/axisset.h"
 
 #include <stdexcept>
 #include <typeinfo>

@@ -1,8 +1,8 @@
 
 #pragma once
 
-#include "graphics/numbers.h"
-#include "graphics/painter.h"
+#include "scigraphics/numbers.h"
+#include "scigraphics/painter.h"
 
 #include <cstdio>
 #include <cmath>

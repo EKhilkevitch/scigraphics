@@ -1,8 +1,8 @@
 
 #include "test_plotlimits.h"
-#include "graphics/plotlimits.h"
-#include "graphics/axisset.h"
-#include "graphics/graphsequence.h"
+#include "scigraphics/plotlimits.h"
+#include "scigraphics/axisset.h"
+#include "scigraphics/graphsequence.h"
 
 #include <algorithm>
 #include <cstring>

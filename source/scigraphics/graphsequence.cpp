@@ -1,7 +1,7 @@
 
 // ============================================================
 
-#include "graphics/graphsequence.h"
+#include "scigraphics/graphsequence.h"
 
 #include <cassert>
 #include <iostream>

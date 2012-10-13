@@ -1,7 +1,7 @@
 
 // ============================================================
 
-#include "graphics/legend.h"
+#include "scigraphics/legend.h"
 #include <iostream>
 #include <cassert>
 

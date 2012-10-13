@@ -1,14 +1,14 @@
 
 #pragma once
 
-#include "graphics/datasequence.h"
-#include "graphics/numbers.h"
-#include "graphics/painter.h"
+#include "scigraphics/datasequence.h"
+#include "scigraphics/numbers.h"
+#include "scigraphics/painter.h"
 
-#include "graphics/linestyle.h"
-#include "graphics/pointstyle.h"
-#include "graphics/errorbarstyle.h"
-#include "graphics/brushstyle.h"
+#include "scigraphics/linestyle.h"
+#include "scigraphics/pointstyle.h"
+#include "scigraphics/errorbarstyle.h"
+#include "scigraphics/brushstyle.h"
 
 namespace scigraphics 
 {

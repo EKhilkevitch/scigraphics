@@ -3,14 +3,14 @@
 
 // ============================================================
 
-#include "graphics/drawer.h"
-#include "graphics/geometry.h"
-#include "graphics/scale.h"
-#include "graphics/linestyle.h"
-#include "graphics/brushstyle.h"
-#include "graphics/textstyle.h"
-#include "graphics/pointstyle.h"
-#include "graphics/errorbarstyle.h"
+#include "scigraphics/drawer.h"
+#include "scigraphics/geometry.h"
+#include "scigraphics/scale.h"
+#include "scigraphics/linestyle.h"
+#include "scigraphics/brushstyle.h"
+#include "scigraphics/textstyle.h"
+#include "scigraphics/pointstyle.h"
+#include "scigraphics/errorbarstyle.h"
 
 #include <string>
 #include <vector>

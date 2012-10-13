@@ -1,7 +1,7 @@
 
 // ================================================================
 
-#include "graphics/imagemagick/implot.h"
+#include "scigraphics/imagemagick/implot.h"
 
 #include <Magick++.h>
 

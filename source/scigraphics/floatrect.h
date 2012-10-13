@@ -3,10 +3,10 @@
 
 // ============================================================
 
-#include "graphics/geometry.h"
-#include "graphics/painter.h"
-#include "graphics/linestyle.h"
-#include "graphics/textstyle.h"
+#include "scigraphics/geometry.h"
+#include "scigraphics/painter.h"
+#include "scigraphics/linestyle.h"
+#include "scigraphics/textstyle.h"
 
 // ============================================================
 

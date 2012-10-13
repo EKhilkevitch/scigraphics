@@ -1,8 +1,8 @@
 
 // ============================================================
 
-#include "graphics/graphviewsequence.h"
-#include "graphics/painter.h"
+#include "scigraphics/graphviewsequence.h"
+#include "scigraphics/painter.h"
 
 #include <iostream>
 #include <cmath>

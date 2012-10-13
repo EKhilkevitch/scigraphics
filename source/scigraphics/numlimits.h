@@ -5,8 +5,8 @@
 
 // ============================================================
 
-#include "graphics/interval.h"
-#include "graphics/numbers.h"
+#include "scigraphics/interval.h"
+#include "scigraphics/numbers.h"
 
 #include <ostream>
 

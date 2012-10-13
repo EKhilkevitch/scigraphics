@@ -1,8 +1,8 @@
 
 // ============================================================
 
-#include "graphics/mouse.h"
-#include "graphics/plot.h"
+#include "scigraphics/mouse.h"
+#include "scigraphics/plot.h"
 
 #include <cassert>
 

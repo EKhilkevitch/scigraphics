@@ -1,9 +1,9 @@
 
 #pragma once
 
-#include "graphics/datamap.h"
-#include "graphics/numbers.h"
-#include "graphics/painter.h"
+#include "scigraphics/datamap.h"
+#include "scigraphics/numbers.h"
+#include "scigraphics/painter.h"
 
 namespace scigraphics 
 {

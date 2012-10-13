@@ -5,7 +5,7 @@
 #  define _CRT_SECURE_NO_WARNINGS 1
 #endif
 
-#include "graphics/cursorpoint.h"
+#include "scigraphics/cursorpoint.h"
 #include <sstream>
 #include <cstdio>
 

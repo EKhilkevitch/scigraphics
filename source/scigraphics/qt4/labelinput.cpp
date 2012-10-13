@@ -1,7 +1,7 @@
 
 // ======================================================
 
-#include "graphics/qt4/labelinput.h"
+#include "scigraphics/qt4/labelinput.h"
 
 #include <QLabel>
 #include <QLineEdit>
