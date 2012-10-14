@@ -24,6 +24,7 @@ class qt4plotManager : public QObject
   private:
     QString Name;
 
+    QSplitter *MainSplitter;
     QList<qt4plot*> Plots;
     QList<qt4plotSettings*> Settings;
 
