@@ -33,11 +33,12 @@ void qt4plotManager::createPlots( const unsigned NumOfPlots, const unsigned NumO
   QWidget *Parent = dynamic_cast<QWidget*>( parent() );
   PlotWidget = new QWidget(Parent);
 
-  QSplitter *MainSplitter = new QSplitter( Qt::Horizontal, PlotWidget );
+  QSplitter *MainSplitter = new QSplitter( Qt::Vertical, PlotWidget );
 
   while ( Plots.size() < (int)NumOfPlots )
   {
-    int NumOfPlotsInSplitter = qMin<int>( NumOfRows, NumOfPlots - Plots.size() );
+    int NumOfPlotsInSplitter = NumOfPlots / NumOfRows + ( NumOfPlots % NumOfRows == 0 ? 0 : 1 );
+    NumOfPlotsInSplitter = qMin<int>( NumOfPlotsInSplitter, NumOfPlots - Plots.size() );
     QSplitter *Splitter = createVerticalPlotSplitter( NumOfPlotsInSplitter );
     MainSplitter->addWidget( Splitter );
   }
@@ -54,7 +55,7 @@ void qt4plotManager::createPlots( const unsigned NumOfPlots, const unsigned NumO
 QSplitter* qt4plotManager::createVerticalPlotSplitter( const unsigned NumOfPlotsInSplitter )
 {
   QSplitter *Splitter = new QSplitter(PlotWidget);
-  Splitter->setOrientation( Qt::Vertical );
+  Splitter->setOrientation( Qt::Horizontal );
 
   for ( unsigned i = 0; i < NumOfPlotsInSplitter; i++ )
   {
