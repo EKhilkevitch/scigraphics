@@ -33,7 +33,9 @@ class qt4plotManager : public QObject
     QWidget *SettingsWidget;
 
   protected:
+    void createPlots( const QList<unsigned> &PlotsInRows );
     void createPlots( const unsigned NumOfPlots, const unsigned NumOfRows );
+
     qt4plot* createNextPlot();
     QSplitter* createVerticalPlotSplitter( const unsigned NumOfPlotsinSplitter );
     void createSettings( const settingsMode SettingsMode, const qt4plotSettingsGroupSuperBox::axisPositionsList &Positions, qt4plotSettingsComposer *Composer);
@@ -47,6 +49,9 @@ class qt4plotManager : public QObject
   public:
     qt4plotManager( const unsigned NumOfPlots, const unsigned NumOfRows = 1, 
       const settingsMode SettingsMode = TabSettings, QObject *Parent = NULL,
+      const qt4plotSettingsGroupSuperBox::axisPositionsList &Positions = qt4plotSettingsGroupSuperBox::defaultAxisPositions(),
+      qt4plotSettingsComposer *Composer = NULL );
+    qt4plotManager( const QList<unsigned> &PlotsInRows, const settingsMode SettingsMode = TabSettings, QObject *Parent = NULL,
       const qt4plotSettingsGroupSuperBox::axisPositionsList &Positions = qt4plotSettingsGroupSuperBox::defaultAxisPositions(),
       qt4plotSettingsComposer *Composer = NULL );
     ~qt4plotManager();

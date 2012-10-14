@@ -15,7 +15,18 @@ qt4plotManager::qt4plotManager( const unsigned NumOfPlots, const unsigned NumOfR
 {
   Name = "qt4plotManager";
   createPlots( NumOfPlots, NumOfRows );
-  createSettings( NumOfPlots <= 1 ? SharedSettings : SettingsMode, Positions, Composer );
+  createSettings( Plots.size() <= 1 ? SharedSettings : SettingsMode, Positions, Composer );
+}
+
+// ----------------------------------------------------------------
+    
+qt4plotManager::qt4plotManager( const QList<unsigned> &PlotsInRows, const settingsMode SettingsMode, QObject *Parent,
+      const qt4plotSettingsGroupSuperBox::axisPositionsList &Positions,
+      qt4plotSettingsComposer *Composer ) : QObject(Parent)
+{
+  Name = "qt4plotManager";
+  createPlots( PlotsInRows );
+  createSettings( Plots.size() <= 1 ? SharedSettings : SettingsMode, Positions, Composer );
 }
 
 // ----------------------------------------------------------------
@@ -28,26 +39,41 @@ qt4plotManager::~qt4plotManager()
 
 // ----------------------------------------------------------------
 
-void qt4plotManager::createPlots( const unsigned NumOfPlots, const unsigned NumOfRows )
+void qt4plotManager::createPlots( const QList<unsigned> &PlotsInRows )
 {
   QWidget *Parent = dynamic_cast<QWidget*>( parent() );
   PlotWidget = new QWidget(Parent);
 
   QSplitter *MainSplitter = new QSplitter( Qt::Vertical, PlotWidget );
 
-  while ( Plots.size() < (int)NumOfPlots )
+  for ( int Row = 0; Row < PlotsInRows.size(); ++Row )
   {
-    int NumOfPlotsInSplitter = NumOfPlots / NumOfRows + ( NumOfPlots % NumOfRows == 0 ? 0 : 1 );
-    NumOfPlotsInSplitter = qMin<int>( NumOfPlotsInSplitter, NumOfPlots - Plots.size() );
-    QSplitter *Splitter = createVerticalPlotSplitter( NumOfPlotsInSplitter );
+    QSplitter *Splitter = createVerticalPlotSplitter( PlotsInRows[Row] );
     MainSplitter->addWidget( Splitter );
   }
 
-  Q_ASSERT( Plots.size() == (int)NumOfPlots );
-  
   QLayout *Layout = new QStackedLayout();
   Layout->addWidget( MainSplitter );
   PlotWidget->setLayout( Layout );
+}
+
+// ----------------------------------------------------------------
+
+void qt4plotManager::createPlots( const unsigned NumOfPlots, const unsigned NumOfRows )
+{
+  QList<unsigned> PlotsInRows;
+  unsigned PlotsInList = 0;
+  while ( PlotsInList < NumOfPlots )
+  {
+    int NumOfPlotsInRow = NumOfPlots / NumOfRows + ( NumOfPlots % NumOfRows == 0 ? 0 : 1 );
+    NumOfPlotsInRow = qMin<int>( NumOfPlotsInRow, NumOfPlots - PlotsInList );
+    Q_ASSERT( NumOfPlotsInRow > 0 );
+    PlotsInRows.append( NumOfPlotsInRow );
+    PlotsInList += NumOfPlotsInRow;
+  }
+  Q_ASSERT( PlotsInList == NumOfPlots );
+
+  createPlots( PlotsInRows );
 }
 
 // ----------------------------------------------------------------
