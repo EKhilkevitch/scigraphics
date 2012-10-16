@@ -15,6 +15,13 @@ else()
   set( library_type SHARED )
 endif()
 
+#Profiling 
+#set( CMAKE_BUILD_TYPE Release )
+#set( library_type STATIC )
+#set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pg -g")
+#set( CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -pg -g")
+
+
 add_subdirectory( ./source/scigraphics/ )
 add_subdirectory( ./source/scigraphics/qt4/ )
 add_subdirectory( ./source/scigraphics/imagemagick/ )

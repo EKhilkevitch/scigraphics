@@ -159,6 +159,16 @@ void scigraphics::tests::test_dataSequenceVector::limitsX()
   Data.append( 1e-30, 5 );
   CPPUNIT_ASSERT_DOUBLES_EQUAL( 0.0, Data.limitsX().totalLimits().min(), 1e-5 );
   CPPUNIT_ASSERT_DOUBLES_EQUAL( 0.5, Data.limitsX().totalLimits().max(), 1e-5 ); 
+
+  Data.append( 0.3, 2 );
+  Data.append( -1, 3 );
+  CPPUNIT_ASSERT_DOUBLES_EQUAL( -1,  Data.limitsX().totalLimits().min(), 1e-5 );
+  CPPUNIT_ASSERT_DOUBLES_EQUAL( 0.5, Data.limitsX().totalLimits().max(), 1e-5 ); 
+  
+  Data.append( -3, 5 );
+  Data.append( -2, 10 );
+  CPPUNIT_ASSERT_DOUBLES_EQUAL( -3,  Data.limitsX().totalLimits().min(), 1e-5 );
+  CPPUNIT_ASSERT_DOUBLES_EQUAL( 0.5, Data.limitsX().totalLimits().max(), 1e-5 ); 
 }
 
 // ---------------------------------------------------------
@@ -187,9 +197,9 @@ void scigraphics::tests::test_dataSequenceVector::limitsY()
   Data.append( -1, 2 );
   Data.append( -1e-50, 1 );
   Data.append( 1, 2 );
-  Data.append( 2, 3 );
   Data.append( 2, 4 );
   Data.append( 5, 5 );
+  Data.append( 2, 3 );
   
   CPPUNIT_ASSERT_DOUBLES_EQUAL(  1, Data.limitsY( Data.limitsX().totalLimits() ).totalLimits().min(), 1e-5 );
   CPPUNIT_ASSERT_DOUBLES_EQUAL(  5, Data.limitsY( Data.limitsX().totalLimits() ).totalLimits().max(), 1e-5 );
@@ -218,6 +228,7 @@ void scigraphics::tests::test_dataSequenceVector::limitsY()
   Data.append( 5, 1e-30 );
   CPPUNIT_ASSERT_DOUBLES_EQUAL(  1, Data.limitsY( Data.limitsX().totalLimits() ).positiveLimits().min(), 1e-5 );
   CPPUNIT_ASSERT_DOUBLES_EQUAL(  7, Data.limitsY( Data.limitsX().totalLimits() ).positiveLimits().max(), 1e-5 );
+
 }
 
 // ---------------------------------------------------------

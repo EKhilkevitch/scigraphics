@@ -25,18 +25,19 @@ namespace scigraphics
     private:
       int Index;
       const data *Data;
+      int DataSize;
       mutable point CurrPoint;
 
     private:
       void selfConstraintIndex() 
       { 
-        Index = std::min<int>( Index, Data->size() ); 
+        Index = std::min<int>( Index, DataSize ); 
         Index = std::max<int>( Index, 0 ); 
       } 
 
     public:
-      iteratorData() : Index(0), Data(NULL)             {}
-      iteratorData( int I, const data *D ) : Index(I), Data(D) {}
+      iteratorData() : Index(0), Data(NULL), DataSize(0)  {}
+      iteratorData( int I, const data *D ) : Index(I), Data(D), DataSize(D->size()) {}
       iteratorData operator++()                         { Index++; selfConstraintIndex(); return *this; }
       iteratorData operator++(int)                      { iteratorData I = *this; ++(*this); return I; }
       int operator-( const iteratorData &I ) const      { return Index - I.Index; }
@@ -49,7 +50,7 @@ namespace scigraphics
       bool operator<(  const iteratorData& I ) const    { return Index < I.Index; }
       point operator *() const                          { return Data->at(Index); }
       const point* operator->() const                   { CurrPoint = Data->at(Index); return &CurrPoint; }
-      virtual ~iteratorData() {}
+      ~iteratorData() {}
   };
 
 

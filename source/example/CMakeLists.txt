@@ -35,6 +35,13 @@ if ( UNIX )
   set_target_properties( exampleMap PROPERTIES COMPILE_FLAGS "-std=c++0x")
 endif()
 
+project( exampleBenchmark )
+add_executable( exampleBenchmark exampleBenchmark.cpp )
+target_link_libraries( exampleBenchmark ${QT_LIBRARIES} scigraphicsQt )
+if ( UNIX )
+  set_target_properties( exampleBenchmark PROPERTIES COMPILE_FLAGS "-std=c++0x")
+endif()
+
 project( exampleImagemagick )
 if ( ImageMagick_FOUND )
   add_executable( exampleImagemagick exampleImagemagick.cpp )

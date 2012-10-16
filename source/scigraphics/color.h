@@ -51,11 +51,11 @@ namespace scigraphics
                 ( Lims.toInterval(G) << 8  ) | 
                 ( Lims.toInterval(B) << 0  );
         }
-        virtual ~color() {};
+        ~color() {};
 
         color& operator=( rgb Value ) { RGB = Value; return *this; } 
 
-        virtual unsigned valueRgb()      const { return RGB; }
+        unsigned valueRgb()  const { return RGB; }
         unsigned int red()   const { return ( valueRgb() >> 16 ) & 0xFF; }
         unsigned int green() const { return ( valueRgb() >>  8 ) & 0xFF; }
         unsigned int blue()  const { return ( valueRgb() >>  0 ) & 0xFF; }
@@ -69,7 +69,7 @@ namespace scigraphics
         unsigned value() const;
 
         void setTransparency( double Part );
-        virtual std::string name( bool WithPrefix = true ) const;
+        std::string name( bool WithPrefix = true ) const;
 
         void darker( int Value )
         {

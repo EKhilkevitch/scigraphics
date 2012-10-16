@@ -335,7 +335,16 @@ void scigraphics::plot::replaceScaleWithPosition( axisSetCollection::axisPositio
 
 void scigraphics::plot::setScaleInterval( axisSetCollection::axisPosition Position, interval<number> Limits )
 {
-  PlotLimits.setInterval( &AxisSets[Position], Limits );
+  const axisSet *Set = &AxisSets[Position];
+  PlotLimits.setInterval( Set, Limits );
+}
+
+// ------------------------------------------------------------
+      
+scigraphics::interval<scigraphics::number> scigraphics::plot::scaleInterval( axisSetCollection::axisPosition Position ) const
+{
+  const axisSet *Set = &AxisSets[Position];
+  return PlotLimits.getInterval(Set);
 }
 
 // ------------------------------------------------------------

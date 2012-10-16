@@ -50,6 +50,7 @@ namespace scigraphics
       numberLimits LimitsX, LimitsY;
       bool OrderedByX;
 
+    private:
       void appendPoint( const point &Point ) { Points.push_back(Point); }
       void updateLimitsXY( const point &Point, const coordinateType Type );
       void updateLimits( number Number, coordinateType Coordinate, numberLimits *Limits );

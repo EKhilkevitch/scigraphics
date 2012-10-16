@@ -85,7 +85,8 @@ void scigraphics::dataSequenceVector::updateOrderedByX()
   }
   
   number LastValidX = invalidNumber();
-  for ( int i = size()-2; i >= 0; i-- )
+  int DataSize = size();
+  for ( int i = DataSize-2; i >= 0; i-- )
   {
     if ( isValidNumber( Points[i].x() ) )
     {

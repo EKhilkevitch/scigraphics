@@ -136,12 +136,15 @@ namespace scigraphics
       void replaceScaleWithPosition( axisSetCollection::axisPosition Position, scale *Scale );
 
       void setScaleInterval( axisSetCollection::axisPosition Position, interval<number> Limits );
+      interval<number> scaleInterval( axisSetCollection::axisPosition Position ) const;
       
       void setScaleIntervalX( interval<number> L )     { setScaleInterval(axisSetCollection::Bottom,L); }
       void setScaleIntervalX( number Min, number Max ) { setScaleIntervalX(interval<number>(Min,Max)); }
+      interval<number> scaleIntervalX() const          { return scaleInterval(axisSetCollection::Bottom); }
 
       void setScaleIntervalY( interval<number> L )     { setScaleInterval(axisSetCollection::Left,L); }
       void setScaleIntervalY( number Min, number Max ) { setScaleIntervalY(interval<number>(Min,Max)); }
+      interval<number> scaleIntervalY() const          { return scaleInterval(axisSetCollection::Left); }
 
       void setStretchFactors( double SX, double SY );
 
