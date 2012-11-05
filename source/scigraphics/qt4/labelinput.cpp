@@ -119,7 +119,8 @@ QWidget* labelDoubleSpin::createInput()
 
 QWidget* labelCombo::createInput()
 {
-  QComboBox *Combo = new QComboBox(this); 
+  QComboBox *Combo = new QComboBox(this);
+  Combo->setSizeAdjustPolicy( QComboBox::AdjustToContents );
   connect( Combo, SIGNAL(currentIndexChanged(int)), SIGNAL(currentIndexChanged(int)));
   connect( Combo, SIGNAL(currentIndexChanged(const QString&)), SIGNAL(currentIndexChanged(const QString&)));
   return Combo;
