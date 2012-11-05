@@ -20,6 +20,9 @@
 namespace scigraphics
 {
 
+  typedef graphSequenceVector graphSV;
+  typedef graphAreaVector graphAV;
+
 // ============================================================
 
   class plot 
@@ -112,7 +115,10 @@ namespace scigraphics
 
       template < class G > G* createGraph( const std::string &Legend = std::string() ) { return Graphics.create<G>(Legend); }
       template < class G > G* createGraph( const std::string &Legend, const color &Color ) { return Graphics.create<G>(Legend,Color); }
+      graphSV* createGraphSV( const std::string &Legend = std::string(), const color &Color = color::White ) { return createGraph<graphSV>(Legend,Color); }
+      graphAV* createGraphAV( const std::string &Legend = std::string(), const color &Color = color::White ) { return createGraph<graphAV>(Legend,Color); }
       graphSequenceVector* createGraphSequenceVector( const std::string &Legend = std::string(), const color &Color = color::White );
+
       void appendGraphic( graph *Graph );
       void bindGraphToAxis( const graph *Graph, axisSetCollection::axisPosition AxisX, axisSetCollection::axisPosition AxisY );
       void clearGraphics() { Graphics.clear(); }
