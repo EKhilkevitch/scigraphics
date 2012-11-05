@@ -53,6 +53,7 @@ class labelInput : public QWidget
 
   signals:
     void focusEntered();
+    void changed();
 
   public slots:
     void setEnabled( int E ) { QWidget::setEnabled( E != 0 ); }

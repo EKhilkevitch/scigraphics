@@ -55,6 +55,9 @@ QWidget* labelEdit::createInput()
   connect( Edit, SIGNAL(selectionChanged()), SIGNAL(selectionChanged()));
   connect( Edit, SIGNAL(textChanged(const QString&)), SIGNAL(textChanged(const QString&)));
   connect( Edit, SIGNAL(textEdited(const QString&)), SIGNAL(textEdited(const QString&)));
+
+  connect( Edit, SIGNAL(returnPressed()), SIGNAL(changed()) );  
+  connect( Edit, SIGNAL(editingFinished()), SIGNAL(changed()) );  
   
   return Edit;
 }
@@ -93,7 +96,10 @@ void labelEditPath::setEditFromFileDialog()
   Dialog.setAcceptMode( AcceptMode );
   
   if ( Dialog.exec() == QDialog::Accepted )
+  {
     setText( Dialog.selectedFiles().value(0,"") );
+    emit changed();
+  }
 
 }
 
@@ -103,6 +109,7 @@ QWidget* labelSpin::createInput()
 {
   QSpinBox *Spin = new QSpinBox(this);
   connect( Spin, SIGNAL(valueChanged(int)), SIGNAL(valueChanged(int)));
+  connect( Spin, SIGNAL(valueChanged(int)), SIGNAL(changed()) );
   return Spin;
 }
 
@@ -112,6 +119,7 @@ QWidget* labelDoubleSpin::createInput()
 {
   QDoubleSpinBox *Spin = new QDoubleSpinBox(this);
   connect( Spin,  SIGNAL(valueChanged(double)), SIGNAL(valueChanged(double))); 
+  connect( Spin,  SIGNAL(valueChanged(double)), SIGNAL(changed()) ); 
   return Spin;
 }
 
@@ -123,6 +131,7 @@ QWidget* labelCombo::createInput()
   Combo->setSizeAdjustPolicy( QComboBox::AdjustToContents );
   connect( Combo, SIGNAL(currentIndexChanged(int)), SIGNAL(currentIndexChanged(int)));
   connect( Combo, SIGNAL(currentIndexChanged(const QString&)), SIGNAL(currentIndexChanged(const QString&)));
+  connect( Combo, SIGNAL(currentIndexChanged(int)), SIGNAL(changed()));
   return Combo;
 }
 
