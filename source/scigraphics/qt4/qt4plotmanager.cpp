@@ -174,7 +174,12 @@ qt4plotSettingsComposer* qt4plotManager::createComposer( qt4plotSettingsComposer
 
 void qt4plotManager::setSettingsName( unsigned i, const QString &N )
 {
-  Q_ASSERT( (int)i < Settings.size() );
+  if ( i >= Settings.size() )
+  {
+    qWarning() << "setSettingsName: index " << i << "out of rage: 0 .." << Settings.size();
+    return;
+  } 
+
   Settings[i]->setName(N);
   updateTabNames();
 }
