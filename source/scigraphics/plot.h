@@ -7,6 +7,7 @@
 #include "scigraphics/painter.h"
 #include "scigraphics/graphcollection.h"
 #include "scigraphics/graphsequence.h"
+#include "scigraphics/graphmap.h"
 #include "scigraphics/selectioncollection.h"
 #include "scigraphics/plotlimits.h"
 #include "scigraphics/zoomrect.h"
@@ -22,6 +23,7 @@ namespace scigraphics
 
   typedef graphSequenceVector graphSV;
   typedef graphAreaVector graphAV;
+  typedef graphMapVector graphMV;
 
 // ============================================================
 
@@ -117,6 +119,7 @@ namespace scigraphics
       template < class G > G* createGraph( const std::string &Legend, const color &Color ) { return Graphics.create<G>(Legend,Color); }
       graphSV* createGraphSV( const std::string &Legend = std::string(), const color &Color = color::White ) { return createGraph<graphSV>(Legend,Color); }
       graphAV* createGraphAV( const std::string &Legend = std::string(), const color &Color = color::White ) { return createGraph<graphAV>(Legend,Color); }
+      graphMV* createGraphMV( const std::string &Legend = std::string() ) { return createGraph<graphMV>(Legend); }
       graphSequenceVector* createGraphSequenceVector( const std::string &Legend = std::string(), const color &Color = color::White );
 
       void appendGraphic( graph *Graph );
