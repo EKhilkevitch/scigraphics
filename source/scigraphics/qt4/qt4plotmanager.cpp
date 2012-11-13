@@ -174,7 +174,7 @@ qt4plotSettingsComposer* qt4plotManager::createComposer( qt4plotSettingsComposer
 
 void qt4plotManager::setSettingsName( unsigned i, const QString &N )
 {
-  if ( i >= Settings.size() )
+  if ( i >= (unsigned)Settings.size() )
   {
     qWarning() << "setSettingsName: index " << i << "out of rage: 0 .." << Settings.size();
     return;
