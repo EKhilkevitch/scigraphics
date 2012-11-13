@@ -69,7 +69,6 @@ namespace scigraphics
       forcedIntervalsMap ForcedIntervals;
       double StretchFactorX, StretchFactorY;
 
-      static numberLimits applyForcedLimitsMinMax( const numberLimits &Limits, interval<number> ForcedInterval );
       static interval<number> applyForcedLimitsToSubintervalMinMax( interval<number> LInterval, interval<number> ForcedInterval, int Signum );
       static bool isNumberHaveSignum( number Number, int Signum );
 
@@ -93,6 +92,9 @@ namespace scigraphics
       double stretchFactorY() const { return StretchFactorY; }
 
       limitsXY limitsForGraphics( const graphCollection& Graphics ) const;
+      
+      static numberLimits applyForcedLimitsMinMax( const numberLimits &Limits, interval<number> ForcedInterval );
+      static interval<number> autoScaleInterval();
   };
 
 // ============================================================

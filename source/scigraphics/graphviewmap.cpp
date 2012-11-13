@@ -17,12 +17,12 @@
 
 // ============================================================
 
-double scigraphics::graphViewRectangleMap::pointColorStrategy::relativePointValue( const dataMap::point &Point, interval<number> IntervalZ )
+double scigraphics::graphViewRectangleMap::pointColorStrategy::relativePointValue( const dataMap::point &Point, const scale &Scale )
 {
   if ( ! Point.isValid() )
     return invalidNumber();
 
-  double RelValue = IntervalZ.partOfDistance(Point.z());
+  double RelValue = Scale.numberToFraction(Point.z());
   RelValue = relativeValueToUnitInterval( RelValue );
   return RelValue;
 }
@@ -47,12 +47,12 @@ scigraphics::color scigraphics::graphViewRectangleMap::pointColorStrategy::inval
 
 // ------------------------------------------------------------
 
-scigraphics::color scigraphics::graphViewRectangleMap::pointColorStrategy::pointColor( const dataMap::point &Point, interval<number> IntervalZ ) const
+scigraphics::color scigraphics::graphViewRectangleMap::pointColorStrategy::pointColor( const dataMap::point &Point, const scale &Scale ) const
 {
   if ( ! Point.isValid() )
     return invalidValueColor();
 
-  double RelativeValue = relativePointValue(Point,IntervalZ);
+  double RelativeValue = relativePointValue(Point,Scale);
   return relativeValueColor( RelativeValue );
 }
 
@@ -100,11 +100,9 @@ scigraphics::color scigraphics::graphViewRectangleMap::yellowRedBluePointColorSt
 // ------------------------------------------------------------
       
 scigraphics::graphViewRectangleMap::graphViewRectangleMap() : 
-  PointColorStrategy(NULL),
-  ScaleZ(NULL)
+  PointColorStrategy(NULL)
 {
   PointColorStrategy = new redYellowBluePointColorStrategy();
-  ScaleZ = new scaleLinear();
 }
 
 // ------------------------------------------------------------
@@ -112,7 +110,6 @@ scigraphics::graphViewRectangleMap::graphViewRectangleMap() :
 scigraphics::graphViewRectangleMap::~graphViewRectangleMap()
 {
   delete PointColorStrategy;
-  delete ScaleZ;
 }
 
 // ------------------------------------------------------------
@@ -128,27 +125,25 @@ void scigraphics::graphViewRectangleMap::setColorStrategy( pointColorStrategy *S
 
 // ------------------------------------------------------------
 
-void scigraphics::graphViewRectangleMap::draw( painter &Painter, const pairScales& Scales, const dataMap &Data ) const
+void scigraphics::graphViewRectangleMap::draw( painter &Painter, const pairScales& Scales, const dataMap &Data, const scale &ScaleZ ) const
 {
   assert( PointColorStrategy != NULL );
 
   dataMap::iterator Begin = Data.begin();
   dataMap::iterator End   = Data.end();
 
-  interval<number> IntervalZ = Data.limitsZ().totalLimits();
-
   for ( dataMap::iterator Point = Begin; Point != End; ++Point )
-    drawPoint( Painter, Scales, *Point, IntervalZ );
+    drawPoint( Painter, Scales, *Point, ScaleZ );
 }
 
 // ------------------------------------------------------------
       
-void scigraphics::graphViewRectangleMap::drawPoint( painter &Painter, const pairScales& Scales, const dataMap::point &Point, interval<number> IntervalZ ) const
+void scigraphics::graphViewRectangleMap::drawPoint( painter &Painter, const pairScales& Scales, const dataMap::point &Point, const scale &ScaleZ ) const
 {
   if ( ! Point.isValid() )
     return;
 
-  color Color = PointColorStrategy->pointColor( Point, IntervalZ );
+  color Color = PointColorStrategy->pointColor( Point, ScaleZ );
 
   fpoint Point0 = Scales.npoint2fpoint( npoint( Point.x0(), Point.y0() ) );
   fpoint Point1 = Scales.npoint2fpoint( npoint( Point.x1(), Point.y1() ) );
@@ -158,7 +153,7 @@ void scigraphics::graphViewRectangleMap::drawPoint( painter &Painter, const pair
 
 // ------------------------------------------------------------
 
-void scigraphics::graphViewRectangleMap::drawLegendExample( painter &Painter, const wrectangle &Rectangle, const numberLimits &DataLimits ) const
+void scigraphics::graphViewRectangleMap::drawLegendExample( painter &Painter, const wrectangle &Rectangle, const scale &ScaleZ ) const
 {
   wpoint LeftUp = Rectangle.leftUp();
   wpoint RightDown = Rectangle.rightDown();
@@ -170,7 +165,7 @@ void scigraphics::graphViewRectangleMap::drawLegendExample( painter &Painter, co
 
   drawRainbowRectangle( Painter, EffRectangle );
   drawRainbowRectangleBorder( Painter, EffRectangle );
-  drawRainbowMarkers( Painter, EffRectangle, DataLimits );
+  drawRainbowMarkers( Painter, EffRectangle, ScaleZ );
 }
 
 // ------------------------------------------------------------
@@ -215,15 +210,13 @@ void scigraphics::graphViewRectangleMap::drawRainbowRectangle( painter &Painter,
 
 // ------------------------------------------------------------
       
-void scigraphics::graphViewRectangleMap::drawRainbowMarkers( painter &Painter, const wrectangle &Rectangle, const numberLimits &DataLimits ) const
+void scigraphics::graphViewRectangleMap::drawRainbowMarkers( painter &Painter, const wrectangle &Rectangle, const scale &ScaleZ ) const
 {
   assert( ScaleZ != NULL );
  
-  ScaleZ->setNumberLimits( DataLimits );
-  ScaleZ->reset();
-  ScaleZ->setNumberOfMarks( 7, 18 );
+//  ScaleZ->setNumberOfMarks( 7, 18 );
   
-  std::vector<number> Marks = ScaleZ->marks();
+  std::vector<number> Marks = ScaleZ.marks();
 
   wcoord RainbowRectangleWidth = rainbowRectangleWidth();
 
@@ -233,7 +226,7 @@ void scigraphics::graphViewRectangleMap::drawRainbowMarkers( painter &Painter, c
 
   for ( unsigned i = 0; i < Marks.size(); i++ )
   {
-    double Part = ScaleZ->numberToFraction( Marks[i] );
+    double Part = ScaleZ.numberToFraction( Marks[i] );
     
     wcoord X0 = Rectangle.left();
     wcoord X1 = Rectangle.left() + RainbowRectangleWidth;

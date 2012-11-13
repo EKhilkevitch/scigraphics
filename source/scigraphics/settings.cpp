@@ -16,7 +16,7 @@ scigraphics::settings::settings() : GraphType(Individual)
   for ( unsigned i = 0; i < axisSetCollection::PositionsCount; i++ )
   {
     ScaleTypes[i] = Linear;
-    ScaleLimits[i] = interval<number>( plotLimits::AutoScaleMin, plotLimits::AutoScaleMax );
+    ScaleLimits[i] = plotLimits::autoScaleInterval();
   }
 }
 

@@ -205,13 +205,20 @@ scigraphics::plotLimits::plotLimits()
 
 // ------------------------------------------------------------
 
+scigraphics::interval<scigraphics::number> scigraphics::plotLimits::autoScaleInterval()
+{
+  return interval< number >( AutoScaleMin, AutoScaleMax );
+}
+
+// ------------------------------------------------------------
+
 scigraphics::interval<scigraphics::number> scigraphics::plotLimits::getInterval( const axisSet *AxisSet ) const
 {
   assert( AxisSet != NULL );
 
   forcedIntervalsMap::const_iterator Interval = ForcedIntervals.find( AxisSet );
   if ( Interval == ForcedIntervals.end() )
-    return interval< number >( AutoScaleMin, AutoScaleMax );
+    return autoScaleInterval();
   return Interval->second;
 }
 
@@ -301,7 +308,7 @@ scigraphics::plotLimits::limitsXY scigraphics::plotLimits::limitsForGraphics( co
     updateLimitsXYForGraphic( &Result, **g, Graphics );
 
   std::set< const axisSet* > Axis = Graphics.setOfGraphAxisSet();
-  for ( std::set< const axisSet* >::iterator a = Axis.begin(); a != Axis.end(); ++a )
+  for ( std::set< const axisSet* >::const_iterator a = Axis.begin(); a != Axis.end(); ++a )
     correctLimitsXYForAxisSet( &Result, *a );
 
   Result.applyStretch( StretchFactorX, StretchFactorY );

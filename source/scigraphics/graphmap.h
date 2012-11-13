@@ -14,6 +14,8 @@
 namespace scigraphics 
 {
 
+  class scale;
+
 // ============================================================
  
   class graphMap : public graph
@@ -21,12 +23,15 @@ namespace scigraphics
     private:
       graphViewMap *View;
       dataMap *Data;
+      scale *ScaleZ;
+      interval<number> ForcedIntervalZ;
 
     protected:
       virtual dataMap* createData() = 0;
       virtual graphViewMap* createView() = 0;
 
       void init();
+      void updateScaleZInterval() const;
 
     public:
       graphMap( const std::string &Legend );
@@ -43,6 +48,10 @@ namespace scigraphics
  
       numberLimits limitsX() const { return getData().limitsX(); }
       numberLimits limitsY( const interval<number> &LimitsX ) const { return getData().limitsY(LimitsX); }
+      numberLimits limitsZ() const { return getData().limitsZ(); }
+
+      void setForcedIntervalZ( interval<number> I ) { ForcedIntervalZ = I; }
+      void setForcedIntervalZ( number Min, number Max ) { setForcedIntervalZ( interval<number>(Min,Max) ); }
       
       wcoord legendExampleWidth()  const;
       wcoord legendExampleHeight() const;

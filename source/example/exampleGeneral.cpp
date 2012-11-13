@@ -65,6 +65,7 @@ int main( int argc, char *argv[] )
   Map->resize( 30, 30 );
   Map->setIntervalX( 2, 3 );
   Map->setIntervalY( 2, 3 );
+  Map->setForcedIntervalZ( 0.5, 0.9 );
   for ( unsigned ix = 0; ix < Map->sizeX(); ix++ )
   {
     for ( unsigned iy = 0; iy < Map->sizeY(); iy++ ) 
