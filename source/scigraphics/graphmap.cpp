@@ -20,6 +20,7 @@ scigraphics::graphMap::graphMap( const std::string &Legend ) :
   ScaleZ = new scaleLinear();
   ScaleZ->setNumberOfMarks( 7, 15 );
 
+  setDrawOverGrid( false );
   setLegend(Legend);
 }
 

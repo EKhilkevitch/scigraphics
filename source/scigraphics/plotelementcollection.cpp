@@ -92,12 +92,15 @@ void scigraphics::plotElementsCollection::setDefaultAxisSets( const axisSet *X, 
 
 // ------------------------------------------------------------
 
-void scigraphics::plotElementsCollection::draw( painter &Painter ) const
+void scigraphics::plotElementsCollection::draw( painter &Painter, bool isGridDrawn ) const
 {
   for ( plotElementList::const_iterator p = PlotElementsList.begin(); p != PlotElementsList.end(); ++p )
   {
-    pairScales Scales = getPairScales( *p );
-    (*p)->draw(Painter,Scales);
+    if ( isGridDrawn == (*p)->isDrawOverGrid() )
+    {
+      pairScales Scales = getPairScales( *p );
+      (*p)->draw(Painter,Scales);
+    }
   }
 }
 

@@ -39,7 +39,7 @@ namespace scigraphics
       
       void draw( painter &Painter, const pairScales& Scales ) const;
       void drawLegendExample( painter &Painter, const wrectangle &Rectangle ) const;
-
+      
       dataMap& getData() { return *Data; }
       const dataMap& getData() const { return *Data; }
 

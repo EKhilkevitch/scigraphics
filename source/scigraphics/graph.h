@@ -20,10 +20,11 @@ namespace scigraphics
   {
     private:
       bool ShowLegend;
+      bool DrawOverGrid;
       std::string Legend;
 
     public:
-      graph() : ShowLegend(true) {}
+      graph() : ShowLegend(true), DrawOverGrid(true) {}
       virtual ~graph()  {}
 
       virtual numberLimits limitsX() const = 0;
@@ -39,6 +40,8 @@ namespace scigraphics
       virtual void draw( painter &Painter, const pairScales& Scales ) const = 0;
       virtual void drawLegendExample( painter &Painter, const wrectangle &Rectangle ) const = 0;
 
+      void setDrawOverGrid( bool D ) { DrawOverGrid = D; }
+      virtual bool isDrawOverGrid() const { return DrawOverGrid; }
   };
 
 // ============================================================

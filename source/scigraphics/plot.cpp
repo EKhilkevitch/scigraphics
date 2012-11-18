@@ -59,8 +59,9 @@ void scigraphics::plot::replot()
   prepareForPainting();
 
   clearPlotArea();
+  drawGraphicsUnderGrid();
   drawGrid();
-  drawGraphics();
+  drawGraphicsOverGrid();
   drawSelections();
   
   clearBorders();
@@ -190,16 +191,23 @@ void scigraphics::plot::drawAxisTitles()
 
 // ------------------------------------------------------------
 
-void scigraphics::plot::drawGraphics()
+void scigraphics::plot::drawGraphicsOverGrid()
 {
-  Graphics.draw( Painter );
+  Graphics.draw( Painter, true );
+}
+
+// ------------------------------------------------------------
+
+void scigraphics::plot::drawGraphicsUnderGrid()
+{
+  Graphics.draw( Painter, false );
 }
 
 // ------------------------------------------------------------
 
 void scigraphics::plot::drawSelections()
 {
-  Selections.draw( Painter );
+  Selections.draw( Painter, true );
 }
 
 // ------------------------------------------------------------

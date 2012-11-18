@@ -80,7 +80,7 @@ namespace scigraphics
 
       void setDefaultAxisSets( const axisSet *X, const axisSet *Y );
 
-      virtual void draw( painter &Painter ) const;
+      virtual void draw( painter &Painter, bool isGridDrawn ) const;
 
       const scale* graphScaleX( const plotElement *PlotElement ) const;
       const scale* graphScaleY( const plotElement *PlotElement ) const;

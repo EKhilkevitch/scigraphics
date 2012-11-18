@@ -17,6 +17,7 @@ namespace scigraphics
   {
     public:
       virtual void draw( painter &Painter, const pairScales& Scales ) const = 0;
+      virtual bool isDrawOverGrid() const { return true; }
       virtual ~plotElement() {};
   };
 

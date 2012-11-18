@@ -62,7 +62,8 @@ namespace scigraphics
       void drawAxisLabels();
       void drawAxisTitles();
       void drawGrid();
-      void drawGraphics();
+      void drawGraphicsUnderGrid();
+      void drawGraphicsOverGrid();
       void drawSelections();
       void drawFloatRectangles();
       void drawZoomRectangle();
