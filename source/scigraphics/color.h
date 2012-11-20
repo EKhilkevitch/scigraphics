@@ -3,6 +3,7 @@
 
 #include <string>
 #include <cstdio>
+#include <vector>
 
 #ifdef _WIN32
 #  define snprintf _snprintf
@@ -43,14 +44,8 @@ namespace scigraphics
         static color fromHSV( unsigned H, unsigned S, unsigned V, unsigned T = 0 );
 
         color( rgb Value = Black ) : RGB(Value) {}
-        color( int R, int G, int B, int T = 0x00 ) 
-        { 
-          interval<int> Lims(0,0xFF); 
-          RGB = ( Lims.toInterval(T) << 24 ) |
-                ( Lims.toInterval(R) << 16 ) | 
-                ( Lims.toInterval(G) << 8  ) | 
-                ( Lims.toInterval(B) << 0  );
-        }
+        color( int R, int G, int B, int T = 0x00 );
+
         ~color() {};
 
         color& operator=( rgb Value ) { RGB = Value; return *this; } 
@@ -71,10 +66,7 @@ namespace scigraphics
         void setTransparency( double Part );
         std::string name( bool WithPrefix = true ) const;
 
-        void darker( int Value )
-        {
-          *this = color( red()-Value, green()-Value, blue()-Value, transparency() ); 
-        }
+        void darker( int Value );
 
         static color nextColor();
         static color predefinedColor( unsigned Index );
@@ -84,6 +76,31 @@ namespace scigraphics
 
     inline bool operator==( color C1, color C2 ) { return C1.valueRgb() == C2.valueRgb(); }
 
+
+// ============================================================
+
+    class colorSequence
+    {
+      private:
+        std::vector< color > Sequence;
+        unsigned CurrentIndex;
+
+      public:
+        colorSequence() : CurrentIndex(0) {}
+
+        void clear();
+        void append( color Color ) { Sequence.push_back(Color); }
+
+        size_t size() const { return Sequence.size(); }
+        bool empty() const { return Sequence.empty(); }
+
+        color current() const;
+        color next();
+        void gotoNext();
+        void resetNext();
+
+        static colorSequence defaultColorSequence();
+    };
 
 // ============================================================
 

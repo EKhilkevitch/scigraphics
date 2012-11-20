@@ -9,6 +9,7 @@
 #include "scigraphics/color.h"
 
 #include <algorithm>
+#include <limits>
 #include <cstdlib>
 
 // ============================================================
@@ -30,6 +31,17 @@ static const scigraphics::color Colors[] =
 static const unsigned ColorsSize = sizeof(Colors)/sizeof(Colors[0]);
 static const unsigned BeginColorIndex = 2*ColorsSize-1;
 static unsigned ColorIndex = BeginColorIndex;
+
+// ------------------------------------------------------------
+
+scigraphics::color::color( int R, int G, int B, int T )
+{
+  interval<int> Lims(0,0xFF); 
+  RGB = ( Lims.toInterval(T) << 24 ) |
+        ( Lims.toInterval(R) << 16 ) | 
+        ( Lims.toInterval(G) << 8  ) | 
+        ( Lims.toInterval(B) << 0  );
+}
 
 // ------------------------------------------------------------
 
@@ -146,6 +158,13 @@ unsigned scigraphics::color::value() const
 
 // ------------------------------------------------------------
 
+void scigraphics::color::darker( int Value )
+{
+  *this = color( red()-Value, green()-Value, blue()-Value, transparency() ); 
+}
+
+// ------------------------------------------------------------
+
 scigraphics::color scigraphics::color::nextColor()
 {
   ColorIndex = ( ColorIndex + 1 ) % ColorsSize;
@@ -173,6 +192,47 @@ scigraphics::color scigraphics::color::thisColor()
 void scigraphics::color::resetNextColorSequence()
 {
   ColorIndex = BeginColorIndex;
+}
+
+// ============================================================
+
+scigraphics::color scigraphics::colorSequence::current() const
+{
+  if ( Sequence.empty() )
+    return color();
+
+  unsigned SequenceIndex = CurrentIndex % Sequence.size();
+  return Sequence.at( SequenceIndex );
+}
+
+// ------------------------------------------------------------
+
+scigraphics::color scigraphics::colorSequence::next()
+{
+  gotoNext();
+  return current();
+}
+
+// ------------------------------------------------------------
+
+void scigraphics::colorSequence::gotoNext()
+{
+  CurrentIndex += 1;
+}
+
+// ------------------------------------------------------------
+
+void scigraphics::colorSequence::clear()
+{
+  Sequence.clear();
+  resetNext();
+}
+
+// ------------------------------------------------------------
+
+void scigraphics::colorSequence::resetNext()
+{
+  CurrentIndex = std::numeric_limits<unsigned>::max();
 }
 
 // ============================================================
