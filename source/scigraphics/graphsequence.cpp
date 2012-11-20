@@ -62,7 +62,7 @@ void scigraphics::graphSequence::init( const color &Color )
   Views = createViewCollection();
   if ( Views == NULL )
     throw std::runtime_error( "createGraphViewCollection() must return valid pointer" );
-  Views->setColor( Color == color::White ? color::nextColor() : Color );
+  Views->setColor( Color );
 }
 
 // ------------------------------------------------------------

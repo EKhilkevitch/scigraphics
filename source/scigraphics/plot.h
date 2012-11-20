@@ -44,6 +44,8 @@ namespace scigraphics
       graphCollection Graphics;
       selectionCollection Selections;
 
+      colorSequence GraphicsColorSequence;
+
       zoomRectangle ZoomRectangle;
 
       legend Legend;
@@ -118,9 +120,9 @@ namespace scigraphics
 
       template < class G > G* createGraph( const std::string &Legend = std::string() ) { return Graphics.create<G>(Legend); }
       template < class G > G* createGraph( const std::string &Legend, const color &Color ) { return Graphics.create<G>(Legend,Color); }
-      graphSV* createGraphSV( const std::string &Legend = std::string(), const color &Color = color::White ) { return createGraph<graphSV>(Legend,Color); }
-      graphAV* createGraphAV( const std::string &Legend = std::string(), const color &Color = color::White ) { return createGraph<graphAV>(Legend,Color); }
-      graphMV* createGraphMV( const std::string &Legend = std::string() ) { return createGraph<graphMV>(Legend); }
+      graphSV* createGraphSV( const std::string &Legend = std::string(), const color &Color = color::White );
+      graphAV* createGraphAV( const std::string &Legend = std::string(), const color &Color = color::White );
+      graphMV* createGraphMV( const std::string &Legend = std::string() );
       graphSequenceVector* createGraphSequenceVector( const std::string &Legend = std::string(), const color &Color = color::White );
 
       void appendGraphic( graph *Graph );
@@ -140,6 +142,10 @@ namespace scigraphics
       selectionCollection::const_iterator endSelection()   const { return Selections.end(); }
 
       pairScales getBottomLeftPairScales();
+
+      color nextGraphColor() { return GraphicsColorSequence.next(); }
+      color currentGraphColor() const { return GraphicsColorSequence.current(); }
+      color selectNextGraphColor( const color &Color );
       
       const scale* scaleWithPosition( axisSetCollection::axisPosition Position ) const;
       scale* scaleWithPosition( axisSetCollection::axisPosition Position );

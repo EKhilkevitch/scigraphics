@@ -44,7 +44,7 @@ int main()
     Cos->append( x, std::cos(x)+1 );
   Plot.bindGraphToAxis( Cos, scigraphics::axisSetCollection::Top, scigraphics::axisSetCollection::Right );
 
-  scigraphics::graphAreaVector *Polygons = Plot.createGraph<scigraphics::graphAreaVector>("Polygons");
+  scigraphics::graphAreaVector *Polygons = Plot.createGraphAV("Polygons");
   Polygons->append( 0, 0 );
   Polygons->append( 0, 2 );
   Polygons->append( 2, 2 );
@@ -56,7 +56,7 @@ int main()
   Polygons->append( 3.1, 3.7 );
  
 #if 1
-  scigraphics::graphMapVector *Map = Plot.createGraph<scigraphics::graphMapVector>( "Map" );
+  scigraphics::graphMapVector *Map = Plot.createGraphMV( "Map" );
   Map->resize( 30, 30 );
   Map->setIntervalX( 2, 3 );
   Map->setIntervalY( 2, 3 );

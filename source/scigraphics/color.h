@@ -68,10 +68,12 @@ namespace scigraphics
 
         void darker( int Value );
 
+#if 0
         static color nextColor();
         static color predefinedColor( unsigned Index );
         static color thisColor();
         static void resetNextColorSequence();
+#endif
     };
 
     inline bool operator==( color C1, color C2 ) { return C1.valueRgb() == C2.valueRgb(); }
@@ -86,7 +88,7 @@ namespace scigraphics
         unsigned CurrentIndex;
 
       public:
-        colorSequence() : CurrentIndex(0) {}
+        colorSequence() { resetNext(); }
 
         void clear();
         void append( color Color ) { Sequence.push_back(Color); }

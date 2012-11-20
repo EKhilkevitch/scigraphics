@@ -14,7 +14,8 @@
 
 scigraphics::plot::plot() : 
   MouseHandler(*this), 
-  CallBackContainer(*this)
+  CallBackContainer(*this),
+  GraphicsColorSequence( colorSequence::defaultColorSequence() )
 {
   prepareAxisSets();
   prepareFloatRectangles();
@@ -30,7 +31,37 @@ scigraphics::plot::~plot()
 
 scigraphics::graphSequenceVector* scigraphics::plot::createGraphSequenceVector( const std::string &Legend, const color &Color )
 {
-  return createGraph<graphSequenceVector>( Legend, Color );
+  return createGraph<graphSequenceVector>( Legend, selectNextGraphColor(Color) );
+}
+
+// ------------------------------------------------------------
+
+scigraphics::graphSV* scigraphics::plot::createGraphSV( const std::string &Legend, const color &Color ) 
+{ 
+  return createGraph<graphSV>( Legend, selectNextGraphColor(Color) ); 
+}
+
+// ------------------------------------------------------------
+
+scigraphics::graphAV* scigraphics::plot::createGraphAV( const std::string &Legend, const color &Color ) 
+{
+  return createGraph<graphAV>( Legend, selectNextGraphColor(Color) ); 
+}
+
+// ------------------------------------------------------------
+
+scigraphics::graphMV* scigraphics::plot::createGraphMV( const std::string &Legend ) 
+{ 
+  return createGraph<graphMV>(Legend); 
+}
+
+// ------------------------------------------------------------
+
+scigraphics::color scigraphics::plot::selectNextGraphColor( const color &Color )
+{
+  if ( Color == color::White )
+    return nextGraphColor();
+  return Color;
 }
 
 // ------------------------------------------------------------

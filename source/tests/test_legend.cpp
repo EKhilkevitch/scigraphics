@@ -85,9 +85,9 @@ void scigraphics::tests::test_legend::sizesForLegendRectangle()
   CPPUNIT_ASSERT_EQUAL( ExpectedWidth,  Size.width()  );
   CPPUNIT_ASSERT_EQUAL( ExpectedHeight, Size.height() );
 
-  Graphics.create<graphSequenceVector>("1");
-  Graphics.create<graphSequenceVector>("222");
-  Graphics.create<graphSequenceVector>("33");
+  Graphics.create<graphSequenceVector>("1",color());
+  Graphics.create<graphSequenceVector>("222",color());
+  Graphics.create<graphSequenceVector>("33",color());
 
   Size = legendMorozov::sizesForLegendRectangle( Painter, TextStyle, Graphics );
 
@@ -104,7 +104,7 @@ void scigraphics::tests::test_legend::updateLegendRectangleShortList()
   axisSetY SetY(0);
   Graphics.setDefaultAxisSets( &SetX, &SetY );
  
-  Graphics.create<graphSequenceVector>("11");
+  Graphics.create<graphSequenceVector>("11",color());
 
   legendMorozov Legend;
   CPPUNIT_ASSERT_EQUAL( 0, Legend.getRectangle().width() );
@@ -141,7 +141,7 @@ void scigraphics::tests::test_legend::updateLegendRectangleLongList()
   axisSetY SetY(0);
   Graphics.setDefaultAxisSets( &SetX, &SetY );
   for ( unsigned i = 0; i < 25; i++ )
-    Graphics.create<graphSequenceVector>( "xxx" );
+    Graphics.create<graphSequenceVector>( "xxx", color() );
 
   legendMorozov Legend;
   auto TextStyle = Legend.updateLegendRectangle( Painter, Graphics );
@@ -168,7 +168,7 @@ void scigraphics::tests::test_legend::updateLegendRectangleVeryLongList()
   axisSetY SetY(0);
   Graphics.setDefaultAxisSets( &SetX, &SetY );
   for ( unsigned i = 0; i < 100; i++ )
-    Graphics.create<graphSequenceVector>( "xxx" );
+    Graphics.create<graphSequenceVector>( "xxx", color() );
 
   legendMorozov Legend;
   auto TextStyle = Legend.updateLegendRectangle( Painter, Graphics );

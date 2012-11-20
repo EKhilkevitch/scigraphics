@@ -24,7 +24,7 @@ void scigraphics::tests::test_graphCollection::scales()
   axisSet *AxisY = new axisSetY(0);
   Collection.setDefaultAxisSets(AxisX,AxisY);
  
-  graph *Graph = Collection.create<graphSequenceVector>();
+  graph *Graph = Collection.create<graphSequenceVector>(color());
   
   CPPUNIT_ASSERT_EQUAL( (const scigraphics::scale*)AxisX->getScale(), Collection.graphScaleX(Graph) );
   CPPUNIT_ASSERT_EQUAL( (const scigraphics::scale*)AxisY->getScale(), Collection.graphScaleY(Graph) );
@@ -44,7 +44,7 @@ void scigraphics::tests::test_graphCollection::bindGraphToAxisSet()
   axisSetY SetY(0);
   Collection.setDefaultAxisSets( &SetX, &SetY );
 
-  graph *Graph = Collection.create<graphSequenceVector>();
+  graph *Graph = Collection.create<graphSequenceVector>(color());
   CPPUNIT_ASSERT_EQUAL( (const scigraphics::scale*)(SetX.getScale()), Collection.graphScaleX(Graph) );
   CPPUNIT_ASSERT_EQUAL( (const scigraphics::scale*)(SetY.getScale()), Collection.graphScaleY(Graph) );
 
@@ -71,7 +71,7 @@ void scigraphics::tests::test_graphCollection::append()
   CPPUNIT_ASSERT( Collection.empty() );
   CPPUNIT_ASSERT_EQUAL( (size_t)0, Collection.size() );
 
-  graph *Graph = new graphSequenceVector();
+  graph *Graph = new graphSequenceVector(color::Black);
 
   Collection.append(Graph);
   
@@ -82,7 +82,7 @@ void scigraphics::tests::test_graphCollection::append()
   Graph->setLegend("1");
   CPPUNIT_ASSERT_EQUAL( std::string("1"), (*Collection.begin())->legend() );
   
-  Collection.append( new graphSequenceVector() );
+  Collection.append( new graphSequenceVector(color::Black) );
   CPPUNIT_ASSERT_EQUAL( (size_t)2, Collection.size() );
 
   try
@@ -109,13 +109,13 @@ void scigraphics::tests::test_graphCollection::create()
   axisSetY SetY(0);
   Collection.setDefaultAxisSets( &SetX, &SetY );
 
-  auto Graph = Collection.create<graphSequenceVector>("L");
+  auto Graph = Collection.create<graphSequenceVector>("L",color::Black);
 
   CPPUNIT_ASSERT_EQUAL( (size_t)1, Collection.size() );
   CPPUNIT_ASSERT_EQUAL( std::string("L"), Graph->legend() );
   CPPUNIT_ASSERT_EQUAL( std::string("L"), (*Collection.begin())->legend() );
   
-  auto Graph2 = Collection.create<graphSequenceVector>();
+  auto Graph2 = Collection.create<graphSequenceVector>(color());
 
   CPPUNIT_ASSERT_EQUAL( (size_t)2, Collection.size() );
   CPPUNIT_ASSERT_EQUAL( std::string(), Graph2->legend() );
@@ -142,7 +142,7 @@ void scigraphics::tests::test_graphCollection::clear()
   Collection.clear();
   CPPUNIT_ASSERT( Collection.empty() );
   
-  Collection.create<graphSequenceVector>();
+  Collection.create<graphSequenceVector>(color());
   CPPUNIT_ASSERT( ! Collection.empty() );
   Collection.clear();
   CPPUNIT_ASSERT( Collection.empty() );
@@ -157,7 +157,7 @@ void scigraphics::tests::test_graphCollection::exist()
   axisSetY SetY(0);
   Collection.setDefaultAxisSets( &SetX, &SetY );
 
-  graph *Graph = new graphSequenceVector();
+  graph *Graph = new graphSequenceVector(color::Black);
   CPPUNIT_ASSERT( ! Collection.exist(NULL) );
   CPPUNIT_ASSERT( ! Collection.exist(Graph) );
 
@@ -180,7 +180,7 @@ void scigraphics::tests::test_graphCollection::iterators()
   Legends.push_back("3");
 
   for ( auto l = Legends.begin(); l != Legends.end(); ++l )
-    Collection.create<graphSequenceVector>( *l );
+    Collection.create<graphSequenceVector>( *l, color() );
 
   CPPUNIT_ASSERT_EQUAL( Legends.size(), Collection.size() );
 

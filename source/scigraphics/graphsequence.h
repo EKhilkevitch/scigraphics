@@ -57,7 +57,8 @@ namespace scigraphics
       V& getCastedViews() { return dynamic_cast<V&>( getViews() ); }
 
     public:
-      graphSequenceSpecified( const std::string &Legend = std::string(), const color &Color = color::White ) : 
+      graphSequenceSpecified( const color &Color ) { init(Color); }
+      graphSequenceSpecified( const std::string &Legend, const color &Color ) : 
         graphSequence(Legend) 
         { init(Color); }
 
@@ -83,7 +84,9 @@ namespace scigraphics
   class graphSequenceVector : public graphSequenceSpecified< dataSequenceVector, ordinarGraphSequenceViewCollection >
   {
     public:
-      graphSequenceVector( const std::string &Legend = std::string(), const color &Color = color::White ) : 
+      graphSequenceVector( const color &Color = color() ) : 
+        graphSequenceSpecified< dataSequenceVector, ordinarGraphSequenceViewCollection >( Color ) {}
+      graphSequenceVector( const std::string &Legend, const color &Color ) : 
         graphSequenceSpecified< dataSequenceVector, ordinarGraphSequenceViewCollection >( Legend, Color ) {}
 
       dataSequenceVector& getDataVector() { return getCastedData(); }
@@ -101,7 +104,9 @@ namespace scigraphics
   class graphAreaVector : public graphSequenceSpecified< dataSequenceVector, coveredAreaGraphSequenceViewCollection >
   {
     public:
-      graphAreaVector( const std::string &Legend = std::string(), const color &Color = color::White ) : 
+      graphAreaVector( const color &Color = color() ) : 
+        graphSequenceSpecified< dataSequenceVector, coveredAreaGraphSequenceViewCollection >(Color) {}
+      graphAreaVector( const std::string &Legend, const color &Color ) : 
         graphSequenceSpecified< dataSequenceVector, coveredAreaGraphSequenceViewCollection >( Legend, Color ) {}
       
       dataSequenceVector& getDataVector() { return getCastedData(); }

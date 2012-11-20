@@ -50,7 +50,7 @@ int main( int argc, char *argv[] )
     Cos->append( x, std::cos(x)+1 );
   Plot.bindGraphToAxis( Cos, scigraphics::axisSetCollection::Top, scigraphics::axisSetCollection::Right );
 
-  scigraphics::graphAreaVector *Polygons = Plot.createGraph<scigraphics::graphAreaVector>("Polygons");
+  scigraphics::graphAreaVector *Polygons = Plot.createGraphAV("Polygons");
   Polygons->append( 0, 0 );
   Polygons->append( 0, 2 );
   Polygons->append( 2, 2 );

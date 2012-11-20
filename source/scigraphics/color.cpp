@@ -14,26 +14,6 @@
 
 // ============================================================
 
-static const scigraphics::color Colors[] = 
-{
-  scigraphics::color::Red,
-  scigraphics::color::Blue,
-  scigraphics::color::Green,
-  scigraphics::color::Cyan,
-  scigraphics::color::Magenta,
-  scigraphics::color::DarkRed,
-  scigraphics::color::DarkBlue,
-  scigraphics::color::DarkGreen,
-  scigraphics::color::DarkMagenta,
-  scigraphics::color::DarkYellow
-};
-  
-static const unsigned ColorsSize = sizeof(Colors)/sizeof(Colors[0]);
-static const unsigned BeginColorIndex = 2*ColorsSize-1;
-static unsigned ColorIndex = BeginColorIndex;
-
-// ------------------------------------------------------------
-
 scigraphics::color::color( int R, int G, int B, int T )
 {
   interval<int> Lims(0,0xFF); 
@@ -163,37 +143,6 @@ void scigraphics::color::darker( int Value )
   *this = color( red()-Value, green()-Value, blue()-Value, transparency() ); 
 }
 
-// ------------------------------------------------------------
-
-scigraphics::color scigraphics::color::nextColor()
-{
-  ColorIndex = ( ColorIndex + 1 ) % ColorsSize;
-  color NextColor = Colors[ ColorIndex ];
-
-  return NextColor;
-}
-
-// ------------------------------------------------------------
-
-scigraphics::color scigraphics::color::predefinedColor( unsigned Index )
-{
-  return Colors[ Index % ColorsSize ];
-}
-
-// ------------------------------------------------------------
-
-scigraphics::color scigraphics::color::thisColor()
-{
-  return Colors[ ColorIndex==BeginColorIndex ? 0 : ColorIndex ];
-}
-
-// ------------------------------------------------------------
-
-void scigraphics::color::resetNextColorSequence()
-{
-  ColorIndex = BeginColorIndex;
-}
-
 // ============================================================
 
 scigraphics::color scigraphics::colorSequence::current() const
@@ -233,6 +182,26 @@ void scigraphics::colorSequence::clear()
 void scigraphics::colorSequence::resetNext()
 {
   CurrentIndex = std::numeric_limits<unsigned>::max();
+}
+
+// ------------------------------------------------------------
+
+scigraphics::colorSequence scigraphics::colorSequence::defaultColorSequence()
+{
+  colorSequence Sequence;
+  
+  Sequence.append( scigraphics::color::Red );
+  Sequence.append( scigraphics::color::Blue );
+  Sequence.append( scigraphics::color::Green );
+  Sequence.append( scigraphics::color::Cyan );
+  Sequence.append( scigraphics::color::Magenta );
+  Sequence.append( scigraphics::color::DarkRed );
+  Sequence.append( scigraphics::color::DarkBlue );
+  Sequence.append( scigraphics::color::DarkGreen );
+  Sequence.append( scigraphics::color::DarkMagenta );
+  Sequence.append( scigraphics::color::DarkYellow );
+
+  return Sequence;
 }
 
 // ============================================================

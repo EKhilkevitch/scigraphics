@@ -54,15 +54,15 @@ int main( int argc, char **argv )
   for ( double t = 0; t < 2*M_PI; t+=0.01 )
     Rounds->append( 0.4 * cos(t) + 4, 0.7 * sin(t) - 2 );
 
-  auto SpiralPl = Manager.getPlot(4)->createGraphSequenceVector("Spiral + ");
+  auto SpiralPl = Manager.getPlot(4)->createGraphSV("Spiral + ");
   for ( double Phi = 0; Phi <= 10*M_PI; Phi += 0.05 )
     SpiralPl->appendPolar( Phi, 2 * sqrt( Phi ) );
   
-  auto SpiralNg = Manager.getPlot(4)->createGraphSequenceVector("Spiral - ");
+  auto SpiralNg = Manager.getPlot(4)->createGraphSV("Spiral - ");
   for ( double Phi = 0; Phi <= 10*M_PI; Phi += 0.05 )
     SpiralNg->appendPolar( Phi, -2 * sqrt( Phi ) );
 
-  auto Polygons = Manager.getPlot(6)->createGraph<scigraphics::graphAreaVector>("Polygons");
+  auto Polygons = Manager.getPlot(6)->createGraphAV("Polygons");
   Polygons->append( 0, 0 );
   Polygons->append( 0, 2 );
   Polygons->append( 2, 2 );

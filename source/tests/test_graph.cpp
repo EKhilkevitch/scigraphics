@@ -2,6 +2,7 @@
 #include "test_graph.h"
 #include "scigraphics/graph.h"
 #include "scigraphics/graphsequence.h"
+#include "scigraphics/graphviewcollection.h"
 
 #include <algorithm>
 #include <cstring>
@@ -78,7 +79,7 @@ void scigraphics::tests::test_graphSequenceVector::limitsY()
 void scigraphics::tests::test_graphSequenceVector::legend()
 {
   const std::string Legend = "Legend";
-  graphSequenceVector Graph( Legend );
+  graphSequenceVector Graph( Legend, color::Black );
 
   CPPUNIT_ASSERT_EQUAL( Legend, Graph.legend() );
   CPPUNIT_ASSERT_EQUAL( true, Graph.showLegend() ); 
