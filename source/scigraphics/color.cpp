@@ -174,12 +174,12 @@ void scigraphics::colorSequence::gotoNext()
 void scigraphics::colorSequence::clear()
 {
   Sequence.clear();
-  resetNext();
+  reset();
 }
 
 // ------------------------------------------------------------
 
-void scigraphics::colorSequence::resetNext()
+void scigraphics::colorSequence::reset()
 {
   CurrentIndex = std::numeric_limits<unsigned>::max();
 }

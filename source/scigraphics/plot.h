@@ -127,7 +127,7 @@ namespace scigraphics
 
       void appendGraphic( graph *Graph );
       void bindGraphToAxis( const graph *Graph, axisSetCollection::axisPosition AxisX, axisSetCollection::axisPosition AxisY );
-      void clearGraphics() { Graphics.clear(); }
+      void clearGraphics() { Graphics.clear(); GraphicsColorSequence.reset(); }
       graphCollection::iterator beginGraph() { return Graphics.begin(); }
       graphCollection::iterator endGraph()   { return Graphics.end(); }
       graphCollection::const_iterator beginGraph() const { return Graphics.begin(); }
