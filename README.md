@@ -24,4 +24,7 @@ Author
 Evgeniy Khilkevitch,
 e-mail evgeniy-hila@yandex.ru
 
+License
+=====================
+GPL v3 (see LICENSE)
 
