@@ -60,9 +60,12 @@ namespace scigraphics {
       
       container_ptr& operator=( const container_ptr &Cnt )
       {
-        clear();
-        for ( const_iterator i = Cnt.begin(); i != Cnt.end(); ++i )
-          push_back( (*i)->clone() );
+        if ( &Cnt != this )
+        {
+          clear();
+          for ( const_iterator i = Cnt.begin(); i != Cnt.end(); ++i )
+            push_back( (*i)->clone() );
+        }
         return *this;
       }
 
