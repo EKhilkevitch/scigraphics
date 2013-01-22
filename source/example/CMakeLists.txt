@@ -28,7 +28,7 @@ endif()
 
 project( exampleAnimation )
 qt4_wrap_cpp( exampleAnimation_moc_sources exampleAnimation.h )
-add_executable( exampleAnimation ${gui_type} exampleAnimation.cpp ${exampleAnimation_moc_sources} )
+add_executable( exampleAnimation exampleAnimation.cpp ${exampleAnimation_moc_sources} )
 target_link_libraries( exampleAnimation ${QT_LIBRARIES} scigraphicsQt )
 if ( UNIX )
   set_target_properties( exampleAnimation PROPERTIES COMPILE_FLAGS "-std=c++0x")

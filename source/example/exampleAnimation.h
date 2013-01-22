@@ -112,7 +112,7 @@ class plotAnimator : public QObject
     unsigned count() const { return Count; }
 
   public slots:
-    void update() { ++Count; fillGraphics(); Plot->replot(); Plot->update(); } 
+    void updateGraphics() { ++Count; fillGraphics(); Plot->replot(); } 
 
 };
 

@@ -232,10 +232,6 @@ void scigraphics::graphViewRectangleMap::drawRainbowRectangle( painter &Painter,
       
 void scigraphics::graphViewRectangleMap::drawRainbowMarkers( painter &Painter, const wrectangle &Rectangle, const scale &ScaleZ ) const
 {
-  assert( ScaleZ != NULL );
- 
-//  ScaleZ->setNumberOfMarks( 7, 18 );
-  
   std::vector<number> Marks = ScaleZ.marks();
 
   wcoord RainbowRectangleWidth = rainbowRectangleWidth();

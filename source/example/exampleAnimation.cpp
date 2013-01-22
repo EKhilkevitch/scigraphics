@@ -44,7 +44,7 @@ int main( int argc, char **argv )
   Plot.replot();
 
   QTimer Timer;
-  QObject::connect( &Timer, SIGNAL(timeout()), &Animator, SLOT(update()) );
+  QObject::connect( &Timer, SIGNAL(timeout()), &Animator, SLOT(updateGraphics()) );
   Timer.start(20);
   
   QTime WorkTime;
