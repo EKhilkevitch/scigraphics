@@ -18,6 +18,7 @@
  * along with scigraphics.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#warning "Usage of this file is deprecated"
 
 #pragma once
 

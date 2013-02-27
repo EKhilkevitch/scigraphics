@@ -24,7 +24,6 @@
 // ================================================================
 
 #include "scigraphics/settings.h"
-#include "scigraphics/qt4/labelinput.h"
 
 #include <QList>
 #include <QWidget>
@@ -35,10 +34,37 @@ class QRadioButton;
 class QBoxLayout;
 class QSettings;
 class QTabWidget;
+class QLineEdit;
+class QLabel;
+class QValidator;
+class QHBoxLayout;
 
 class qt4plot;
 
 // ================================================================
+
+class qt4labeledLineEdit : public QWidget
+{
+  Q_OBJECT
+
+  private:
+    QLineEdit *Edit;
+    QLabel *Label;
+    QHBoxLayout *Layout;
+
+  public:
+    qt4labeledLineEdit( const QString &Label, const QString &Text, QWidget *Parent = NULL );
+    void setValidator( QValidator *Validator );
+    void setStretchFactors( int LabelStretch, int EditStretch );
+    void setText( const QString &Text );
+    QString text() const;
+
+  signals:
+    void editingFinished();
+    void returnPressed();
+};
+
+// ----------------------------------------------------------------
 
 class qt4plotSettingsGroupBox : public QGroupBox
 {
@@ -107,7 +133,7 @@ class qt4plotSettingsScaleIntervals : public qt4plotSettingsGroupBox
     scigraphics::axisSetCollection::axisPosition AxisType;
 
     QCheckBox *ManualScaleBox;
-    labelEdit *MinScaleEdit, *MaxScaleEdit;
+    qt4labeledLineEdit *MinScaleEdit, *MaxScaleEdit;
 
   protected:
     scigraphics::interval<scigraphics::number> getLimits() const;
@@ -216,7 +242,7 @@ class qt4plotSettingsSelections : public qt4plotSettingsGroupBox
     QList<qt4plot*> Plots;
     
     QCheckBox *EnableSelectionBox;
-    labelEdit *MinValueEdit, *MaxValueEdit;
+    qt4labeledLineEdit *MinValueEdit, *MaxValueEdit;
 
   private:
     scigraphics::selectionStrip* getFirstStripSelection( scigraphics::plot *Plot );

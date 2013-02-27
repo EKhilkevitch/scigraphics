@@ -5,14 +5,12 @@ find_package(Qt4 REQUIRED)
 include(${QT_USE_FILE})
 
 set ( graphics_qt_source_files
-        labelinput.cpp
         qt4plotsettings.cpp
         qt4plotmanager.cpp
         qt4plot.cpp
     )
 
 set( moc_headers 
-        labelinput.h 
         qt4plotsettings.h
         qt4plotmanager.h
         qt4plot.h

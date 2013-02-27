@@ -27,6 +27,55 @@
 #include <QtGui>
 
 // ================================================================
+
+qt4labeledLineEdit::qt4labeledLineEdit( const QString &LabelText, const QString &EditText, QWidget *Parent ) : QWidget(Parent)
+{
+  Label = new QLabel( LabelText, this );
+  Edit = new QLineEdit( EditText, this );
+
+  Layout = new QHBoxLayout();
+  Layout->setContentsMargins( 0, 0, 0, 0 );
+  Layout->addWidget( Label );
+  Layout->addSpacing(5);
+  Layout->addWidget( Edit );
+  setLayout(Layout);
+
+  setStretchFactors( 7, 2 );  
+  
+  connect( Edit, SIGNAL(editingFinished()), SIGNAL(editingFinished()));
+  connect( Edit, SIGNAL(returnPressed()), SIGNAL(returnPressed()));
+}
+
+// ----------------------------------------------------------------
+    
+void qt4labeledLineEdit::setStretchFactors( int LabelStretch, int EditStretch )
+{
+  Layout->setStretchFactor( Label, LabelStretch );
+  Layout->setStretchFactor( Edit, EditStretch );
+}
+
+// ----------------------------------------------------------------
+
+void qt4labeledLineEdit::setValidator( QValidator *Validator )
+{
+  Edit->setValidator(Validator);
+}
+
+// ----------------------------------------------------------------
+    
+void qt4labeledLineEdit::setText( const QString &Text ) 
+{ 
+  Edit->setText(Text); 
+}
+
+// ----------------------------------------------------------------
+    
+QString qt4labeledLineEdit::text() const
+{
+  return Edit->text();
+}
+
+// ================================================================
     
 QString qt4plotSettingsGroupBox::axisPositionString( scigraphics::axisSetCollection::axisPosition Axis )
 {
@@ -38,7 +87,6 @@ QString qt4plotSettingsGroupBox::axisPositionString( scigraphics::axisSetCollect
     case scigraphics::axisSetCollection::Top:       return "X axis (top)";
     default:                                     return "Unknown axis";
   }
-
 }
 
 // ================================================================
@@ -131,8 +179,11 @@ qt4plotSettingsScaleIntervals::qt4plotSettingsScaleIntervals( const scigraphics:
    : qt4plotSettingsGroupBox( axisPositionString(Axis) + " scale", Parent ), AxisType(Axis)
 {
   ManualScaleBox = new QCheckBox("Manual");
-  MinScaleEdit   = new labelEdit("Min ",0.6);
-  MaxScaleEdit   = new labelEdit("Max ",0.6);
+  MinScaleEdit   = new qt4labeledLineEdit("Min","",this);
+  MaxScaleEdit   = new qt4labeledLineEdit("Max","",this);
+
+  MinScaleEdit->setStretchFactors( 3, 7 );
+  MaxScaleEdit->setStretchFactors( 3, 7 );
 
   QVBoxLayout *VLayout = NULL;
   QHBoxLayout *HLayout = NULL;
@@ -361,14 +412,16 @@ qt4plotSettingsSelections::qt4plotSettingsSelections( QWidget *Parent ) : qt4plo
 
   setMinimumWidth(185);
 
-  QDoubleValidator *Validator = new QDoubleValidator( this );
-
   EnableSelectionBox   = new QCheckBox("Select time interval");
-  MinValueEdit = new labelEdit( "Minimum ", "0", Validator );
-  MaxValueEdit = new labelEdit( "Maximum ", "1", Validator );
+  MinValueEdit = new qt4labeledLineEdit( "Minimum ", "0", this );
+  MaxValueEdit = new qt4labeledLineEdit( "Maximum ", "1", this );
+  
+  QDoubleValidator *Validator = new QDoubleValidator( this );
+  MinValueEdit->setValidator(Validator);
+  MaxValueEdit->setValidator(Validator);
 
-  MinValueEdit->setInputPart(0.65);
-  MaxValueEdit->setInputPart(0.65);
+  MinValueEdit->setStretchFactors(5,7);
+  MaxValueEdit->setStretchFactors(5,7);
   
   QVBoxLayout *VLayout = new QVBoxLayout();
   VLayout->addWidget( EnableSelectionBox );
