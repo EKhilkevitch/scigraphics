@@ -29,22 +29,31 @@
 
 // ================================================================
 
-qt4plotManager::qt4plotManager( const unsigned NumOfPlots, const unsigned NumOfRows, const settingsMode SettingsMode,
-  QObject *Parent, const qt4plotSettingsGroupSuperBox::axisPositionsList &Positions, 
-  qt4plotSettingsComposer *Composer ) : QObject(Parent)
+qt4plotManager::qt4plotManager( unsigned NumOfPlots, unsigned NumOfRows, QObject *Parent )
 {
-  Name = "qt4plotManager";
+  setDefaultName();
+  createPlots( NumOfPlots, NumOfRows );
+  createSettings( SharedSettings, qt4plotSettingsGroupSuperBox::defaultAxisPositions(), NULL );
+}
+
+// ----------------------------------------------------------------
+
+qt4plotManager::qt4plotManager( unsigned NumOfPlots, unsigned NumOfRows, QObject *Parent,
+      const settingsMode SettingsMode, const qt4plotSettingsGroupSuperBox::axisPositionsList &Positions,
+      qt4plotSettingsComposer *Composer ) : QObject(Parent)
+{
+  setDefaultName();
   createPlots( NumOfPlots, NumOfRows );
   createSettings( Plots.size() <= 1 ? SharedSettings : SettingsMode, Positions, Composer );
 }
 
 // ----------------------------------------------------------------
     
-qt4plotManager::qt4plotManager( const QList<unsigned> &PlotsInRows, const settingsMode SettingsMode, QObject *Parent,
+qt4plotManager::qt4plotManager( const QList<unsigned> &PlotsInRows, QObject *Parent, const settingsMode SettingsMode,
       const qt4plotSettingsGroupSuperBox::axisPositionsList &Positions,
       qt4plotSettingsComposer *Composer ) : QObject(Parent)
 {
-  Name = "qt4plotManager";
+  setDefaultName();
   createPlots( PlotsInRows );
   createSettings( Plots.size() <= 1 ? SharedSettings : SettingsMode, Positions, Composer );
 }

@@ -56,6 +56,7 @@ class qt4plotManager : public QObject
   protected:
     void createPlots( const QList<unsigned> &PlotsInRows );
     void createPlots( const unsigned NumOfPlots, const unsigned NumOfRows );
+    void setDefaultName() { setName("qt4plotManager"); }
 
     qt4plot* createNextPlot();
     QSplitter* createVerticalPlotSplitter( const unsigned NumOfPlotsinSplitter );
@@ -68,23 +69,27 @@ class qt4plotManager : public QObject
     QList<qt4plot*>& plotList() { return Plots; }
 
   public:
-    qt4plotManager( const unsigned NumOfPlots, const unsigned NumOfRows = 1, 
-      const settingsMode SettingsMode = TabSettings, QObject *Parent = NULL,
+
+    qt4plotManager( unsigned NumOfPlots, unsigned NumOfRows = 1, QObject *Parent = NULL );
+
+    qt4plotManager( unsigned NumOfPlots, unsigned NumOfRows, QObject *Parent,
+      const settingsMode SettingsMode, const qt4plotSettingsGroupSuperBox::axisPositionsList &Positions = qt4plotSettingsGroupSuperBox::defaultAxisPositions(),
+      qt4plotSettingsComposer *Composer = NULL );
+
+    qt4plotManager( const QList<unsigned> &PlotsInRows, QObject *Parent, const settingsMode SettingsMode,
       const qt4plotSettingsGroupSuperBox::axisPositionsList &Positions = qt4plotSettingsGroupSuperBox::defaultAxisPositions(),
       qt4plotSettingsComposer *Composer = NULL );
-    qt4plotManager( const QList<unsigned> &PlotsInRows, const settingsMode SettingsMode = TabSettings, QObject *Parent = NULL,
-      const qt4plotSettingsGroupSuperBox::axisPositionsList &Positions = qt4plotSettingsGroupSuperBox::defaultAxisPositions(),
-      qt4plotSettingsComposer *Composer = NULL );
+
     ~qt4plotManager();
     
     QWidget* plotWidget() { return PlotWidget; }
     QWidget* settingsWidget() { return SettingsWidget; }
     
-    size_t numOfPlots() const { return Plots.size(); }
-    qt4plot* getPlot( unsigned i ) { return Plots[i]; }
+    size_t numberOfPlots() const { return Plots.size(); }
+    qt4plot* plot( unsigned i ) { return Plots[i]; }
 
-    size_t numOfSettings() const { return Settings.size(); }
-    qt4plotSettings* getSettings( unsigned i ) { return Settings[i]; }
+    size_t numberOfSettings() const { return Settings.size(); }
+    qt4plotSettings* settings( unsigned i ) { return Settings[i]; }
 
     const QString& name() const { return Name; }
     void setName( const QString &N ) { Name = N; }
