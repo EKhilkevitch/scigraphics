@@ -24,10 +24,12 @@
 #include "scigraphics/imagemagick/implot.h"
 
 #include <Magick++.h>
+typedef Magick::Quantum Quantum;
 
 #include <cassert>
 #include <iostream>
 #include <list>
+
 
 // ================================================================
 
