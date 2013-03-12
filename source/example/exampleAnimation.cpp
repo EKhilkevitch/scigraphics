@@ -50,7 +50,7 @@ int main( int argc, char **argv )
   QTime WorkTime;
   WorkTime.start();
 
-  auto RetCode = app.exec();
+  int RetCode = app.exec();
 
   qDebug() << "FPS = " << (double)Animator.count() / ( 1e-3 * WorkTime.elapsed() ) << " Max is " << 1.e3/Timer.interval();
   
