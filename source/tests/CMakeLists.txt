@@ -22,9 +22,13 @@ set( CMAKE_C_COMPILER "icc" )
 
 include_directories( "${PROJECT_SOURCE_DIR}/../scigraphics/" )
 
-if ( UNIX )
+find_library( cppunit NAMES cppunit )
+if ( ${cppunit} MATCHES cppunit-NOTFOUND )
+  message( "CppUnit not found" )
+else()
+  message( "CppUnit found" )
   add_executable( selfTest ${tests_source_files} )
   target_link_libraries( selfTest cppunit scigraphics )
   set_target_properties( selfTest PROPERTIES COMPILE_FLAGS "-std=c++0x")
-endif()
+endif()  
 
