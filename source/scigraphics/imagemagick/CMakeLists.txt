@@ -11,7 +11,7 @@ set( graphics_im_source_files
 include_directories(${ImageMagick_INCLUDE_DIRS})
 
 if ( ImageMagick_FOUND )
-  add_library( scigraphicsIm ${library_type} ${graphics_im_source_files} )
+  add_library( scigraphicsIm ${LIBRARY_TYPE} ${graphics_im_source_files} )
   target_link_libraries( scigraphicsIm ${ImageMagick_LIBRARIES} scigraphics )
 endif()
 

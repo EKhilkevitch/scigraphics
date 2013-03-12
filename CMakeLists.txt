@@ -11,11 +11,15 @@ set( LIBRARY_OUTPUT_PATH "${PROJECT_SOURCE_DIR}/lib/" )
 
 include_directories( "./source/" )
 
-if ( WIN32 )
-  set( library_type STATIC )
-else()
-  set( library_type SHARED )
+if ( NOT LIBRARY_TYPE )
+  if ( WIN32 )
+    set( LIBRARY_TYPE STATIC )
+  else()
+    set( LIBRARY_TYPE SHARED )
+  endif()
 endif()
+message( "LIBRARY_TYPE = ${LIBRARY_TYPE}" )
+message( "CMAKE_BUILD_TYPE = ${CMAKE_BUILD_TYPE}" )
 
 #Profiling 
 #set( CMAKE_BUILD_TYPE Release )

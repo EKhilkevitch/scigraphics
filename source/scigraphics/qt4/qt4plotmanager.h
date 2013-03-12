@@ -26,7 +26,7 @@
 #include <QWidget>
 #include <QList>
 
-#include "qt4plotsettings.h"
+#include "scigraphics/qt4/qt4plotsettings.h"
 
 class QTabWidget;
 class QSettings;
