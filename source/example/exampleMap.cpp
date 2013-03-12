@@ -44,7 +44,7 @@ int main( int argc, char **argv )
 
   qt4plot Plot;
 
-  std::vector< scigraphics::graphMapVector* > Maps(12,NULL);
+  std::vector< scigraphics::graphMapVector* > Maps( 12, (scigraphics::graphMapVector*)NULL );
 
   Maps[0] = Plot.createGraph<scigraphics::graphMapVector>( "gray" );
   Maps[1] = Plot.createGraph<scigraphics::graphMapVector>( "color1" );
