@@ -17,16 +17,20 @@ set ( tests_source_files
         test_color.cpp
     )
 
-set( CMAKE_CXX_COMPILER "icpc" )
-set( CMAKE_C_COMPILER "icc" )
+find_program( ICPC_PROGRAM icpc )
+if ( ICPC_PROGRAM )
+  set( CMAKE_CXX_COMPILER "icpc" )
+  set( CMAKE_C_COMPILER "icc" )
+endif()
 
 include_directories( "${PROJECT_SOURCE_DIR}/../scigraphics/" )
 
+
 find_library( cppunit NAMES cppunit )
-if ( ${cppunit} MATCHES cppunit-NOTFOUND )
-  message( "CppUnit not found" )
+if ( ${cppunit} MATCHES cppunit-NOTFOUND OR NOT ICPC_PROGRAM )
+  message( "Tests disabed" )
 else()
-  message( "CppUnit found" )
+  message( "Tests enabled" )
   add_executable( selfTest ${tests_source_files} )
   target_link_libraries( selfTest cppunit scigraphics )
   set_target_properties( selfTest PROPERTIES COMPILE_FLAGS "-std=c++0x")
