@@ -166,6 +166,7 @@ namespace scigraphics
       color nextGraphColor() { return GraphicsColorSequence.next(); }
       color currentGraphColor() const { return GraphicsColorSequence.current(); }
       color selectNextGraphColor( const color &Color );
+      void resetGraphColor() { GraphicsColorSequence.reset(); }
       
       const scale* scaleWithPosition( axisSetCollection::axisPosition Position ) const;
       scale* scaleWithPosition( axisSetCollection::axisPosition Position );
