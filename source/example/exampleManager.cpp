@@ -45,44 +45,44 @@ int main( int argc, char **argv )
   for ( unsigned i = 0; i < Manager.numberOfSettings(); i++ )
     Manager.settings(i)->addSettingWidget( new qt4plotSettingsSelections(NULL) );
 
-  auto Sqr = Manager.plot(0)->createGraphSequenceVector( "x^2" );
+  scigraphics::graphSV *Sqr = Manager.plot(0)->createGraphSV( "x^2" );
   
   for ( double x = -0.4; x <= 2; x+= 0.05 )
     Sqr->append( x, x*x, 0.5, std::sqrt(std::fabs(x)) );
   Sqr->setVisibleErrorBars(true);
 
-  auto Sin = Manager.plot(1)->createGraphSequenceVector( "Sinus" );
+  scigraphics::graphSV *Sin = Manager.plot(1)->createGraphSV( "Sinus" );
   for ( double x = -M_PI; x <= M_PI; x+= 0.1 )
     Sin->append( std::fabs(x) < 0.3 || x < -2.4 ? scigraphics::invalidNumber() : x, std::sin(x) );
   Sin->setVisiblePoints(true);
   Sin->setVisibleLineHystogram(true);
   Sin->setVisibleLines(false);
 
-  auto Abs = Manager.plot(2)->createGraphSequenceVector( "Abs" );
+  scigraphics::graphSV *Abs = Manager.plot(2)->createGraphSV( "Abs" );
   for ( double x = -1; x <= 1; x+= 0.1 )
     Abs->append( x, std::fabs(x) );
   Manager.plot(2)->scaleWithPosition( scigraphics::axisSetCollection::Left )->lock();
   
-  auto Exp = Manager.plot(3)->createGraphSequenceVector( "Exp" );
+  scigraphics::graphSV *Exp = Manager.plot(3)->createGraphSV( "Exp" );
   for ( double x = -2; x <= 10; x+= 0.1 )
     Exp->append( 1e5*x, 1e6*std::exp(x) );
 
-  auto Rounds = Manager.plot(4)->createGraphSequenceVector( "Ellipses" );
+  scigraphics::graphSV *Rounds = Manager.plot(4)->createGraphSV( "Ellipses" );
   for ( double Phi = 0; Phi <= 2*M_PI; Phi+=0.01 )
     Rounds->appendPolar( Phi, (1+sin(Phi)) * (1+0.9*cos(8*Phi)) * (1+0.1*cos(24*Phi)) );
   Rounds->append( scigraphics::invalidNumber(), scigraphics::invalidNumber() );
   for ( double t = 0; t < 2*M_PI; t+=0.01 )
     Rounds->append( 0.4 * cos(t) + 4, 0.7 * sin(t) - 2 );
 
-  auto SpiralPl = Manager.plot(4)->createGraphSV("Spiral + ");
+  scigraphics::graphSV *SpiralPl = Manager.plot(4)->createGraphSV("Spiral + ");
   for ( double Phi = 0; Phi <= 10*M_PI; Phi += 0.05 )
     SpiralPl->appendPolar( Phi, 2 * sqrt( Phi ) );
   
-  auto SpiralNg = Manager.plot(4)->createGraphSV("Spiral - ");
+  scigraphics::graphSV *SpiralNg = Manager.plot(4)->createGraphSV("Spiral - ");
   for ( double Phi = 0; Phi <= 10*M_PI; Phi += 0.05 )
     SpiralNg->appendPolar( Phi, -2 * sqrt( Phi ) );
 
-  auto Polygons = Manager.plot(6)->createGraphAV("Polygons");
+  scigraphics::graphAV *Polygons = Manager.plot(6)->createGraphAV("Polygons");
   Polygons->append( 0, 0 );
   Polygons->append( 0, 2 );
   Polygons->append( 2, 2 );
