@@ -16,7 +16,7 @@ if not exist %BUILD_DIR% (
 )
 
 cd %BUILD_DIR% || goto End
-cmake -G "NMake Makefiles" .. || goto End
+cmake -G "NMake Makefiles" %1 %2 %3 %4 %5 %6 %7 %8 %9 .. || goto End
 nmake || goto End
 
 rem =========================================
