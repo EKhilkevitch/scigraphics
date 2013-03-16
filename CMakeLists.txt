@@ -27,6 +27,10 @@ message( "CMAKE_BUILD_TYPE = ${CMAKE_BUILD_TYPE}" )
 #set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pg -g")
 #set( CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -pg -g")
 
+if ( UNIX )
+  set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC") 
+  set( CMAKE_C_FLAGS   "${CMAKE_C_FLAGS}   -fPIC") 
+endif()
 
 add_subdirectory( ./source/scigraphics/ )
 add_subdirectory( ./source/scigraphics/qt4/ )
