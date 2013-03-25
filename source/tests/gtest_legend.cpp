@@ -1,40 +1,37 @@
 
-/*
- * Copyright 2011,2012 Evgeniy Khilkevitch 
- * 
- * This file is part of scigraphics.
- * 
- * Scigraphics is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * Scigraphics is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with scigraphics.  If not, see <http://www.gnu.org/licenses/>.
- */
-
-
 // =========================================================
 
-#include "test_painter.h"
-#include "test_legend.h"
-#include "scigraphics/legend.h"
+#include <gtest/gtest.h>
+
 #include "scigraphics/axisset.h"
 #include "scigraphics/color.h"
 #include "scigraphics/graphsequence.h"
 
+#include "mockpainter.h"
+
+#define private public
+#define protected public
+#include "scigraphics/legend.h"
+
+namespace scigraphics {};
+using namespace scigraphics;
+
 // =========================================================
 
-CPPUNIT_TEST_SUITE_REGISTRATION( scigraphics::tests::test_legend );
+struct test_legend : public testing::Test
+{
+  struct legendMorozov : public legend { friend class test_legend; };
+
+  painter Painter;
+  void SetUp();
+};
 
 // =========================================================
-        
-void scigraphics::tests::test_legend::setUp()
+
+
+// =========================================================
+
+void test_legend::SetUp()
 {
   auto Drawer = new mockDrawer();
   Drawer->setWidth(400);
@@ -43,24 +40,24 @@ void scigraphics::tests::test_legend::setUp()
   Painter.update();
 }
 
-// ---------------------------------------------------------
+// =========================================================
 
-void scigraphics::tests::test_legend::shouldDrawGraphLegend()
+TEST_F( test_legend, shouldDrawGraphLegend )
 {
   graphSequenceVector Graph;
 
-  CPPUNIT_ASSERT( ! legendMorozov::shouldDrawGraphLegend(Graph) );
+  ASSERT_TRUE( ! legendMorozov::shouldDrawGraphLegend(Graph) );
 
   Graph.setLegend("x");
-  CPPUNIT_ASSERT( legendMorozov::shouldDrawGraphLegend(Graph) );
+  ASSERT_TRUE( legendMorozov::shouldDrawGraphLegend(Graph) );
 
   Graph.setShowLegend(false);
-  CPPUNIT_ASSERT( ! legendMorozov::shouldDrawGraphLegend(Graph) );
+  ASSERT_TRUE( ! legendMorozov::shouldDrawGraphLegend(Graph) );
 }
 
 // ---------------------------------------------------------
 
-void scigraphics::tests::test_legend::legendsList()
+TEST_F( test_legend, legendsList )
 {
   graphCollection Graphics;
   axisSetX SetX(0);
@@ -80,14 +77,14 @@ void scigraphics::tests::test_legend::legendsList()
   Graph->setLegend("3");
 
   auto Legends = legendMorozov::legendsList( Graphics );
-  CPPUNIT_ASSERT_EQUAL( (size_t)2, Legends.size() );
-  CPPUNIT_ASSERT_EQUAL( std::string("1"), Legends.front() );
-  CPPUNIT_ASSERT_EQUAL( std::string("3"), Legends.back() );
+  ASSERT_EQ( (size_t)2, Legends.size() );
+  ASSERT_EQ( std::string("1"), Legends.front() );
+  ASSERT_EQ( std::string("3"), Legends.back() );
 }
 
 // ---------------------------------------------------------
 
-void scigraphics::tests::test_legend::sizesForLegendRectangle()
+TEST_F( test_legend, sizesForLegendRectangle )
 {
   textStyle TextStyle;
   TextStyle.setFontSize(10);
@@ -102,8 +99,8 @@ void scigraphics::tests::test_legend::sizesForLegendRectangle()
   int ExpectedWidth  = 0;
   int ExpectedHeight = 0; //legendMorozov::interTextVerticalDistance(TextStyle);
 
-  CPPUNIT_ASSERT_EQUAL( ExpectedWidth,  Size.width()  );
-  CPPUNIT_ASSERT_EQUAL( ExpectedHeight, Size.height() );
+  ASSERT_EQ( ExpectedWidth,  Size.width()  );
+  ASSERT_EQ( ExpectedHeight, Size.height() );
 
   Graphics.create<graphSequenceVector>("1",color());
   Graphics.create<graphSequenceVector>("222",color());
@@ -117,7 +114,7 @@ void scigraphics::tests::test_legend::sizesForLegendRectangle()
 
 // ---------------------------------------------------------
 
-void scigraphics::tests::test_legend::updateLegendRectangleShortList()
+TEST_F( test_legend, updateLegendRectangleShortList )
 {
   graphCollection Graphics;
   axisSetX SetX(0);
@@ -127,34 +124,34 @@ void scigraphics::tests::test_legend::updateLegendRectangleShortList()
   Graphics.create<graphSequenceVector>("11",color());
 
   legendMorozov Legend;
-  CPPUNIT_ASSERT_EQUAL( 0, Legend.getRectangle().width() );
-  CPPUNIT_ASSERT_EQUAL( 0, Legend.getRectangle().height() );
-  CPPUNIT_ASSERT_EQUAL( 0, Legend.getRectangle().up() );
-  CPPUNIT_ASSERT_EQUAL( 0, Legend.getRectangle().left() );
+  ASSERT_EQ( 0, Legend.getRectangle().width() );
+  ASSERT_EQ( 0, Legend.getRectangle().height() );
+  ASSERT_EQ( 0, Legend.getRectangle().up() );
+  ASSERT_EQ( 0, Legend.getRectangle().left() );
   
   auto FontSize = Legend.getLegendTextStyle().getFontSize();
-  CPPUNIT_ASSERT_EQUAL( 12U, FontSize );
+  ASSERT_EQ( 12U, FontSize );
 
   auto TextStyle = Legend.updateLegendRectangle( Painter, Graphics );
-  CPPUNIT_ASSERT_EQUAL( FontSize, TextStyle.getFontSize() );
-  CPPUNIT_ASSERT_EQUAL( FontSize, Legend.getLegendTextStyle().getFontSize() );
-  CPPUNIT_ASSERT_EQUAL( 0U, TextStyle.getColor().valueRgb() );
+  ASSERT_EQ( FontSize, TextStyle.getFontSize() );
+  ASSERT_EQ( FontSize, Legend.getLegendTextStyle().getFontSize() );
+  ASSERT_EQ( 0U, TextStyle.getColor().valueRgb() );
 
   int ExpectedWidth  = Graphics.front()->legendExampleWidth() + Legend.textHorizontalIndent()*3 + FontSize*Graphics.front()->legend().size();
   int ExpectedHeight = 2*legendMorozov::interTextVerticalDistance(TextStyle) + FontSize;
 
-  CPPUNIT_ASSERT_EQUAL( 5,  legendMorozov::textHorizontalIndent() );
-  CPPUNIT_ASSERT_EQUAL( 4,  legendMorozov::interTextVerticalDistance(TextStyle) );
-  CPPUNIT_ASSERT_EQUAL( ExpectedWidth,  Legend.getRectangle().width() );
-  CPPUNIT_ASSERT_EQUAL( ExpectedHeight, Legend.getRectangle().height() );
+  ASSERT_EQ( 5,  legendMorozov::textHorizontalIndent() );
+  ASSERT_EQ( 4,  legendMorozov::interTextVerticalDistance(TextStyle) );
+  ASSERT_EQ( ExpectedWidth,  Legend.getRectangle().width() );
+  ASSERT_EQ( ExpectedHeight, Legend.getRectangle().height() );
 
-  CPPUNIT_ASSERT_EQUAL( 400-ExpectedWidth, Legend.getRectangle().left() );
-  CPPUNIT_ASSERT_EQUAL( 90, Legend.getRectangle().up() );
+  ASSERT_EQ( 400-ExpectedWidth, Legend.getRectangle().left() );
+  ASSERT_EQ( 90, Legend.getRectangle().up() );
 }
 
 // ---------------------------------------------------------
 
-void scigraphics::tests::test_legend::updateLegendRectangleLongList()
+TEST_F( test_legend, updateLegendRectangleLongList )
 {
   graphCollection Graphics;
   axisSetX SetX(0);
@@ -166,22 +163,22 @@ void scigraphics::tests::test_legend::updateLegendRectangleLongList()
   legendMorozov Legend;
   auto TextStyle = Legend.updateLegendRectangle( Painter, Graphics );
 
-  CPPUNIT_ASSERT_EQUAL( 8U,  TextStyle.getFontSize() );
-  CPPUNIT_ASSERT_EQUAL( 12U, Legend.getLegendTextStyle().getFontSize() );
+  ASSERT_EQ( 8U,  TextStyle.getFontSize() );
+  ASSERT_EQ( 12U, Legend.getLegendTextStyle().getFontSize() );
   
   int ExpectedWidth  = Graphics.front()->legendExampleWidth() + Legend.textHorizontalIndent()*3 + TextStyle.getFontSize()*Graphics.front()->legend().size();
   int ExpectedHeight = (Graphics.size()+1)*legendMorozov::interTextVerticalDistance(TextStyle) + TextStyle.getFontSize()*Graphics.size();
   
-  CPPUNIT_ASSERT_EQUAL( ExpectedWidth,  Legend.getRectangle().width() );
-  CPPUNIT_ASSERT_EQUAL( ExpectedHeight, Legend.getRectangle().height() );
+  ASSERT_EQ( ExpectedWidth,  Legend.getRectangle().width() );
+  ASSERT_EQ( ExpectedHeight, Legend.getRectangle().height() );
   
-  CPPUNIT_ASSERT_EQUAL( ExpectedHeight, Legend.getRectangle().up() );
-  CPPUNIT_ASSERT_EQUAL( 400-ExpectedWidth, Legend.getRectangle().left() );
+  ASSERT_EQ( ExpectedHeight, Legend.getRectangle().up() );
+  ASSERT_EQ( 400-ExpectedWidth, Legend.getRectangle().left() );
 }
 
 // ---------------------------------------------------------
 
-void scigraphics::tests::test_legend::updateLegendRectangleVeryLongList()
+TEST_F( test_legend, updateLegendRectangleVeryLongList )
 {
   graphCollection Graphics;
   axisSetX SetX(0);
@@ -193,11 +190,10 @@ void scigraphics::tests::test_legend::updateLegendRectangleVeryLongList()
   legendMorozov Legend;
   auto TextStyle = Legend.updateLegendRectangle( Painter, Graphics );
   
-  CPPUNIT_ASSERT_EQUAL( Legend.minFontSize(), TextStyle.getFontSize() );
-  CPPUNIT_ASSERT( Legend.minFontSize() > 0 );
-  CPPUNIT_ASSERT( Legend.minFontSize() < 20 );
+  ASSERT_EQ( Legend.minFontSize(), TextStyle.getFontSize() );
+  ASSERT_TRUE( Legend.minFontSize() > 0 );
+  ASSERT_TRUE( Legend.minFontSize() < 20 );
 }
 
 // =========================================================
-
 
