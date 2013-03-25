@@ -7,10 +7,6 @@
 
 #include <gtest/gtest.h>
 
-#define private public
-#define protected public
-
-
 #include "scigraphics/datasequence.h"
 #include "scigraphics/datamap.h"
 
@@ -19,19 +15,7 @@ using namespace scigraphics;
 
 // =========================================================
 
-class test_dataSequenceVector : public testing::Test
-{
-};
-
-// =========================================================
-
-class test_dataMap : public testing::Test
-{
-};
-
-// =========================================================
-
-TEST_F( test_dataSequenceVector, point )
+TEST( test_dataSequenceVector, point )
 {
   typedef dataSequence::point point;
 
@@ -50,7 +34,7 @@ TEST_F( test_dataSequenceVector, point )
 
 // ---------------------------------------------------------
 
-TEST_F( test_dataSequenceVector, append )
+TEST( test_dataSequenceVector, append )
 {
   dataSequenceVector Data;
   
@@ -78,14 +62,14 @@ TEST_F( test_dataSequenceVector, append )
   
   Data.append( 2, invalidNumber(), 3 );
   ASSERT_EQ( size_t(4), Data.size() );
-  ASSERT_EQ( false, Data[3].isValid() );
+  ASSERT_FALSE( Data[3].isValid() );
   ASSERT_NEAR( 2, Data[3].x(), 1e-5 );
   ASSERT_EQ( invalidNumber(), Data[3].y() );
 }
 
 // ---------------------------------------------------------
 
-TEST_F( test_dataSequenceVector, iterator )
+TEST( test_dataSequenceVector, iterator )
 {
   dataSequenceVector Data;
   ASSERT_TRUE( Data.begin() == Data.end() );
@@ -112,7 +96,7 @@ TEST_F( test_dataSequenceVector, iterator )
 
 // ---------------------------------------------------------
 
-TEST_F( test_dataSequenceVector, limitsX )
+TEST( test_dataSequenceVector, limitsX )
 {
   dataSequenceVector Data;
   ASSERT_TRUE( ! Data.limitsX().isValid() );
@@ -187,7 +171,7 @@ TEST_F( test_dataSequenceVector, limitsX )
 
 // ---------------------------------------------------------
 
-TEST_F( test_dataSequenceVector, limitsY )
+TEST( test_dataSequenceVector, limitsY )
 {
   dataSequenceVector Data;
   ASSERT_TRUE( ! Data.limitsY( interval<number>(0,1) ).isValid() );
@@ -247,7 +231,7 @@ TEST_F( test_dataSequenceVector, limitsY )
 
 // ---------------------------------------------------------
 
-TEST_F( test_dataSequenceVector, clear )
+TEST( test_dataSequenceVector, clear )
 {
   dataSequenceVector Data;
   ASSERT_TRUE( Data.empty() );
@@ -267,49 +251,49 @@ TEST_F( test_dataSequenceVector, clear )
 
 // ---------------------------------------------------------
 
-TEST_F( test_dataSequenceVector, isOrderedByX )
+TEST( test_dataSequenceVector, isOrderedByX )
 {
   dataSequenceVector Data;
 
-  ASSERT_EQ( true, Data.isOrderedByX() );
+  ASSERT_TRUE( Data.isOrderedByX() );
   
   Data.append( 10, 2 );
-  ASSERT_EQ( true, Data.isOrderedByX() );
+  ASSERT_TRUE( Data.isOrderedByX() );
   
   Data.append( 11, 3 );
-  ASSERT_EQ( true, Data.isOrderedByX() );
+  ASSERT_TRUE( Data.isOrderedByX() );
 
   Data.append( 12, 4 );
-  ASSERT_EQ( true, Data.isOrderedByX() );
+  ASSERT_TRUE( Data.isOrderedByX() );
    
   Data.append( 12, 1 );
-  ASSERT_EQ( true, Data.isOrderedByX() );
+  ASSERT_TRUE( Data.isOrderedByX() );
   
   Data.append( 13, invalidNumber() );
-  ASSERT_EQ( true, Data.isOrderedByX() );
+  ASSERT_TRUE( Data.isOrderedByX() );
 
   Data.append( 14, 2 );
-  ASSERT_EQ( true, Data.isOrderedByX() );
+  ASSERT_TRUE( Data.isOrderedByX() );
   
   Data.append( 11, 1 );
-  ASSERT_EQ( false, Data.isOrderedByX() );
+  ASSERT_FALSE( Data.isOrderedByX() );
   
   Data.append( 15, 1 );
-  ASSERT_EQ( false, Data.isOrderedByX() );
+  ASSERT_FALSE( Data.isOrderedByX() );
 
   Data.clear();
-  ASSERT_EQ( true, Data.isOrderedByX() );
+  ASSERT_TRUE( Data.isOrderedByX() );
   
   Data.append( 4, 2 );
-  ASSERT_EQ( true, Data.isOrderedByX() );
+  ASSERT_TRUE( Data.isOrderedByX() );
   
   Data.append( invalidNumber(), 2 );
-  ASSERT_EQ( false, Data.isOrderedByX() );
+  ASSERT_FALSE( Data.isOrderedByX() );
 }
 
 // ---------------------------------------------------------
 
-TEST_F( test_dataMap, limits )
+TEST( test_dataMap, limits )
 {
   dataMapVector Data( 10, interval<number>( 1, 5 ), 5, interval<number>(-10,-4) );
 
@@ -349,7 +333,7 @@ TEST_F( test_dataMap, limits )
 
 // ---------------------------------------------------------
 
-TEST_F( test_dataMap, set )
+TEST( test_dataMap, set )
 {
   dataMapVector Data( 10, interval<number>( 1, 5 ), 5, interval<number>(-10,-4) );
  
@@ -361,7 +345,7 @@ TEST_F( test_dataMap, set )
 
 // ---------------------------------------------------------
 
-TEST_F( test_dataMap, resize )
+TEST( test_dataMap, resize )
 {
   dataMapVector Data;
 

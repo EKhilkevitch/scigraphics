@@ -1,12 +1,7 @@
 
 // =========================================================
 
-
 #include <gtest/gtest.h>
-
-#define private public
-#define protected public
-
 
 #include "geometry.h"
 
@@ -15,13 +10,7 @@ using namespace scigraphics;
 
 // =========================================================
 
-class test_geometry : public testing::Test
-{
-};
-
-// =========================================================
-
-TEST_F( test_geometry, tpoint )
+TEST( test_geometry, tpoint )
 {
   point<number> Point( 1, 2 );
 
@@ -46,7 +35,7 @@ TEST_F( test_geometry, tpoint )
 
 // ---------------------------------------------------------
 
-TEST_F( test_geometry, trectangle )
+TEST( test_geometry, trectangle )
 {
   rectangle<number> Rect( point<number>(6,2), point<number>(1,8) );
 
@@ -76,7 +65,7 @@ TEST_F( test_geometry, trectangle )
 
 // ---------------------------------------------------------
 
-TEST_F( test_geometry, tindents )
+TEST( test_geometry, tindents )
 {
   indents<number> Indents( 0.5, 1.5, 2, 3 );
   rectangle<number> Rect( point<number>(6,2), point<number>(1,8) );

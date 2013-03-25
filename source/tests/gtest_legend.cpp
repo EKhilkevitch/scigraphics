@@ -20,25 +20,17 @@ using namespace scigraphics;
 
 struct test_legend : public testing::Test
 {
-  struct legendMorozov : public legend { friend class test_legend; };
-
   painter Painter;
-  void SetUp();
+
+  void SetUp()
+  {
+    auto Drawer = new mockDrawer();
+    Drawer->setWidth(400);
+    Drawer->setHeight(300);
+    Painter.setDrawer( Drawer );
+    Painter.update();
+  }
 };
-
-// =========================================================
-
-
-// =========================================================
-
-void test_legend::SetUp()
-{
-  auto Drawer = new mockDrawer();
-  Drawer->setWidth(400);
-  Drawer->setHeight(300);
-  Painter.setDrawer( Drawer );
-  Painter.update();
-}
 
 // =========================================================
 
@@ -46,13 +38,13 @@ TEST_F( test_legend, shouldDrawGraphLegend )
 {
   graphSequenceVector Graph;
 
-  ASSERT_TRUE( ! legendMorozov::shouldDrawGraphLegend(Graph) );
+  ASSERT_TRUE( ! legend::shouldDrawGraphLegend(Graph) );
 
   Graph.setLegend("x");
-  ASSERT_TRUE( legendMorozov::shouldDrawGraphLegend(Graph) );
+  ASSERT_TRUE( legend::shouldDrawGraphLegend(Graph) );
 
   Graph.setShowLegend(false);
-  ASSERT_TRUE( ! legendMorozov::shouldDrawGraphLegend(Graph) );
+  ASSERT_TRUE( ! legend::shouldDrawGraphLegend(Graph) );
 }
 
 // ---------------------------------------------------------
@@ -76,7 +68,7 @@ TEST_F( test_legend, legendsList )
   Graph = Graphics.create<graphSequenceVector>();
   Graph->setLegend("3");
 
-  auto Legends = legendMorozov::legendsList( Graphics );
+  auto Legends = legend::legendsList( Graphics );
   ASSERT_EQ( (size_t)2, Legends.size() );
   ASSERT_EQ( std::string("1"), Legends.front() );
   ASSERT_EQ( std::string("3"), Legends.back() );
@@ -94,10 +86,10 @@ TEST_F( test_legend, sizesForLegendRectangle )
   axisSetY SetY(0);
   Graphics.setDefaultAxisSets( &SetX, &SetY );
 
-  auto Size = legendMorozov::sizesForLegendRectangle( Painter, TextStyle, Graphics );
+  auto Size = legend::sizesForLegendRectangle( Painter, TextStyle, Graphics );
 
   int ExpectedWidth  = 0;
-  int ExpectedHeight = 0; //legendMorozov::interTextVerticalDistance(TextStyle);
+  int ExpectedHeight = 0; //legend::interTextVerticalDistance(TextStyle);
 
   ASSERT_EQ( ExpectedWidth,  Size.width()  );
   ASSERT_EQ( ExpectedHeight, Size.height() );
@@ -106,10 +98,10 @@ TEST_F( test_legend, sizesForLegendRectangle )
   Graphics.create<graphSequenceVector>("222",color());
   Graphics.create<graphSequenceVector>("33",color());
 
-  Size = legendMorozov::sizesForLegendRectangle( Painter, TextStyle, Graphics );
+  Size = legend::sizesForLegendRectangle( Painter, TextStyle, Graphics );
 
   ExpectedWidth  = 2*3*TextStyle.getFontSize();
-  ExpectedHeight = 4*legendMorozov::interTextVerticalDistance(TextStyle) + 3*TextStyle.getFontSize();
+  ExpectedHeight = 4*legend::interTextVerticalDistance(TextStyle) + 3*TextStyle.getFontSize();
 }
 
 // ---------------------------------------------------------
@@ -123,7 +115,7 @@ TEST_F( test_legend, updateLegendRectangleShortList )
  
   Graphics.create<graphSequenceVector>("11",color());
 
-  legendMorozov Legend;
+  legend Legend;
   ASSERT_EQ( 0, Legend.getRectangle().width() );
   ASSERT_EQ( 0, Legend.getRectangle().height() );
   ASSERT_EQ( 0, Legend.getRectangle().up() );
@@ -138,10 +130,10 @@ TEST_F( test_legend, updateLegendRectangleShortList )
   ASSERT_EQ( 0U, TextStyle.getColor().valueRgb() );
 
   int ExpectedWidth  = Graphics.front()->legendExampleWidth() + Legend.textHorizontalIndent()*3 + FontSize*Graphics.front()->legend().size();
-  int ExpectedHeight = 2*legendMorozov::interTextVerticalDistance(TextStyle) + FontSize;
+  int ExpectedHeight = 2*legend::interTextVerticalDistance(TextStyle) + FontSize;
 
-  ASSERT_EQ( 5,  legendMorozov::textHorizontalIndent() );
-  ASSERT_EQ( 4,  legendMorozov::interTextVerticalDistance(TextStyle) );
+  ASSERT_EQ( 5,  legend::textHorizontalIndent() );
+  ASSERT_EQ( 4,  legend::interTextVerticalDistance(TextStyle) );
   ASSERT_EQ( ExpectedWidth,  Legend.getRectangle().width() );
   ASSERT_EQ( ExpectedHeight, Legend.getRectangle().height() );
 
@@ -160,14 +152,14 @@ TEST_F( test_legend, updateLegendRectangleLongList )
   for ( unsigned i = 0; i < 25; i++ )
     Graphics.create<graphSequenceVector>( "xxx", color() );
 
-  legendMorozov Legend;
+  legend Legend;
   auto TextStyle = Legend.updateLegendRectangle( Painter, Graphics );
 
   ASSERT_EQ( 8U,  TextStyle.getFontSize() );
   ASSERT_EQ( 12U, Legend.getLegendTextStyle().getFontSize() );
   
   int ExpectedWidth  = Graphics.front()->legendExampleWidth() + Legend.textHorizontalIndent()*3 + TextStyle.getFontSize()*Graphics.front()->legend().size();
-  int ExpectedHeight = (Graphics.size()+1)*legendMorozov::interTextVerticalDistance(TextStyle) + TextStyle.getFontSize()*Graphics.size();
+  int ExpectedHeight = (Graphics.size()+1)*legend::interTextVerticalDistance(TextStyle) + TextStyle.getFontSize()*Graphics.size();
   
   ASSERT_EQ( ExpectedWidth,  Legend.getRectangle().width() );
   ASSERT_EQ( ExpectedHeight, Legend.getRectangle().height() );
@@ -187,7 +179,7 @@ TEST_F( test_legend, updateLegendRectangleVeryLongList )
   for ( unsigned i = 0; i < 100; i++ )
     Graphics.create<graphSequenceVector>( "xxx", color() );
 
-  legendMorozov Legend;
+  legend Legend;
   auto TextStyle = Legend.updateLegendRectangle( Painter, Graphics );
   
   ASSERT_EQ( Legend.minFontSize(), TextStyle.getFontSize() );

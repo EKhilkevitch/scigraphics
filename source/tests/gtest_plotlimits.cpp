@@ -43,17 +43,17 @@ struct test_plotLimits : public testing::Test
 
 TEST_F( test_plotLimits_limitsXY, isAxisSetXY )
 {
-  ASSERT_EQ( false, plotLimits::limitsXY::isAxisSetX(NULL) );
-  ASSERT_EQ( false, plotLimits::limitsXY::isAxisSetY(NULL) );
+  ASSERT_FALSE( plotLimits::limitsXY::isAxisSetX(NULL) );
+  ASSERT_FALSE( plotLimits::limitsXY::isAxisSetY(NULL) );
 
   axisSet *Axis = new axisSetX(0);
-  ASSERT_EQ( true,  plotLimits::limitsXY::isAxisSetX(Axis) );
-  ASSERT_EQ( false, plotLimits::limitsXY::isAxisSetY(Axis) );
+  ASSERT_TRUE(  plotLimits::limitsXY::isAxisSetX(Axis) );
+  ASSERT_FALSE( plotLimits::limitsXY::isAxisSetY(Axis) );
 
   delete Axis;
   Axis = new axisSetY(0);
-  ASSERT_EQ( false, plotLimits::limitsXY::isAxisSetX(Axis) );
-  ASSERT_EQ( true,  plotLimits::limitsXY::isAxisSetY(Axis) );
+  ASSERT_FALSE( plotLimits::limitsXY::isAxisSetX(Axis) );
+  ASSERT_TRUE(  plotLimits::limitsXY::isAxisSetY(Axis) );
   
   delete Axis;
 }
@@ -140,8 +140,8 @@ TEST_F( test_plotLimits, limitsForGraphics )
   Graph->append( invalidNumber(), 4.0 );
   Graph->append( +2, +0.5 );
   
-  ASSERT_EQ( true, plotLimits::limitsXY::isAxisSetX( Graphics.graphAxisSetX(Graph) ) );
-  ASSERT_EQ( true, plotLimits::limitsXY::isAxisSetY( Graphics.graphAxisSetY(Graph) ) );
+  ASSERT_TRUE( plotLimits::limitsXY::isAxisSetX( Graphics.graphAxisSetX(Graph) ) );
+  ASSERT_TRUE( plotLimits::limitsXY::isAxisSetY( Graphics.graphAxisSetY(Graph) ) );
   
   Graph = Graphics.create<graphSequenceVector>();
   Graph = Graphics.create<graphSequenceVector>();

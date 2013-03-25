@@ -14,13 +14,7 @@ using namespace scigraphics;
 
 // =========================================================
 
-class test_numberLimits : public testing::Test
-{
-};
-
-// =========================================================
-
-TEST_F( test_numberLimits, isValidInterval )
+TEST( test_numberLimits, isValidInterval )
 {
   interval<number> I1(1,2), I2( invalidNumber(), invalidNumber() );
 
@@ -30,7 +24,7 @@ TEST_F( test_numberLimits, isValidInterval )
 
 // ---------------------------------------------------------
 
-TEST_F( test_numberLimits, clear )
+TEST( test_numberLimits, clear )
 {
   numberLimits Limits;
   ASSERT_TRUE( ! numberLimits::isValidInterval(Limits.totalLimits()) );
@@ -47,7 +41,7 @@ TEST_F( test_numberLimits, clear )
 
 // ---------------------------------------------------------
 
-TEST_F( test_numberLimits, updateLimitsPosNums )
+TEST( test_numberLimits, updateLimitsPosNums )
 {
   numberLimits Limits;
   ASSERT_EQ( invalidNumber(), Limits.positiveLimits().min() );
@@ -78,7 +72,7 @@ TEST_F( test_numberLimits, updateLimitsPosNums )
 
 // ---------------------------------------------------------
 
-TEST_F( test_numberLimits, updateLimitsNegNums )
+TEST( test_numberLimits, updateLimitsNegNums )
 {
   numberLimits Limits;
   Limits.updateLimits(-3.5);
@@ -102,7 +96,7 @@ TEST_F( test_numberLimits, updateLimitsNegNums )
 
 // ---------------------------------------------------------
 
-TEST_F( test_numberLimits, updateLimitsZero )
+TEST( test_numberLimits, updateLimitsZero )
 {
   numberLimits Limits;
   
@@ -131,7 +125,7 @@ TEST_F( test_numberLimits, updateLimitsZero )
 
 // ---------------------------------------------------------
 
-TEST_F( test_numberLimits, updateLimits )
+TEST( test_numberLimits, updateLimits )
 {
   numberLimits Limits;
   ASSERT_TRUE( ! numberLimits::isValidInterval(Limits.totalLimits()) );

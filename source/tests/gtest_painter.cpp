@@ -13,13 +13,7 @@ using namespace scigraphics;
 
 // =========================================================
 
-class test_painter : public testing::Test
-{
-};
-
-// =========================================================
-
-TEST_F( test_painter, setDrawer )
+TEST( test_painter, setDrawer )
 {
   painter Painter;
   ASSERT_TRUE( Painter.getDrawer() == nullptr );
@@ -33,7 +27,7 @@ TEST_F( test_painter, setDrawer )
 
 // ---------------------------------------------------------
 
-TEST_F( test_painter, setIndents )
+TEST( test_painter, setIndents )
 {
   auto Drawer = new mockDrawer();
   painter Painter;
@@ -55,7 +49,7 @@ TEST_F( test_painter, setIndents )
 
 // ---------------------------------------------------------
 
-TEST_F( test_painter, update )
+TEST( test_painter, update )
 {
   auto Drawer = new mockDrawer();
   painter Painter( Drawer );
@@ -74,7 +68,7 @@ TEST_F( test_painter, update )
 
 // ---------------------------------------------------------
 
-TEST_F( test_painter, fpoint2wpoint )
+TEST( test_painter, fpoint2wpoint )
 {
   auto Drawer = new mockDrawer();
   painter Painter( Drawer );
@@ -105,7 +99,7 @@ TEST_F( test_painter, fpoint2wpoint )
 
 // ---------------------------------------------------------
 
-TEST_F( test_painter, canSeparatePoints )
+TEST( test_painter, canSeparatePoints )
 {
 #if 0
   auto Drawer = new mockDrawer();
@@ -125,7 +119,7 @@ TEST_F( test_painter, canSeparatePoints )
 
 // ---------------------------------------------------------
 
-TEST_F( test_painter, textWidth )
+TEST( test_painter, textWidth )
 {
   auto Drawer = new mockDrawer();
   painter Painter( Drawer );
@@ -139,7 +133,7 @@ TEST_F( test_painter, textWidth )
 
 // ---------------------------------------------------------
 
-TEST_F( test_painter, textHeight )
+TEST( test_painter, textHeight )
 {
   auto Drawer = new mockDrawer();
   painter Painter( Drawer );

@@ -17,13 +17,7 @@ using namespace scigraphics;
 
 // =========================================================
 
-class test_graphSequenceVector : public testing::Test
-{
-};
-
-// =========================================================
-
-TEST_F( test_graphSequenceVector, getView )
+TEST( test_graphSequenceVector, getView )
 {
   graphSequenceVector Graph;
 
@@ -33,28 +27,28 @@ TEST_F( test_graphSequenceVector, getView )
 
 // ---------------------------------------------------------
 
-TEST_F( test_graphSequenceVector, setViewVisible )
+TEST( test_graphSequenceVector, setViewVisible )
 {
   graphSequenceVector Graph;
 
-  ASSERT_EQ( true, Graph.getViews().getView<graphViewLine>()->isVisible() );
+  ASSERT_TRUE( Graph.getViews().getView<graphViewLine>()->isVisible() );
   
   Graph.setVisibleLines( false );
-  ASSERT_EQ( false, Graph.getViews().getView<graphViewLine>()->isVisible() );
+  ASSERT_FALSE( Graph.getViews().getView<graphViewLine>()->isVisible() );
 }
 
 // ---------------------------------------------------------
 
-TEST_F( test_graphSequenceVector, isViewExist )
+TEST( test_graphSequenceVector, isViewExist )
 {
   graphSequenceVector Graph;
 
-  ASSERT_EQ( true, Graph.getViews().isViewExist<graphViewLine>() );
+  ASSERT_TRUE( Graph.getViews().isViewExist<graphViewLine>() );
 }
 
 // ---------------------------------------------------------
 
-TEST_F( test_graphSequenceVector, limitsX )
+TEST( test_graphSequenceVector, limitsX )
 {
   graphSequenceVector Graph;
   Graph.append( 0, 0 );
@@ -70,7 +64,7 @@ TEST_F( test_graphSequenceVector, limitsX )
 
 // ---------------------------------------------------------
 
-TEST_F( test_graphSequenceVector, limitsY )
+TEST( test_graphSequenceVector, limitsY )
 {
   graphSequenceVector Graph;
   Graph.append( 0, 0 );
@@ -83,19 +77,19 @@ TEST_F( test_graphSequenceVector, limitsY )
 
 // ---------------------------------------------------------
 
-TEST_F( test_graphSequenceVector, legend )
+TEST( test_graphSequenceVector, legend )
 {
   const std::string Legend = "Legend";
   graphSequenceVector Graph( Legend, color::Black );
 
   ASSERT_EQ( Legend, Graph.legend() );
-  ASSERT_EQ( true, Graph.showLegend() ); 
+  ASSERT_TRUE( Graph.showLegend() ); 
   
   Graph.setLegend( Legend + "x" );
   ASSERT_EQ( Legend + "x", Graph.legend() );
 
   Graph.setShowLegend(false);
-  ASSERT_EQ( false, Graph.showLegend() );
+  ASSERT_FALSE( Graph.showLegend() );
 }
 
 // =========================================================

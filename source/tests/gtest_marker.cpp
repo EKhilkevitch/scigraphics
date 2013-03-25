@@ -10,25 +10,7 @@ using namespace scigraphics;
 
 // =========================================================
 
-class test_markerLinear : public testing::Test
-{
-};
-
-// =========================================================
-
-class test_markerLogPositive : public testing::Test
-{
-};
-
-// =========================================================
-
-class test_markerLogNegative : public testing::Test
-{
-};
-
-// =========================================================
-
-TEST_F( test_markerLinear, marks )
+TEST( test_markerLinear, marks )
 {
   markerLinear Marker;
   Marker.setNumberOfMarks( 3, 7 );
@@ -67,7 +49,7 @@ TEST_F( test_markerLinear, marks )
 
 // ---------------------------------------------------------
 
-TEST_F( test_markerLogPositive, marks )
+TEST( test_markerLogPositive, marks )
 {
   markerLogarithmPositive Marker;
   
@@ -97,7 +79,7 @@ TEST_F( test_markerLogPositive, marks )
 
 // ---------------------------------------------------------
 
-TEST_F( test_markerLogNegative, marks )
+TEST( test_markerLogNegative, marks )
 {
   markerLogarithmNegative Marker;
   

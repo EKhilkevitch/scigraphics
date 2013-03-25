@@ -1,12 +1,7 @@
 
 // =========================================================
 
-
 #include <gtest/gtest.h>
-
-#define private public
-#define protected public
-
 
 #include "scigraphics/graphcollection.h"
 #include "scigraphics/graphsequence.h"
@@ -17,13 +12,7 @@ using namespace scigraphics;
 
 // =========================================================
 
-class test_graphCollection : public testing::Test
-{
-};
-
-// =========================================================
-
-TEST_F( test_graphCollection, scales )
+TEST( test_graphCollection, scales )
 {
   graphCollection Collection;
   
@@ -48,7 +37,7 @@ TEST_F( test_graphCollection, scales )
 
 // ---------------------------------------------------------
 
-TEST_F( test_graphCollection, bindGraphToAxisSet )
+TEST( test_graphCollection, bindGraphToAxisSet )
 {
   graphCollection Collection;
   axisSetX SetX(0);
@@ -72,7 +61,7 @@ TEST_F( test_graphCollection, bindGraphToAxisSet )
 
 // ---------------------------------------------------------
 
-TEST_F( test_graphCollection, append )
+TEST( test_graphCollection, append )
 {
   graphCollection Collection;
   axisSetX SetX(0);
@@ -113,7 +102,7 @@ TEST_F( test_graphCollection, append )
 
 // ---------------------------------------------------------
 
-TEST_F( test_graphCollection, create )
+TEST( test_graphCollection, create )
 {
   graphCollection Collection;
   axisSetX SetX(0);
@@ -141,7 +130,7 @@ TEST_F( test_graphCollection, create )
 
 // ---------------------------------------------------------
 
-TEST_F( test_graphCollection, clear )
+TEST( test_graphCollection, clear )
 {
   graphCollection Collection;
   axisSetX SetX(0);
@@ -161,7 +150,7 @@ TEST_F( test_graphCollection, clear )
 
 // ---------------------------------------------------------
 
-TEST_F( test_graphCollection, exist )
+TEST( test_graphCollection, exist )
 {
   graphCollection Collection;
   axisSetX SetX(0);
@@ -178,7 +167,7 @@ TEST_F( test_graphCollection, exist )
 
 // ---------------------------------------------------------
 
-TEST_F( test_graphCollection, iterators )
+TEST( test_graphCollection, iterators )
 {
   graphCollection Collection;
   axisSetX SetX(0);

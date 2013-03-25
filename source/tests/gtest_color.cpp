@@ -14,13 +14,7 @@ using namespace scigraphics;
 
 // =========================================================
 
-class test_color : public testing::Test
-{
-};
-
-// =========================================================
-
-TEST_F( test_color, hsv )
+TEST( test_color, hsv )
 {
   color C( 200, 20, 50, 10 );
  
@@ -42,7 +36,7 @@ TEST_F( test_color, hsv )
 
 // ---------------------------------------------------------
 
-TEST_F( test_color, transparency )
+TEST( test_color, transparency )
 {
   color C = color::Magenta;
 
