@@ -18,6 +18,7 @@ if ( NOT LIBRARY_TYPE )
     set( LIBRARY_TYPE SHARED )
   endif()
 endif()
+
 message( "LIBRARY_TYPE = ${LIBRARY_TYPE}" )
 message( "CMAKE_BUILD_TYPE = ${CMAKE_BUILD_TYPE}" )
 

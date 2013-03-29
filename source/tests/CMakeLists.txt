@@ -22,9 +22,7 @@ include_directories( "${PROJECT_SOURCE_DIR}/../scigraphics/" )
 find_library( gtest  NAMES gtest )
 find_library( gtest_main  NAMES gtest_main )
 
-if ( ${gtest} MATCHES gtest-NOTFOUND )
-  message( "Tests disabed" )
-else()
+if ( NOT ${gtest} MATCHES gtest-NOTFOUND AND ENABLE_TESTS )
 
   find_program( ICPC_PROGRAM icpc )
   if ( ICPC_PROGRAM )
@@ -39,5 +37,7 @@ else()
   target_link_libraries( selfTest scigraphics )
   target_link_libraries( selfTest pthread )
   set_target_properties( selfTest PROPERTIES COMPILE_FLAGS "-std=c++0x")
+else()
+  message( "Tests disabed" )
 endif()  
 
