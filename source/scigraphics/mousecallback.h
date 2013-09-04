@@ -1,6 +1,6 @@
 
 /*
- * Copyright 2011,2012 Evgeniy Khilkevitch 
+ * Copyright 2011,2012,2013 Evgeniy Khilkevitch 
  * 
  * This file is part of scigraphics.
  * 
