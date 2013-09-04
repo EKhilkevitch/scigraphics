@@ -104,7 +104,6 @@ class qt4plotSettingsGroupSuperBox : public qt4plotSettingsGroupBox
     QList< qt4plotSettingsGroupBox* > Boxes; 
 
   protected:
-
     void addToList( qt4plotSettingsGroupBox *B );
 
     virtual int numOfRowsInLayout() { return 0; }
@@ -135,7 +134,7 @@ class qt4plotSettingsScaleIntervals : public qt4plotSettingsGroupBox
     QCheckBox *ManualScaleBox;
     qt4labeledLineEdit *MinScaleEdit, *MaxScaleEdit;
 
-  protected:
+  private:
     scigraphics::interval<scigraphics::number> getLimits() const;
 
   public:
@@ -155,7 +154,7 @@ class qt4plotSettingsScaleIntervalsAllAxis : public qt4plotSettingsGroupSuperBox
 {
   Q_OBJECT
 
-  protected:
+  private:
     int numOfRowsInLayout() { return 2; }
     qt4plotSettingsGroupBox* createBoxForAxisPosition( scigraphics::axisSetCollection::axisPosition Pos ) { return new qt4plotSettingsScaleIntervals(Pos,this); }
     static QString name() { return "Scale intervals"; }
@@ -178,7 +177,7 @@ class qt4plotSettingsGraphType : public qt4plotSettingsGroupBox
                  *ShowLineHystogramBtn;
     QCheckBox *ErrorBarsChk;
 
-  protected:
+  private:
     unsigned getGraphType() const;
 
   public:
@@ -189,6 +188,28 @@ class qt4plotSettingsGraphType : public qt4plotSettingsGroupBox
     void showLineHystogramControl( bool S );
     void showErrorBarsControl( bool S );
     
+    void saveSettings( QSettings* Settings );
+    void loadSettings( QSettings* Settings );
+};
+
+// ----------------------------------------------------------------
+
+class qt4plotSettingsDecoration : public qt4plotSettingsGroupBox
+{
+  Q_OBJECT
+      
+  private:
+    QCheckBox *ShowLegendChk,
+              *ShowCursorPositionChk; 
+
+  private:
+    unsigned getVisibleFloatingRectangles() const;
+
+  public:
+    qt4plotSettingsDecoration( QWidget *Parent = NULL );
+
+    void apply( scigraphics::settings &Settings ) { Settings.setVisibleFloatingRectangles(getVisibleFloatingRectangles()); }
+
     void saveSettings( QSettings* Settings );
     void loadSettings( QSettings* Settings );
 };

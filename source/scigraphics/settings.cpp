@@ -31,7 +31,9 @@
 
 // ============================================================
 
-scigraphics::settings::settings() : GraphType(Individual)
+scigraphics::settings::settings() : 
+  GraphType(Individual),
+  VisibleFloatingRectangles(Legend|CursorPosition)
 {
   for ( unsigned i = 0; i < axisSetCollection::PositionsCount; i++ )
   {
@@ -66,20 +68,26 @@ scigraphics::scale* scigraphics::settings::createScale( scaleType Type )
 
 // ------------------------------------------------------------
 
-void scigraphics::settings::apply( plot &Plot ) const
+void scigraphics::settings::apply( plot *Plot ) const
 {
+  if ( Plot == NULL )
+    throw std::invalid_argument("Plot pointer must be not NULL");
+
   applyScaleType(Plot);
   applyGraphType(Plot);
   applyLimits(Plot);
+  applyFloatingRectangles(Plot);
 
-  Plot.replot();
+  Plot->replot();
 }
 
 // ------------------------------------------------------------
 
-void scigraphics::settings::applyGraphType( plot &Plot ) const
+void scigraphics::settings::applyGraphType( plot *Plot ) const
 {
-  for ( graphCollection::iterator Graph = Plot.beginGraph(); Graph != Plot.endGraph(); ++Graph )
+  assert( Plot != NULL );
+
+  for ( graphCollection::iterator Graph = Plot->beginGraph(); Graph != Plot->endGraph(); ++Graph )
     applyGraphTypeToGraph( dynamic_cast< graphSequence* >( *Graph ) );
 }
       
@@ -89,6 +97,7 @@ void scigraphics::settings::applyGraphTypeToGraph( graphSequence *Graph ) const
 {
   if ( Graph == NULL )
     return;
+
   if ( GraphType == Individual )
     return;
 
@@ -100,34 +109,49 @@ void scigraphics::settings::applyGraphTypeToGraph( graphSequence *Graph ) const
 
 // ------------------------------------------------------------
 
-void scigraphics::settings::applyScaleType( plot &Plot ) const
+void scigraphics::settings::applyScaleType( plot *Plot ) const
 {
+  assert( Plot != NULL );
+
   for ( unsigned i = 0; i < axisSetCollection::PositionsCount; i++ )
   {
     axisSetCollection::axisPosition Position = static_cast<axisSetCollection::axisPosition>(i);
     scale *Scale = createScale( ScaleTypes[i] );
-    const scale *CurrScale = Plot.scaleWithPosition( Position );
+    const scale *CurrScale = Plot->scaleWithPosition( Position );
+
     assert( Scale != NULL );
     assert( CurrScale != NULL );
 
     if ( equalScaleTypes(Scale,CurrScale) )
       delete Scale;
     else
-      Plot.replaceScaleWithPosition(Position,Scale);
+      Plot->replaceScaleWithPosition(Position,Scale);
   }
 }
 
 // ------------------------------------------------------------
       
-void scigraphics::settings::applyLimits( plot &Plot ) const
+void scigraphics::settings::applyLimits( plot *Plot ) const
 {
+  assert( Plot != NULL );
+
   for ( unsigned i = 0; i < axisSetCollection::PositionsCount; i++ )
   {
     axisSetCollection::axisPosition Position = static_cast<axisSetCollection::axisPosition>(i);
-    Plot.setScaleInterval( Position, ScaleLimits[i] );
+    Plot->setScaleInterval( Position, ScaleLimits[i] );
   }
 }
       
+// ------------------------------------------------------------
+
+void scigraphics::settings::applyFloatingRectangles( plot *Plot ) const
+{
+  assert( Plot != NULL );
+
+  Plot->setVisibleLegend( VisibleFloatingRectangles & Legend );
+  Plot->setVisibleCursorPositionViewer( VisibleFloatingRectangles & CursorPosition );
+}
+
 // ------------------------------------------------------------
 
 scigraphics::interval<scigraphics::number> scigraphics::settings::correctLimits( interval<number> Limits )
@@ -164,6 +188,13 @@ void scigraphics::settings::setLimits( const interval<number> &Limits, axisSetCo
     throw std::invalid_argument( "Axis position is invalid" );
 
   ScaleLimits[ AxisPos ] = Limits;
+}
+
+// ------------------------------------------------------------
+
+void scigraphics::settings::setVisibleFloatingRectangles( unsigned FloatRectangles )
+{
+  VisibleFloatingRectangles = FloatRectangles;
 }
 
 // ============================================================

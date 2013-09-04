@@ -55,6 +55,10 @@ namespace scigraphics
     private:
       mouseCallBack *CallBack;
 
+    private:
+      mouseCallBackContainer( const mouseCallBackContainer& );
+      mouseCallBackContainer& operator=( mouseCallBackContainer ); 
+
     public:
       mouseCallBackContainer( plot &Plot ) : CallBack( new mouseCallBack(Plot) ) {}
       ~mouseCallBackContainer() { delete CallBack; }

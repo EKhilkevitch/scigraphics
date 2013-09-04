@@ -49,10 +49,18 @@ namespace scigraphics
         ErrorBars       = 0x10
       };
 
+      enum floatingRectangles
+      {
+        NoRectangles    = 0x00,
+        Legend          = 0x01,
+        CursorPosition  = 0x02
+      };
+
     private:
       scaleType ScaleTypes[ axisSetCollection::PositionsCount ];
       interval<number> ScaleLimits[ axisSetCollection::PositionsCount ];
       unsigned GraphType;
+      unsigned VisibleFloatingRectangles;
 
       static scale* createScale( scaleType Type );
       static bool equalScaleTypes( const scale *S1, const scale *S2 );
@@ -62,19 +70,21 @@ namespace scigraphics
       void applyGraphTypeToGraph( graphSequence *Graph ) const;
 
     protected:
-      void applyLimits( plot &Plot ) const;
-      void applyGraphType( plot &Plot ) const;
-      void applyScaleType( plot &Plot ) const;
+      void applyLimits( plot *Plot ) const;
+      void applyGraphType( plot *Plot ) const;
+      void applyScaleType( plot *Plot ) const;
+      void applyFloatingRectangles( plot *Plot ) const;
 
     public:
       settings();
       virtual ~settings() {}
 
-      void apply( plot &Plot ) const;
+      void apply( plot *Plot ) const;
 
       void setLimits( const interval<number> &Lims, axisSetCollection::axisPosition AxisPos );
       void setGraphType( unsigned Type ) { GraphType = Type; }
       void setScaleType( scaleType Type, axisSetCollection::axisPosition AxisPos );
+      void setVisibleFloatingRectangles( unsigned FloatRectangles );
   };
 
 // ============================================================

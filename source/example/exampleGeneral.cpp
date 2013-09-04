@@ -109,7 +109,8 @@ int main( int argc, char *argv[] )
   AxisPositions << scigraphics::axisSetCollection::Right;
 
   qt4plotSettings Settings( NULL, "", AxisPositions, new qt4plotSettingsComposerTabs() );
-  Settings.addSettingWidget( new qt4plotSettingsSelections(&Settings) );
+  Settings.addSettingWidget( new qt4plotSettingsSelections() );
+  Settings.addSettingWidget( new qt4plotSettingsDecoration() );
   //Settings.replaceLayout( new QVBoxLayout() );
   Settings.addPlot(&Plot);
   Settings.show();

@@ -254,9 +254,9 @@ void qt4plotSettingsScaleIntervals::loadSettings( QSettings* Settings )
 
 // ================================================================
 
-qt4plotSettingsGraphType::qt4plotSettingsGraphType( QWidget *Parent ) : qt4plotSettingsGroupBox( "Graph style", Parent )
+qt4plotSettingsGraphType::qt4plotSettingsGraphType( QWidget *Parent ) : 
+  qt4plotSettingsGroupBox( "Graph style", Parent )
 {
-
   ShowPointsBtn = new QRadioButton( "Show points" );
   ShowLinesBtn  = new QRadioButton( "Show lines" );
   ShowLinesAndPointsBtn = new QRadioButton( "Show points and lines" );
@@ -337,6 +337,60 @@ void qt4plotSettingsGraphType::loadSettings( QSettings* Settings )
   ShowLinesAndPointsBtn->setChecked( Settings->value( "ShowLinesAndPointsBtn", true ).toBool() );
   ShowLineHystogramBtn->setChecked( Settings->value( "ShowLineHystogramBtn", false ).toBool() );
   ErrorBarsChk->setChecked( Settings->value( "ErrorBarsChk", false ).toBool() );
+  Settings->endGroup();
+}
+
+// ================================================================
+
+qt4plotSettingsDecoration::qt4plotSettingsDecoration( QWidget *Parent ) :
+  qt4plotSettingsGroupBox( "Decorations", Parent )
+{
+  ShowLegendChk = new QCheckBox("Show legend");
+  ShowCursorPositionChk = new QCheckBox("Show cursor position");
+
+  ShowLegendChk->setChecked(true);
+  ShowCursorPositionChk->setChecked(true);
+
+  QVBoxLayout *VLayout = new QVBoxLayout();
+  VLayout->addWidget( ShowLegendChk );
+  VLayout->addWidget( ShowCursorPositionChk );
+  VLayout->addStretch();
+  
+  setLayout( VLayout );
+  
+  connect( ShowLegendChk, SIGNAL(clicked()), SLOT(updateWidgets()));
+  connect( ShowCursorPositionChk, SIGNAL(clicked()), SLOT(updateWidgets()));
+}
+
+// ----------------------------------------------------------------
+
+unsigned qt4plotSettingsDecoration::getVisibleFloatingRectangles() const
+{
+  unsigned Result = 0;
+  if ( ShowLegendChk->isChecked() )             Result |= scigraphics::settings::Legend;
+  if ( ShowCursorPositionChk->isChecked() )     Result |= scigraphics::settings::CursorPosition;
+  return Result;
+}
+
+// ----------------------------------------------------------------
+
+void qt4plotSettingsDecoration::saveSettings( QSettings* Settings )
+{
+  Q_ASSERT( Settings != NULL );
+  Settings->beginGroup( "decorationSettings" );
+  Settings->setValue( "ShowLegendChk", ShowLegendChk->isChecked() );
+  Settings->setValue( "ShowCursorPositionChk", ShowCursorPositionChk->isChecked() );
+  Settings->endGroup();
+}
+
+// ----------------------------------------------------------------
+
+void qt4plotSettingsDecoration::loadSettings( QSettings* Settings )
+{
+  Q_ASSERT( Settings != NULL );
+  Settings->beginGroup( "decorationSettings" );
+  ShowLegendChk->setChecked( Settings->value( "ShowLegendChk", true ).toBool() );
+  ShowCursorPositionChk->setChecked( Settings->value( "ShowCursorPositionChk", true ).toBool() );
   Settings->endGroup();
 }
 
@@ -683,22 +737,6 @@ qt4plotSettingsComposer* qt4plotSettingsComposerTabs::createNewComposer( QWidget
 
 // ================================================================
 
-#if 0
-qt4plotSettings::qt4plotSettings( QWidget *Parent, const QString &Name, const qt4plotSettingsGroupSuperBox::axisPositionsList &Positions ) : 
-  QWidget(Parent), 
-  SettingsName(Name),
-  SettingsWidgetsContainer(NULL)
-{
-  setLayout( new QHBoxLayout() );
-
-  addSettingWidget( new qt4plotSettingsScaleTypeAllAxis(this,Positions) );
-  addSettingWidget( new qt4plotSettingsScaleIntervalsAllAxis(this,Positions) );
-  addSettingWidget( new qt4plotSettingsGraphType(this) );
-}
-#endif
-
-// ----------------------------------------------------------------
-
 void qt4plotSettings::initSettings( const QString &Name, const qt4plotSettingsGroupSuperBox::axisPositionsList &Positions,
     qt4plotSettingsComposer *Composer )
 {
@@ -833,7 +871,7 @@ void qt4plotSettings::collectSettings()
 void qt4plotSettings::applySettings()
 {
   foreach ( scigraphics::plot *Plot, Plots )
-    settings::apply(*Plot);
+    settings::apply(Plot);
 }
 
 // ----------------------------------------------------------------
