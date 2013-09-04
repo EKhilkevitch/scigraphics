@@ -114,7 +114,7 @@ void scigraphics::legend::setRectangleFromLegendSize( painter &Painter, const le
   wrectangle LegendRectangle( LeftUp, RightDown );
 
   if ( LegendRectangle.width() < Painter.plotWidth() )
-    while ( LegendRectangle.right() > Painter.plotRectangle().right() ) 
+    while ( LegendRectangle.right() > Painter.plotWidth() ) 
       LegendRectangle.moveX( -1 );
 
   if ( LegendRectangle.height() < Painter.plotHeight() )
