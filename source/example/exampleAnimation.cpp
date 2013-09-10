@@ -55,7 +55,12 @@ class timerThread : public QThread
 
   public:
     timerThread( plotAnimator *A ) : Animator(A), NeedToStop(false) {}
-    void stop() { NeedToStop = true; }
+    void stop() 
+    { 
+      NeedToStop = true; 
+      while ( isRunning() )
+        msleep(1); 
+    }
 };
 
 // ======================================================
@@ -78,7 +83,7 @@ int main( int argc, char **argv )
   QObject::connect( &Timer, SIGNAL(timeout()), &Animator, SLOT(updateGraphics()) );
   Timer.start(TimerInterval);
 #else
-  // Difficult way to do animation, but no Windows this code is fast.
+  // Difficult way to do animation, but on Windows this code is fast.
   timerThread Thread(&Animator);
   Thread.start();
 #endif
@@ -91,7 +96,6 @@ int main( int argc, char **argv )
   qDebug() << "FPS = " << (double)Animator.count() / ( 1e-3 * WorkTime.elapsed() ) << " Max is " << 1.e3/TimerInterval;
   
   Thread.stop();
-  while ( Thread.isRunning() ) { }
   
   return RetCode;
 }

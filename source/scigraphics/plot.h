@@ -115,13 +115,7 @@ namespace scigraphics
     public:
       painter& getPainter() { return Painter; }
       const painter& getPainter() const { return Painter; }
-
-      void addScalesShift( double Shift, axisSet::direction Direction );
-      void mulScalesZoom( double Zoom, axisSet::direction Direction );
-      void resetScales( axisSet::direction Direction );
-      void resetAllScales();
-      void resetScalesTo1x1();
-     
+ 
       void setSelectionInterval( selectionStrip *Selection, wpoint Pt1, wpoint Pt2 );
       void shiftSelection( selectionStrip *Selection, wpoint From, wpoint To );
 
@@ -182,6 +176,12 @@ namespace scigraphics
       void setScaleIntervalY( interval<number> L )     { setScaleInterval(axisSetCollection::Left,L); }
       void setScaleIntervalY( number Min, number Max ) { setScaleIntervalY(interval<number>(Min,Max)); }
       interval<number> scaleIntervalY() const          { return scaleInterval(axisSetCollection::Left); }
+      
+      void addScalesShift( double Shift, axisSet::direction Direction );
+      void mulScalesZoom( double Zoom, axisSet::direction Direction );
+      void resetScales( axisSet::direction Direction );
+      void resetAllScales();
+      void resetScalesTo1x1();
 
       void setStretchFactors( double SX, double SY );
 

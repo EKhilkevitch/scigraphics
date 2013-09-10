@@ -45,7 +45,6 @@ int main( int argc, char *argv[] )
   qt4plot Plot;
 
   scigraphics::graphSequenceVector *Sqr = Plot.createGraphSequenceVector( "x^2" );
-  
   for ( double x = -0.4; x <= 2; x+= 0.0005 )
     Sqr->append( x, x*x, 0.5, std::sqrt(std::fabs(x)) );
   Sqr->setVisibleErrorBars(true);
@@ -114,7 +113,6 @@ int main( int argc, char *argv[] )
   //Settings.replaceLayout( new QVBoxLayout() );
   Settings.addPlot(&Plot);
   Settings.show();
- 
 
   Plot.move( 200, 200 );
   Plot.resize( 700, 800 );

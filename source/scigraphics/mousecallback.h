@@ -63,7 +63,7 @@ namespace scigraphics
       mouseCallBackContainer( plot &Plot ) : CallBack( new mouseCallBack(Plot) ) {}
       ~mouseCallBackContainer() { delete CallBack; }
 
-      void set( mouseCallBack *C ) { assert( C != NULL ); CallBack = C; }
+      void set( mouseCallBack *C ) { assert( C != NULL ); if ( CallBack != C ) delete CallBack; CallBack = C; }
       mouseCallBack& get() { return *CallBack; }
   };
 
