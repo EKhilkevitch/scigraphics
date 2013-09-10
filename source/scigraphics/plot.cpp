@@ -360,6 +360,13 @@ void scigraphics::plot::resetScales( axisSet::direction Direction )
       
 // ------------------------------------------------------------
 
+void scigraphics::plot::resetAllScales()
+{
+  AxisSets.resetAllScales();
+}
+
+// ------------------------------------------------------------
+
 void scigraphics::plot::resetScalesTo1x1()
 {
   if ( getDrawer() == NULL )
