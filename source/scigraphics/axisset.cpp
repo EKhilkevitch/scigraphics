@@ -356,7 +356,7 @@ void scigraphics::axisSetCollection::resetAllScales()
 
 // ------------------------------------------------------------
 
-void scigraphics::axisSetCollection::setScalesTo1x1( painter &Painter )
+void scigraphics::axisSetCollection::setScalesTo1x1( const painter &Painter )
 {
   double MinWPointsPerNPoints = minWPointsPerNPoints(Painter);
   if ( MinWPointsPerNPoints <= 0 || MinWPointsPerNPoints >= 1e10 )
@@ -378,7 +378,7 @@ void scigraphics::axisSetCollection::setScalesTo1x1( painter &Painter )
 
 // ------------------------------------------------------------
 
-void scigraphics::axisSetCollection::setScalesTo1x1ifNeeded( painter &Painter ) 
+void scigraphics::axisSetCollection::setScalesTo1x1ifNeeded( const painter &Painter ) 
 {
   if ( keepScales1x1() )
     setScalesTo1x1( Painter );
@@ -386,7 +386,7 @@ void scigraphics::axisSetCollection::setScalesTo1x1ifNeeded( painter &Painter )
 
 // ------------------------------------------------------------
       
-double scigraphics::axisSetCollection::minWPointsPerNPoints( painter &Painter ) const
+double scigraphics::axisSetCollection::minWPointsPerNPoints( const painter &Painter ) const
 {
   double MinWPointsPerNPoints = std::numeric_limits<double>::max();
   for ( axis_const_iterator a = AxisSets.begin(); a != AxisSets.end(); ++a )

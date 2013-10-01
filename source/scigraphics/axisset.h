@@ -140,7 +140,7 @@ namespace scigraphics
       bool KeepScales1x1;
 
     private:
-      double minWPointsPerNPoints( painter &Painter ) const;
+      double minWPointsPerNPoints( const painter &Painter ) const;
 
     public:
       axisSetCollection();
@@ -168,10 +168,10 @@ namespace scigraphics
       void resetScales( axisSet::direction Direction );
       void resetAllScales();
 
-      void setScalesTo1x1( painter &Painter );
+      void setScalesTo1x1( const painter &Painter );
       bool keepScales1x1() const { return KeepScales1x1; }
       void setFixedScalesTo1x1( bool K ) { KeepScales1x1 = K; }
-      void setScalesTo1x1ifNeeded( painter &Painter );
+      void setScalesTo1x1ifNeeded( const painter &Painter );
   };
   
   // ============================================================
