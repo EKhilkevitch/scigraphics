@@ -117,7 +117,7 @@ int main( int argc, char *argv[] )
   Plot.move( 200, 200 );
   Plot.resize( 700, 800 );
   Plot.show();
-  Plot.resetScalesTo1x1(); 
+  //Plot.resetScalesTo1x1(); 
   Plot.replot();
 
   return app.exec();

@@ -26,6 +26,7 @@
 #include <stdexcept>
 #include <typeinfo>
 #include <algorithm>
+#include <limits>
 
 // ============================================================
 
@@ -139,7 +140,7 @@ scigraphics::wcoord scigraphics::axisSet::wcoordDimension( const painter &Painte
 double scigraphics::axisSet::wpointsPerNumber( const painter &Painter ) const
 {
   assert( Scale != NULL );
-  interval<number> NumberInterval = Scale->getNumberInterval();
+  interval<number> NumberInterval = Scale->getVisivleInterval();
     
   if ( ! numberLimits::isValidInterval( NumberInterval ) )
     return 0;
@@ -212,7 +213,8 @@ scigraphics::wcoord scigraphics::axisSetY::requiredIndent( bool Used ) const
 
 // ============================================================
 
-scigraphics::axisSetCollection::axisSetCollection()
+scigraphics::axisSetCollection::axisSetCollection() :
+  KeepScales1x1(false)
 {
   assert( PositionsCount == 4 );
   AxisSets.resize( PositionsCount );
@@ -354,10 +356,8 @@ void scigraphics::axisSetCollection::resetAllScales()
 
 // ------------------------------------------------------------
 
-void scigraphics::axisSetCollection::resetScalesTo1x1( painter &Painter )
+void scigraphics::axisSetCollection::setScalesTo1x1( painter &Painter )
 {
-  resetAllScales();
-
   double MinWPointsPerNPoints = minWPointsPerNPoints(Painter);
   if ( MinWPointsPerNPoints <= 0 || MinWPointsPerNPoints >= 1e10 )
     return;
@@ -377,10 +377,18 @@ void scigraphics::axisSetCollection::resetScalesTo1x1( painter &Painter )
 }
 
 // ------------------------------------------------------------
+
+void scigraphics::axisSetCollection::setScalesTo1x1ifNeeded( painter &Painter ) 
+{
+  if ( keepScales1x1() )
+    setScalesTo1x1( Painter );
+}
+
+// ------------------------------------------------------------
       
 double scigraphics::axisSetCollection::minWPointsPerNPoints( painter &Painter ) const
 {
-  double MinWPointsPerNPoints = 1e100;
+  double MinWPointsPerNPoints = std::numeric_limits<double>::max();
   for ( axis_const_iterator a = AxisSets.begin(); a != AxisSets.end(); ++a )
   {
     double WPointsPerNPoints = (*a)->wpointsPerNumber(Painter);

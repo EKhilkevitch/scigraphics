@@ -137,6 +137,7 @@ namespace scigraphics
       typedef container::const_iterator axis_const_iterator;
 
       container_ptr< std::vector, axisSet > AxisSets;
+      bool KeepScales1x1;
 
     private:
       double minWPointsPerNPoints( painter &Painter ) const;
@@ -166,7 +167,11 @@ namespace scigraphics
       void mulScalesZoom( double Zoom, axisSet::direction Direction );
       void resetScales( axisSet::direction Direction );
       void resetAllScales();
-      void resetScalesTo1x1( painter &Painter );
+
+      void setScalesTo1x1( painter &Painter );
+      bool keepScales1x1() const { return KeepScales1x1; }
+      void setFixedScalesTo1x1( bool K ) { KeepScales1x1 = K; }
+      void setScalesTo1x1ifNeeded( painter &Painter );
   };
   
   // ============================================================

@@ -93,12 +93,20 @@ int main( int argc, char **argv )
   Polygons->append( 7, 7 );
   Polygons->append( 6, 7 );
 
+  scigraphics::graphSV *SpiralSqr = Manager.plot(7)->createGraphSV("Sqr ");
+  SpiralSqr->append( 0, 0 );
+  SpiralSqr->append( 0, 4 );
+  SpiralSqr->append( 4, 4 );
+  SpiralSqr->append( 4, 0 );
+  SpiralSqr->append( 0, 0 );
+  Manager.plot(7)->setScalesTo1x1( true );
+
   Manager.plotWidget()->move( 100, 100 );
   Manager.plotWidget()->resize( 1000, 800 );
   Manager.plotWidget()->show();
   Manager.show();
   Manager.replot();
-
+  
   return app.exec();
 }
 

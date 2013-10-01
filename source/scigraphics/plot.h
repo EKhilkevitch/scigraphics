@@ -181,7 +181,7 @@ namespace scigraphics
       void mulScalesZoom( double Zoom, axisSet::direction Direction );
       void resetScales( axisSet::direction Direction );
       void resetAllScales();
-      void resetScalesTo1x1();
+      void setScalesTo1x1( bool SetTo1x1 );
 
       void setStretchFactors( double SX, double SY );
 

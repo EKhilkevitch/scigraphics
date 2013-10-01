@@ -130,9 +130,9 @@ void scigraphics::plot::replot()
 
 void scigraphics::plot::prepareForPainting()
 {
-  updateScaleLimits();
   preparePainter();
   updateIndents();
+  updateScaleLimits();
 }
 
 // ------------------------------------------------------------
@@ -159,6 +159,7 @@ void scigraphics::plot::updateScaleLimits()
 {
   plotLimits::limitsXY Limits = PlotLimits.limitsForGraphics( Graphics );
   AxisSets.setAxisNumberLimits( &Limits );
+  AxisSets.setScalesTo1x1ifNeeded( Painter );
 }
 
 // ------------------------------------------------------------
@@ -367,13 +368,9 @@ void scigraphics::plot::resetAllScales()
 
 // ------------------------------------------------------------
 
-void scigraphics::plot::resetScalesTo1x1()
+void scigraphics::plot::setScalesTo1x1( bool SetTo1x1 )
 {
-  if ( getDrawer() == NULL )
-    throw std::runtime_error( "Drawer is not initialized" );
-  
-  prepareForPainting();
-  AxisSets.resetScalesTo1x1(Painter);
+  AxisSets.setFixedScalesTo1x1( SetTo1x1 );
 }
 
 // ------------------------------------------------------------
