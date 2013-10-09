@@ -218,10 +218,10 @@ scigraphics::axisSetCollection::axisSetCollection() :
 {
   assert( PositionsCount == 4 );
   AxisSets.resize( PositionsCount );
-  AxisSets[ Left ]   = new axisSetY(0);
-  AxisSets[ Right ]  = new axisSetY(1);
-  AxisSets[ Top ]    = new axisSetX(1);
-  AxisSets[ Bottom ] = new axisSetX(0);
+  AxisSets.set( Left,   new axisSetY(0) );
+  AxisSets.set( Right,  new axisSetY(1) );
+  AxisSets.set( Top,    new axisSetX(1) );
+  AxisSets.set( Bottom, new axisSetX(0) );
 }
 
 // ------------------------------------------------------------
@@ -237,14 +237,14 @@ scigraphics::axisSet& scigraphics::axisSetCollection::at( axisPosition Position 
   unsigned Index = (unsigned)Position;
   if ( Index >= AxisSets.size() )
     throw std::out_of_range( "Invalid axis position" );
-  return *(AxisSets[Index]);
+  return AxisSets[Index];
 }
 
 // ------------------------------------------------------------
       
 scigraphics::pairScales scigraphics::axisSetCollection::getBottomLeftPairScales()
 {
-  return pairScales( *(AxisSets[Bottom]->getScale()), *(AxisSets[Left]->getScale()) ); 
+  return pairScales( *(AxisSets[Bottom].getScale()), *(AxisSets[Left].getScale()) ); 
 }
 
 // ------------------------------------------------------------
@@ -262,7 +262,7 @@ void scigraphics::axisSetCollection::setAxisNumberLimits( plotLimits::limitsXY *
     throw std::invalid_argument( "Limits pointer must be not NULL" );
   
   for ( axis_iterator Axis = AxisSets.begin(); Axis != AxisSets.end(); ++Axis )
-    Limits->setAxisNumberLimits( *Axis );
+    Limits->setAxisNumberLimits( &*Axis );
 }
 
 // ------------------------------------------------------------
@@ -278,7 +278,7 @@ void scigraphics::axisSetCollection::drawGrid( painter &Painter )
 void scigraphics::axisSetCollection::drawAxis( painter &Painter )
 {
   for ( axis_iterator Axis = AxisSets.begin(); Axis != AxisSets.end(); ++Axis )
-    (*Axis)->drawAxis(Painter);
+    Axis->drawAxis(Painter);
 }
 
 // ------------------------------------------------------------
@@ -286,7 +286,7 @@ void scigraphics::axisSetCollection::drawAxis( painter &Painter )
 void scigraphics::axisSetCollection::drawAxisTicks( painter &Painter )
 {
   for ( axis_iterator Axis = AxisSets.begin(); Axis != AxisSets.end(); ++Axis )
-    (*Axis)->drawAxisTicks(Painter);
+    Axis->drawAxisTicks(Painter);
 }
 
 // ------------------------------------------------------------
@@ -294,7 +294,7 @@ void scigraphics::axisSetCollection::drawAxisTicks( painter &Painter )
 void scigraphics::axisSetCollection::drawAxisLabels( painter &Painter )
 {
   for ( axis_iterator Axis = AxisSets.begin(); Axis != AxisSets.end(); ++Axis )
-    (*Axis)->drawAxisLabels(Painter);
+    Axis->drawAxisLabels(Painter);
 }
 
 // ------------------------------------------------------------
@@ -302,7 +302,7 @@ void scigraphics::axisSetCollection::drawAxisLabels( painter &Painter )
 void scigraphics::axisSetCollection::drawAxisTitles( painter &Painter )
 {
   for ( axis_iterator Axis = AxisSets.begin(); Axis != AxisSets.end(); ++Axis )
-    (*Axis)->drawAxisTitle(Painter);
+    Axis->drawAxisTitle(Painter);
 }
 
 // ------------------------------------------------------------
@@ -312,13 +312,12 @@ void scigraphics::axisSetCollection::applyScalesChanging( double Value, axisSet:
   if ( Operation == NULL )
     throw std::invalid_argument( "Operation pointer must be not NULL" );
 
-  for ( axis_iterator a = AxisSets.begin(); a != AxisSets.end(); ++a )
+  for ( axis_iterator Set = AxisSets.begin(); Set != AxisSets.end(); ++Set )
   {
-    axisSet *AxisSet = *a;
-    assert( AxisSet != NULL );
-    if ( AxisSet->getDirection() == Direction )
+    assert( &*Set != NULL );
+    if ( Set->getDirection() == Direction )
     {
-      scale *Scale = AxisSet->getScale();
+      scale *Scale = Set->getScale();
       assert( Scale != NULL );
       Operation( Scale, Value );
     }
@@ -362,13 +361,13 @@ void scigraphics::axisSetCollection::setScalesTo1x1( const painter &Painter )
   if ( MinWPointsPerNPoints <= 0 || MinWPointsPerNPoints >= 1e10 )
     return;
 
-  for ( axis_iterator a = AxisSets.begin(); a != AxisSets.end(); ++a )
+  for ( axis_iterator Set = AxisSets.begin(); Set != AxisSets.end(); ++Set )
   {
-    double WPointsPerNPoints = (*a)->wpointsPerNumber(Painter);
+    double WPointsPerNPoints = Set->wpointsPerNumber(Painter);
     if ( WPointsPerNPoints <= 0 )
       continue;
     double MulZoom = WPointsPerNPoints / MinWPointsPerNPoints;
-    scale *Scale = (*a)->getScale();
+    scale *Scale = Set->getScale();
     assert( Scale != NULL );
     scale::addScaleShift( Scale, ( 1 - MulZoom  )/2 );
     scale::mulScaleZoom( Scale, MulZoom );
@@ -389,9 +388,9 @@ void scigraphics::axisSetCollection::setScalesTo1x1ifNeeded( const painter &Pain
 double scigraphics::axisSetCollection::minWPointsPerNPoints( const painter &Painter ) const
 {
   double MinWPointsPerNPoints = std::numeric_limits<double>::max();
-  for ( axis_const_iterator a = AxisSets.begin(); a != AxisSets.end(); ++a )
+  for ( axis_const_iterator Set = AxisSets.begin(); Set != AxisSets.end(); ++Set )
   {
-    double WPointsPerNPoints = (*a)->wpointsPerNumber(Painter);
+    double WPointsPerNPoints = Set->wpointsPerNumber(Painter);
     if ( WPointsPerNPoints <= 0 )
       continue;
     MinWPointsPerNPoints = std::min<double>( MinWPointsPerNPoints, WPointsPerNPoints );

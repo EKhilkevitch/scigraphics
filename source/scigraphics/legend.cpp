@@ -84,10 +84,9 @@ scigraphics::legend::legendSize scigraphics::legend::sizesForLegendRectangle( pa
   const wcoord VerticalDistance = interTextVerticalDistance(Style);
   
   legendSize Size;
-  for ( graphCollection::const_iterator g = Graphics.begin(); g != Graphics.end(); ++g )
+  for ( graphCollection::const_iterator Graph = Graphics.begin(); Graph != Graphics.end(); ++Graph )
   {
-    const graph *Graph = *g;
-    assert( Graph != NULL );
+    assert( &*Graph != NULL );
 
     if ( shouldDrawGraphLegend(*Graph) )
     {
@@ -130,8 +129,8 @@ std::list<std::string> scigraphics::legend::legendsList( const graphCollection &
 {
   std::list< std::string > Legends;
   for ( graphCollection::const_iterator g = Graphics.begin(); g != Graphics.end(); ++g )
-    if ( shouldDrawGraphLegend(**g) )
-      Legends.push_back( (*g)->legend() );
+    if ( shouldDrawGraphLegend(*g) )
+      Legends.push_back( g->legend() );
 
   return Legends;
 }
@@ -141,7 +140,7 @@ std::list<std::string> scigraphics::legend::legendsList( const graphCollection &
 bool scigraphics::legend::shouldDrawLegend( const graphCollection &Graphics )
 {
   for ( graphCollection::const_iterator g = Graphics.begin(); g != Graphics.end(); ++g )
-    if ( shouldDrawGraphLegend(**g) )
+    if ( shouldDrawGraphLegend(*g) )
       return true;
   return false;
 }
@@ -171,9 +170,9 @@ void scigraphics::legend::drawAllLegends( painter &Painter, const graphCollectio
   wcoord y = getRectangle().up() - interTextVerticalDistance(Style);
   for ( graphCollection::const_reverse_iterator Graph = Graphics.rbegin(); Graph != Graphics.rend(); ++Graph )
   {
-    if ( shouldDrawGraphLegend( **Graph ) )
+    if ( shouldDrawGraphLegend( *Graph ) )
     {
-      wcoord LegendHeight = drawGraphLegend( Painter, y, **Graph, Style );
+      wcoord LegendHeight = drawGraphLegend( Painter, y, *Graph, Style );
       y -=  LegendHeight + interTextVerticalDistance(Style);
     }
   }

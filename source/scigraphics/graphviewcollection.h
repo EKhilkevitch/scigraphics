@@ -22,6 +22,7 @@
 #pragma once
 
 #include "scigraphics/container_ptr.h"
+#include "scigraphics/container_type_ptr.h"
 #include "scigraphics/graphviewsequence.h"
 
 #include <list>
@@ -65,7 +66,7 @@ namespace scigraphics
 
       template < class view > void setViewVisible( bool Show );
 
-      template < class view > bool isViewExist() { return Views.find_type<view>() != Views.end(); }
+      template < class view > bool isViewExist();
       template < class view > typename view::style getViewStyle() const;
       template < class view > void setViewStyle( typename view::style Style );
       
@@ -98,28 +99,36 @@ namespace scigraphics
     view *View = new view(Style);
     addView( View, Show ); 
   }
+  
+  // ------------------------------------------------------------
 
   template < class view > void graphViewSequencesCollection::eraseView() 
   {
     while ( true )
     {
-      viewsList::iterator Iterator = Views.find_type<view>();
+      viewsList::iterator Iterator = find_type<view>( Views.begin(), Views.end() );
       if ( Iterator == Views.end() )
         break;
       Views.erase(Iterator);
     }
   }
 
+  // ------------------------------------------------------------
+  
   template < class view > view* graphViewSequencesCollection::getView() 
   { 
-    viewsList::iterator Iterator = Views.find_type<view>();
-    return ( Iterator == Views.end() ) ? NULL : dynamic_cast<view*>(*Iterator);
+    viewsList::iterator Iterator = find_type<view>( Views.begin(), Views.end() );
+    return ( Iterator == Views.end() ) ? NULL : dynamic_cast<view*>(&*Iterator);
   }
+  
+  // ------------------------------------------------------------
 
   template < class view > const view* graphViewSequencesCollection::getView() const 
   {
     return ( const_cast< graphViewSequencesCollection* >(this) )->getView<view>();
   }
+  
+  // ------------------------------------------------------------
   
   template < class view > void graphViewSequencesCollection::setViewVisible( bool Show )
   {
@@ -127,6 +136,8 @@ namespace scigraphics
     if ( View != NULL )
       View->setVisible( Show );
   }
+  
+  // ------------------------------------------------------------
 
   template < class view > typename view::style graphViewSequencesCollection::getViewStyle() const
   { 
@@ -135,6 +146,8 @@ namespace scigraphics
       throw std::runtime_error("No such view in collection");
     return View->getStyle(); 
   }
+  
+  // ------------------------------------------------------------
 
   template <class view> void graphViewSequencesCollection::setViewStyle( typename view::style Style )
   {
@@ -142,6 +155,14 @@ namespace scigraphics
     if ( View == NULL )
       throw std::runtime_error("No such view in collection");
     View->setStyle(Style); 
+  }
+  
+  // ------------------------------------------------------------
+
+      
+  template < class view > bool graphViewSequencesCollection::isViewExist() 
+  { 
+    return find_type<view>( Views.begin(), Views.end() ) != Views.end(); 
   }
 
   // ============================================================

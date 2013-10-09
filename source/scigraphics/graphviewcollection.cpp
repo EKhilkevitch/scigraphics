@@ -32,7 +32,7 @@
 
 void scigraphics::graphViewSequencesCollection::erase( graphViewSequence *View ) 
 {  
-  viewsList::iterator Iterator = Views.find(View);
+  viewsList::iterator Iterator = find_pointer( Views.begin(), Views.end(), View );
   Views.erase( Iterator ); 
 }
 
@@ -53,8 +53,8 @@ void scigraphics::graphViewSequencesCollection::addView( graphViewSequence *View
 void scigraphics::graphViewSequencesCollection::draw( painter &Painter, const pairScales& Scales, const dataSequence &Data ) const
 {
   for ( viewsList::const_iterator View = Views.begin(); View != Views.end(); ++View )
-    if ( (*View)->isVisible() )
-      (*View)->draw( Painter, Scales, Data );
+    if ( View->isVisible() )
+      View->draw( Painter, Scales, Data );
 }
 
 // ------------------------------------------------------------
@@ -62,8 +62,8 @@ void scigraphics::graphViewSequencesCollection::draw( painter &Painter, const pa
 void scigraphics::graphViewSequencesCollection::drawLegendExample( painter &Painter, const wrectangle &Rectangle ) const
 {
   for ( viewsList::const_iterator View = Views.begin(); View != Views.end(); ++View )
-    if ( (*View)->isVisible() )
-      (*View)->drawLegendExample( Painter, Rectangle );
+    if ( View->isVisible() )
+      View->drawLegendExample( Painter, Rectangle );
 }
       
 // ------------------------------------------------------------
@@ -86,7 +86,7 @@ void scigraphics::graphViewSequencesCollection::setColor( const color &Color )
 {
   setDefaultColor( Color );
   for ( viewsList::const_iterator View = Views.begin(); View != Views.end(); ++View )
-    (*View)->setColor(Color);
+    View->setColor(Color);
 }
 
 // ------------------------------------------------------------
@@ -95,7 +95,7 @@ scigraphics::wcoord scigraphics::graphViewSequencesCollection::legendExampleWidt
 {
   wcoord Width = 0;
   for ( viewsList::const_iterator View = Views.begin(); View != Views.end(); ++View )
-    Width = std::max( Width, (*View)->legendExampleWidth() );
+    Width = std::max( Width, View->legendExampleWidth() );
   return Width;
 }
 
@@ -105,7 +105,7 @@ scigraphics::wcoord scigraphics::graphViewSequencesCollection::legendExampleHeig
 {
   wcoord Height = 0;
   for ( viewsList::const_iterator View = Views.begin(); View != Views.end(); ++View )
-    Height = std::max( Height, (*View)->legendExampleHeight() );
+    Height = std::max( Height, View->legendExampleHeight() );
   return Height;
 }
 

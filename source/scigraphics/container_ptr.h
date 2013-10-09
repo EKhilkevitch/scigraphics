@@ -26,73 +26,82 @@
 
 // ============================================================
 
-namespace scigraphics {
+namespace scigraphics 
+{
+  
+  // ============================================================
 
-// ============================================================
+  template <class type, class iterator> iterator find_pointer( iterator Begin, iterator End, const type *Pointer );
+  
+  // ============================================================
 
-  template < template <class,class> class container, class T > class container_ptr
+  template < template <class,class> class container, class T, class Allocator = std::allocator<T*> > class container_ptr
   {
     public:
-      typedef container< T*, std::allocator<T*> > container_t;
-      typedef typename container_t::iterator iterator;
-      typedef typename container_t::const_iterator const_iterator;
-      typedef typename container_t::const_reverse_iterator const_reverse_iterator;
+      typedef container< T*, Allocator > container_t;
 
-      class hasTheSameTypeChecker
+      template <class container_iterator> class iterator_wrapper 
       {
-        private:
-          const T *Base;
         public:
-          hasTheSameTypeChecker( const T *Ptr ) : Base(Ptr) {}
-          bool operator()( const T *Ptr ) const { return typeid(*Base) == typeid(*Ptr); }
+          typedef typename container_iterator::difference_type    difference_type;
+          typedef typename container_iterator::iterator_category  iterator_category;
+          typedef T  value_type;
+          typedef T* pointer;
+          typedef const T* const_pointer;
+          typedef T& reference;
+          typedef const T& const_reference;
+
+        private:
+          container_iterator Iterator;
+
+        public:
+          iterator_wrapper() {}
+          iterator_wrapper( const container_iterator &I ) : Iterator(I) {}
+          template <class iw> iterator_wrapper( const iw &I ) : Iterator( I.get() ) {}
+          iterator_wrapper& operator=( const container_iterator &I ) { Iterator = I; return *this; }
+          reference operator*() { return **Iterator; }
+          const_reference operator*() const { return **Iterator; }
+          pointer operator->() { return *Iterator; }
+          const_pointer operator->() const { return *Iterator; }
+          bool operator==( const iterator_wrapper &I ) const { return Iterator == I.Iterator; }
+          bool operator!=( const iterator_wrapper &I ) const { return Iterator != I.Iterator; }
+          bool operator< ( const iterator_wrapper &I ) const { return Iterator  < I.Iterator; }
+          bool operator> ( const iterator_wrapper &I ) const { return Iterator  > I.Iterator; }
+          iterator_wrapper& operator++()      { ++Iterator; return *this; }
+          iterator_wrapper  operator++( int ) { iterator_wrapper I = *this; ++Iterator; return I; }
+          iterator_wrapper& operator--()      { --Iterator; return *this; }
+          iterator_wrapper  operator--(int)   { iterator_wrapper I = *this; --Iterator; return I; }
+          iterator_wrapper& operator+=( typename container_iterator::difference_type N ) { Iterator += N; return *this; }
+          iterator_wrapper& operator-=( typename container_iterator::difference_type N ) { Iterator -= N; return *this; }
+          iterator_wrapper  operator+( typename container_iterator::difference_type N ) const { return iterator_wrapper( Iterator + N ); }
+          iterator_wrapper  operator-( typename container_iterator::difference_type N ) const { return iterator_wrapper( Iterator - N ); }
+          const container_iterator& get() const { return Iterator; }
+          container_iterator& get() { return Iterator; }
+          bool isNull() const { return (*Iterator) == static_cast<const T*>(0); };
       };
+
+      typedef iterator_wrapper< typename container_t::iterator > iterator;
+      typedef iterator_wrapper< typename container_t::const_iterator > const_iterator;
+      typedef iterator_wrapper< typename container_t::reverse_iterator > reverse_iterator;
+      typedef iterator_wrapper< typename container_t::const_reverse_iterator > const_reverse_iterator;
+      typedef typename container_t::value_type value_type;
+      typedef typename container_t::size_type size_type;
 
     private:
       container_t Container;
 
     public:
-      template <class X> static bool hasTheSameType( const T *Pointer )  { return typeid(*Pointer) == typeid(const X); }
-      static bool hasTheSameType( const T *Pointer1, const T *Pointer2 ) { return hasTheSameTypeChecker(Pointer1)(Pointer2); }
-
       container_ptr() {}
       container_ptr( const container_ptr &Cnt ) { *this = Cnt; }
       container_ptr( const container_t &Cnt ) : Container(Cnt) {}
+      ~container_ptr() { clear(); }
       
-      container_ptr& operator=( const container_ptr &Cnt )
-      {
-        if ( &Cnt != this )
-        {
-          clear();
-          for ( const_iterator i = Cnt.begin(); i != Cnt.end(); ++i )
-            push_back( (*i)->clone() );
-        }
-        return *this;
-      }
+      container_ptr& operator=( const container_ptr &Cnt );
 
       void push_back( T *Value ) { Container.push_back( Value ); }
-      void erase( iterator I ) { delete *I; Container.erase(I); }
+      void erase( iterator I ) { delete &*I; Container.erase(I.get()); }
 
-      void clear()
-      {
-        for ( iterator i = Container.begin(); i != Container.end(); ++i )
-          delete *i;
-        Container.clear();
-      }
-
-      template <class X> iterator find_type() 
-        { return std::find_if( Container.begin(), Container.end(), hasTheSameType<X> ); }
-
-      template <class X> const_iterator find_type() const
-        { return std::find_if( Container.begin(), Container.end(), hasTheSameType<X> ); }
-
-      const_iterator find_same_type( const T *Pointer ) const
-        { return std::find_if( Container.begin(), Container.end(), hasTheSameTypeChecker(Pointer) ); }
-      
-      iterator find_same_type( const T *Pointer ) 
-        { return std::find_if( Container.begin(), Container.end(), hasTheSameTypeChecker(Pointer) ); }
-    
-      iterator find( const T *Pointer )
-        { return std::find( Container.begin(), Container.end(), Pointer ); } 
+      void clear();
 
       iterator begin() { return Container.begin(); }
       iterator end() { return Container.end(); }
@@ -100,107 +109,93 @@ namespace scigraphics {
       const_iterator begin() const { return Container.begin(); }
       const_iterator end() const { return Container.end(); }
       
+      reverse_iterator rbegin() { return Container.rbegin(); }
+      reverse_iterator rend() { return Container.rend(); }
+        
       const_reverse_iterator rbegin() const { return Container.rbegin(); }
-      const_reverse_iterator rend() const { return Container.rend(); }
+      const_reverse_iterator rend() const { return Container.rend(); }    
 
-      T* front() { return Container.front(); }
-      T* back()  { return Container.back(); }
+      T& front() { return *Container.front(); }
+      T& back()  { return *Container.back(); }
       
-      const T* front() const { return Container.front(); }
-      const T* back() const  { return Container.back(); }
+      const T& front() const { return *Container.front(); }
+      const T& back() const  { return *Container.back(); }
 
-      const T* operator[]( unsigned i ) const { return Container[i]; }
-      T*& operator[]( unsigned i ) { return Container[i]; }
-    
-      const T* at( unsigned i ) const { return Container.at(i); }
-      T*& at( unsigned i ) { return Container.at(i); }
+      const T& operator[]( unsigned i ) const { return *( Container[i] ); }
+      T& operator[]( unsigned i ) { return *( Container[i] ); }
+
+      const T& at( unsigned i ) const { return *( Container.at(i) ); }
+      T& at( unsigned i ) { return *( Container.at(i) ); }
+
+      T* set( unsigned Index, T *Pointer );
+
+      const container_t& get() const { return Container; }
 
       bool empty() const { return Container.empty(); }
-      size_t size() const { return Container.size(); }
-      void resize( size_t S ) { Container.resize(S); }
+      size_type size() const { return Container.size(); }
 
-      virtual ~container_ptr() { clear(); }
+      void resize( size_type Size ) { Container.resize( Size, NULL ); }
+      void reserve( size_type Size ) { Container.reserve( Size ); }
   };
+
+  // ============================================================
+
+  template < template <class,class> class container, class T, class Allocator > container_ptr<container,T,Allocator>& 
+      container_ptr<container,T,Allocator>::operator=( const container_ptr &Container )
+  {
+    if ( &Container == this )
+      return *this;
+      
+    clear();
+
+    for ( const_iterator i = Container.begin(); i != Container.end(); ++i )
+    {
+      T* Clone = i.isNull() ? static_cast<T*>(0) : i->clone();
+      try
+      {
+        push_back( Clone );
+      } catch ( ... )
+      {
+        delete Clone;
+        throw;
+      }
+    }
+
+    return *this;
+  }
 
   // ------------------------------------------------------------
 
-  template < template <class,class> class container, class base_type > class container_type_ptr
+  template < template <class,class> class container, class T, class Allocator > void container_ptr<container,T,Allocator>::clear()
   {
-    public:
-      typedef typename container_ptr<container,base_type>::container_t container_t;
-      typedef typename container_ptr<container,base_type>::iterator iterator;
-      typedef typename container_ptr<container,base_type>::const_iterator const_iterator;
-
-    private:
-      container_ptr<container,base_type> Container;
-
-    public:
-      container_type_ptr() {}
-
-      container_type_ptr( const container_ptr<container,base_type> &Cnt ) 
-      { 
-        for ( const_iterator i = Cnt.begin(); i != Cnt.end(); ++i ) 
-        {
-          base_type *Clone = (*i)->clone();
-          bool Pushed = push_back( Clone, false );
-          if ( ! Pushed ) delete Clone;
-        }
-      }
-
-      template <class T> bool exist() const { return find_type<T>() != end(); }
-      bool exist_same_type( const base_type *Pointer ) const { return find_same_type(Pointer) != end(); }
+    for ( iterator i = Container.begin(); i != Container.end(); ++i )
+      delete &( *i );
+    Container.clear();
+  }  
+  // ------------------------------------------------------------
       
-      bool push_back( base_type *Value, bool Replace = true ) 
-      { 
-        if ( Value == NULL ) return false;
-        if ( Replace ) erase_same_type(Value);
-        if ( exist_same_type(Value) ) return false;
-        Container.push_back(Value); 
-        return true;
-      }
-      template <class T> bool push_back( bool Replace = false ) 
-      { 
-        T *NewElement = new T();
-        bool Pushed = push_back( NewElement, Replace ); 
-        if ( ! Pushed ) delete NewElement;
-        return Pushed;
-      }
-      
-      template <class T> iterator find_type() { return Container.find_type<T>(); }
-      template <class T> const_iterator find_type() const { return Container.find_type<T>(); }
+  template < template <class,class> class container, class T, class Allocator > T* container_ptr<container,T,Allocator>::set( unsigned Index, T *Pointer )
+  {
+    T* ContainedPointer = Container.at(Index);
+    if ( ContainedPointer != Pointer )
+    {
+      delete ContainedPointer;
+      Container[Index] = Pointer;
+    }
+    return Pointer;
+  }
 
-      const_iterator find_same_type( const base_type *Pointer ) const { return Container.find_same_type(Pointer); }
-      iterator find_same_type( const base_type *Pointer ) { return Container.find_same_type(Pointer); }
+  // ============================================================
+  
+  template <class type, class iterator> iterator find_pointer( iterator Begin, iterator End, const type *Pointer )
+  {
+    for ( iterator i = Begin; i != End; ++i )
+      if ( &( *i ) == Pointer )
+        return i;
+    return End;
+  }
 
-      template <class T> void erase() { iterator i = find_type<T>(); erase(i); }
-      void erase_same_type( const base_type *Pointer ) { iterator i = find_same_type(Pointer); erase(i); }
-      void erase( iterator i ) { if ( i != Container.end() ) Container.erase(i); }
-
-      template <class T> T* get() { iterator i = find_type<T>(); return ( i==end() ) ? NULL : dynamic_cast<T*>(*i); }
-      template <class T> const T* get() const { const_iterator i = find_type<T>(); return ( i==end() ) ? NULL : dynamic_cast<const T*>(*i); }
-
-      void clear() { Container.clear(); }
-
-      iterator begin() { return Container.begin(); }
-      iterator end() { return Container.end(); }
-
-      const_iterator begin() const { return Container.begin(); }
-      const_iterator end() const { return Container.end(); }
-
-      base_type* front() { return Container.front(); }
-      base_type* back()  { return Container.back(); }
-      
-      const base_type* front() const { return Container.front(); }
-      const base_type* back() const  { return Container.back(); }
-
-      bool empty() const { return Container.empty(); }
-      size_t size() const { return Container.size(); }
-
-      virtual ~container_type_ptr() { clear(); }
-  };
-
-
-// ============================================================
+  // ============================================================
 
 }
 

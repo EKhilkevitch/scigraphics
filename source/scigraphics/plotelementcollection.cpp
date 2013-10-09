@@ -79,7 +79,7 @@ void scigraphics::plotElementsCollection::append( plotElement *PlotElement )
 
 void scigraphics::plotElementsCollection::erase( plotElement *PlotElement )
 {
-  plotElementList::iterator PlotIterator = std::find( PlotElementsList.begin(), PlotElementsList.end(), PlotElement );
+  plotElementList::iterator PlotIterator = find_pointer( PlotElementsList.begin(), PlotElementsList.end(), PlotElement );
   if ( PlotIterator == PlotElementsList.end() )
     return;
   AxisBindMap.erase( PlotElement );
@@ -98,7 +98,7 @@ void scigraphics::plotElementsCollection::clear()
       
 bool scigraphics::plotElementsCollection::exist( const plotElement *PlotElement ) const
 {
-  return std::find( PlotElementsList.begin(), PlotElementsList.end(), PlotElement ) != PlotElementsList.end();
+  return find_pointer( PlotElementsList.begin(), PlotElementsList.end(), PlotElement ) != PlotElementsList.end();
 }
 
 // ------------------------------------------------------------
@@ -116,10 +116,10 @@ void scigraphics::plotElementsCollection::draw( painter &Painter, bool isGridDra
 {
   for ( plotElementList::const_iterator p = PlotElementsList.begin(); p != PlotElementsList.end(); ++p )
   {
-    if ( isGridDrawn == (*p)->isDrawOverGrid() )
+    if ( isGridDrawn == p->isDrawOverGrid() )
     {
-      pairScales Scales = getPairScales( *p );
-      (*p)->draw(Painter,Scales);
+      pairScales Scales = getPairScales( &*p );
+      p->draw(Painter,Scales);
     }
   }
 }

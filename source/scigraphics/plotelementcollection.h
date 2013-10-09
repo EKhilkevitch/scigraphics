@@ -148,8 +148,8 @@ namespace scigraphics
       const_reverse_iterator rbegin() const { return castIterator<const_reverse_iterator>(getPlotElementsList().rbegin()); }
       const_reverse_iterator rend()   const { return castIterator<const_reverse_iterator>(getPlotElementsList().rend()); }
 
-      const T* front() const { return dynamic_cast<const T*>( getPlotElementsList().front() ); }
-      const T* back() const  { return dynamic_cast<const T*>( getPlotElementsList().back() ); }
+      const T* front() const { return dynamic_cast<const T*>( &getPlotElementsList().front() ); }
+      const T* back() const  { return dynamic_cast<const T*>( &getPlotElementsList().back() ); }
   };
 
 // ============================================================
