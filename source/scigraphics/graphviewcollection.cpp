@@ -85,7 +85,7 @@ void scigraphics::graphViewSequencesCollection::setDefaultColor( const color &Co
 void scigraphics::graphViewSequencesCollection::setColor( const color &Color )
 {
   setDefaultColor( Color );
-  for ( viewsList::const_iterator View = Views.begin(); View != Views.end(); ++View )
+  for ( viewsList::iterator View = Views.begin(); View != Views.end(); ++View )
     View->setColor(Color);
 }
 

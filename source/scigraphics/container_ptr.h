@@ -40,16 +40,16 @@ namespace scigraphics
     public:
       typedef container< T*, Allocator > container_t;
 
-      template <class container_iterator> class iterator_wrapper 
+      template < class iterator_t, class pointer_t, class reference_t > class iterator_wrapper 
       {
         public:
+          typedef iterator_t container_iterator;
+
           typedef typename container_iterator::difference_type    difference_type;
           typedef typename container_iterator::iterator_category  iterator_category;
           typedef T  value_type;
-          typedef T* pointer;
-          typedef const T* const_pointer;
-          typedef T& reference;
-          typedef const T& const_reference;
+          typedef pointer_t pointer;
+          typedef reference_t reference;
 
         private:
           container_iterator Iterator;
@@ -59,10 +59,8 @@ namespace scigraphics
           iterator_wrapper( const container_iterator &I ) : Iterator(I) {}
           template <class iw> iterator_wrapper( const iw &I ) : Iterator( I.get() ) {}
           iterator_wrapper& operator=( const container_iterator &I ) { Iterator = I; return *this; }
-          reference operator*() { return **Iterator; }
-          const_reference operator*() const { return **Iterator; }
-          pointer operator->() { return *Iterator; }
-          const_pointer operator->() const { return *Iterator; }
+          reference operator*() const { return **Iterator; }
+          pointer operator->() const { return *Iterator; }
           bool operator==( const iterator_wrapper &I ) const { return Iterator == I.Iterator; }
           bool operator!=( const iterator_wrapper &I ) const { return Iterator != I.Iterator; }
           bool operator< ( const iterator_wrapper &I ) const { return Iterator  < I.Iterator; }
@@ -80,10 +78,11 @@ namespace scigraphics
           bool isNull() const { return (*Iterator) == static_cast<const T*>(0); };
       };
 
-      typedef iterator_wrapper< typename container_t::iterator > iterator;
-      typedef iterator_wrapper< typename container_t::const_iterator > const_iterator;
-      typedef iterator_wrapper< typename container_t::reverse_iterator > reverse_iterator;
-      typedef iterator_wrapper< typename container_t::const_reverse_iterator > const_reverse_iterator;
+      typedef iterator_wrapper< typename container_t::iterator, T*, T& > iterator;
+      typedef iterator_wrapper< typename container_t::const_iterator, const T*, const T& > const_iterator;
+      typedef iterator_wrapper< typename container_t::reverse_iterator, T*, T& > reverse_iterator;
+      typedef iterator_wrapper< typename container_t::const_reverse_iterator, const T*, const T& > const_reverse_iterator;
+      
       typedef typename container_t::value_type value_type;
       typedef typename container_t::size_type size_type;
 
