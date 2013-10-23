@@ -44,15 +44,15 @@ int main( int argc, char **argv )
 
   qt4plot Plot;
 
-  std::vector< scigraphics::graphMapVector* > Maps( 12, (scigraphics::graphMapVector*)NULL );
+  std::vector< scigraphics::graphMV* > Maps( 12, (scigraphics::graphMV*)NULL );
 
-  Maps[0] = Plot.createGraph<scigraphics::graphMapVector>( "gray" );
-  Maps[1] = Plot.createGraph<scigraphics::graphMapVector>( "color1" );
-  Maps[2] = Plot.createGraph<scigraphics::graphMapVector>( "color2" );
+  Maps[0] = Plot.createGraph<scigraphics::graphMV>( "gray" );
+  Maps[1] = Plot.createGraph<scigraphics::graphMV>( "color1" );
+  Maps[2] = Plot.createGraph<scigraphics::graphMV>( "color2" );
 
-  Maps[0]->getViewMap().setColorStrategy( new scigraphics::graphViewRectangleMap::grayscalePointColorStrategy() );
-  Maps[1]->getViewMap().setColorStrategy( new scigraphics::graphViewRectangleMap::redYellowBluePointColorStrategy() );
-  Maps[2]->getViewMap().setColorStrategy( new scigraphics::graphViewRectangleMap::yellowRedBluePointColorStrategy() );
+  Maps[0]->getView().setColorStrategy( new scigraphics::map2d::graphViewRectangle::grayscalePointColorStrategy() );
+  Maps[1]->getView().setColorStrategy( new scigraphics::map2d::graphViewRectangle::redYellowBluePointColorStrategy() );
+  Maps[2]->getView().setColorStrategy( new scigraphics::map2d::graphViewRectangle::yellowRedBluePointColorStrategy() );
  
   const size_t SizeX = 20*8, SizeY = 20*8;
   for ( unsigned i = 0; i < Maps.size(); ++i )
@@ -68,7 +68,7 @@ int main( int argc, char **argv )
   {
     for ( unsigned iy = 0; iy < SizeY; iy++ ) 
     {
-      scigraphics::graphMapVector *Map = Maps[ ix > iy && SizeX-ix > iy ? 0 : 
+      scigraphics::graphMV *Map = Maps[ ix > iy && SizeX-ix > iy ? 0 : 
                                             ix < iy && SizeX-ix < iy ? 1 : 2 ];
       if ( Map == NULL )
         continue;

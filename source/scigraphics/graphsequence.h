@@ -31,109 +31,122 @@
 
 namespace scigraphics 
 {
-
-// ============================================================
-
-  class graphSequence : public graph 
+  namespace sequence
   {
-    private:
-      graphViewSequencesCollection *Views;
-      dataSequence *Data;
 
-    protected:
-      void init( const color &Color );
+    // ============================================================
 
-      virtual dataSequence* createData() = 0;
-      virtual graphViewSequencesCollection* createViewCollection() = 0;
-      
-    public:
-      graphSequence( const std::string &Legend = std::string() );
-      ~graphSequence();
-      
-      void draw( painter &Painter, const pairScales& Scales ) const;
-      void drawLegendExample( painter &Painter, const wrectangle &Rectangle ) const;
+    class graph : public ::scigraphics::graph 
+    {
+      private:
+        graphViewCollection *Views;
+        data *Data;
 
-      graphViewSequencesCollection& getViews() { return *Views; }
-      const graphViewSequencesCollection& getViews() const { return *Views; }
+      private:
+        graph( graph& );
+        graph& operator=( const graph& );
 
-      dataSequence& getData() { return *Data; }
-      const dataSequence& getData() const { return *Data; }
- 
-      numberLimits limitsX() const { return getData().limitsX(); }
-      numberLimits limitsY( const interval<number> &LimitsX ) const { return getData().limitsY(LimitsX); }
-      
-      wcoord legendExampleWidth()  const; 
-      wcoord legendExampleHeight() const;
-  };
+      protected:
+        void init( const color &Color );
 
-  template < class D, class V > class graphSequenceSpecified : public graphSequence
-  {
-    protected:
-      dataSequence* createData() { return new D(); }
-      graphViewSequencesCollection* createViewCollection() { return new V(); }
-      
-    protected:
-      D& getCastedData()  { return dynamic_cast<D&>( getData() ); }
-      V& getCastedViews() { return dynamic_cast<V&>( getViews() ); }
+        virtual data* createData() = 0;
+        virtual graphViewCollection* createViewCollection() = 0;
+        
+      public:
+        graph( const std::string &Legend = std::string() );
+        ~graph();
+        
+        void draw( painter &Painter, const pairScales& Scales ) const;
+        void drawLegendExample( painter &Painter, const wrectangle &Rectangle ) const;
 
-    public:
-      graphSequenceSpecified( const color &Color ) { init(Color); }
-      graphSequenceSpecified( const std::string &Legend, const color &Color ) : 
-        graphSequence(Legend) 
-        { init(Color); }
+        graphViewCollection& getViews() { return *Views; }
+        const graphViewCollection& getViews() const { return *Views; }
 
-      size_t size() const { return getData().size(); }
-      bool empty() const  { return getData().empty(); }
+        data& getData() { return *Data; }
+        const data& getData() const { return *Data; }
+   
+        numberLimits limitsX() const { return getData().limitsX(); }
+        numberLimits limitsY( const interval<number> &LimitsX ) const { return getData().limitsY(LimitsX); }
+        
+        wcoord legendExampleWidth()  const; 
+        wcoord legendExampleHeight() const;
+    };
+  
+    // ------------------------------------------------------------
 
-      dataSequence::point_t at( dataSequence::int_t Index ) const { return getData().at(Index); }
-      dataSequence::point_t operator[]( dataSequence::int_t Index ) const { return at(Index); }
-      dataSequence::point_t firstPoint() const { return getData().firstPoint(); }
-      dataSequence::point_t lastPoint() const  { return getData().lastPoint();  }
-      
-      color getColor() const { return getViews().getColor(); }
-      void setColor( const color &Color ) { getViews().setColor(Color); }
+    template < class D, class V > class graphSpecified : public graph
+    {
+      protected:
+        data* createData() { return new D(); }
+        graphViewCollection* createViewCollection() { return new V(); }
+        
+      protected:
+        D& getCastedData()  { return dynamic_cast<D&>( getData() ); }
+        V& getCastedViews() { return dynamic_cast<V&>( getViews() ); }
 
-      void append( number X, number Y )                           { getCastedData().append(X,Y); }
-      void append( number X, number Y, number ErrY )              { getCastedData().append(X,Y,ErrY); }
-      void append( number X, number Y, number ErrX, number ErrY ) { getCastedData().append(X,Y,ErrX,ErrY); }
-      void appendInvalid()                                        { append( invalidNumber(), invalidNumber() ); }
-      void appendPolar( number Phi, number R )                    { append( R*std::cos(Phi), R*std::sin(Phi) ); } 
-      void clear()                                                { getCastedData().clear(); }
-  };
+      public:
+        graphSpecified( const color &Color ) { init(Color); }
+        graphSpecified( const std::string &Legend, const color &Color ) : 
+          graph(Legend) 
+          { init(Color); }
 
-  class graphSequenceVector : public graphSequenceSpecified< dataSequenceVector, ordinarGraphSequenceViewCollection >
-  {
-    public:
-      graphSequenceVector( const color &Color = color() ) : 
-        graphSequenceSpecified< dataSequenceVector, ordinarGraphSequenceViewCollection >( Color ) {}
-      graphSequenceVector( const std::string &Legend, const color &Color ) : 
-        graphSequenceSpecified< dataSequenceVector, ordinarGraphSequenceViewCollection >( Legend, Color ) {}
+        size_t size() const { return getData().size(); }
+        bool empty() const  { return getData().empty(); }
 
-      dataSequenceVector& getDataVector() { return getCastedData(); }
-      ordinarGraphSequenceViewCollection& getViewsSequence() { return getCastedViews(); }
-      
-      void setLineWidth( unsigned Width ) { getViewsSequence().setLineWidth(Width); }
-      void setPointSize( unsigned Size )  { getViewsSequence().setPointSize(Size);  }
-      
-      void setVisibleLines( bool Show )        { getViews().setViewVisible<graphViewLine>(Show); }
-      void setVisiblePoints( bool Show )       { getViews().setViewVisible<graphViewPoints>(Show); }
-      void setVisibleErrorBars( bool Show )    { getViews().setViewVisible<graphViewErrorBars>(Show); }
-      void setVisibleLineHystogram( bool Show) { getViews().setViewVisible<graphViewLineHystogram>(Show); }
-  };
+        data::point_t at( data::int_t Index ) const { return getData().at(Index); }
+        data::point_t operator[]( data::int_t Index ) const { return at(Index); }
+        data::point_t firstPoint() const { return getData().firstPoint(); }
+        data::point_t lastPoint() const  { return getData().lastPoint();  }
+        
+        color getColor() const { return getViews().getColor(); }
+        void setColor( const color &Color ) { getViews().setColor(Color); }
 
-  class graphAreaVector : public graphSequenceSpecified< dataSequenceVector, coveredAreaGraphSequenceViewCollection >
-  {
-    public:
-      graphAreaVector( const color &Color = color() ) : 
-        graphSequenceSpecified< dataSequenceVector, coveredAreaGraphSequenceViewCollection >(Color) {}
-      graphAreaVector( const std::string &Legend, const color &Color ) : 
-        graphSequenceSpecified< dataSequenceVector, coveredAreaGraphSequenceViewCollection >( Legend, Color ) {}
-      
-      dataSequenceVector& getDataVector() { return getCastedData(); }
-      coveredAreaGraphSequenceViewCollection& getViewsColveredArea() { return getCastedViews(); }
-  };
+        void append( number X, number Y )                           { getCastedData().append(X,Y); }
+        void append( number X, number Y, number ErrY )              { getCastedData().append(X,Y,ErrY); }
+        void append( number X, number Y, number ErrX, number ErrY ) { getCastedData().append(X,Y,ErrX,ErrY); }
+        void appendInvalid()                                        { append( invalidNumber(), invalidNumber() ); }
+        void appendPolar( number Phi, number R )                    { append( R*std::cos(Phi), R*std::sin(Phi) ); } 
+        void clear()                                                { getCastedData().clear(); }
+    };
+  
+    // ------------------------------------------------------------
 
-  // ============================================================
+    class graphVector : public graphSpecified< dataVector, ordinarGraphViewCollection >
+    {
+      public:
+        graphVector( const color &Color = color() ) : 
+          graphSpecified< dataVector, ordinarGraphViewCollection >( Color ) {}
+        graphVector( const std::string &Legend, const color &Color ) : 
+          graphSpecified< dataVector, ordinarGraphViewCollection >( Legend, Color ) {}
 
+        dataVector& getDataVector() { return getCastedData(); }
+        ordinarGraphViewCollection& getViews() { return getCastedViews(); }
+        
+        void setLineWidth( unsigned Width ) { getViews().setLineWidth(Width); }
+        void setPointSize( unsigned Size )  { getViews().setPointSize(Size);  }
+        
+        void setVisibleLines( bool Show )        { getViews().setViewVisible<graphViewLine>(Show); }
+        void setVisiblePoints( bool Show )       { getViews().setViewVisible<graphViewPoints>(Show); }
+        void setVisibleErrorBars( bool Show )    { getViews().setViewVisible<graphViewErrorBars>(Show); }
+        void setVisibleLineHystogram( bool Show) { getViews().setViewVisible<graphViewLineHystogram>(Show); }
+    };
+  
+    // ------------------------------------------------------------
+
+    class graphAreaVector : public graphSpecified< dataVector, coveredAreaGraphViewCollection >
+    {
+      public:
+        graphAreaVector( const color &Color = color() ) : 
+          graphSpecified< dataVector, coveredAreaGraphViewCollection >(Color) {}
+        graphAreaVector( const std::string &Legend, const color &Color ) : 
+          graphSpecified< dataVector, coveredAreaGraphViewCollection >( Legend, Color ) {}
+        
+        dataVector& getDataVector() { return getCastedData(); }
+        coveredAreaGraphViewCollection& getViewsColveredArea() { return getCastedViews(); }
+    };
+
+    // ============================================================
+
+  }
 }
 

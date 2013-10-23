@@ -30,7 +30,7 @@
 
 // ============================================================
 
-const scigraphics::numberLimits scigraphics::dataSequence::limitsX() const
+const scigraphics::numberLimits scigraphics::sequence::data::limitsX() const
 {
   numberLimits Result;
   
@@ -51,7 +51,7 @@ const scigraphics::numberLimits scigraphics::dataSequence::limitsX() const
 
 // ------------------------------------------------------------
 
-const scigraphics::numberLimits scigraphics::dataSequence::limitsY( const interval<number> &LimitsX ) const
+const scigraphics::numberLimits scigraphics::sequence::data::limitsY( const interval<number> &LimitsX ) const
 {
   if ( ! numberLimits::isValidInterval(LimitsX) )
     return numberLimits();
@@ -78,7 +78,7 @@ const scigraphics::numberLimits scigraphics::dataSequence::limitsY( const interv
 
 // ============================================================
 
-void scigraphics::dataSequenceVector::append( const point_t &Point )
+void scigraphics::sequence::dataVector::append( const point_t &Point )
 { 
   appendPoint( Point );
   if ( Points.size() >= (size_t)std::numeric_limits<int>::max() - 2 )
@@ -94,11 +94,15 @@ void scigraphics::dataSequenceVector::append( const point_t &Point )
 
 // ------------------------------------------------------------
 
-void scigraphics::dataSequenceVector::updateOrderedByX()
+void scigraphics::sequence::dataVector::updateOrderedByX()
 {
-  if ( ! OrderedByX )                   return;
-  if ( size() <= 1 )                    return; 
-  if ( ! isValidNumber( lastPoint().x() ) )
+  if ( ! OrderedByX )      
+    return;
+
+  if ( size() <= 1 ) 
+    return; 
+
+  if ( ! isValidNumber( last().x() ) )
   {
     OrderedByX = false;
     return;
@@ -115,13 +119,13 @@ void scigraphics::dataSequenceVector::updateOrderedByX()
     }
   }
     
-  if ( isValidNumber(LastValidX) && LastValidX > lastPoint().x() )
+  if ( isValidNumber(LastValidX) && LastValidX > last().x() )
     OrderedByX = false;
 }
 
 // ------------------------------------------------------------
 
-void scigraphics::dataSequenceVector::updateLimitsXY( const point_t &Point, const coordinateType Type )
+void scigraphics::sequence::dataVector::updateLimitsXY( const point_t &Point, const coordinateType Type )
 {
   if ( ! Point.isValid() )
     return;
@@ -136,7 +140,7 @@ void scigraphics::dataSequenceVector::updateLimitsXY( const point_t &Point, cons
 
 // ------------------------------------------------------------
 
-void scigraphics::dataSequenceVector::updateLimits( number Number, coordinateType Coordinate, numberLimits *Limits )
+void scigraphics::sequence::dataVector::updateLimits( number Number, coordinateType Coordinate, numberLimits *Limits )
 {
   assert( Limits != NULL );
   assert( isValidNumber(Number) );
@@ -149,7 +153,7 @@ void scigraphics::dataSequenceVector::updateLimits( number Number, coordinateTyp
 
 // ------------------------------------------------------------
 
-void scigraphics::dataSequenceVector::recalculateLimits( coordinateType Coordinate, numberLimits *Limits )
+void scigraphics::sequence::dataVector::recalculateLimits( coordinateType Coordinate, numberLimits *Limits )
 {
   assert( Limits != NULL );
 
@@ -177,7 +181,7 @@ void scigraphics::dataSequenceVector::recalculateLimits( coordinateType Coordina
 
 // ------------------------------------------------------------
 
-void scigraphics::dataSequenceVector::updateLimitsByValue( numberLimits *Limits, number Value, number PosDistance, number NegDistance )
+void scigraphics::sequence::dataVector::updateLimitsByValue( numberLimits *Limits, number Value, number PosDistance, number NegDistance )
 {
   assert( Limits != NULL );
   assert( PosDistance >= 0 );
@@ -196,7 +200,7 @@ void scigraphics::dataSequenceVector::updateLimitsByValue( numberLimits *Limits,
 
 // ------------------------------------------------------------
 
-bool scigraphics::dataSequenceVector::needToRecalculateLimits( const interval<number> Interval )
+bool scigraphics::sequence::dataVector::needToRecalculateLimits( const interval<number> Interval )
 {
   const double Epsilon = 1e-14;
 
@@ -212,17 +216,17 @@ bool scigraphics::dataSequenceVector::needToRecalculateLimits( const interval<nu
 
 // ------------------------------------------------------------
 
-const scigraphics::numberLimits scigraphics::dataSequenceVector::limitsY( const interval<number> &LimitsX ) const
+const scigraphics::numberLimits scigraphics::sequence::dataVector::limitsY( const interval<number> &LimitsX ) const
 {
   if ( LimitsX.min() <= limitsX().totalLimits().min() &&
        LimitsX.max() >= limitsX().totalLimits().max() )
     return LimitsY;
-  return dataSequence::limitsY( LimitsX );
+  return data::limitsY( LimitsX );
 }
 
 // ------------------------------------------------------------
 
-scigraphics::number scigraphics::dataSequenceVector::pointValue( const point_t &Point, coordinateType Type )
+scigraphics::number scigraphics::sequence::dataVector::pointValue( const point_t &Point, coordinateType Type )
 {
   switch ( Type )
   {
@@ -234,7 +238,7 @@ scigraphics::number scigraphics::dataSequenceVector::pointValue( const point_t &
 
 // ------------------------------------------------------------
 
-scigraphics::number scigraphics::dataSequenceVector::pointError( const point_t &Point, coordinateType Type )
+scigraphics::number scigraphics::sequence::dataVector::pointError( const point_t &Point, coordinateType Type )
 {
   if ( ! Point.isValidError() )
     return 0;
@@ -249,7 +253,7 @@ scigraphics::number scigraphics::dataSequenceVector::pointError( const point_t &
 
 // ------------------------------------------------------------
 
-void scigraphics::dataSequenceVector::clear()
+void scigraphics::sequence::dataVector::clear()
 {
   LimitsX = LimitsY = numberLimits();
   OrderedByX = true;
@@ -258,21 +262,21 @@ void scigraphics::dataSequenceVector::clear()
 
 // ------------------------------------------------------------
 
-std::ostream& scigraphics::operator<<( std::ostream& Stream, const scigraphics::pointSequence& Point )
+std::ostream& scigraphics::sequence::operator<<( std::ostream& Stream, const point& Point )
 {
   return ( Stream << "( " << Point.x() << " " << Point.y() << " " << Point.errX() << " " << Point.errY() << " )" );
 }
   
 // ------------------------------------------------------------
 
-std::ostream& operator<<( std::ostream& Stream, const scigraphics::dataSequence& Data )
+std::ostream& operator<<( std::ostream& Stream, const scigraphics::sequence::data& Data )
 {
   std::streamsize Width = Stream.width();
 
   Stream.width( 12 );
   Stream << "Size ";
   Stream << Data.size() << std::endl;
-  for ( scigraphics::dataSequence::iterator i = Data.begin(); i != Data.end(); ++i )
+  for ( scigraphics::sequence::data::iterator i = Data.begin(); i != Data.end(); ++i )
     Stream << (*i) << std::endl;
   Stream.width( Width );
 

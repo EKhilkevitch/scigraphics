@@ -135,7 +135,7 @@ TEST_F( test_plotLimits, limitsForGraphics )
   Graphics.setDefaultAxisSets( AxisX, AxisY );
 
 
-  auto Graph = Graphics.create<graphSequenceVector>();
+  auto Graph = Graphics.create<sequence::graphVector>();
   Graph->append( -1, -1.5 );
   Graph->append( invalidNumber(), 4.0 );
   Graph->append( +2, +0.5 );
@@ -143,10 +143,10 @@ TEST_F( test_plotLimits, limitsForGraphics )
   ASSERT_TRUE( plotLimits::limitsXY::isAxisSetX( Graphics.graphAxisSetX(Graph) ) );
   ASSERT_TRUE( plotLimits::limitsXY::isAxisSetY( Graphics.graphAxisSetY(Graph) ) );
   
-  Graph = Graphics.create<graphSequenceVector>();
-  Graph = Graphics.create<graphSequenceVector>();
+  Graph = Graphics.create<sequence::graphVector>();
+  Graph = Graphics.create<sequence::graphVector>();
   
-  Graph = Graphics.create<graphSequenceVector>();
+  Graph = Graphics.create<sequence::graphVector>();
   Graph->append( +5.0, -1.0 );
   Graph->append( -7.5, +2.5 );
 
@@ -207,8 +207,8 @@ TEST_F( test_plotLimits, limitsForEmptyGraphics )
   ASSERT_NEAR( +0.1, Limits.getY().positiveLimits().min(), 1e-5 );
   ASSERT_NEAR( +1,   Limits.getY().totalLimits().max(), 1e-5 );
 
-  Graphics.create<graphSequenceVector>();
-  auto Graph = Graphics.create<graphSequenceVector>();
+  Graphics.create<sequence::graphVector>();
+  auto Graph = Graphics.create<sequence::graphVector>();
   Graph->append( invalidNumber(), 4 );
   
   Limits = PlotLimits.limitsForGraphics( Graphics );
@@ -257,11 +257,11 @@ TEST_F( test_plotLimits, limitsForGraphicsPositive )
   graphCollection Graphics;
   Graphics.setDefaultAxisSets( AxisX, AxisY );
 
-  auto Graph = Graphics.create<graphSequenceVector>();
+  auto Graph = Graphics.create<sequence::graphVector>();
   Graph->append( 1, 1.5 );
   Graph->append( 2, 2.0 );
   
-  Graph = Graphics.create<graphSequenceVector>();
+  Graph = Graphics.create<sequence::graphVector>();
   Graph->append( 5.0, 0.5 );
   Graph->append( 7.5, 2.5 );
 
@@ -309,13 +309,13 @@ TEST_F( test_plotLimits, limitsForGraphicsNegative )
   graphCollection Graphics;
   Graphics.setDefaultAxisSets( AxisX, AxisY );
 
-  auto Graph = Graphics.create<graphSequenceVector>();
+  auto Graph = Graphics.create<sequence::graphVector>();
 
-  Graph = Graphics.create<graphSequenceVector>();
+  Graph = Graphics.create<sequence::graphVector>();
   Graph->append( -1, -1.5 );
   Graph->append( -2, -0.5 );
   
-  Graph = Graphics.create<graphSequenceVector>();
+  Graph = Graphics.create<sequence::graphVector>();
   Graph->append( -5.0, -1.0 );
   Graph->append( -7.5, -2.5 );
 
@@ -363,7 +363,7 @@ TEST_F( test_plotLimits, limitsForGraphicsCloseToZero )
   graphCollection Graphics;
   Graphics.setDefaultAxisSets( AxisX, AxisY );
 
-  auto Graph = Graphics.create<graphSequenceVector>();
+  auto Graph = Graphics.create<sequence::graphVector>();
   Graph->append( -2,     1 );
   Graph->append( -1.5,   1 );
   Graph->append( -1,     1 );
@@ -386,7 +386,7 @@ TEST_F( test_plotLimits, limitsForGraphicsCloseToZero )
   ASSERT_NEAR( +2.0, Limits.getX().totalLimits().max(), 1e-5 );
 
   Graphics.clear();
-  Graph = Graphics.create<graphSequenceVector>();
+  Graph = Graphics.create<sequence::graphVector>();
   Graph->append( -2,     2 );
   Graph->append( -1,     1 );
   Graph->append( -0.5,   0.5 );
@@ -406,7 +406,7 @@ TEST_F( test_plotLimits, limitsForGraphicsStretch )
   graphCollection Graphics;
   Graphics.setDefaultAxisSets( AxisX, AxisY );
 
-  auto Graph = Graphics.create<graphSequenceVector>();
+  auto Graph = Graphics.create<sequence::graphVector>();
   Graph->append( -2,     1 );
   Graph->append( -1.5,   2 );
   Graph->append( -1,     5 );
@@ -436,7 +436,7 @@ TEST_F( test_plotLimits, limitsForGraphicsStretch )
   ASSERT_NEAR( +5.4,   Limits.getY().totalLimits().max(), 1e-5 ); 
 
   Graphics.clear();
-  Graph = Graphics.create<graphSequenceVector>();
+  Graph = Graphics.create<sequence::graphVector>();
   Graph->append( -2,     1 );
   Graph->append( -1,     1 );
   Graph->append(  0,     1 );
@@ -451,7 +451,7 @@ TEST_F( test_plotLimits, limitsForGraphicsStretch )
   ASSERT_NEAR( +1.1,   Limits.getY().totalLimits().max(), 1e-5 ); 
   
   Graphics.clear();
-  Graph = Graphics.create<graphSequenceVector>();
+  Graph = Graphics.create<sequence::graphVector>();
   Graph->append( 0, 0 );
   
   Limits = PlotLimits.limitsForGraphics( Graphics );

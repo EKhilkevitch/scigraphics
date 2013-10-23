@@ -36,7 +36,7 @@ struct test_legend : public testing::Test
 
 TEST_F( test_legend, shouldDrawGraphLegend )
 {
-  graphSequenceVector Graph;
+  sequence::graphVector Graph;
 
   ASSERT_TRUE( ! legend::shouldDrawGraphLegend(Graph) );
 
@@ -56,16 +56,16 @@ TEST_F( test_legend, legendsList )
   axisSetY SetY(0);
   Graphics.setDefaultAxisSets( &SetX, &SetY );
 
-  auto Graph = Graphics.create<graphSequenceVector>();
+  auto Graph = Graphics.create<sequence::graphVector>();
   
-  Graph = Graphics.create<graphSequenceVector>();
+  Graph = Graphics.create<sequence::graphVector>();
   Graph->setLegend("1");
   
-  Graph = Graphics.create<graphSequenceVector>();
+  Graph = Graphics.create<sequence::graphVector>();
   Graph->setLegend("2");
   Graph->setShowLegend(false);
 
-  Graph = Graphics.create<graphSequenceVector>();
+  Graph = Graphics.create<sequence::graphVector>();
   Graph->setLegend("3");
 
   auto Legends = legend::legendsList( Graphics );
@@ -94,9 +94,9 @@ TEST_F( test_legend, sizesForLegendRectangle )
   ASSERT_EQ( ExpectedWidth,  Size.width()  );
   ASSERT_EQ( ExpectedHeight, Size.height() );
 
-  Graphics.create<graphSequenceVector>("1",color());
-  Graphics.create<graphSequenceVector>("222",color());
-  Graphics.create<graphSequenceVector>("33",color());
+  Graphics.create<sequence::graphVector>("1",color());
+  Graphics.create<sequence::graphVector>("222",color());
+  Graphics.create<sequence::graphVector>("33",color());
 
   Size = legend::sizesForLegendRectangle( Painter, TextStyle, Graphics );
 
@@ -113,7 +113,7 @@ TEST_F( test_legend, updateLegendRectangleShortList )
   axisSetY SetY(0);
   Graphics.setDefaultAxisSets( &SetX, &SetY );
  
-  Graphics.create<graphSequenceVector>("11",color());
+  Graphics.create<sequence::graphVector>("11",color());
 
   legend Legend;
   ASSERT_EQ( 0, Legend.getRectangle().width() );
@@ -150,7 +150,7 @@ TEST_F( test_legend, updateLegendRectangleLongList )
   axisSetY SetY(0);
   Graphics.setDefaultAxisSets( &SetX, &SetY );
   for ( unsigned i = 0; i < 25; i++ )
-    Graphics.create<graphSequenceVector>( "xxx", color() );
+    Graphics.create<sequence::graphVector>( "xxx", color() );
 
   legend Legend;
   auto TextStyle = Legend.updateLegendRectangle( Painter, Graphics );
@@ -177,7 +177,7 @@ TEST_F( test_legend, updateLegendRectangleVeryLongList )
   axisSetY SetY(0);
   Graphics.setDefaultAxisSets( &SetX, &SetY );
   for ( unsigned i = 0; i < 100; i++ )
-    Graphics.create<graphSequenceVector>( "xxx", color() );
+    Graphics.create<sequence::graphVector>( "xxx", color() );
 
   legend Legend;
   auto TextStyle = Legend.updateLegendRectangle( Painter, Graphics );

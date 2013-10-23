@@ -49,9 +49,9 @@ scigraphics::plot::~plot()
 
 // ------------------------------------------------------------
 
-scigraphics::graphSequenceVector* scigraphics::plot::createGraphSequenceVector( const std::string &Legend, const color &Color )
+scigraphics::sequence::graphVector* scigraphics::plot::createGraphSequenceVector( const std::string &Legend, const color &Color )
 {
-  return createGraph<graphSequenceVector>( Legend, selectNextGraphColor(Color) );
+  return createGraphSV( Legend, Color );
 }
 
 // ------------------------------------------------------------

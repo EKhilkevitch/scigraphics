@@ -76,14 +76,14 @@ namespace scigraphics
     public:
       checkIsLessThan( const pairScales &S ) : Scales(S) {}
 
-      inline bool operator()( const fcoord FValue, const dataSequence::point_t &Point ) const { return FValue < Scales.numberToFractionX(Point.x()); }
-      inline bool operator()( const dataSequence::point_t &Point, const fcoord FValue ) const { return Scales.numberToFractionX(Point.x()) < FValue; }
+      inline bool operator()( const fcoord FValue, const sequence::data::point_t &Point ) const { return FValue < Scales.numberToFractionX(Point.x()); }
+      inline bool operator()( const sequence::data::point_t &Point, const fcoord FValue ) const { return Scales.numberToFractionX(Point.x()) < FValue; }
   };
 }
 
 // ============================================================
       
-void scigraphics::graphViewSequenceOrderOptimized::draw( painter &Painter, const pairScales& Scales, const dataSequence &Data ) const 
+void scigraphics::sequence::graphViewOrdered::draw( painter &Painter, const pairScales& Scales, const sequence::data &Data ) const 
 {
   if ( Data.isOrderedByX() ) 
   {
@@ -95,7 +95,7 @@ void scigraphics::graphViewSequenceOrderOptimized::draw( painter &Painter, const
 
 // ------------------------------------------------------------
 
-void scigraphics::graphViewSequenceOrderOptimized::drawOrderedByX( painter &Painter, const pairScales& Scales, dataSequence::iterator Begin, dataSequence::iterator End ) const 
+void scigraphics::sequence::graphViewOrdered::drawOrderedByX( painter &Painter, const pairScales& Scales, sequence::data::iterator Begin, sequence::data::iterator End ) const 
 {
   if ( Begin == End )
     return;
@@ -106,14 +106,14 @@ void scigraphics::graphViewSequenceOrderOptimized::drawOrderedByX( painter &Pain
     return;
 
   checkIsLessThan Checker(Scales);
-  dataSequence::iterator BeginVisbile = Checker(0,*Begin)   ? Begin : ( std::lower_bound( Begin,        End, (fcoord)0, Checker ) - 1 );
-  dataSequence::iterator EndVisible   = Checker(*(End-1),1) ? End   : ( std::upper_bound( BeginVisbile, End, (fcoord)1, Checker ) + 1 );
+  sequence::data::iterator BeginVisbile = Checker(0,*Begin)   ? Begin : ( std::lower_bound( Begin,        End, (fcoord)0, Checker ) - 1 );
+  sequence::data::iterator EndVisible   = Checker(*(End-1),1) ? End   : ( std::upper_bound( BeginVisbile, End, (fcoord)1, Checker ) + 1 );
   drawUnorderedByX( Painter, Scales, BeginVisbile, EndVisible );
 }
 
 // ============================================================
 
-void scigraphics::graphViewGeneralLine::drawUnorderedByX( painter &Painter, const pairScales& Scales, dataSequence::iterator Begin, dataSequence::iterator End ) const
+void scigraphics::sequence::graphViewGeneralLine::drawUnorderedByX( painter &Painter, const pairScales& Scales, sequence::data::iterator Begin, sequence::data::iterator End ) const
 {
   if ( getStyle().getStyle() == lineStyle::None )
     return;
@@ -123,7 +123,7 @@ void scigraphics::graphViewGeneralLine::drawUnorderedByX( painter &Painter, cons
 
   oneCoordinateXPoints OneCoordinateXpoints;
 
-  dataSequence::iterator Point1 = Begin, Point2 = Begin;
+  sequence::data::iterator Point1 = Begin, Point2 = Begin;
   ++Point2;
 
   for ( ; Point2 != End; Point1++, Point2++ )
@@ -158,7 +158,7 @@ void scigraphics::graphViewGeneralLine::drawUnorderedByX( painter &Painter, cons
 
 // ------------------------------------------------------------
 
-void scigraphics::graphViewGeneralLine::drawLegendExample( painter &Painter, const wrectangle &Rectangle ) const
+void scigraphics::sequence::graphViewGeneralLine::drawLegendExample( painter &Painter, const wrectangle &Rectangle ) const
 {
   wcoord VCenter = ( Rectangle.up() + Rectangle.down() )/2;
   wpoint Left( Rectangle.left()+1, VCenter );
@@ -168,18 +168,18 @@ void scigraphics::graphViewGeneralLine::drawLegendExample( painter &Painter, con
 
 // ------------------------------------------------------------
 
-void scigraphics::graphViewLine::drawLineBetweenPoints( painter &Painter, const fpoint Pt1, const fpoint &Pt2 ) const
+void scigraphics::sequence::graphViewLine::drawLineBetweenPoints( painter &Painter, const fpoint Pt1, const fpoint &Pt2 ) const
 {
   Painter.drawLineF( Pt1, Pt2, getStyle() );
 }
 
 // ------------------------------------------------------------
 
-void scigraphics::graphViewPoints::drawUnorderedByX( painter &Painter, const pairScales& Scales, dataSequence::iterator Begin, dataSequence::iterator End ) const
+void scigraphics::sequence::graphViewPoints::drawUnorderedByX( painter &Painter, const pairScales& Scales, sequence::data::iterator Begin, sequence::data::iterator End ) const
 {
   if ( getStyle().getShape() == pointStyle::None )
     return;
-  for ( dataSequence::iterator Point = Begin; Point != End; ++Point )
+  for ( sequence::data::iterator Point = Begin; Point != End; ++Point )
   {
     if ( ! Point->isValid() )
       continue;
@@ -190,7 +190,7 @@ void scigraphics::graphViewPoints::drawUnorderedByX( painter &Painter, const pai
 
 // ------------------------------------------------------------
 
-void scigraphics::graphViewPoints::drawLegendExample( painter &Painter, const wrectangle &Rectangle ) const
+void scigraphics::sequence::graphViewPoints::drawLegendExample( painter &Painter, const wrectangle &Rectangle ) const
 {
   wcoord VCenter = ( Rectangle.up() + Rectangle.down() )/2;
   wcoord HCenter = ( Rectangle.left() + Rectangle.right() )/2;
@@ -199,9 +199,9 @@ void scigraphics::graphViewPoints::drawLegendExample( painter &Painter, const wr
 
 // ------------------------------------------------------------
 
-void scigraphics::graphViewErrorBars::drawUnorderedByX( painter &Painter, const pairScales& Scales, dataSequence::iterator Begin, dataSequence::iterator End ) const
+void scigraphics::sequence::graphViewErrorBars::drawUnorderedByX( painter &Painter, const pairScales& Scales, sequence::data::iterator Begin, sequence::data::iterator End ) const
 {
-  for ( dataSequence::iterator Point = Begin; Point != End; ++Point )
+  for ( sequence::data::iterator Point = Begin; Point != End; ++Point )
   {
     if ( ! (*Point).isValid() )
       continue;
@@ -216,7 +216,7 @@ void scigraphics::graphViewErrorBars::drawUnorderedByX( painter &Painter, const 
 
 // ------------------------------------------------------------
 
-void scigraphics::graphViewErrorBars::drawHorizontalErrorBar( painter &Painter, const pairScales& Scales, const npoint &Point, number ErrX ) const
+void scigraphics::sequence::graphViewErrorBars::drawHorizontalErrorBar( painter &Painter, const pairScales& Scales, const npoint &Point, number ErrX ) const
 {
   if ( ErrX <= 0 )
     return;
@@ -227,7 +227,7 @@ void scigraphics::graphViewErrorBars::drawHorizontalErrorBar( painter &Painter, 
 
 // ------------------------------------------------------------
 
-void scigraphics::graphViewErrorBars::drawVerticalErrorBar( painter &Painter, const pairScales& Scales, const npoint &Point, number ErrY ) const
+void scigraphics::sequence::graphViewErrorBars::drawVerticalErrorBar( painter &Painter, const pairScales& Scales, const npoint &Point, number ErrY ) const
 {
   if ( ErrY <= 0 )
     return;
@@ -238,7 +238,7 @@ void scigraphics::graphViewErrorBars::drawVerticalErrorBar( painter &Painter, co
 
 // ------------------------------------------------------------
 
-void scigraphics::graphViewLineHystogram::drawLineBetweenPoints( painter &Painter, fpoint Pt1, const fpoint &Pt2 ) const
+void scigraphics::sequence::graphViewLineHystogram::drawLineBetweenPoints( painter &Painter, fpoint Pt1, const fpoint &Pt2 ) const
 {
   fpoint PtMiddle( Pt2.x(), Pt1.y() );
   Painter.drawLineF( Pt1, PtMiddle, getStyle() );
@@ -247,7 +247,7 @@ void scigraphics::graphViewLineHystogram::drawLineBetweenPoints( painter &Painte
       
 // ------------------------------------------------------------
       
-scigraphics::dataSequence::iterator scigraphics::graphViewCoveredArea::fillPolygonVector( dataSequence::iterator Begin, dataSequence::iterator End, const pairScales& Scales, 
+scigraphics::sequence::data::iterator scigraphics::sequence::graphViewCoveredArea::fillPolygonVector( sequence::data::iterator Begin, sequence::data::iterator End, const pairScales& Scales, 
   std::vector<fpoint> *Polygon )
 {
   assert( Polygon != NULL );
@@ -255,7 +255,7 @@ scigraphics::dataSequence::iterator scigraphics::graphViewCoveredArea::fillPolyg
   Polygon->clear();
   Polygon->reserve( 1024 );
 
-  dataSequence::iterator Point = Begin;
+  sequence::data::iterator Point = Begin;
   while ( Point != End && Point->isValid() )
   {
     fpoint FPoint = Scales.npoint2fpoint( npoint(*Point) );
@@ -270,10 +270,10 @@ scigraphics::dataSequence::iterator scigraphics::graphViewCoveredArea::fillPolyg
 
 // ------------------------------------------------------------
 
-void scigraphics::graphViewCoveredArea::draw( painter &Painter, const pairScales& Scales, const dataSequence &Data ) const
+void scigraphics::sequence::graphViewCoveredArea::draw( painter &Painter, const pairScales& Scales, const sequence::data &Data ) const
 {
-  dataSequence::iterator Iterator = Data.begin();
-  dataSequence::iterator End = Data.end();
+  sequence::data::iterator Iterator = Data.begin();
+  sequence::data::iterator End = Data.end();
 
   while ( Iterator != End )
   {
@@ -286,7 +286,7 @@ void scigraphics::graphViewCoveredArea::draw( painter &Painter, const pairScales
 
 // ------------------------------------------------------------
 
-void scigraphics::graphViewCoveredArea::drawLegendExample( painter &Painter, const wrectangle &Rectangle ) const
+void scigraphics::sequence::graphViewCoveredArea::drawLegendExample( painter &Painter, const wrectangle &Rectangle ) const
 {
   std::vector< wpoint > Polygon;
   Polygon.push_back( Rectangle.leftUp() );
@@ -294,18 +294,6 @@ void scigraphics::graphViewCoveredArea::drawLegendExample( painter &Painter, con
   Polygon.push_back( Rectangle.rightDown() );
   Polygon.push_back( Rectangle.rightUp() );
   Painter.drawPolygonW( Polygon, getStyle() );
-}
-      
-// ------------------------------------------------------------
-
-void scigraphics::graphViewCoveredArea::drawUnorderedByX( painter &, const pairScales& , dataSequence::iterator , dataSequence::iterator  ) const 
-{
-}
-
-// ------------------------------------------------------------
-
-void scigraphics::graphViewCoveredArea::drawOrderedByX( painter &, const pairScales& , dataSequence::iterator , dataSequence::iterator  ) const 
-{
 }
 
 // ============================================================

@@ -42,7 +42,7 @@ class plotAnimator : public QObject
 
   private:
     qt4plot *Plot;
-    scigraphics::graphSequenceVector *Sin, *Sqr, *SpiralPl, *SpiralNg;
+    scigraphics::graphSV *Sin, *Sqr, *SpiralPl, *SpiralNg;
 
     unsigned Count;
 

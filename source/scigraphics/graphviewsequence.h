@@ -32,128 +32,143 @@
 
 namespace scigraphics 
 {
+  namespace sequence
+  {
  
-  // ============================================================
-  
-  class graphViewSequence
-  {
-    private:
-      bool Visible;
+    // ============================================================
     
-    public:
-      graphViewSequence() : Visible(true) {}
-      virtual ~graphViewSequence() {}
-
-      void setVisible( bool V ) { Visible = V; }
-      bool isVisible() const { return Visible; }
-
-      virtual void draw( painter &Painter, const pairScales& Scales, const dataSequence &Data ) const = 0;
-      virtual void drawLegendExample( painter &Painter, const wrectangle &Rectangle ) const = 0;
-
-      virtual color getColor() const = 0;
-      virtual void setColor( const color &C ) = 0;
+    class graphView
+    {
+      private:
+        bool Visible;
       
-      virtual wcoord legendExampleWidth() const  { return 35; }
-      virtual wcoord legendExampleHeight() const { return 5;  }
-  };
+      public:
+        graphView() : Visible(true) {}
+        virtual ~graphView() {}
 
-  class graphViewSequenceOrderOptimized : public graphViewSequence
-  {
-    protected:
-      virtual void drawUnorderedByX( painter &Painter, const pairScales& Scales, dataSequence::iterator Begin, dataSequence::iterator End ) const = 0;
-      virtual void drawOrderedByX( painter &Painter, const pairScales& Scales, dataSequence::iterator Begin, dataSequence::iterator End ) const;
+        void setVisible( bool V ) { Visible = V; }
+        bool isVisible() const { return Visible; }
 
-    public:
-      void draw( painter &Painter, const pairScales& Scales, const dataSequence &Data ) const;
-  };
+        virtual void draw( painter &Painter, const pairScales& Scales, const sequence::data &Data ) const = 0;
+        virtual void drawLegendExample( painter &Painter, const wrectangle &Rectangle ) const = 0;
 
-  // ============================================================
-  
-  template < class styleClass > class graphViewSequenceStyle : public graphViewSequenceOrderOptimized
-  {
-    public:
-      typedef styleClass style;
+        virtual color getColor() const = 0;
+        virtual void setColor( const color &C ) = 0;
+        
+        virtual wcoord legendExampleWidth() const  { return 35; }
+        virtual wcoord legendExampleHeight() const { return 5;  }
+    };
+
+    class graphViewOrdered : public graphView
+    {
+      protected:
+        virtual void drawUnorderedByX( painter &Painter, const pairScales& Scales, sequence::data::iterator Begin, sequence::data::iterator End ) const = 0;
+        virtual void drawOrderedByX( painter &Painter, const pairScales& Scales, sequence::data::iterator Begin, sequence::data::iterator End ) const;
+
+      public:
+        void draw( painter &Painter, const pairScales& Scales, const sequence::data &Data ) const;
+    };
+
+    // ============================================================
     
-    private:
-      style Style;
+    template < class styleClass, class parentClass > class graphViewStyle : public parentClass
+    {
+      public:
+        typedef styleClass style;
+      
+      private:
+        style Style;
+      
+      public:
+        graphViewStyle( style S = style() ) : Style(S) {}
+
+        void setStyle( style S ) { Style = S; }
+        const style& getStyle() const { return Style; }
+
+        color getColor() const { return Style.getColor(); }
+        void setColor( const color &C ) { Style.setColor(C); }
+    };
     
-    public:
-      graphViewSequenceStyle( style S = style() ) : Style(S) {}
+    // ============================================================
 
-      void setStyle( style S ) { Style = S; }
-      const style& getStyle() const { return Style; }
+    class graphViewGeneralLine : public graphViewStyle<lineStyle,graphViewOrdered>
+    {
+      protected:
+        virtual void drawLineBetweenPoints( painter &Painter, const fpoint Pt1, const fpoint &Pt2 ) const = 0;
+        void drawUnorderedByX( painter &Painter, const pairScales& Scales, sequence::data::iterator Begin, sequence::data::iterator End ) const;
+        
+      public:
+        graphViewGeneralLine( style S ) : graphViewStyle<lineStyle,graphViewOrdered>(S) {}
 
-      color getColor() const { return Style.getColor(); }
-      void setColor( const color &C ) { Style.setColor(C); }
-  };
+        void drawLegendExample( painter &Painter, const wrectangle &Rectangle ) const;
+    };
+    
+    // ------------------------------------------------------------
 
-  class graphViewGeneralLine : public graphViewSequenceStyle<lineStyle>
-  {
-    protected:
-      virtual void drawLineBetweenPoints( painter &Painter, const fpoint Pt1, const fpoint &Pt2 ) const = 0;
-      void drawUnorderedByX( painter &Painter, const pairScales& Scales, dataSequence::iterator Begin, dataSequence::iterator End ) const;
-      
-    public:
-      graphViewGeneralLine( style S ) : graphViewSequenceStyle<lineStyle>(S) {}
+    class graphViewLine : public graphViewGeneralLine
+    {
+      protected:
+        void drawLineBetweenPoints( painter &Painter, const fpoint Pt1, const fpoint &Pt2 ) const;
+      public:
+        graphViewLine( style S ) : graphViewGeneralLine(S) {}
+    };
 
-      void drawLegendExample( painter &Painter, const wrectangle &Rectangle ) const;
-  };
+    // ------------------------------------------------------------
+    
+    class graphViewPoints : public graphViewStyle<pointStyle,graphViewOrdered>
+    {
+      protected:
+        void drawUnorderedByX( painter &Painter, const pairScales& Scales, sequence::data::iterator Begin, sequence::data::iterator End ) const;
+      public:
+        graphViewPoints( style S ) : graphViewStyle<pointStyle,graphViewOrdered>(S) {}
 
-  class graphViewLine : public graphViewGeneralLine
-  {
-    protected:
-      void drawLineBetweenPoints( painter &Painter, const fpoint Pt1, const fpoint &Pt2 ) const;
-    public:
-      graphViewLine( style S ) : graphViewGeneralLine(S) {}
-  };
+        void drawLegendExample( painter &Painter, const wrectangle &Rectangle ) const;
+    };
 
-  class graphViewPoints : public graphViewSequenceStyle<pointStyle>
-  {
-    protected:
-      void drawUnorderedByX( painter &Painter, const pairScales& Scales, dataSequence::iterator Begin, dataSequence::iterator End ) const;
-    public:
-      graphViewPoints( style S ) : graphViewSequenceStyle<pointStyle>(S) {}
+    // ------------------------------------------------------------
+    
+    class graphViewErrorBars : public graphViewStyle<errorBarStyle,graphViewOrdered>
+    {
+      protected:
+        void drawUnorderedByX( painter &Painter, const pairScales& Scales, sequence::data::iterator Begin, sequence::data::iterator End ) const;
+        void drawHorizontalErrorBar( painter &Painter, const pairScales& Scales, const npoint &Point, number ErrX ) const;
+        void drawVerticalErrorBar( painter &Painter, const pairScales& Scales, const npoint &Point, number ErrY ) const;
+      public:
+        graphViewErrorBars( style S ) : graphViewStyle<errorBarStyle,graphViewOrdered>(S) {}
 
-      void drawLegendExample( painter &Painter, const wrectangle &Rectangle ) const;
-  };
+        void drawLegendExample( painter &, const wrectangle & ) const {}
+    };
 
-  class graphViewErrorBars : public graphViewSequenceStyle<errorBarStyle>
-  {
-    protected:
-      void drawUnorderedByX( painter &Painter, const pairScales& Scales, dataSequence::iterator Begin, dataSequence::iterator End ) const;
-      void drawHorizontalErrorBar( painter &Painter, const pairScales& Scales, const npoint &Point, number ErrX ) const;
-      void drawVerticalErrorBar( painter &Painter, const pairScales& Scales, const npoint &Point, number ErrY ) const;
-    public:
-      graphViewErrorBars( style S ) : graphViewSequenceStyle<errorBarStyle>(S) {}
+    // ------------------------------------------------------------
+    
+    class graphViewLineHystogram : public graphViewGeneralLine
+    {
+      protected:
+        void drawLineBetweenPoints( painter &Painter, const fpoint Pt1, const fpoint &Pt2 ) const;
+      public:
+        graphViewLineHystogram( style S ) : graphViewGeneralLine(S) {}
+    };
 
-      void drawLegendExample( painter &, const wrectangle & ) const {}
-  };
+    // ------------------------------------------------------------
+    
+    class graphViewCoveredArea : public graphViewStyle<brushStyle,graphView>
+    {
+      private:
+        static sequence::data::iterator fillPolygonVector( sequence::data::iterator Begin, sequence::data::iterator End, const pairScales& Scales, std::vector<fpoint> *Polygon );
+        
+      protected:
+        void drawUnorderedByX( painter &Painter, const pairScales& Scales, sequence::data::iterator Begin, sequence::data::iterator End ) const;
+        void drawOrderedByX( painter &Painter, const pairScales& Scales, sequence::data::iterator Begin, sequence::data::iterator End ) const;
 
-  class graphViewLineHystogram : public graphViewGeneralLine
-  {
-    protected:
-      void drawLineBetweenPoints( painter &Painter, const fpoint Pt1, const fpoint &Pt2 ) const;
-    public:
-      graphViewLineHystogram( style S ) : graphViewGeneralLine(S) {}
-  };
+      public:
+        graphViewCoveredArea( style S ) : graphViewStyle<brushStyle,graphView>(S) {}
+       
+        void draw( painter &Painter, const pairScales& Scales, const sequence::data &Data ) const;
+        void drawLegendExample( painter &Painter, const wrectangle &Rectangle ) const;
+    };
+    
+    // ============================================================
 
-  class graphViewCoveredArea : public graphViewSequenceStyle<brushStyle>
-  {
-    private:
-      static dataSequence::iterator fillPolygonVector( dataSequence::iterator Begin, dataSequence::iterator End, const pairScales& Scales, std::vector<fpoint> *Polygon );
-      
-    protected:
-      void drawUnorderedByX( painter &Painter, const pairScales& Scales, dataSequence::iterator Begin, dataSequence::iterator End ) const;
-      void drawOrderedByX( painter &Painter, const pairScales& Scales, dataSequence::iterator Begin, dataSequence::iterator End ) const;
-
-    public:
-      graphViewCoveredArea( style S ) : graphViewSequenceStyle<brushStyle>(S) {}
-     
-      void draw( painter &Painter, const pairScales& Scales, const dataSequence &Data ) const;
-      void drawLegendExample( painter &Painter, const wrectangle &Rectangle ) const;
-  };
-  
-  // ============================================================
-
+  }
 }
 

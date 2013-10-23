@@ -19,38 +19,38 @@ using namespace scigraphics;
 
 TEST( test_graphSequenceVector, getView )
 {
-  graphSequenceVector Graph;
+  sequence::graphVector Graph;
 
-  ASSERT_TRUE( Graph.getViews().getView<graphViewLine>() != NULL );
-  ASSERT_EQ( std::string() + typeid(graphViewLine).name(), std::string() + typeid(*Graph.getViews().getView<graphViewLine>()).name() );
+  ASSERT_TRUE( Graph.getViews().getView<sequence::graphViewLine>() != NULL );
+  ASSERT_EQ( std::string() + typeid(sequence::graphViewLine).name(), std::string() + typeid(*Graph.getViews().getView<sequence::graphViewLine>()).name() );
 }
 
 // ---------------------------------------------------------
 
 TEST( test_graphSequenceVector, setViewVisible )
 {
-  graphSequenceVector Graph;
+  sequence::graphVector Graph;
 
-  ASSERT_TRUE( Graph.getViews().getView<graphViewLine>()->isVisible() );
+  ASSERT_TRUE( Graph.getViews().getView<sequence::graphViewLine>()->isVisible() );
   
   Graph.setVisibleLines( false );
-  ASSERT_FALSE( Graph.getViews().getView<graphViewLine>()->isVisible() );
+  ASSERT_FALSE( Graph.getViews().getView<sequence::graphViewLine>()->isVisible() );
 }
 
 // ---------------------------------------------------------
 
 TEST( test_graphSequenceVector, isViewExist )
 {
-  graphSequenceVector Graph;
+  sequence::graphVector Graph;
 
-  ASSERT_TRUE( Graph.getViews().isViewExist<graphViewLine>() );
+  ASSERT_TRUE( Graph.getViews().isViewExist<sequence::graphViewLine>() );
 }
 
 // ---------------------------------------------------------
 
 TEST( test_graphSequenceVector, limitsX )
 {
-  graphSequenceVector Graph;
+  sequence::graphVector Graph;
   Graph.append( 0, 0 );
   Graph.append( 2, 2 );
   Graph.append( -1, -1 );
@@ -66,7 +66,7 @@ TEST( test_graphSequenceVector, limitsX )
 
 TEST( test_graphSequenceVector, limitsY )
 {
-  graphSequenceVector Graph;
+  sequence::graphVector Graph;
   Graph.append( 0, 0 );
   Graph.append( 2, 2 );
   Graph.append( -1, -1 );
@@ -80,7 +80,7 @@ TEST( test_graphSequenceVector, limitsY )
 TEST( test_graphSequenceVector, legend )
 {
   const std::string Legend = "Legend";
-  graphSequenceVector Graph( Legend, color::Black );
+  sequence::graphVector Graph( Legend, color::Black );
 
   ASSERT_EQ( Legend, Graph.legend() );
   ASSERT_TRUE( Graph.showLegend() ); 

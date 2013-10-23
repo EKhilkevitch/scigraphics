@@ -24,7 +24,7 @@ TEST( test_graphCollection, scales )
   axisSet *AxisY = new axisSetY(0);
   Collection.setDefaultAxisSets(AxisX,AxisY);
  
-  graph *Graph = Collection.create<graphSequenceVector>(color());
+  graph *Graph = Collection.create<sequence::graphVector>(color());
   
   ASSERT_EQ( (const scigraphics::scale*)AxisX->getScale(), Collection.graphScaleX(Graph) );
   ASSERT_EQ( (const scigraphics::scale*)AxisY->getScale(), Collection.graphScaleY(Graph) );
@@ -44,7 +44,7 @@ TEST( test_graphCollection, bindGraphToAxisSet )
   axisSetY SetY(0);
   Collection.setDefaultAxisSets( &SetX, &SetY );
 
-  graph *Graph = Collection.create<graphSequenceVector>(color());
+  graph *Graph = Collection.create<sequence::graphVector>(color());
   ASSERT_EQ( (const scigraphics::scale*)(SetX.getScale()), Collection.graphScaleX(Graph) );
   ASSERT_EQ( (const scigraphics::scale*)(SetY.getScale()), Collection.graphScaleY(Graph) );
 
@@ -71,7 +71,7 @@ TEST( test_graphCollection, append )
   ASSERT_TRUE( Collection.empty() );
   ASSERT_EQ( (size_t)0, Collection.size() );
 
-  graph *Graph = new graphSequenceVector(color::Black);
+  graph *Graph = new sequence::graphVector(color::Black);
 
   Collection.append(Graph);
   
@@ -82,7 +82,7 @@ TEST( test_graphCollection, append )
   Graph->setLegend("1");
   ASSERT_EQ( std::string("1"), (*Collection.begin())->legend() );
   
-  Collection.append( new graphSequenceVector(color::Black) );
+  Collection.append( new sequence::graphVector(color::Black) );
   ASSERT_EQ( (size_t)2, Collection.size() );
 
   try
@@ -109,13 +109,13 @@ TEST( test_graphCollection, create )
   axisSetY SetY(0);
   Collection.setDefaultAxisSets( &SetX, &SetY );
 
-  auto Graph = Collection.create<graphSequenceVector>("L",color::Black);
+  auto Graph = Collection.create<sequence::graphVector>("L",color::Black);
 
   ASSERT_EQ( (size_t)1, Collection.size() );
   ASSERT_EQ( std::string("L"), Graph->legend() );
   ASSERT_EQ( std::string("L"), (*Collection.begin())->legend() );
   
-  auto Graph2 = Collection.create<graphSequenceVector>(color());
+  auto Graph2 = Collection.create<sequence::graphVector>(color());
 
   ASSERT_EQ( (size_t)2, Collection.size() );
   ASSERT_EQ( std::string(), Graph2->legend() );
@@ -142,7 +142,7 @@ TEST( test_graphCollection, clear )
   Collection.clear();
   ASSERT_TRUE( Collection.empty() );
   
-  Collection.create<graphSequenceVector>(color());
+  Collection.create<sequence::graphVector>(color());
   ASSERT_TRUE( ! Collection.empty() );
   Collection.clear();
   ASSERT_TRUE( Collection.empty() );
@@ -157,7 +157,7 @@ TEST( test_graphCollection, exist )
   axisSetY SetY(0);
   Collection.setDefaultAxisSets( &SetX, &SetY );
 
-  graph *Graph = new graphSequenceVector(color::Black);
+  graph *Graph = new sequence::graphVector(color::Black);
   ASSERT_TRUE( ! Collection.exist(NULL) );
   ASSERT_TRUE( ! Collection.exist(Graph) );
 
@@ -180,7 +180,7 @@ TEST( test_graphCollection, iterators )
   Legends.push_back("3");
 
   for ( auto l = Legends.begin(); l != Legends.end(); ++l )
-    Collection.create<graphSequenceVector>( *l, color() );
+    Collection.create<sequence::graphVector>( *l, color() );
 
   ASSERT_EQ( Legends.size(), Collection.size() );
 

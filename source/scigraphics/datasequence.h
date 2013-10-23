@@ -29,81 +29,109 @@
 
 namespace scigraphics 
 {
-
-// ============================================================
-
-  class pointSequence
+  namespace sequence
   {
-    private:
-      number X, Y;
-      number ErrX, ErrY;
-    public:
-      pointSequence() : X(0), Y(0), ErrX(0), ErrY(0) {}
-      pointSequence( number x, number y, number ex = 0, number ey = 0 ) : 
-         X(x), Y(y), ErrX(ex), ErrY(ey) {}
 
-      number x() const { return X; }
-      number y() const { return Y; }
-      number errX() const { return ErrX; }
-      number errY() const { return ErrY; }
+    // ============================================================
 
-      bool isValid() const { return isValidNumbers( x(), y() ); }
-      bool isValidError() const { return isValidNumbers( errX(), errY() ); }
-      
-      static inline pointSequence invalidPoint() { return pointSequence( invalidNumber(), invalidNumber() );  }
-  };
+    class point
+    {
+      private:
+        number X, Y;
+        number ErrX, ErrY;
+      public:
+        point() : X(0), Y(0), ErrX(0), ErrY(0) {}
+        point( number x, number y, number ex = 0, number ey = 0 ) : 
+           X(x), Y(y), ErrX(ex), ErrY(ey) {}
 
-  class dataSequence : public data::data<pointSequence>
-  {
-    public:
-      virtual const numberLimits limitsX() const;
-      virtual const numberLimits limitsY( const interval<number> &LimitsX ) const;
-      virtual bool isOrderedByX() const { return false; }
-  };
-      
-  class dataSequenceVector : public dataSequence
-  {
-    private:
-      enum coordinateType { CrdX, CrdY };
+        number x() const { return X; }
+        number y() const { return Y; }
+        number errX() const { return ErrX; }
+        number errY() const { return ErrY; }
 
-      std::vector<point_t> Points;
-      numberLimits LimitsX, LimitsY;
-      bool OrderedByX;
+        bool isValid() const { return isValidNumbers( x(), y() ); }
+        bool isValidError() const { return isValidNumbers( errX(), errY() ); }
+        
+        static inline point invalidPoint() { return point( invalidNumber(), invalidNumber() );  }
+    };
+  
+    // ------------------------------------------------------------
 
-    private:
-      void appendPoint( const point_t &Point ) { Points.push_back(Point); }
-      void updateLimitsXY( const point_t &Point, const coordinateType Type );
-      void updateLimits( number Number, coordinateType Coordinate, numberLimits *Limits );
-      void updateOrderedByX();
-      static bool needToRecalculateLimits( const interval<number> Interval );
-      void recalculateLimits( coordinateType Coordinate, numberLimits *Limits );
-      void updateLimitsByValue( numberLimits *Limits, number Value, number PosDistance, number NegDistamce );
-      static number pointValue( const point_t &Point, coordinateType Type );
-      static number pointError( const point_t &Point, coordinateType Type );
+    class data
+    {
+      public:
+        typedef point point_t;
+        typedef int int_t;
+        typedef ::scigraphics::data::data_iterator< data > iterator;
 
-    public:
-      dataSequenceVector() : OrderedByX(true) {}
+      public:
+        virtual ~data() {}
 
-      int_t size() const { return Points.size(); }
-      const point_t at( int_t Index ) const { return Points.at(Index); }
+        virtual int_t size() const = 0;
+        bool empty() const { return size() == 0; }
 
-      void append( const point_t &Point );
-      void append( number X, number Y ) { append( point_t(X,Y) );  }
-      void append( number X, number Y, number ErrY ) { append( point_t(X,Y,0,ErrY) ); }
-      void append( number X, number Y, number ErrX, number ErrY ) { append( point_t(X,Y,ErrX,ErrY) ); }
+        virtual const point_t at( int_t Index ) const = 0;
+        const point_t operator[]( int_t Index ) const { return at(Index); }
 
-      void clear();
-      
-      const numberLimits limitsX() const { return LimitsX; }
-      const numberLimits limitsY( const interval<number> &LimitsX ) const;
-      
-      bool isOrderedByX() const { return OrderedByX; }
-  };
+        const point_t first() const { return  empty() ? point_t() : at(0); }
+        const point_t last()  const { return  empty() ? point_t() : at(size()-1); }
 
-  std::ostream& operator<<( std::ostream& Stream, const pointSequence& Point );
-  std::ostream& operator<<( std::ostream& Stream, const dataSequence& Data );
+        iterator begin() const { return iterator( 0, *this ); }
+        iterator end() const { return iterator( size(), *this ); }
 
-// ============================================================
+        virtual const numberLimits limitsX() const;
+        virtual const numberLimits limitsY( const interval<number> &LimitsX ) const;
+        virtual bool isOrderedByX() const { return false; }
+    };
+  
+    // ------------------------------------------------------------
+        
+    class dataVector : public data
+    {
+      private:
+        enum coordinateType { CrdX, CrdY };
 
+        std::vector<point_t> Points;
+        numberLimits LimitsX, LimitsY;
+        bool OrderedByX;
+
+      private:
+        void appendPoint( const point_t &Point ) { Points.push_back(Point); }
+        void updateLimitsXY( const point_t &Point, const coordinateType Type );
+        void updateLimits( number Number, coordinateType Coordinate, numberLimits *Limits );
+        void updateOrderedByX();
+        static bool needToRecalculateLimits( const interval<number> Interval );
+        void recalculateLimits( coordinateType Coordinate, numberLimits *Limits );
+        void updateLimitsByValue( numberLimits *Limits, number Value, number PosDistance, number NegDistamce );
+        static number pointValue( const point_t &Point, coordinateType Type );
+        static number pointError( const point_t &Point, coordinateType Type );
+
+      public:
+        dataVector() : OrderedByX(true) {}
+
+        int_t size() const { return Points.size(); }
+        const point_t at( int_t Index ) const { return Points.at(Index); }
+
+        void append( const point_t &Point );
+        void append( number X, number Y ) { append( point_t(X,Y) );  }
+        void append( number X, number Y, number ErrY ) { append( point_t(X,Y,0,ErrY) ); }
+        void append( number X, number Y, number ErrX, number ErrY ) { append( point_t(X,Y,ErrX,ErrY) ); }
+
+        void clear();
+        
+        const numberLimits limitsX() const { return LimitsX; }
+        const numberLimits limitsY( const interval<number> &LimitsX ) const;
+        
+        bool isOrderedByX() const { return OrderedByX; }
+    };
+  
+    // ------------------------------------------------------------
+
+    std::ostream& operator<<( std::ostream& Stream, const point& Point );
+    std::ostream& operator<<( std::ostream& Stream, const data& Data );
+
+  // ============================================================
+
+  }
 }
 

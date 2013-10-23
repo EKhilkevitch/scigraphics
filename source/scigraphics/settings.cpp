@@ -88,12 +88,12 @@ void scigraphics::settings::applyGraphType( plot *Plot ) const
   assert( Plot != NULL );
 
   for ( graphCollection::iterator Graph = Plot->beginGraph(); Graph != Plot->endGraph(); ++Graph )
-    applyGraphTypeToGraph( dynamic_cast< graphSequence* >( *Graph ) );
+    applyGraphTypeToGraph( dynamic_cast< sequence::graph* >( *Graph ) );
 }
       
 // ------------------------------------------------------------
 
-void scigraphics::settings::applyGraphTypeToGraph( graphSequence *Graph ) const
+void scigraphics::settings::applyGraphTypeToGraph( sequence::graph *Graph ) const
 {
   if ( Graph == NULL )
     return;
@@ -101,10 +101,10 @@ void scigraphics::settings::applyGraphTypeToGraph( graphSequence *Graph ) const
   if ( GraphType == Individual )
     return;
 
-  Graph->getViews().setViewVisible<graphViewLine>( GraphType & Lines ); 
-  Graph->getViews().setViewVisible<graphViewPoints>( GraphType & Points ); 
-  Graph->getViews().setViewVisible<graphViewLineHystogram>( GraphType & LinesHystogram ); 
-  Graph->getViews().setViewVisible<graphViewErrorBars>( GraphType & ErrorBars ); 
+  Graph->getViews().setViewVisible<sequence::graphViewLine>( GraphType & Lines ); 
+  Graph->getViews().setViewVisible<sequence::graphViewPoints>( GraphType & Points ); 
+  Graph->getViews().setViewVisible<sequence::graphViewLineHystogram>( GraphType & LinesHystogram ); 
+  Graph->getViews().setViewVisible<sequence::graphViewErrorBars>( GraphType & ErrorBars ); 
 }
 
 // ------------------------------------------------------------

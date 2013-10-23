@@ -30,113 +30,137 @@
 namespace scigraphics 
 {
 
-// ============================================================
-
-  class pointMap
+  namespace map2d
   {
-    private:
-      number X, DX;
-      number Y, DY;
-      number Z, ErrZ;
 
-    public:
-      pointMap() : X(0), DX(1), Y(0), DY(1), Z(0), ErrZ(0) {}
-      pointMap( number x, number dx, number y, number dy, number z, number ez = 0 ) : 
-         X(x), DX(dx), Y(y), DY(dy), Z(z), ErrZ(ez) {}
+    // ============================================================
 
-      number x0() const { return X; }
-      number y0() const { return Y; }
-      number x1() const { return X + DX; }
-      number y1() const { return Y + DY; }
-      number z()  const { return Z; }
-      number errZ() const { return ErrZ; }
+    class point
+    {
+      private:
+        number X, DX;
+        number Y, DY;
+        number Z, ErrZ;
 
-      bool isValid() const { return isValidNumber( z() ); }
-      bool isValidError() const { return isValidNumber( errZ() ); }
-  };
+      public:
+        point() : X(0), DX(1), Y(0), DY(1), Z(0), ErrZ(0) {}
+        point( number x, number dx, number y, number dy, number z, number ez = 0 ) : 
+           X(x), DX(dx), Y(y), DY(dy), Z(z), ErrZ(ez) {}
 
+        number x0() const { return X; }
+        number y0() const { return Y; }
+        number x1() const { return X + DX; }
+        number y1() const { return Y + DY; }
+        number z()  const { return Z; }
+        number errZ() const { return ErrZ; }
 
-  class dataMap : public data::data<pointMap>
-  {
-    private:
-      interval<number> IntervalX, IntervalY;
+        bool isValid() const { return isValidNumber( z() ); }
+        bool isValidError() const { return isValidNumber( errZ() ); }
+    };
 
-    private:
-      static numberLimits limitsForInterval( interval<number> Interval );
+    // ------------------------------------------------------------
 
-    public:
-      dataMap( interval<number> IX, interval<number> IY ) : 
-        IntervalX(IX), 
-        IntervalY(IY) {}
+    class data 
+    {
+      public:
+        typedef point point_t;
+        typedef int int_t;
+        typedef ::scigraphics::data::data_iterator< data > iterator;
 
-      interval<number> intervalX() const { return IntervalX; }
-      interval<number> intervalY() const { return IntervalY; }
+      private:
+        interval<number> IntervalX, IntervalY;
 
-      void setIntervalX( number Min, number Max ) { IntervalX = interval<number>(Min,Max); };
-      void setIntervalY( number Min, number Max ) { IntervalY = interval<number>(Min,Max); }
+      private:
+        static numberLimits limitsForInterval( interval<number> Interval );
 
-      virtual const numberLimits limitsX() const;
-      virtual const numberLimits limitsY( const interval<number> &LimitsX ) const;
-      virtual const numberLimits limitsZ() const;
-  };
+      public:
+        data( interval<number> IX, interval<number> IY ) : 
+          IntervalX(IX), 
+          IntervalY(IY) {}
+        virtual ~data() {}
 
-  class dataMapVector : public dataMap
-  {
-    private:
-      class value
-      {
-        private:
-          number Z, ErrZ;
-        public:
-          value() : Z(invalidNumber()), ErrZ(invalidNumber()) {}
-          value( number z, number ez = 0 ) : Z(z), ErrZ(ez) {}
-          number z() const { return Z; }
-          number errZ() const { return ErrZ; }
-      };
+        interval<number> intervalX() const { return IntervalX; }
+        interval<number> intervalY() const { return IntervalY; }
 
-    private:
-      size_t SizeX, SizeY;
-      std::vector< value > Values;
+        void setIntervalX( number Min, number Max ) { IntervalX = interval<number>(Min,Max); };
+        void setIntervalY( number Min, number Max ) { IntervalY = interval<number>(Min,Max); }
 
-      mutable struct limitsZCache
-      {
-        numberLimits LimitsZ;
-        bool isValid;
+        virtual int_t size() const = 0;
+        bool empty() const { return size() == 0; }
+        
+        virtual const point_t at( int_t Index ) const = 0;
+        const point_t operator[]( int_t Index ) const { return at(Index); }
+        
+        iterator begin() const { return iterator( 0, *this ); }
+        iterator end() const { return iterator( size(), *this ); }
 
-        limitsZCache() : isValid(false) {}
-      } LimitsZCache;
+        virtual const numberLimits limitsX() const;
+        virtual const numberLimits limitsY( const interval<number> &LimitsX ) const;
+        virtual const numberLimits limitsZ() const;
+    };
+    
+    // ------------------------------------------------------------
 
-    public:
-      dataMapVector();
-      dataMapVector( size_t SX, interval<number> IX, size_t SY, interval<number> IY );
+    class dataVector : public data
+    {
+      private:
+        class value
+        {
+          private:
+            number Z, ErrZ;
+          public:
+            value() : Z(invalidNumber()), ErrZ(invalidNumber()) {}
+            value( number z, number ez = 0 ) : Z(z), ErrZ(ez) {}
+            number z() const { return Z; }
+            number errZ() const { return ErrZ; }
+        };
 
-      int_t sizeX() const { return SizeX; }
-      int_t sizeY() const { return SizeY; }
-      int_t size() const;
+      private:
+        size_t SizeX, SizeY;
+        std::vector< value > Values;
 
-      void resize( size_t SX, size_t SY );
+        mutable struct limitsZCache
+        {
+          numberLimits LimitsZ;
+          bool isValid;
 
-      int indexX( int_t Index ) const { return Index % sizeX(); }
-      int indexY( int_t Index ) const { return Index / sizeX(); }
-      int index( int_t IndexX, int_t IndexY ) const { return IndexX + IndexY*sizeX(); }
+          limitsZCache() : isValid(false) {}
+        } LimitsZCache;
 
-      number deltaX() const { return intervalX().distance()/sizeX(); }
-      number deltaY() const { return intervalY().distance()/sizeY(); }
+      public:
+        dataVector();
+        dataVector( size_t SX, interval<number> IX, size_t SY, interval<number> IY );
 
-      number coordinateX( int IndexX ) const { return intervalX().min() + deltaX()*IndexX; }
-      number coordinateY( int IndexY ) const { return intervalY().min() + deltaY()*IndexY; }
+        int_t sizeX() const { return SizeX; }
+        int_t sizeY() const { return SizeY; }
+        int_t size() const;
 
-      void set( int IndexX, int IndexY, number Z, number ErrZ = 0 );
-      const point_t at( int_t Index ) const;
-      const point_t at( int_t IndexX, int_t IndexY ) const { return at( index(IndexX,IndexY) ); }
-      
-      const numberLimits limitsZ() const;
-  };
+        void resize( size_t SX, size_t SY );
 
-  std::ostream& operator<<( std::ostream& Stream, const pointMap& Point );
-  std::ostream& operator<<( std::ostream& Stream, const dataMap& Data );
+        int_t indexX( int_t Index ) const { return Index % sizeX(); }
+        int_t indexY( int_t Index ) const { return Index / sizeX(); }
+        int_t index( int_t IndexX, int_t IndexY ) const { return IndexX + IndexY*sizeX(); }
 
-// ============================================================
+        number deltaX() const { return intervalX().distance()/sizeX(); }
+        number deltaY() const { return intervalY().distance()/sizeY(); }
 
+        number coordinateX( int_t IndexX ) const { return intervalX().min() + deltaX()*IndexX; }
+        number coordinateY( int_t IndexY ) const { return intervalY().min() + deltaY()*IndexY; }
+
+        void set( int_t IndexX, int_t IndexY, number Z, number ErrZ = 0 );
+        const point_t at( int_t Index ) const;
+        const point_t at( int_t IndexX, int_t IndexY ) const { return at( index(IndexX,IndexY) ); }
+        
+        const numberLimits limitsZ() const;
+    };
+    
+    // ------------------------------------------------------------
+
+    std::ostream& operator<<( std::ostream& Stream, const point& Point );
+    std::ostream& operator<<( std::ostream& Stream, const data& Data );
+
+  // ============================================================
+
+  }
 }
 

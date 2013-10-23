@@ -37,7 +37,7 @@
 
 // ============================================================
 
-double scigraphics::graphViewRectangleMap::pointColorStrategy::relativePointValue( const dataMap::point_t &Point, const scale &Scale )
+double scigraphics::map2d::graphViewRectangle::pointColorStrategy::relativePointValue( const map2d::data::point_t &Point, const scale &Scale )
 {
   if ( ! Point.isValid() )
     return invalidNumber();
@@ -49,7 +49,7 @@ double scigraphics::graphViewRectangleMap::pointColorStrategy::relativePointValu
 
 // ------------------------------------------------------------
 
-double scigraphics::graphViewRectangleMap::pointColorStrategy::relativeValueToUnitInterval( double Value )
+double scigraphics::map2d::graphViewRectangle::pointColorStrategy::relativeValueToUnitInterval( double Value )
 {
   if ( ! isValidNumber(Value) )
     return 0;
@@ -60,14 +60,14 @@ double scigraphics::graphViewRectangleMap::pointColorStrategy::relativeValueToUn
 
 // ------------------------------------------------------------
 
-scigraphics::color scigraphics::graphViewRectangleMap::pointColorStrategy::invalidValueColor() const
+scigraphics::color scigraphics::map2d::graphViewRectangle::pointColorStrategy::invalidValueColor() const
 {
   return color( 0xFF, 0xFF, 0xFF, 0xFF );
 }
 
 // ------------------------------------------------------------
 
-scigraphics::color scigraphics::graphViewRectangleMap::pointColorStrategy::pointColor( const dataMap::point_t &Point, const scale &Scale ) const
+scigraphics::color scigraphics::map2d::graphViewRectangle::pointColorStrategy::pointColor( const map2d::data::point_t &Point, const scale &Scale ) const
 {
   if ( ! Point.isValid() )
     return invalidValueColor();
@@ -78,7 +78,7 @@ scigraphics::color scigraphics::graphViewRectangleMap::pointColorStrategy::point
 
 // ------------------------------------------------------------
 
-scigraphics::color scigraphics::graphViewRectangleMap::grayscalePointColorStrategy::relativeValueColor( double Value ) const
+scigraphics::color scigraphics::map2d::graphViewRectangle::grayscalePointColorStrategy::relativeValueColor( double Value ) const
 {
   if ( Value < 0 || 1 < Value )
     return invalidValueColor();
@@ -89,7 +89,7 @@ scigraphics::color scigraphics::graphViewRectangleMap::grayscalePointColorStrate
 
 // ------------------------------------------------------------
 
-scigraphics::color scigraphics::graphViewRectangleMap::redYellowBluePointColorStrategy::relativeValueColor( double Value ) const
+scigraphics::color scigraphics::map2d::graphViewRectangle::redYellowBluePointColorStrategy::relativeValueColor( double Value ) const
 {
   if ( Value < 0 || 1 < Value )
     return invalidValueColor();
@@ -103,7 +103,7 @@ scigraphics::color scigraphics::graphViewRectangleMap::redYellowBluePointColorSt
 
 // ------------------------------------------------------------
 
-scigraphics::color scigraphics::graphViewRectangleMap::yellowRedBluePointColorStrategy::relativeValueColor( double Value ) const
+scigraphics::color scigraphics::map2d::graphViewRectangle::yellowRedBluePointColorStrategy::relativeValueColor( double Value ) const
 {
   
   if ( Value < 0 || 1 < Value )
@@ -119,7 +119,7 @@ scigraphics::color scigraphics::graphViewRectangleMap::yellowRedBluePointColorSt
 
 // ------------------------------------------------------------
       
-scigraphics::graphViewRectangleMap::graphViewRectangleMap() : 
+scigraphics::map2d::graphViewRectangle::graphViewRectangle() : 
   PointColorStrategy(NULL)
 {
   PointColorStrategy = new redYellowBluePointColorStrategy();
@@ -127,14 +127,14 @@ scigraphics::graphViewRectangleMap::graphViewRectangleMap() :
 
 // ------------------------------------------------------------
 
-scigraphics::graphViewRectangleMap::~graphViewRectangleMap()
+scigraphics::map2d::graphViewRectangle::~graphViewRectangle()
 {
   delete PointColorStrategy;
 }
 
 // ------------------------------------------------------------
 
-void scigraphics::graphViewRectangleMap::setColorStrategy( pointColorStrategy *Strategy )
+void scigraphics::map2d::graphViewRectangle::setColorStrategy( pointColorStrategy *Strategy )
 {
   if ( Strategy == NULL )
     throw std::invalid_argument( "Strategy argument must be not NULL" );
@@ -145,20 +145,20 @@ void scigraphics::graphViewRectangleMap::setColorStrategy( pointColorStrategy *S
 
 // ------------------------------------------------------------
 
-void scigraphics::graphViewRectangleMap::draw( painter &Painter, const pairScales& Scales, const dataMap &Data, const scale &ScaleZ ) const
+void scigraphics::map2d::graphViewRectangle::draw( painter &Painter, const pairScales& Scales, const map2d::data &Data, const scale &ScaleZ ) const
 {
   assert( PointColorStrategy != NULL );
 
-  dataMap::iterator Begin = Data.begin();
-  dataMap::iterator End   = Data.end();
+  data::iterator Begin = Data.begin();
+  data::iterator End   = Data.end();
 
-  for ( dataMap::iterator Point = Begin; Point != End; ++Point )
+  for ( data::iterator Point = Begin; Point != End; ++Point )
     drawPoint( Painter, Scales, *Point, ScaleZ );
 }
 
 // ------------------------------------------------------------
       
-void scigraphics::graphViewRectangleMap::drawPoint( painter &Painter, const pairScales& Scales, const dataMap::point_t &Point, const scale &ScaleZ ) const
+void scigraphics::map2d::graphViewRectangle::drawPoint( painter &Painter, const pairScales& Scales, const map2d::data::point_t &Point, const scale &ScaleZ ) const
 {
   if ( ! Point.isValid() )
     return;
@@ -173,7 +173,7 @@ void scigraphics::graphViewRectangleMap::drawPoint( painter &Painter, const pair
 
 // ------------------------------------------------------------
 
-void scigraphics::graphViewRectangleMap::drawLegendExample( painter &Painter, const wrectangle &Rectangle, const scale &ScaleZ ) const
+void scigraphics::map2d::graphViewRectangle::drawLegendExample( painter &Painter, const wrectangle &Rectangle, const scale &ScaleZ ) const
 {
   wpoint LeftUp = Rectangle.leftUp();
   wpoint RightDown = Rectangle.rightDown();
@@ -190,7 +190,7 @@ void scigraphics::graphViewRectangleMap::drawLegendExample( painter &Painter, co
 
 // ------------------------------------------------------------
       
-void scigraphics::graphViewRectangleMap::drawRainbowRectangleBorder( painter &Painter, const wrectangle &Rectangle ) const
+void scigraphics::map2d::graphViewRectangle::drawRainbowRectangleBorder( painter &Painter, const wrectangle &Rectangle ) const
 {
   lineStyle BorderLineStyle( color::Black );
   brushStyle BrushStyle( color::Yellow, brushStyle::None );
@@ -201,7 +201,7 @@ void scigraphics::graphViewRectangleMap::drawRainbowRectangleBorder( painter &Pa
 
 // ------------------------------------------------------------
 
-void scigraphics::graphViewRectangleMap::drawRainbowRectangle( painter &Painter, const wrectangle &Rectangle ) const
+void scigraphics::map2d::graphViewRectangle::drawRainbowRectangle( painter &Painter, const wrectangle &Rectangle ) const
 {
   assert( PointColorStrategy != NULL );
   assert( Rectangle.up() >= Rectangle.down() );
@@ -230,7 +230,7 @@ void scigraphics::graphViewRectangleMap::drawRainbowRectangle( painter &Painter,
 
 // ------------------------------------------------------------
       
-void scigraphics::graphViewRectangleMap::drawRainbowMarkers( painter &Painter, const wrectangle &Rectangle, const scale &ScaleZ ) const
+void scigraphics::map2d::graphViewRectangle::drawRainbowMarkers( painter &Painter, const wrectangle &Rectangle, const scale &ScaleZ ) const
 {
   std::vector<number> Marks = ScaleZ.marks();
 

@@ -41,9 +41,9 @@
 namespace scigraphics
 {
 
-  typedef graphSequenceVector graphSV;
-  typedef graphAreaVector graphAV;
-  typedef graphMapVector graphMV;
+  typedef sequence::graphVector graphSV;
+  typedef sequence::graphAreaVector graphAV;
+  typedef map2d::graphVector graphMV;
 
 // ============================================================
 
@@ -137,7 +137,9 @@ namespace scigraphics
       graphSV* createGraphSV( const std::string &Legend = std::string(), const color &Color = color::White );
       graphAV* createGraphAV( const std::string &Legend = std::string(), const color &Color = color::White );
       graphMV* createGraphMV( const std::string &Legend = std::string() );
-      graphSequenceVector* createGraphSequenceVector( const std::string &Legend = std::string(), const color &Color = color::White );
+
+      // deprecated
+      sequence::graphVector* createGraphSequenceVector( const std::string &Legend = std::string(), const color &Color = color::White );
 
       void appendGraphic( graph *Graph );
       void bindGraphToAxis( const graph *Graph, axisSetCollection::axisPosition AxisX, axisSetCollection::axisPosition AxisY );

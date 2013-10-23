@@ -33,14 +33,13 @@ namespace scigraphics
 
     // ============================================================
 
-
-    template < class dt, class it = int > class data_iterator
+    template < class DT > class data_iterator
     {
 
       public:
-        typedef it int_t;
-        typedef dt data_t;
+        typedef DT data_t;
         typedef typename data_t::point_t point_t;
+        typedef typename data_t::int_t int_t;
 
         typedef int_t difference_type;
         typedef std::random_access_iterator_tag iterator_category;
@@ -80,33 +79,6 @@ namespace scigraphics
         value_type operator *() const                      { return Data->at(Index); }
         pointer operator->() const                         { CurrPoint = Data->at(Index); return &CurrPoint; }
 
-    };
-
-
-    template < class pnt, class it = int > class data
-    {
-      public:
-        typedef pnt point_t;
-        typedef it int_t;
-        typedef data_iterator< data< point_t, int_t > > iterator;
-
-      public:
-        virtual ~data() {}
-
-        virtual int_t size() const = 0;
-        bool empty() const { return size() == 0; }
-
-        virtual const point_t at( int_t i ) const = 0;
-        const point_t operator[]( int_t i ) const { return at(i); }
-        
-        const point_t firstPoint() const { return empty() ? point_t() : at(0); }
-        const point_t lastPoint()  const { return empty() ? point_t() : at(size()-1); }
-
-        virtual iterator begin() const { return iterator( 0, *this ); }
-        virtual iterator end()   const { return iterator( size(), *this ); }
-
-        virtual const numberLimits limitsX() const = 0;
-        virtual const numberLimits limitsY( const interval<number> &LimitsX ) const = 0;
     };
 
     // ============================================================

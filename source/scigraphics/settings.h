@@ -67,7 +67,7 @@ namespace scigraphics
       static interval<number> correctLimits( interval<number> Limits );
 
     private:
-      void applyGraphTypeToGraph( graphSequence *Graph ) const;
+      void applyGraphTypeToGraph( sequence::graph *Graph ) const;
 
     protected:
       void applyLimits( plot *Plot ) const;

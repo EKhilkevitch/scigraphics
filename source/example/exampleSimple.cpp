@@ -42,7 +42,7 @@ int main( int argc, char *argv[] )
 
   qt4plot Plot;
 
-  scigraphics::graphSequenceVector *Sin = Plot.createGraphSequenceVector( "Sinus" );
+  scigraphics::graphSV *Sin = Plot.createGraphSV( "Sinus" );
   for ( double x = -M_PI; x <= M_PI; x+= 0.1 )
     Sin->append( x, std::sin(x) );
 
