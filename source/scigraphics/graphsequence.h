@@ -85,10 +85,10 @@ namespace scigraphics
       size_t size() const { return getData().size(); }
       bool empty() const  { return getData().empty(); }
 
-      dataSequence::point at( unsigned Index ) const { return getData().at(Index); }
-      dataSequence::point operator[]( unsigned Index ) const { return at(Index); }
-      dataSequence::point firstPoint() const { return getData().firstPoint(); }
-      dataSequence::point lastPoint() const  { return getData().lastPoint();  }
+      dataSequence::point_t at( dataSequence::int_t Index ) const { return getData().at(Index); }
+      dataSequence::point_t operator[]( dataSequence::int_t Index ) const { return at(Index); }
+      dataSequence::point_t firstPoint() const { return getData().firstPoint(); }
+      dataSequence::point_t lastPoint() const  { return getData().lastPoint();  }
       
       color getColor() const { return getViews().getColor(); }
       void setColor( const color &Color ) { getViews().setColor(Color); }

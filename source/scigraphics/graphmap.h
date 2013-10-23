@@ -107,11 +107,11 @@ namespace scigraphics
       number coordinateX( unsigned IndexX ) const { return getCastedData().coordinateX(IndexX); }
       number coordinateY( unsigned IndexY ) const { return getCastedData().coordinateY(IndexY); }
 
-      dataMap::point at( unsigned Index ) const { return getData().at(Index); }
-      dataMap::point at( unsigned IndexX, unsigned IndexY ) const { return getCastedData().at(IndexX,IndexY); }
-      dataMap::point operator[]( unsigned Index ) const { return at(Index); }
-      dataMap::point firstPoint() const { return getData().firstPoint(); }
-      dataMap::point lastPoint() const  { return getData().lastPoint();  }
+      dataMap::point_t at( dataMap::int_t Index ) const { return getData().at(Index); }
+      dataMap::point_t at( dataMap::int_t IndexX, unsigned IndexY ) const { return getCastedData().at(IndexX,IndexY); }
+      dataMap::point_t operator[]( dataMap::int_t Index ) const { return at(Index); }
+      dataMap::point_t firstPoint() const { return getData().firstPoint(); }
+      dataMap::point_t lastPoint() const  { return getData().lastPoint();  }
   
       void set( unsigned ix, unsigned iy, number Val ) { getCastedData().set( ix, iy, Val ); }
   };

@@ -47,21 +47,21 @@ scigraphics::numberLimits scigraphics::dataMap::limitsForInterval( interval<numb
 
 // ------------------------------------------------------------
 
-scigraphics::numberLimits scigraphics::dataMap::limitsX() const
+const scigraphics::numberLimits scigraphics::dataMap::limitsX() const
 {
   return limitsForInterval( intervalX() );
 }
 
 // ------------------------------------------------------------
 
-scigraphics::numberLimits scigraphics::dataMap::limitsY( const interval<number> & ) const
+const scigraphics::numberLimits scigraphics::dataMap::limitsY( const interval<number> & ) const
 {
   return limitsForInterval( intervalY() );
 }
 
 // ------------------------------------------------------------
 
-scigraphics::numberLimits scigraphics::dataMap::limitsZ() const
+const scigraphics::numberLimits scigraphics::dataMap::limitsZ() const
 {
   numberLimits Limits;
   for ( iterator p = begin(); p != end(); ++p )
@@ -94,9 +94,9 @@ void scigraphics::dataMapVector::resize( size_t SX, size_t SY )
 {
   std::vector< value > NewValues( SX * SY );
   
-  for ( unsigned ix = 0; ix < std::min( SX, sizeX() ); ix++ )
+  for ( unsigned ix = 0; ix < std::min<size_t>( SX, sizeX() ); ix++ )
   {
-    for ( unsigned iy = 0; iy < std::min( SY, sizeY() ); iy++ )
+    for ( unsigned iy = 0; iy < std::min<size_t>( SY, sizeY() ); iy++ )
     {
       unsigned Idx = ix + iy * SX;
       NewValues.at( Idx ) = Values.at( index( ix, iy ) );
@@ -110,7 +110,7 @@ void scigraphics::dataMapVector::resize( size_t SX, size_t SY )
 
 // ------------------------------------------------------------
 
-size_t scigraphics::dataMapVector::size() const
+scigraphics::dataMapVector::int_t scigraphics::dataMapVector::size() const
 {
   assert( sizeX()*sizeY() == Values.size() );
   return Values.size();
@@ -118,14 +118,14 @@ size_t scigraphics::dataMapVector::size() const
 
 // ------------------------------------------------------------
 
-scigraphics::dataMapVector::point scigraphics::dataMapVector::at( int Index ) const
+const scigraphics::dataMapVector::point_t scigraphics::dataMapVector::at( int Index ) const
 {
   value Val = Values.at(Index);
   number X = coordinateX(indexX(Index));
   number DX = deltaX();
   number Y = coordinateY(indexY(Index));
   number DY = deltaY();
-  return point( X, DX, Y, DY, Val.z(), Val.errZ() );
+  return point_t( X, DX, Y, DY, Val.z(), Val.errZ() );
 }
 
 // ------------------------------------------------------------
@@ -139,7 +139,7 @@ void scigraphics::dataMapVector::set( int IndexX, int IndexY, number Z, number E
 
 // ------------------------------------------------------------
 
-scigraphics::numberLimits scigraphics::dataMapVector::limitsZ() const 
+const scigraphics::numberLimits scigraphics::dataMapVector::limitsZ() const 
 {
   if ( ! LimitsZCache.isValid )
   {

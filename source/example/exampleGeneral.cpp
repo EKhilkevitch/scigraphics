@@ -50,7 +50,7 @@ int main( int argc, char *argv[] )
   Sqr->setVisibleErrorBars(true);
 
   scigraphics::graphSequenceVector *Sin = Plot.createGraphSequenceVector( "Sinus" );
-  for ( double x = -M_PI; x <= M_PI; x+= 0.1 )
+  for ( double x = -M_PI; x <= M_PI; x+= 0.01 )
     Sin->append( std::fabs(x) < 0.3 || x < -2.4 ? scigraphics::invalidNumber() : x, std::sin(x) );
   Sin->setVisiblePoints(true);
   Sin->setVisibleLineHystogram(true);

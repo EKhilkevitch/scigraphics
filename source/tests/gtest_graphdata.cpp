@@ -17,7 +17,7 @@ using namespace scigraphics;
 
 TEST( test_dataSequenceVector, point )
 {
-  typedef dataSequence::point point;
+  typedef dataSequence::point_t point;
 
   point Point;
   ASSERT_NEAR( 0, Point.x(), 1e-5 );

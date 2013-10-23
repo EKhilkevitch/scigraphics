@@ -76,8 +76,8 @@ namespace scigraphics
     public:
       checkIsLessThan( const pairScales &S ) : Scales(S) {}
 
-      inline bool operator()( const fcoord FValue, const dataSequence::point &Point ) const { return FValue < Scales.numberToFractionX(Point.x()); }
-      inline bool operator()( const dataSequence::point &Point, const fcoord FValue ) const { return Scales.numberToFractionX(Point.x()) < FValue; }
+      inline bool operator()( const fcoord FValue, const dataSequence::point_t &Point ) const { return FValue < Scales.numberToFractionX(Point.x()); }
+      inline bool operator()( const dataSequence::point_t &Point, const fcoord FValue ) const { return Scales.numberToFractionX(Point.x()) < FValue; }
   };
 }
 

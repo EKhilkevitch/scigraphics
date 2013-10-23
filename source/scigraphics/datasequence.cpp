@@ -30,7 +30,7 @@
 
 // ============================================================
 
-scigraphics::numberLimits scigraphics::dataSequence::limitsX() const
+const scigraphics::numberLimits scigraphics::dataSequence::limitsX() const
 {
   numberLimits Result;
   
@@ -51,7 +51,7 @@ scigraphics::numberLimits scigraphics::dataSequence::limitsX() const
 
 // ------------------------------------------------------------
 
-scigraphics::numberLimits scigraphics::dataSequence::limitsY( const interval<number> &LimitsX ) const
+const scigraphics::numberLimits scigraphics::dataSequence::limitsY( const interval<number> &LimitsX ) const
 {
   if ( ! numberLimits::isValidInterval(LimitsX) )
     return numberLimits();
@@ -78,7 +78,7 @@ scigraphics::numberLimits scigraphics::dataSequence::limitsY( const interval<num
 
 // ============================================================
 
-void scigraphics::dataSequenceVector::append( const point &Point )
+void scigraphics::dataSequenceVector::append( const point_t &Point )
 { 
   appendPoint( Point );
   if ( Points.size() >= (size_t)std::numeric_limits<int>::max() - 2 )
@@ -121,7 +121,7 @@ void scigraphics::dataSequenceVector::updateOrderedByX()
 
 // ------------------------------------------------------------
 
-void scigraphics::dataSequenceVector::updateLimitsXY( const point &Point, const coordinateType Type )
+void scigraphics::dataSequenceVector::updateLimitsXY( const point_t &Point, const coordinateType Type )
 {
   if ( ! Point.isValid() )
     return;
@@ -212,7 +212,7 @@ bool scigraphics::dataSequenceVector::needToRecalculateLimits( const interval<nu
 
 // ------------------------------------------------------------
 
-scigraphics::numberLimits scigraphics::dataSequenceVector::limitsY( const interval<number> &LimitsX ) const
+const scigraphics::numberLimits scigraphics::dataSequenceVector::limitsY( const interval<number> &LimitsX ) const
 {
   if ( LimitsX.min() <= limitsX().totalLimits().min() &&
        LimitsX.max() >= limitsX().totalLimits().max() )
@@ -222,7 +222,7 @@ scigraphics::numberLimits scigraphics::dataSequenceVector::limitsY( const interv
 
 // ------------------------------------------------------------
 
-scigraphics::number scigraphics::dataSequenceVector::pointValue( const point &Point, coordinateType Type )
+scigraphics::number scigraphics::dataSequenceVector::pointValue( const point_t &Point, coordinateType Type )
 {
   switch ( Type )
   {
@@ -234,7 +234,7 @@ scigraphics::number scigraphics::dataSequenceVector::pointValue( const point &Po
 
 // ------------------------------------------------------------
 
-scigraphics::number scigraphics::dataSequenceVector::pointError( const point &Point, coordinateType Type )
+scigraphics::number scigraphics::dataSequenceVector::pointError( const point_t &Point, coordinateType Type )
 {
   if ( ! Point.isValidError() )
     return 0;

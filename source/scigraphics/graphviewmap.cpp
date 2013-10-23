@@ -37,7 +37,7 @@
 
 // ============================================================
 
-double scigraphics::graphViewRectangleMap::pointColorStrategy::relativePointValue( const dataMap::point &Point, const scale &Scale )
+double scigraphics::graphViewRectangleMap::pointColorStrategy::relativePointValue( const dataMap::point_t &Point, const scale &Scale )
 {
   if ( ! Point.isValid() )
     return invalidNumber();
@@ -67,7 +67,7 @@ scigraphics::color scigraphics::graphViewRectangleMap::pointColorStrategy::inval
 
 // ------------------------------------------------------------
 
-scigraphics::color scigraphics::graphViewRectangleMap::pointColorStrategy::pointColor( const dataMap::point &Point, const scale &Scale ) const
+scigraphics::color scigraphics::graphViewRectangleMap::pointColorStrategy::pointColor( const dataMap::point_t &Point, const scale &Scale ) const
 {
   if ( ! Point.isValid() )
     return invalidValueColor();
@@ -158,7 +158,7 @@ void scigraphics::graphViewRectangleMap::draw( painter &Painter, const pairScale
 
 // ------------------------------------------------------------
       
-void scigraphics::graphViewRectangleMap::drawPoint( painter &Painter, const pairScales& Scales, const dataMap::point &Point, const scale &ScaleZ ) const
+void scigraphics::graphViewRectangleMap::drawPoint( painter &Painter, const pairScales& Scales, const dataMap::point_t &Point, const scale &ScaleZ ) const
 {
   if ( ! Point.isValid() )
     return;

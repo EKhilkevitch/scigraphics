@@ -56,7 +56,7 @@ namespace scigraphics
   };
 
 
-  class dataMap : public dataPoint<pointMap>
+  class dataMap : public data::data<pointMap>
   {
     private:
       interval<number> IntervalX, IntervalY;
@@ -75,9 +75,9 @@ namespace scigraphics
       void setIntervalX( number Min, number Max ) { IntervalX = interval<number>(Min,Max); };
       void setIntervalY( number Min, number Max ) { IntervalY = interval<number>(Min,Max); }
 
-      virtual numberLimits limitsX() const;
-      virtual numberLimits limitsY( const interval<number> &LimitsX ) const;
-      virtual numberLimits limitsZ() const;
+      virtual const numberLimits limitsX() const;
+      virtual const numberLimits limitsY( const interval<number> &LimitsX ) const;
+      virtual const numberLimits limitsZ() const;
   };
 
   class dataMapVector : public dataMap
@@ -110,15 +110,15 @@ namespace scigraphics
       dataMapVector();
       dataMapVector( size_t SX, interval<number> IX, size_t SY, interval<number> IY );
 
-      size_t sizeX() const { return SizeX; }
-      size_t sizeY() const { return SizeY; }
-      size_t size() const;
+      int_t sizeX() const { return SizeX; }
+      int_t sizeY() const { return SizeY; }
+      int_t size() const;
 
       void resize( size_t SX, size_t SY );
 
-      int indexX( int Index ) const { return Index % sizeX(); }
-      int indexY( int Index ) const { return Index / sizeX(); }
-      int index( int IndexX, int IndexY ) const { return IndexX + IndexY*sizeX(); }
+      int indexX( int_t Index ) const { return Index % sizeX(); }
+      int indexY( int_t Index ) const { return Index / sizeX(); }
+      int index( int_t IndexX, int_t IndexY ) const { return IndexX + IndexY*sizeX(); }
 
       number deltaX() const { return intervalX().distance()/sizeX(); }
       number deltaY() const { return intervalY().distance()/sizeY(); }
@@ -127,10 +127,10 @@ namespace scigraphics
       number coordinateY( int IndexY ) const { return intervalY().min() + deltaY()*IndexY; }
 
       void set( int IndexX, int IndexY, number Z, number ErrZ = 0 );
-      point at( int Index ) const;
-      point at( int IndexX, int IndexY ) const { return at( index(IndexX,IndexY) ); }
+      const point_t at( int_t Index ) const;
+      const point_t at( int_t IndexX, int_t IndexY ) const { return at( index(IndexX,IndexY) ); }
       
-      numberLimits limitsZ() const;
+      const numberLimits limitsZ() const;
   };
 
   std::ostream& operator<<( std::ostream& Stream, const pointMap& Point );

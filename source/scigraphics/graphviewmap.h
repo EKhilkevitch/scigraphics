@@ -59,13 +59,13 @@ namespace scigraphics
       class pointColorStrategy
       {
         protected:
-          static double relativePointValue( const dataMap::point &Point, const scale &Scale );
+          static double relativePointValue( const dataMap::point_t &Point, const scale &Scale );
           static double relativeValueToUnitInterval( double Value );
 
         public:
           virtual color relativeValueColor( double RelativeValue ) const = 0;
           virtual color invalidValueColor() const;
-          virtual color pointColor( const dataMap::point &Point, const scale &Scale ) const;
+          virtual color pointColor( const dataMap::point_t &Point, const scale &Scale ) const;
           virtual ~pointColorStrategy() {}
       };
 
@@ -92,7 +92,7 @@ namespace scigraphics
       pointColorStrategy *PointColorStrategy;
 
     protected:
-      virtual void drawPoint( painter &Painter, const pairScales& Scales, const dataMap::point &Point, const scale &ScaleZ ) const;
+      virtual void drawPoint( painter &Painter, const pairScales& Scales, const dataMap::point_t &Point, const scale &ScaleZ ) const;
 
       virtual void drawRainbowRectangleBorder( painter &Painter, const wrectangle &Rectangle ) const;
       virtual void drawRainbowRectangle( painter &Painter, const wrectangle &Rectangle ) const;

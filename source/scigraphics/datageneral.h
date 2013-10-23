@@ -28,78 +28,89 @@
 
 namespace scigraphics 
 {
-
-// ============================================================
-
-  template <class data> class iteratorData
+  namespace data
   {
-    public:
-      typedef typename data::point point;
 
-      typedef int difference_type;
-      typedef std::random_access_iterator_tag iterator_category;
-      typedef point value_type;
-      typedef point* pointer;
-      typedef point& reference;
-
-    private:
-      int Index;
-      const data *Data;
-      int DataSize;
-      mutable point CurrPoint;
-
-    private:
-      void selfConstraintIndex() 
-      { 
-        Index = std::min<int>( Index, DataSize ); 
-        Index = std::max<int>( Index, 0 ); 
-      } 
-
-    public:
-      iteratorData() : Index(0), Data(NULL), DataSize(0)  {}
-      iteratorData( int I, const data *D ) : Index(I), Data(D), DataSize(D->size()) {}
-      iteratorData operator++()                         { Index++; selfConstraintIndex(); return *this; }
-      iteratorData operator++(int)                      { iteratorData I = *this; ++(*this); return I; }
-      int operator-( const iteratorData &I ) const      { return Index - I.Index; }
-      iteratorData& operator+=( int N )                 { Index += N; selfConstraintIndex(); return *this; }
-      iteratorData& operator-=( int N )                 { *this += (-N); return *this; }
-      iteratorData operator+( int N ) const             { iteratorData I = *this; I += N; return I; }
-      iteratorData operator-( int N ) const             { return *this + (-N); }
-      bool operator==( const iteratorData& I ) const    { return I.Data == Data && I.Index == Index; }
-      bool operator!=( const iteratorData& I ) const    { return !(*this==I); }
-      bool operator<(  const iteratorData& I ) const    { return Index < I.Index; }
-      point operator *() const                          { return Data->at(Index); }
-      const point* operator->() const                   { CurrPoint = Data->at(Index); return &CurrPoint; }
-      ~iteratorData() {}
-  };
+    // ============================================================
 
 
-  template <class pnt> class dataPoint
-  {
-    public:
-      typedef pnt point;
-      typedef iteratorData< dataPoint<point> > iterator;
+    template < class dt, class it = int > class data_iterator
+    {
 
-    public:
-      virtual ~dataPoint() {}
+      public:
+        typedef it int_t;
+        typedef dt data_t;
+        typedef typename data_t::point_t point_t;
 
-      virtual size_t size() const = 0;
-      bool empty() const { return size() == 0; }
+        typedef int_t difference_type;
+        typedef std::random_access_iterator_tag iterator_category;
+        typedef const point_t value_type;
+        typedef const point_t* pointer;
+        typedef const point_t& reference;
 
-      virtual point at( int i ) const = 0;
-      point operator[]( int i ) const { return at(i); }
-      
-      point firstPoint() const { return empty() ? point() : at(0); }
-      point lastPoint()  const { return empty() ? point() : at(size()-1); }
+      private:
+        const data_t *Data;
+        int_t Index;
+        int_t DataSize;
+        mutable point_t CurrPoint;
 
-      virtual iterator begin() const { return iterator( 0, this ); }
-      virtual iterator end()   const { return iterator( size(), this ); }
+      private:
+        void selfConstraintIndex() 
+        { 
+          Index = std::min<int_t>( Index, DataSize ); 
+          Index = std::max<int_t>( Index, 0 ); 
+        } 
 
-      virtual numberLimits limitsX() const = 0;
-      virtual numberLimits limitsY( const interval<number> &LimitsX ) const = 0;
-  };
+      public:
+        data_iterator() : Index(0), Data(NULL), DataSize(0)  {}
+        data_iterator( int_t I, const data_t &D ) : Index(I), Data(&D), DataSize(D.size()) {}
+        ~data_iterator() {}
 
-// ============================================================
+        data_iterator operator++()                         { Index++; selfConstraintIndex(); return *this; }
+        data_iterator operator++(int)                      { data_iterator I = *this; ++(*this); return I; }
+        difference_type operator-( const data_iterator &I ) const { return Index - I.Index; }
+        data_iterator& operator+=( difference_type N )            { Index += N; selfConstraintIndex(); return *this; }
+        data_iterator& operator-=( difference_type N )            { *this += (-N); return *this; }
+        data_iterator operator+( difference_type N ) const        { data_iterator I = *this; I += N; return I; }
+        data_iterator operator-( difference_type N ) const        { return *this + (-N); }
+        bool operator==( const data_iterator& I ) const    { return I.Data == Data && I.Index == Index; }
+        bool operator!=( const data_iterator& I ) const    { return !(*this==I); }
+        bool operator<(  const data_iterator& I ) const    { return Index < I.Index; }
 
+        value_type operator *() const                      { return Data->at(Index); }
+        pointer operator->() const                         { CurrPoint = Data->at(Index); return &CurrPoint; }
+
+    };
+
+
+    template < class pnt, class it = int > class data
+    {
+      public:
+        typedef pnt point_t;
+        typedef it int_t;
+        typedef data_iterator< data< point_t, int_t > > iterator;
+
+      public:
+        virtual ~data() {}
+
+        virtual int_t size() const = 0;
+        bool empty() const { return size() == 0; }
+
+        virtual const point_t at( int_t i ) const = 0;
+        const point_t operator[]( int_t i ) const { return at(i); }
+        
+        const point_t firstPoint() const { return empty() ? point_t() : at(0); }
+        const point_t lastPoint()  const { return empty() ? point_t() : at(size()-1); }
+
+        virtual iterator begin() const { return iterator( 0, *this ); }
+        virtual iterator end()   const { return iterator( size(), *this ); }
+
+        virtual const numberLimits limitsX() const = 0;
+        virtual const numberLimits limitsY( const interval<number> &LimitsX ) const = 0;
+    };
+
+    // ============================================================
+
+  }
 }
 
