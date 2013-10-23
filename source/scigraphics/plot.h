@@ -43,7 +43,7 @@ namespace scigraphics
 
   typedef sequence::graphVector graphSV;
   typedef sequence::graphAreaVector graphAV;
-  typedef map2d::graphVector graphMV;
+  typedef map::graphVector graphMV;
 
 // ============================================================
 

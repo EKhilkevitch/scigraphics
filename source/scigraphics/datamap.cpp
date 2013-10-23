@@ -30,7 +30,7 @@
 
 // ============================================================
 
-scigraphics::numberLimits scigraphics::map2d::data::limitsForInterval( interval<number> Interval )
+scigraphics::numberLimits scigraphics::map::data::limitsForInterval( interval<number> Interval )
 {
   numberLimits Limits;
   if ( ! numberLimits::isValidInterval(Interval) )
@@ -47,21 +47,21 @@ scigraphics::numberLimits scigraphics::map2d::data::limitsForInterval( interval<
 
 // ------------------------------------------------------------
 
-const scigraphics::numberLimits scigraphics::map2d::data::limitsX() const
+const scigraphics::numberLimits scigraphics::map::data::limitsX() const
 {
   return limitsForInterval( intervalX() );
 }
 
 // ------------------------------------------------------------
 
-const scigraphics::numberLimits scigraphics::map2d::data::limitsY( const interval<number> & ) const
+const scigraphics::numberLimits scigraphics::map::data::limitsY( const interval<number> & ) const
 {
   return limitsForInterval( intervalY() );
 }
 
 // ------------------------------------------------------------
 
-const scigraphics::numberLimits scigraphics::map2d::data::limitsZ() const
+const scigraphics::numberLimits scigraphics::map::data::limitsZ() const
 {
   numberLimits Limits;
   for ( iterator p = begin(); p != end(); ++p )
@@ -71,8 +71,8 @@ const scigraphics::numberLimits scigraphics::map2d::data::limitsZ() const
 
 // ============================================================
 
-scigraphics::map2d::dataVector::dataVector( size_t SX, interval<number> IX, size_t SY, interval<number> IY ) :
-  map2d::data( IX, IY ),
+scigraphics::map::dataVector::dataVector( size_t SX, interval<number> IX, size_t SY, interval<number> IY ) :
+  map::data( IX, IY ),
   SizeX(0), 
   SizeY(0)
 {
@@ -81,8 +81,8 @@ scigraphics::map2d::dataVector::dataVector( size_t SX, interval<number> IX, size
 
 // ------------------------------------------------------------
 
-scigraphics::map2d::dataVector::dataVector() :
-  map2d::data( interval<number>(0,1), interval<number>(0,1) ),
+scigraphics::map::dataVector::dataVector() :
+  map::data( interval<number>(0,1), interval<number>(0,1) ),
   SizeX(0), 
   SizeY(0)
 {
@@ -90,7 +90,7 @@ scigraphics::map2d::dataVector::dataVector() :
 
 // ------------------------------------------------------------
 
-void scigraphics::map2d::dataVector::resize( size_t SX, size_t SY )
+void scigraphics::map::dataVector::resize( size_t SX, size_t SY )
 {
   std::vector< value > NewValues( SX * SY );
   
@@ -110,7 +110,7 @@ void scigraphics::map2d::dataVector::resize( size_t SX, size_t SY )
 
 // ------------------------------------------------------------
 
-scigraphics::map2d::dataVector::int_t scigraphics::map2d::dataVector::size() const
+scigraphics::map::dataVector::int_t scigraphics::map::dataVector::size() const
 {
   assert( sizeX()*sizeY() == Values.size() );
   return Values.size();
@@ -118,7 +118,7 @@ scigraphics::map2d::dataVector::int_t scigraphics::map2d::dataVector::size() con
 
 // ------------------------------------------------------------
 
-const scigraphics::map2d::dataVector::point_t scigraphics::map2d::dataVector::at( int Index ) const
+const scigraphics::map::dataVector::point_t scigraphics::map::dataVector::at( int Index ) const
 {
   value Val = Values.at(Index);
   number X = coordinateX(indexX(Index));
@@ -130,7 +130,7 @@ const scigraphics::map2d::dataVector::point_t scigraphics::map2d::dataVector::at
 
 // ------------------------------------------------------------
       
-void scigraphics::map2d::dataVector::set( int IndexX, int IndexY, number Z, number ErrZ )
+void scigraphics::map::dataVector::set( int IndexX, int IndexY, number Z, number ErrZ )
 {
   unsigned Index = index( IndexX, IndexY );
   Values.at(Index) = value( Z, ErrZ );
@@ -139,7 +139,7 @@ void scigraphics::map2d::dataVector::set( int IndexX, int IndexY, number Z, numb
 
 // ------------------------------------------------------------
 
-const scigraphics::numberLimits scigraphics::map2d::dataVector::limitsZ() const 
+const scigraphics::numberLimits scigraphics::map::dataVector::limitsZ() const 
 {
   if ( ! LimitsZCache.isValid )
   {
@@ -154,14 +154,14 @@ const scigraphics::numberLimits scigraphics::map2d::dataVector::limitsZ() const
 
 // ------------------------------------------------------------
 
-std::ostream& scigraphics::map2d::operator<<( std::ostream& Stream, const point& Point )
+std::ostream& scigraphics::map::operator<<( std::ostream& Stream, const point& Point )
 {
   return ( Stream << "( " << Point.x0() << " " << Point.x1() << " " << Point.y0() << " " << Point.y1() << " : " << Point.z() << " )" );
 }
 
 // ------------------------------------------------------------
 
-std::ostream& scigraphics::map2d::operator<<( std::ostream& Stream, const data& Data )
+std::ostream& scigraphics::map::operator<<( std::ostream& Stream, const data& Data )
 {
   std::streamsize Width = Stream.width();
   Stream.width( 12 );

@@ -23,14 +23,14 @@
 
 #include "scigraphics/numbers.h"
 #include "scigraphics/numlimits.h"
-#include "scigraphics/datageneral.h"
+#include "scigraphics/dataiterator.h"
 
 #include <vector>
 
 namespace scigraphics 
 {
 
-  namespace map2d
+  namespace map
   {
 
     // ============================================================
@@ -65,7 +65,7 @@ namespace scigraphics
       public:
         typedef point point_t;
         typedef int int_t;
-        typedef ::scigraphics::data::data_iterator< data > iterator;
+        typedef data_iterator< data > iterator;
 
       private:
         interval<number> IntervalX, IntervalY;
@@ -91,8 +91,8 @@ namespace scigraphics
         virtual const point_t at( int_t Index ) const = 0;
         const point_t operator[]( int_t Index ) const { return at(Index); }
         
-        iterator begin() const { return iterator( 0, *this ); }
-        iterator end() const { return iterator( size(), *this ); }
+        iterator begin() const { return iterator( *this, 0 ); }
+        iterator end() const { return iterator( *this, size() ); }
 
         virtual const numberLimits limitsX() const;
         virtual const numberLimits limitsY( const interval<number> &LimitsX ) const;

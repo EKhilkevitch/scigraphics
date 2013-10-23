@@ -95,8 +95,6 @@ namespace scigraphics
 
         data::point_t at( data::int_t Index ) const { return getData().at(Index); }
         data::point_t operator[]( data::int_t Index ) const { return at(Index); }
-        data::point_t firstPoint() const { return getData().firstPoint(); }
-        data::point_t lastPoint() const  { return getData().lastPoint();  }
         
         color getColor() const { return getViews().getColor(); }
         void setColor( const color &Color ) { getViews().setColor(Color); }

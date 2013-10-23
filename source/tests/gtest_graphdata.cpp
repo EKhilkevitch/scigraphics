@@ -295,7 +295,7 @@ TEST( test_dataSequenceVector, isOrderedByX )
 
 TEST( test_dataMap, limits )
 {
-  map2d::dataVector Data( 10, interval<number>( 1, 5 ), 5, interval<number>(-10,-4) );
+  map::dataVector Data( 10, interval<number>( 1, 5 ), 5, interval<number>(-10,-4) );
 
   ASSERT_EQ( (size_t)50, Data.size() );
   ASSERT_EQ( (size_t)10, Data.sizeX() );
@@ -335,7 +335,7 @@ TEST( test_dataMap, limits )
 
 TEST( test_dataMap, set )
 {
-  map2d::dataVector Data( 10, interval<number>( 1, 5 ), 5, interval<number>(-10,-4) );
+  map::dataVector Data( 10, interval<number>( 1, 5 ), 5, interval<number>(-10,-4) );
  
   Data.set( 3, 2, 0.5, 0.1 );
   auto Point = Data.at( 3, 2 );
@@ -347,7 +347,7 @@ TEST( test_dataMap, set )
 
 TEST( test_dataMap, resize )
 {
-  map2d::dataVector Data;
+  map::dataVector Data;
 
   Data.setIntervalX(  0,  10 );
   Data.setIntervalY( -5, -25 );

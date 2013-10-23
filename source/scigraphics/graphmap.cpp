@@ -31,7 +31,7 @@
 
 // ============================================================
 
-scigraphics::map2d::graph::graph( const std::string &Legend ) : 
+scigraphics::map::graph::graph( const std::string &Legend ) : 
   View(NULL),
   Data(NULL),
   ScaleZ(NULL),
@@ -46,7 +46,7 @@ scigraphics::map2d::graph::graph( const std::string &Legend ) :
 
 // ------------------------------------------------------------
 
-scigraphics::map2d::graph::~graph()
+scigraphics::map::graph::~graph()
 {
   delete Data;
   delete ScaleZ;
@@ -54,7 +54,7 @@ scigraphics::map2d::graph::~graph()
 
 // ------------------------------------------------------------
 
-void scigraphics::map2d::graph::init()
+void scigraphics::map::graph::init()
 {
   assert( Data == NULL );
   assert( View == NULL );
@@ -70,7 +70,7 @@ void scigraphics::map2d::graph::init()
 
 // ------------------------------------------------------------
 
-void scigraphics::map2d::graph::updateScaleZInterval() const
+void scigraphics::map::graph::updateScaleZInterval() const
 {
   assert( Data != NULL );
   assert( ScaleZ != NULL );
@@ -81,7 +81,7 @@ void scigraphics::map2d::graph::updateScaleZInterval() const
 
 // ------------------------------------------------------------
 
-void scigraphics::map2d::graph::draw( painter &Painter, const pairScales& Scales ) const
+void scigraphics::map::graph::draw( painter &Painter, const pairScales& Scales ) const
 {
   assert( View != NULL );
   assert( Data != NULL );
@@ -94,7 +94,7 @@ void scigraphics::map2d::graph::draw( painter &Painter, const pairScales& Scales
 
 // ------------------------------------------------------------
 
-void scigraphics::map2d::graph::drawLegendExample( painter &Painter, const wrectangle &Rectangle ) const
+void scigraphics::map::graph::drawLegendExample( painter &Painter, const wrectangle &Rectangle ) const
 {
   assert( View != NULL );
   assert( Data != NULL );
@@ -107,7 +107,7 @@ void scigraphics::map2d::graph::drawLegendExample( painter &Painter, const wrect
       
 // ------------------------------------------------------------
 
-scigraphics::wcoord scigraphics::map2d::graph::legendExampleWidth()  const
+scigraphics::wcoord scigraphics::map::graph::legendExampleWidth()  const
 {
   assert( View != NULL );
   return View->legendExampleWidth();
@@ -115,7 +115,7 @@ scigraphics::wcoord scigraphics::map2d::graph::legendExampleWidth()  const
 
 // ------------------------------------------------------------
 
-scigraphics::wcoord scigraphics::map2d::graph::legendExampleHeight() const
+scigraphics::wcoord scigraphics::map::graph::legendExampleHeight() const
 {
   assert( View != NULL );
   return View->legendExampleHeight();

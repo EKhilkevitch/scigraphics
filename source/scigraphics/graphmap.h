@@ -35,7 +35,7 @@ namespace scigraphics
 {
   class scale;
 
-  namespace map2d
+  namespace map
   {
 
     // ============================================================

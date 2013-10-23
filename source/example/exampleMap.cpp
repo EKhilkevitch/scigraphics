@@ -50,9 +50,9 @@ int main( int argc, char **argv )
   Maps[1] = Plot.createGraph<scigraphics::graphMV>( "color1" );
   Maps[2] = Plot.createGraph<scigraphics::graphMV>( "color2" );
 
-  Maps[0]->getView().setColorStrategy( new scigraphics::map2d::graphViewRectangle::grayscalePointColorStrategy() );
-  Maps[1]->getView().setColorStrategy( new scigraphics::map2d::graphViewRectangle::redYellowBluePointColorStrategy() );
-  Maps[2]->getView().setColorStrategy( new scigraphics::map2d::graphViewRectangle::yellowRedBluePointColorStrategy() );
+  Maps[0]->getView().setColorStrategy( new scigraphics::map::graphViewRectangle::grayscalePointColorStrategy() );
+  Maps[1]->getView().setColorStrategy( new scigraphics::map::graphViewRectangle::redYellowBluePointColorStrategy() );
+  Maps[2]->getView().setColorStrategy( new scigraphics::map::graphViewRectangle::yellowRedBluePointColorStrategy() );
  
   const size_t SizeX = 20*8, SizeY = 20*8;
   for ( unsigned i = 0; i < Maps.size(); ++i )
