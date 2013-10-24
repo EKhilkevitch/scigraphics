@@ -61,7 +61,7 @@ namespace scigraphics
     {
       public:
         typedef point point_t;
-        typedef int int_t;
+        typedef long long int int_t;
         typedef data_iterator< data > iterator;
 
       public:

@@ -72,19 +72,24 @@ scigraphics::sequence::graph::graph( const std::string &Lgnd ) :
 
 // ------------------------------------------------------------
 
-void scigraphics::sequence::graph::init( const color &Color )
+void scigraphics::sequence::graph::setData( data *D )
 {
-  assert( Data == NULL );
-  assert( Views == NULL );
+  if ( D != Data )
+  {
+    delete Data;
+    Data = D;
+  }
+}
 
-  Data = createData();
-  if ( Data == NULL )
-    throw std::runtime_error( "createData() must return valid pointer" );
+// ------------------------------------------------------------
 
-  Views = createViewCollection();
-  if ( Views == NULL )
-    throw std::runtime_error( "createGraphViewCollection() must return valid pointer" );
-  Views->setColor( Color );
+void scigraphics::sequence::graph::setViews( graphViewCollection *V )
+{
+  if ( V != Views )
+  {
+    delete Views;
+    Views = V;
+  }
 }
 
 // ------------------------------------------------------------

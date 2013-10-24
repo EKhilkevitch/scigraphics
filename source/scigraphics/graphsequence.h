@@ -47,11 +47,9 @@ namespace scigraphics
         graph& operator=( const graph& );
 
       protected:
-        void init( const color &Color );
-
-        virtual data* createData() = 0;
-        virtual graphViewCollection* createViewCollection() = 0;
-        
+        void setData( data *D );
+        void setViews( graphViewCollection *V );
+ 
       public:
         graph( const std::string &Legend = std::string() );
         ~graph();
@@ -77,8 +75,10 @@ namespace scigraphics
     template < class D, class V > class graphSpecified : public graph
     {
       protected:
-        data* createData() { return new D(); }
-        graphViewCollection* createViewCollection() { return new V(); }
+        virtual data* createData() { return new D(); }
+        virtual graphViewCollection* createViewCollection() { return new V(); }
+
+        void init( const color &Color );
         
       protected:
         D& getCastedData()  { return dynamic_cast<D&>( getData() ); }
@@ -143,6 +143,18 @@ namespace scigraphics
         coveredAreaGraphViewCollection& getViewsColveredArea() { return getCastedViews(); }
     };
 
+    // ============================================================
+    
+    template < class D, class V > void graphSpecified<D,V>::init( const color &Color )
+    {
+      data *Data = createData();
+      setData( Data );
+
+      graphViewCollection *Views = createViewCollection();
+      Views->setColor( Color );
+      setViews( Views );
+    }
+    
     // ============================================================
 
   }
