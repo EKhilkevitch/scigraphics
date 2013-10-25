@@ -88,7 +88,7 @@ void scigraphics::settings::applyGraphType( plot *Plot ) const
   assert( Plot != NULL );
 
   for ( graphCollection::iterator Graph = Plot->beginGraph(); Graph != Plot->endGraph(); ++Graph )
-    applyGraphTypeToGraph( dynamic_cast< sequence::graph* >( *Graph ) );
+    applyGraphTypeToGraph( dynamic_cast< sequence::graph* >( &*Graph ) );
 }
       
 // ------------------------------------------------------------

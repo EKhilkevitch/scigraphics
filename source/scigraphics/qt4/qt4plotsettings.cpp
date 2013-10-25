@@ -509,7 +509,7 @@ scigraphics::selectionStrip* qt4plotSettingsSelections::getFirstStripSelection( 
     
   for ( scigraphics::selectionCollection::iterator Sel = Plot->beginSelection(); Sel != Plot->endSelection(); ++Sel )
   {
-    scigraphics::selectionStrip *Selection = dynamic_cast< scigraphics::selectionStrip* >( *Sel );
+    scigraphics::selectionStrip *Selection = dynamic_cast< scigraphics::selectionStrip* >( &*Sel );
     if ( Selection != NULL )
       return Selection;
   }

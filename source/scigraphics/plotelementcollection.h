@@ -119,7 +119,7 @@ namespace scigraphics
   {
     public:
       typedef container_ptr< std::list, T > templatePlotElementList;
-      typedef typename std::list<T*>::iterator iterator;
+      typedef typename templatePlotElementList::iterator iterator;
       typedef typename templatePlotElementList::const_iterator const_iterator;
       typedef typename templatePlotElementList::const_reverse_iterator const_reverse_iterator;
 

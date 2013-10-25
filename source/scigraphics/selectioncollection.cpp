@@ -29,9 +29,9 @@ scigraphics::selection* scigraphics::selectionCollection::getSelectionOnPoint( c
 {
   for ( iterator s = begin(); s != end(); ++s )
   {
-    pairScales Scales = getPairScales( *s );
-    if ( (*s)->pointInSelection(Point,Scales) )
-      return *s;
+    pairScales Scales = getPairScales( &(*s) );
+    if ( s->pointInSelection(Point,Scales) )
+      return &*s;
   }
 
   return NULL;

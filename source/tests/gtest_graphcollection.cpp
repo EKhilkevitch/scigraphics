@@ -80,7 +80,7 @@ TEST( test_graphCollection, append )
   ASSERT_TRUE( Collection.begin() != Collection.end() );
   
   Graph->setLegend("1");
-  ASSERT_EQ( std::string("1"), (*Collection.begin())->legend() );
+  ASSERT_EQ( std::string("1"), Collection.begin()->legend() );
   
   Collection.append( new sequence::graphVector(color::Black) );
   ASSERT_EQ( (size_t)2, Collection.size() );
@@ -113,7 +113,7 @@ TEST( test_graphCollection, create )
 
   ASSERT_EQ( (size_t)1, Collection.size() );
   ASSERT_EQ( std::string("L"), Graph->legend() );
-  ASSERT_EQ( std::string("L"), (*Collection.begin())->legend() );
+  ASSERT_EQ( std::string("L"), Collection.begin()->legend() );
   
   auto Graph2 = Collection.create<sequence::graphVector>(color());
 
@@ -188,7 +188,7 @@ TEST( test_graphCollection, iterators )
   auto gi = Collection.begin();
 
   for ( ; li != Legends.end(); ++li, ++gi )
-    ASSERT_EQ( *li, (*gi)->legend() );
+    ASSERT_EQ( *li, gi->legend() );
 }
 
 // =========================================================
