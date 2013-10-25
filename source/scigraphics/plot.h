@@ -178,6 +178,10 @@ namespace scigraphics
       void setScaleIntervalY( interval<number> L )     { setScaleInterval(axisSetCollection::Left,L); }
       void setScaleIntervalY( number Min, number Max ) { setScaleIntervalY(interval<number>(Min,Max)); }
       interval<number> scaleIntervalY() const          { return scaleInterval(axisSetCollection::Left); }
+
+      interval<number> visibleInterval( axisSetCollection::axisPosition Position ) const;
+      interval<number> visibleIntervalX() const { return visibleInterval(axisSetCollection::Bottom); }
+      interval<number> visibleIntervalY() const { return visibleInterval(axisSetCollection::Left); }
       
       void addScalesShift( double Shift, axisSet::direction Direction );
       void mulScalesZoom( double Zoom, axisSet::direction Direction );

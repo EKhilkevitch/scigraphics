@@ -411,6 +411,14 @@ scigraphics::interval<scigraphics::number> scigraphics::plot::scaleInterval( axi
 }
 
 // ------------------------------------------------------------
+      
+scigraphics::interval<scigraphics::number> scigraphics::plot::visibleInterval( axisSetCollection::axisPosition Position ) const
+{
+  const axisSet *Set = &AxisSets[Position];
+  return Set->getScale()->getVisivleInterval();
+}
+
+// ------------------------------------------------------------
 
 void scigraphics::plot::setScaleLock( axisSetCollection::axisPosition Position, bool Lock )
 {
