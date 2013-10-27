@@ -124,6 +124,7 @@ namespace scigraphics
       selection*      getSelection( wpoint Point );
 
       mouse& mouseHandler() { return MouseHandler; }
+      const mouse& mouseHandler() const { return MouseHandler; }
 
 
     public:
@@ -144,6 +145,7 @@ namespace scigraphics
       void appendGraphic( graph *Graph );
       void bindGraphToAxis( const graph *Graph, axisSetCollection::axisPosition AxisX, axisSetCollection::axisPosition AxisY );
       void clearGraphics() { Graphics.clear(); GraphicsColorSequence.reset(); }
+      void removeGraphic( graph *Graph ) { Graphics.erase(Graph); }
       graphCollection::iterator beginGraph() { return Graphics.begin(); }
       graphCollection::iterator endGraph()   { return Graphics.end(); }
       graphCollection::const_iterator beginGraph() const { return Graphics.begin(); }
@@ -202,6 +204,7 @@ namespace scigraphics
 
       void setDisallowedMouseOperations( unsigned Operation ) { mouseHandler().setDisallowedOperations(Operation); }
       void setAllowedMouseOperations( unsigned Operation )    { mouseHandler().setAllowedOperations(Operation);    }
+      unsigned allowedOperations() const                      { return mouseHandler().allowedOperations(); }
      
       void setVisibleLegend( bool V ) { Legend.setVisible(V); }
       void setVisibleCursorPositionViewer( bool V ) { CursorPositionViewer.setVisible(V); }

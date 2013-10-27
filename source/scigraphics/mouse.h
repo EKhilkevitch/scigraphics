@@ -88,6 +88,7 @@ namespace scigraphics
           allowing( unsigned A = Everything ) : AllowedOperations(A) {}
           unsigned value() const { return AllowedOperations; }
 
+          void set( unsigned Op )               { AllowedOperations = Op;     }
           void allowOperation( unsigned Op )    { AllowedOperations |= Op;    }
           void disallowOperation( unsigned Op ) { AllowedOperations &= (~Op); }  
 
@@ -332,6 +333,8 @@ namespace scigraphics
 
       void setAllowedOperations( unsigned Op )    { AllowedOperations.allowOperation(Op); }
       void setDisallowedOperations( unsigned Op ) { AllowedOperations.disallowOperation(Op); }
+      void setOperations( unsigned Op )           { AllowedOperations.set(Op); }
+      unsigned allowedOperations() const          { return AllowedOperations.value(); }
 
       wpoint lastPosition() const { return LastPosition; }
 
