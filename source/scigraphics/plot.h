@@ -204,6 +204,7 @@ namespace scigraphics
 
       void setDisallowedMouseOperations( unsigned Operation ) { mouseHandler().setDisallowedOperations(Operation); }
       void setAllowedMouseOperations( unsigned Operation )    { mouseHandler().setAllowedOperations(Operation);    }
+      void setMouseOperations( unsigned Operations )          { mouseHandler().setOperations(Operations);          }
       unsigned allowedOperations() const                      { return mouseHandler().allowedOperations(); }
      
       void setVisibleLegend( bool V ) { Legend.setVisible(V); }
