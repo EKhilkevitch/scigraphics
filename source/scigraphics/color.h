@@ -91,6 +91,7 @@ namespace scigraphics
     };
 
     inline bool operator==( color C1, color C2 ) { return C1.valueRgb() == C2.valueRgb(); }
+    inline bool operator!=( color C1, color C2 ) { return ! ( C1 == C2 ); }
 
 
 // ============================================================
