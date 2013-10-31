@@ -26,31 +26,31 @@
 
 // =========================================================
 
-void scigraphics::mockDrawer::drawLine( const wpoint &A, const wpoint &B, const lineStyle& Style )
+void scigraphics::mockDrawer::drawLine( const wpoint &A, const wpoint &B )
 {
   action Act;
   Act.Type = action::DrawLine;
   Act.Points.push_back(A);
   Act.Points.push_back(B);
-  Act.Color = Style.getColor();
+ // Act.Color = Style.getColor();
   Actions.push_back(Act);
 }
 
 // ---------------------------------------------------------
 
-void scigraphics::mockDrawer::drawRectangle( const wrectangle& Rectangle, const brushStyle& BrushStyle, const lineStyle &LineStyle )
+void scigraphics::mockDrawer::drawRectangle( const wrectangle& Rectangle )
 {
   action Act;
   Act.Type = action::DrawRectangle;
   Act.Points.push_back(Rectangle.leftUp());
   Act.Points.push_back(Rectangle.rightDown());
-  Act.Color = BrushStyle.getColor();
+ // Act.Color = BrushStyle.getColor();
   Actions.push_back(Act);
 }
 
 // ---------------------------------------------------------
 
-void scigraphics::mockDrawer::drawText( const std::string &Text, const wrectangle& Rectangle, const textStyle &Style, double Angle )
+void scigraphics::mockDrawer::drawText( const std::string &Text, const wrectangle& Rectangle, double Angle )
 {
 }
 

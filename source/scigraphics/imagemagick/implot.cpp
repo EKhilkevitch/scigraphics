@@ -61,8 +61,8 @@ std::list< Magick::Coordinate > drawerIm::polygonIm( const std::vector<scigraphi
 }
 
 // ----------------------------------------------------------------
-    
-void drawerIm::prepareForLineStyle( const scigraphics::lineStyle &Style )
+
+void drawerIm::setLineStyle( const scigraphics::lineStyle &Style )
 {
   if ( Image == NULL )
     return;
@@ -91,7 +91,7 @@ void drawerIm::prepareForLineStyle( const scigraphics::lineStyle &Style )
 
 // ----------------------------------------------------------------
 
-void drawerIm::prepareForBrushStyle( const scigraphics::brushStyle& Style )
+void drawerIm::setBrushStyle( const scigraphics::brushStyle &Style )
 {
   if ( Image == NULL )
     return;
@@ -114,7 +114,7 @@ void drawerIm::prepareForBrushStyle( const scigraphics::brushStyle& Style )
 
 // ----------------------------------------------------------------
 
-void drawerIm::prepareForTextStyle( const scigraphics::textStyle &Style )
+void drawerIm::setTextStyle( const scigraphics::textStyle &Style )
 {
   if ( Image == NULL )
     return;
@@ -129,31 +129,27 @@ void drawerIm::prepareForTextStyle( const scigraphics::textStyle &Style )
 
 // ----------------------------------------------------------------
     
-void drawerIm::drawLine( const scigraphics::wpoint &A, const scigraphics::wpoint &B, const scigraphics::lineStyle &Style )
+void drawerIm::drawLine( const scigraphics::wpoint &A, const scigraphics::wpoint &B )
 {
   if ( Image == NULL )
     return;
 
-  prepareForLineStyle( Style );
   Image->draw( Magick::DrawableLine( A.x(), A.y(), B.x(), B.y() ) );
 }
 
 // ----------------------------------------------------------------
 
-void drawerIm::drawRectangle( const scigraphics::wrectangle& Rectangle, const scigraphics::brushStyle& BrushStyle, const scigraphics::lineStyle &LineStyle )
+void drawerIm::drawRectangle( const scigraphics::wrectangle& Rectangle )
 {
   if ( Image == NULL )
     return;
-
-  prepareForLineStyle( LineStyle );
-  prepareForBrushStyle( BrushStyle );
 
   Image->draw( Magick::DrawableRectangle( Rectangle.left(), Rectangle.up(), Rectangle.right(), Rectangle.down() ) );
 }
     
 // ----------------------------------------------------------------
     
-void drawerIm::drawPolygon( const std::vector<scigraphics::wpoint> &Points, const scigraphics::brushStyle& BrushStyle ) 
+void drawerIm::drawPolygon( const std::vector<scigraphics::wpoint> &Points ) 
 {
   if ( Points.size() < 3 )
     return;
@@ -163,20 +159,18 @@ void drawerIm::drawPolygon( const std::vector<scigraphics::wpoint> &Points, cons
   
   std::list< Magick::Coordinate > Polygon = polygonIm( Points );
 
-  prepareForBrushStyle( BrushStyle );
-  Image->strokeColor( Magick::Color(0, 0, 0, MaxRGB) );
+  //Image->strokeColor( Magick::Color(0, 0, 0, MaxRGB) );
+  
   Image->draw( Magick::DrawablePolygon( Polygon ) );
 }
 
 // ----------------------------------------------------------------
 
-void drawerIm::drawText( const std::string &Text, const scigraphics::wrectangle& Rectangle, const scigraphics::textStyle &Style, double RotAngle )
+void drawerIm::drawText( const std::string &Text, const scigraphics::wrectangle& Rectangle, double RotAngle )
 {
   if ( Image == NULL )
     return;
  
-  prepareForTextStyle( Style );
-
   std::list<Magick::Drawable> DrawList;
   DrawList.push_back( Magick::DrawableTranslation( Rectangle.center().x(), Rectangle.center().y() ) );
   DrawList.push_back( Magick::DrawableRotation( RotAngle ) );
@@ -194,7 +188,7 @@ scigraphics::wcoord drawerIm::textWidth( const std::string &Text, const scigraph
   if ( Image == NULL )
     return drawer::textWidth( Text, Style );
   
-  prepareForTextStyle( Style );
+  setTextStyle( Style );
 
   Magick::TypeMetric Metric;
   Image->fontTypeMetrics( Text, &Metric );
@@ -208,7 +202,7 @@ scigraphics::wcoord drawerIm::textHeight( const std::string &Text, const scigrap
   if ( Image == NULL )
     return drawer::textHeight( Text, Style );
   
-  prepareForTextStyle( Style );
+  setTextStyle( Style );
 
   Magick::TypeMetric Metric;
   Image->fontTypeMetrics( Text, &Metric );

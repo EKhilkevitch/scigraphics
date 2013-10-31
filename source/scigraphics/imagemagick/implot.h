@@ -44,11 +44,6 @@ class drawerIm : public scigraphics::drawer
   private:
     Magick::Image *Image;
 
-  private:
-    void prepareForLineStyle( const scigraphics::lineStyle &Style );
-    void prepareForBrushStyle( const scigraphics::brushStyle& Style );
-    void prepareForTextStyle( const scigraphics::textStyle &Style );
-
   public:
     static Magick::Color colorIm( const scigraphics::color &Color );
     static Magick::Coordinate coordinateIm( const scigraphics::wpoint &Point );
@@ -56,11 +51,15 @@ class drawerIm : public scigraphics::drawer
 
   public:
     drawerIm( size_t SizeX, size_t SizeY );
+    
+    void setLineStyle( const scigraphics::lineStyle &Style );
+    void setBrushStyle( const scigraphics::brushStyle &Style );
+    void setTextStyle( const scigraphics::textStyle &Style );
 
-    void drawLine( const scigraphics::wpoint &A, const scigraphics::wpoint &B, const scigraphics::lineStyle &Style );
-    void drawRectangle( const scigraphics::wrectangle& Rectangle, const scigraphics::brushStyle& BrushStyle, const scigraphics::lineStyle &LineStyle );
-    void drawPolygon( const std::vector<scigraphics::wpoint> &Points, const scigraphics::brushStyle& BrushStyle );
-    void drawText( const std::string &Text, const scigraphics::wrectangle& Rectangle, const scigraphics::textStyle &Style, double RotAngle );
+    void drawLine( const scigraphics::wpoint &A, const scigraphics::wpoint &B );
+    void drawRectangle( const scigraphics::wrectangle& Rectangle );
+    void drawPolygon( const std::vector<scigraphics::wpoint> &Points );
+    void drawText( const std::string &Text, const scigraphics::wrectangle& Rectangle, double RotAngle );
     
     scigraphics::wcoord textWidth( const std::string &Text, const scigraphics::textStyle &Style );
     scigraphics::wcoord textHeight( const std::string &Text, const scigraphics::textStyle &Style );

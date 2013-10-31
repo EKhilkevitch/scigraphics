@@ -78,9 +78,12 @@ QPen drawerQt::penQt( const scigraphics::lineStyle& Style )
     case scigraphics::lineStyle::Solid:
       PenStyle = Qt::SolidLine;
       break;
+
     case scigraphics::lineStyle::Dash:
       PenStyle = Qt::DashLine;
       break;
+
+    case scigraphics::lineStyle::None:
     default:
       PenStyle = Qt::NoPen;
       break;
@@ -102,6 +105,8 @@ QBrush drawerQt::brushQt( const scigraphics::brushStyle &Style )
     case scigraphics::brushStyle::Solid:
       BrushStyle = Qt::SolidPattern;
       break;
+
+    case scigraphics::brushStyle::None:
     default:
       BrushStyle = Qt::NoBrush;
       break;
@@ -148,56 +153,63 @@ void drawerQt::eraseRectangle( const scigraphics::wrectangle& Rectangle )
 
 // ----------------------------------------------------------------
 
-void drawerQt::drawLine( const scigraphics::wpoint &A, const scigraphics::wpoint &B, const scigraphics::lineStyle &Style )
+void drawerQt::setLineStyle( const scigraphics::lineStyle &Style )
+{
+  Painter->setPen( penQt(Style) );
+}
+
+// ----------------------------------------------------------------
+
+void drawerQt::setBrushStyle( const scigraphics::brushStyle &Style )
+{
+  Painter->setBrush( brushQt(Style) );
+}
+
+// ----------------------------------------------------------------
+
+void drawerQt::setTextStyle( const scigraphics::textStyle &Style )
+{
+  Painter->setFont( fontQt(Style) );
+  Painter->setPen( penQt( scigraphics::lineStyle( Style.getColor() ) ) );
+}
+
+// ----------------------------------------------------------------
+
+void drawerQt::drawLine( const scigraphics::wpoint &A, const scigraphics::wpoint &B )
 {
   if ( Painter == NULL )
     return;
-  Painter->setPen( penQt(Style) );
   Painter->drawLine( pointQt(A), pointQt(B) );
 }
 
 // ----------------------------------------------------------------
 
-void drawerQt::drawRectangle( const scigraphics::wrectangle& Rectangle, const scigraphics::brushStyle& BrushStyle, const scigraphics::lineStyle &LineStyle )
+void drawerQt::drawRectangle( const scigraphics::wrectangle& Rectangle )
 {
   if ( Painter == NULL )
     return;
-
-  QPen Pen = penQt( LineStyle );
-  QBrush Brush = brushQt( BrushStyle );
-
-  Painter->setPen( Pen );
-  Painter->setBrush( Brush );
   Painter->drawRect( rectangleQt(Rectangle) );
 }
 
 // ----------------------------------------------------------------
     
-void drawerQt::drawPolygon( const std::vector<scigraphics::wpoint> &Points, const scigraphics::brushStyle& BrushStyle )
+void drawerQt::drawPolygon( const std::vector<scigraphics::wpoint> &Points )
 {
   if ( Painter == NULL )
     return;
 
-  QPen Pen( Qt::NoPen );
-  QBrush Brush = brushQt( BrushStyle );
   QPolygon Polygon = polygonQt( Points );
-
-  Painter->setPen( Pen );
-  Painter->setBrush( Brush );
   Painter->drawPolygon( Polygon ); 
 }
 
 // ----------------------------------------------------------------
     
-void drawerQt::drawText( const std::string &Text, const scigraphics::wrectangle& Rectangle, const scigraphics::textStyle &Style, double Angle )
+void drawerQt::drawText( const std::string &Text, const scigraphics::wrectangle& Rectangle, double Angle )
 {
   const bool DrawDebugRectangle = false;
   if ( Painter == NULL )
     return;
 
-  Painter->setFont( fontQt(Style) );
-  Painter->setPen( penQt( scigraphics::lineStyle( Style.getColor() ) ) );
-  Painter->setBrush( Qt::NoBrush );
   Painter->save();
   Painter->rotate( Angle );
   QPoint Center = Painter->transform().inverted().map( QPoint(Rectangle.center().x(),Rectangle.center().y()) );
@@ -334,8 +346,12 @@ void qt4plot::printTestCornerRectangles()
   int H = getDrawerQt()->height();
 
   getDrawerQt()->eraseAll();
-  getDrawerQt()->drawRectangle( wrectangle( wpoint(0,0), wpoint(10,10) ),     brushStyle(color::Black), lineStyle(1,color::Red) );
-  getDrawerQt()->drawRectangle( wrectangle( wpoint(W-10,H-10), wpoint(W,H) ), brushStyle(color::White), lineStyle(1,color::Green) );
+  getDrawerQt()->setLineStyle( lineStyle(1,color::Red) );
+  getDrawerQt()->setBrushStyle( brushStyle(color::Black) );
+  getDrawerQt()->drawRectangle( wrectangle( wpoint(0,0), wpoint(10,10) ) );
+  getDrawerQt()->setLineStyle( lineStyle(1,color::Green) );
+  getDrawerQt()->setBrushStyle( brushStyle(color::White) );
+  getDrawerQt()->drawRectangle( wrectangle( wpoint(W-10,H-10), wpoint(W,H) ) );
   getDrawerQt()->flush();
 }
 

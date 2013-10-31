@@ -162,7 +162,10 @@ void scigraphics::painter::drawLineW( wpoint A, wpoint B, const lineStyle &Style
 { 
   //std::cout << "painter::drawCoordLine()" << A.x() << " " << A.y() << " " << Style.getColor().name() << std::endl;
   if ( ableToDraw() )
-    Drawer->drawLine( A, B, Style ); 
+  {
+    Drawer->setLineStyle( Style );
+    Drawer->drawLine( A, B ); 
+  }
 }
 
 // ------------------------------------------------------------
@@ -204,7 +207,8 @@ void scigraphics::painter::drawTextW( const std::string &String, wpoint Point, u
   wpoint LU( Point.x() - ShiftLeft, Point.y() - ShiftUp );
   wpoint RD( LU.x() + Width, LU.y() + Height );
 
-  Drawer->drawText( String, wrectangle(LU,RD), Style, Angle );
+  Drawer->setTextStyle( Style );
+  Drawer->drawText( String, wrectangle(LU,RD), Angle );
 }
 
 // ------------------------------------------------------------
@@ -241,7 +245,11 @@ void scigraphics::painter::drawRectangleF( const frectangle &Rect, const brushSt
 void scigraphics::painter::drawRectangleW( const wrectangle &Rect, const brushStyle &BrushStyle, const lineStyle &LineStyle )
 {
   if ( ableToDraw() )
-    Drawer->drawRectangle( Rect, BrushStyle, LineStyle );
+  {
+    Drawer->setBrushStyle( BrushStyle );
+    Drawer->setLineStyle( LineStyle );
+    Drawer->drawRectangle( Rect );
+  }
 }
       
 // ------------------------------------------------------------
@@ -270,7 +278,9 @@ void scigraphics::painter::drawPointW( const wpoint &Point, const pointStyle &St
       {
         wpoint LU( Point.x() - Style.width()/2, Point.y() - Style.width()/2 );
         wpoint RD( LU.x() + Style.width(), LU.y() + Style.width() );
-        Drawer->drawRectangle( wrectangle(LU,RD), BrushStyle, lineStyle(BrushStyle.getColor()) );
+        Drawer->setBrushStyle( BrushStyle );
+        Drawer->setLineStyle( lineStyle(BrushStyle.getColor()) );
+        Drawer->drawRectangle( wrectangle(LU,RD) );
       }
       break;
 
@@ -351,25 +361,27 @@ void scigraphics::painter::drawPolygonW( const std::vector<wpoint> &Points, cons
   if ( Points.size() < 3 )
     return;
   
-  Drawer->drawPolygon( Points, Style );
+  Drawer->setBrushStyle( Style );
+  Drawer->setLineStyle( lineStyle(lineStyle::None) );
+  Drawer->drawPolygon( Points );
 }
 
 // ------------------------------------------------------------
 
 scigraphics::wcoord scigraphics::painter::textWidth( const std::string &Text, const textStyle &Style )
 {
-  if ( ableToDraw() )
-    return Drawer->textWidth( Text, Style );
-  return 0;
+  if ( ! ableToDraw() )
+    return 0;
+  return Drawer->textWidth( Text, Style );
 }
 
 // ------------------------------------------------------------
 
 scigraphics::wcoord scigraphics::painter::textHeight( const std::string &Text, const textStyle &Style )
 {
-  if ( ableToDraw() )
-    return Drawer->textHeight( Text, Style);
-  return 0;
+  if ( ! ableToDraw() )
+    return 0;
+  return Drawer->textHeight( Text, Style);
 }
 
 // ============================================================

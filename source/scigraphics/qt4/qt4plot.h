@@ -111,10 +111,15 @@ class drawerQt : public scigraphics::drawer
     static QPolygon polygonQt( const std::vector<scigraphics::wpoint> &Points );
    
   public:
-    void drawLine( const scigraphics::wpoint &A, const scigraphics::wpoint &B, const scigraphics::lineStyle &Style );
-    void drawRectangle( const scigraphics::wrectangle& Rectangle, const scigraphics::brushStyle& BrushStyle, const scigraphics::lineStyle &LineStyle );
-    void drawPolygon( const std::vector<scigraphics::wpoint> &Points, const scigraphics::brushStyle& BrushStyle );
-    void drawText( const std::string &Text, const scigraphics::wrectangle& Rectangle, const scigraphics::textStyle &Style, double RotAngle );
+      
+    void setLineStyle( const scigraphics::lineStyle &Style );
+    void setBrushStyle( const scigraphics::brushStyle &Style );
+    void setTextStyle( const scigraphics::textStyle &Style );
+
+    void drawLine( const scigraphics::wpoint &A, const scigraphics::wpoint &B );
+    void drawRectangle( const scigraphics::wrectangle& Rectangle );
+    void drawPolygon( const std::vector<scigraphics::wpoint> &Points );
+    void drawText( const std::string &Text, const scigraphics::wrectangle& Rectangle, double RotAngle );
     void eraseRectangle( const scigraphics::wrectangle& Rectangle );
     void eraseAll();
     void flush();

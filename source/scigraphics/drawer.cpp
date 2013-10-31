@@ -44,7 +44,9 @@ void scigraphics::drawer::eraseRectangle( const wrectangle& Rectangle )
   brushStyle BrushStyle( Color );
   lineStyle LineStyle( Color );
 
-  drawRectangle( Rectangle, BrushStyle, LineStyle ); 
+  setBrushStyle( BrushStyle );
+  setLineStyle( LineStyle );
+  drawRectangle( Rectangle ); 
 }
 
 // ------------------------------------------------------------

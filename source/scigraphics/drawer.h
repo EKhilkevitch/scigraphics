@@ -53,16 +53,20 @@ namespace scigraphics
       wrectangle plotRectangle() const { return wrectangle( wpoint(0,0), wpoint(width(),height()) ); }
 
       virtual void eraseAll() { eraseRectangle( plotRectangle() ); }
+
+      virtual void setLineStyle( const lineStyle &Style ) = 0;
+      virtual void setBrushStyle( const brushStyle &Style ) = 0;
+      virtual void setTextStyle( const textStyle &Style ) = 0;
       
-      virtual void drawLine( const wpoint &A, const wpoint &B, const lineStyle& Style = lineStyle() ) = 0;
-      virtual void drawRectangle( const wrectangle& Rectangle, const brushStyle& BrushStyle = brushStyle(), const lineStyle &LineStyle = lineStyle() ) = 0;
-      virtual void drawPolygon( const std::vector<wpoint> &Points, const brushStyle& BrushStyle = brushStyle() ) = 0;
-      virtual void drawText( const std::string &Text, const wrectangle& Rectangle, const textStyle &Style = textStyle(), double RotAngle = 0 ) = 0;
+      virtual void drawLine( const wpoint &A, const wpoint &B ) = 0;
+      virtual void drawRectangle( const wrectangle& Rectangle ) = 0;
+      virtual void drawPolygon( const std::vector<wpoint> &Points ) = 0;
+      virtual void drawText( const std::string &Text, const wrectangle& Rectangle, double RotAngle = 0 ) = 0;
       virtual void eraseRectangle( const wrectangle& Rectangle );
       virtual void flush() {}
 
-      virtual wcoord textWidth( const std::string &Text, const textStyle &Style = textStyle() );
-      virtual wcoord textHeight( const std::string &Text, const textStyle &Style = textStyle() );
+      virtual wcoord textWidth( const std::string &Text, const textStyle &Style );
+      virtual wcoord textHeight( const std::string &Text, const textStyle &Style );
       
       virtual ~drawer() {}
   };
