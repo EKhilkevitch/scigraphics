@@ -200,8 +200,9 @@ namespace scigraphics
 
       void setAxisTitle( axisSetCollection::axisPosition Position, const std::string &Title );
       std::string getAxisTitle( axisSetCollection::axisPosition Position ) const;
-
       void setBottomLeftAxisTitles( const std::string &TitleX, const std::string &TitleY );
+
+      void setAxisNumberStyle( axisSetCollection::axisPosition Position, numberStyle *Style );
 
       void setDisallowedMouseOperations( unsigned Operation ) { mouseHandler().setDisallowedOperations(Operation); }
       void setAllowedMouseOperations( unsigned Operation )    { mouseHandler().setAllowedOperations(Operation);    }

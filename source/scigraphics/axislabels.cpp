@@ -55,6 +55,7 @@ void scigraphics::axisLabels::setNumberStyle( numberStyle *Style )
 {
   if ( Style == NULL )
     throw std::invalid_argument("Style must be not NULL");
+
   if ( Style != NumberStyle )
   {
     delete NumberStyle;

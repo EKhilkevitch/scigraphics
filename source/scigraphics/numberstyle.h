@@ -46,10 +46,13 @@ namespace scigraphics
 
   class sprintfNumberStyle : public numberStyle
   {
+    private:
+      std::string Format;
     protected:
-      virtual const char* format() const = 0;
+      const char* format() const { return Format.c_str(); };
       void fillBuffer( char *Buf, size_t Size, number Value )  const;
     public:
+      sprintfNumberStyle( const std::string &F ) : Format(F) {}
       std::string numberText( const number Number ) const;
   };
   
@@ -57,18 +60,9 @@ namespace scigraphics
 
   class generalNumberStyle : public sprintfNumberStyle
   {
-    protected:
-      const char* format() const { return "%g"; }
+    public:
+      generalNumberStyle() : sprintfNumberStyle( "%g" ) {}
   };
-  
-  // ------------------------------------------------------
-  
-  class exponentionalNumberStyle : public sprintfNumberStyle
-  {
-    protected:
-      const char* format() const { return "%e"; }
-  };
-
 
 // ======================================================
 

@@ -26,8 +26,8 @@
 #include <cmath>
 
 #include "scigraphics/plot.h"
+#include "scigraphics/numberstyle.h"
 #include "scigraphics/qt4/qt4plot.h"
-#include "scigraphics/graphmap.h"
 #include "scigraphics/qt4/qt4plotsettings.h"
 
 // ======================================================
@@ -102,6 +102,7 @@ int main( int argc, char *argv[] )
   Plot.setAxisTitle( scigraphics::axisSetCollection::Top, "This is axis X top" );
   Plot.setAxisTitle( scigraphics::axisSetCollection::Left, "This is axis Y left" );
   Plot.setAxisTitle( scigraphics::axisSetCollection::Right, "This is axis Y right" );
+  Plot.setAxisNumberStyle( scigraphics::axisSetCollection::Right, new scigraphics::sprintfNumberStyle("%e") );
 
   qt4plotSettingsGroupSuperBox::axisPositionsList AxisPositions = qt4plotSettingsGroupSuperBox::defaultAxisPositions();
   AxisPositions << scigraphics::axisSetCollection::Top;

@@ -138,7 +138,6 @@ namespace scigraphics
       };
       
     private:
-
       typedef container_ptr< std::vector, axisSet > container;
       typedef container::iterator axis_iterator;
       typedef container::const_iterator axis_const_iterator;

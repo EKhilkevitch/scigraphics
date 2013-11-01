@@ -449,6 +449,13 @@ void scigraphics::plot::setBottomLeftAxisTitles( const std::string &TitleX, cons
 }
 
 // ------------------------------------------------------------
+
+void scigraphics::plot::setAxisNumberStyle( axisSetCollection::axisPosition Position, numberStyle *Style )
+{
+  AxisSets[Position].setNumberStyle(Style);
+}
+
+// ------------------------------------------------------------
       
 void scigraphics::plot::setStretchFactors( double SX, double SY )
 {
