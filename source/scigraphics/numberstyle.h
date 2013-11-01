@@ -21,9 +21,13 @@
 
 #pragma once
 
+// ============================================================
+
 #include "scigraphics/numbers.h"
 
 #include <string>
+
+// ============================================================
 
 namespace scigraphics
 {

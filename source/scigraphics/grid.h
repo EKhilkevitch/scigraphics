@@ -23,11 +23,14 @@
 
 #include "scigraphics/numbers.h"
 #include "scigraphics/linestyle.h"
-#include "scigraphics/painter.h"
-#include "scigraphics/scale.h"
 
 namespace scigraphics
 {
+
+// ============================================================
+
+  class scale;
+  class painter;
 
 // ============================================================
 
@@ -45,12 +48,12 @@ namespace scigraphics
 
     public:
       grid() : LineStyle(DefaultGridLineStyle) {}
+      virtual ~grid() {}
 
       const lineStyle& getLineStyle() const { return LineStyle; }
+      void setLineStyle( const lineStyle &Style ) { LineStyle = Style; }
 
       virtual void draw( painter &Painter, const scale &Scale, const std::vector<number> &Ticks );
-
-      virtual ~grid() {}
   };
 
   class gridX : public grid 

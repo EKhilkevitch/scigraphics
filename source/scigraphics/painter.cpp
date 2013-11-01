@@ -22,6 +22,12 @@
 // ============================================================
 
 #include "scigraphics/painter.h"
+#include "scigraphics/drawer.h"
+#include "scigraphics/linestyle.h"
+#include "scigraphics/brushstyle.h"
+#include "scigraphics/textstyle.h"
+#include "scigraphics/pointstyle.h"
+#include "scigraphics/errorbarstyle.h"
 
 #include <iostream>
 #include <cassert>
@@ -31,9 +37,44 @@
 #  pragma warning( disable : 4244 ) 
 #endif
 
-
 // ============================================================
       
+scigraphics::painter::~painter() 
+{ 
+  delete Drawer; 
+}
+      
+// ------------------------------------------------------------
+
+void scigraphics::painter::setDrawer( drawer *D ) 
+{ 
+  if ( D != Drawer )
+  {
+    delete Drawer; 
+    Drawer = D; 
+  }
+} 
+
+// ------------------------------------------------------------
+
+scigraphics::wcoord scigraphics::painter::plotWidth()  const 
+{ 
+  if ( ! ableToDraw() )
+    return 100;
+  return Drawer->width(); 
+}
+
+// ------------------------------------------------------------
+
+scigraphics::wcoord scigraphics::painter::plotHeight() const 
+{ 
+  if ( ! ableToDraw() )
+    return 100;
+  return Drawer->height(); 
+}
+
+// ------------------------------------------------------------
+
 void scigraphics::painter::flush() 
 { 
   if ( ableToDraw() ) 
@@ -192,16 +233,16 @@ void scigraphics::painter::drawTextW( const std::string &String, wpoint Point, u
 
   switch ( Position & 0x00FF )
   {
-    case drawer::HLeft:        ShiftLeft += 0;          break;
-    case drawer::HRight:       ShiftLeft += Width;      break;
-    case drawer::HCenter:      ShiftLeft += Width/2;    break;
+    case HLeft:        ShiftLeft += 0;          break;
+    case HRight:       ShiftLeft += Width;      break;
+    case HCenter:      ShiftLeft += Width/2;    break;
   }
 
   switch ( Position & 0xFF00 )
   {
-    case drawer::VUp:          ShiftUp += 0;            break;
-    case drawer::VDown:        ShiftUp += Height;       break;
-    case drawer::VCenter:      ShiftUp += Height/2;     break;
+    case VUp:          ShiftUp += 0;            break;
+    case VDown:        ShiftUp += Height;       break;
+    case VCenter:      ShiftUp += Height/2;     break;
   }
 
   wpoint LU( Point.x() - ShiftLeft, Point.y() - ShiftUp );

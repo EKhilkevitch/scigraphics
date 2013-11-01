@@ -6,6 +6,7 @@
 #include "scigraphics/axisset.h"
 #include "scigraphics/color.h"
 #include "scigraphics/graphsequence.h"
+#include "scigraphics/graphcollection.h"
 
 #include "mockpainter.h"
 

@@ -18,32 +18,33 @@
  * along with scigraphics.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 #pragma once
+
+// ============================================================
 
 #include "scigraphics/numbers.h"
 #include "scigraphics/geometry.h"
-#include "scigraphics/linestyle.h"
-#include "scigraphics/brushstyle.h"
-#include "scigraphics/textstyle.h"
 
 #include <string>
 #include <vector>
+
+// ============================================================
 
 namespace scigraphics
 {
 
 // ============================================================
 
-  typedef point<wcoord> wpoint;
-  typedef rectangle<wcoord> wrectangle;
+  class lineStyle;
+  class brushStyle;
+  class textStyle;
+  class color;
+
+// ============================================================
+
 
   class drawer
   {
-    public:
-      enum textPosition { HLeft = 0x0001,       HRight = 0x0002,        HCenter = 0x0003,
-                          VUp   = 0x0100,       VDown = 0x0200,         VCenter = 0x0300 };
-
     protected:
       static unsigned numOfLinesInString( const std::string &String );
 

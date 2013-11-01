@@ -35,6 +35,7 @@
 #include "scigraphics/mousecallback.h"
 #include "scigraphics/legend.h"
 #include "scigraphics/cursorpoint.h"
+#include "scigraphics/scale.h"
 
 // ============================================================
 

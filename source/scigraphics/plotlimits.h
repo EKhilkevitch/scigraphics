@@ -25,7 +25,6 @@
 
 #include "scigraphics/numbers.h"
 #include "scigraphics/numlimits.h"
-#include "scigraphics/graphcollection.h"
 
 #include <map>
 
@@ -33,6 +32,12 @@
 
 namespace scigraphics
 {
+
+// ============================================================
+
+  class graph;
+  class graphCollection;
+  class axisSet;
 
 // ============================================================
 

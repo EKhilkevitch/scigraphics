@@ -22,13 +22,45 @@
 // ============================================================
 
 #include "scigraphics/axislabels.h"
+#include "scigraphics/painter.h"
+#include "scigraphics/numberstyle.h"
+#include "scigraphics/scale.h"
 
 #include <cstdio>
+#include <stdexcept>
 #include <iostream>
 
 // ============================================================
 
 const scigraphics::textStyle scigraphics::axisLabels::DefaultAxisTextStyle( 10 );
+
+// ------------------------------------------------------------
+
+scigraphics::axisLabels::axisLabels() :
+  TextStyle(DefaultAxisTextStyle), 
+  NumberStyle(new generalNumberStyle()) 
+{
+}
+
+// ------------------------------------------------------------
+
+scigraphics::axisLabels::~axisLabels()
+{
+  delete NumberStyle;
+}
+
+// ------------------------------------------------------------
+
+void scigraphics::axisLabels::setNumberStyle( numberStyle *Style )
+{
+  if ( Style == NULL )
+    throw std::invalid_argument("Style must be not NULL");
+  if ( Style != NumberStyle )
+  {
+    delete NumberStyle;
+    NumberStyle = Style;
+  }
+}
 
 // ------------------------------------------------------------
 
@@ -44,7 +76,7 @@ void scigraphics::axisLabelsX::drawOneLabel( painter &Painter, const scale &Scal
 {
   fcoord X = Scale.numberToFraction( Value );
   std::string Text = getNumberStyle().numberText( Value );
-  unsigned Flags = ( BaseY < 0.5 ) ? drawer::HCenter|drawer::VUp : drawer::HCenter|drawer::VDown;
+  unsigned Flags = ( BaseY < 0.5 ) ? painter::HCenter|painter::VUp : painter::HCenter|painter::VDown;
   int Shift = ( BaseY < 0.5 ? +1 : -1 ) * (-3);
 
 //  std::cout << "axisTicksX: draw " << Text << " crd " << Coord << " clr " << getTextStyle().getColor().name() << std::endl;
@@ -57,7 +89,7 @@ void scigraphics::axisLabelsY::drawOneLabel( painter &Painter, const scale &Scal
 {
   fcoord Y = Scale.numberToFraction( Value );
   std::string Text = getNumberStyle().numberText( Value );
-  unsigned Flags = ( BaseX < 0.5 ) ? drawer::HRight|drawer::VCenter : drawer::HLeft|drawer::VCenter;
+  unsigned Flags = ( BaseX < 0.5 ) ? painter::HRight|painter::VCenter : painter::HLeft|painter::VCenter;
   int Shift = ( BaseX < 0.5 ? +1 : -1 ) * 6; 
 
   Painter.drawTextF( Text, fpoint(BaseX,Y), Flags, getTextStyle(), Shift, 0 );

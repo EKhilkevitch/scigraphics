@@ -22,6 +22,8 @@
 // ============================================================
 
 #include "scigraphics/axisticks.h"
+#include "scigraphics/scale.h"
+#include "scigraphics/painter.h"
 
 #include <cstdio>
 #include <iostream>

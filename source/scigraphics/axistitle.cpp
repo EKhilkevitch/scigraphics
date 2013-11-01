@@ -22,6 +22,7 @@
 // ============================================================
 
 #include "scigraphics/axistitle.h"
+#include "scigraphics/painter.h"
 
 // ============================================================
 
@@ -34,7 +35,7 @@ void scigraphics::axisTitleX::draw( painter &Painter ) const
   if ( title().empty() )
     return;
 
-  unsigned Flags = ( BaseY < 0.5 ) ? drawer::HCenter|drawer::VUp : drawer::HCenter|drawer::VDown;
+  unsigned Flags = ( BaseY < 0.5 ) ? painter::HCenter|painter::VUp : painter::HCenter|painter::VDown;
   int Shift = - ( BaseY < 0.5 ? +1 : -1 ) * (20);
 
   Painter.drawTextW( title(), Painter.fpoint2wpoint(fpoint(0.5,BaseY)), Flags, getTextStyle(), 0, Shift );
@@ -50,7 +51,7 @@ void scigraphics::axisTitleY::draw( painter &Painter ) const
   wcoord Y = Painter.fcoord2wcoordY(0.5);
   wcoord X = BaseX < 0.5 ? 0 : Painter.plotWidth();
 
-  unsigned Flags = ( BaseX < 0.5 ) ? drawer::HCenter|drawer::VCenter : drawer::HCenter|drawer::VCenter;
+  unsigned Flags = ( BaseX < 0.5 ) ? painter::HCenter|painter::VCenter : painter::HCenter|painter::VCenter;
   int Shift = - ( BaseX < 0.5 ? +1 : -1 ) * ( 5 + getTextStyle().getFontSize());
   double Angle = ( BaseX < 0.5 ? -1 : +1 ) * 90;
 

@@ -22,11 +22,19 @@
 // ============================================================
 
 #include "scigraphics/axisset.h"
+#include "scigraphics/grid.h"
+#include "scigraphics/scale.h"
+#include "scigraphics/painter.h"
+#include "scigraphics/axis.h"
+#include "scigraphics/axislabels.h"
+#include "scigraphics/axisticks.h"
+#include "scigraphics/axistitle.h"
 
 #include <stdexcept>
 #include <typeinfo>
 #include <algorithm>
 #include <limits>
+#include <cassert>
 
 // ============================================================
 
@@ -62,6 +70,34 @@ void scigraphics::axisSet::replaceScale( scale *S )
 
   delete Scale;
   Scale = S;
+}
+
+// ------------------------------------------------------------
+
+void scigraphics::axisSet::setNumberLimits( numberLimits L ) 
+{ 
+  Scale->setNumberLimits(L); 
+}
+
+// ------------------------------------------------------------
+
+void scigraphics::axisSet::setAxisTitle( const std::string &T ) 
+{ 
+  AxisTitle->setTitle(T); 
+}
+
+// ------------------------------------------------------------
+
+std::string scigraphics::axisSet::getAxisTitle() const 
+{ 
+  return AxisTitle->title(); 
+}
+      
+// ------------------------------------------------------------
+
+void scigraphics::axisSet::setNumberStyle( numberStyle *Style ) 
+{ 
+  AxisLabels->setNumberStyle(Style); 
 }
 
 // ------------------------------------------------------------

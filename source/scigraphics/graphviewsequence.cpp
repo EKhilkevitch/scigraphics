@@ -23,6 +23,7 @@
 
 #include "scigraphics/graphviewsequence.h"
 #include "scigraphics/painter.h"
+#include "scigraphics/scale.h"
 
 #include <iostream>
 #include <cmath>

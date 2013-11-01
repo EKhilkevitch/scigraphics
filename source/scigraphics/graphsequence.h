@@ -35,7 +35,7 @@ namespace scigraphics
   {
 
     // ============================================================
-
+    
     class graph : public ::scigraphics::graph 
     {
       private:

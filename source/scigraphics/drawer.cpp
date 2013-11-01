@@ -22,6 +22,10 @@
 // ============================================================
 
 #include "scigraphics/drawer.h"
+#include "scigraphics/color.h"
+#include "scigraphics/linestyle.h"
+#include "scigraphics/brushstyle.h"
+#include "scigraphics/textstyle.h"
 
 #include <cassert>
 

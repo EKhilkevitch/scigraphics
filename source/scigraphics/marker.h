@@ -24,7 +24,7 @@
 // ============================================================
 
 #include "scigraphics/numbers.h"
-#include "scigraphics/numlimits.h"
+#include "scigraphics/interval.h"
 
 #include <vector>
 

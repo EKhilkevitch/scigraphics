@@ -23,6 +23,7 @@
 
 #include "scigraphics/scale.h"
 #include "scigraphics/painter.h"
+#include "scigraphics/marker.h"
 
 #include <cmath>
 #include <algorithm>
@@ -172,6 +173,13 @@ void scigraphics::scale::resetScale( scale *Scale, double )
 }
 
 // ============================================================
+      
+scigraphics::scaleLinear::scaleLinear() 
+{ 
+  setMarker( new markerLinear() ); 
+}
+
+// ------------------------------------------------------------
 
 double scigraphics::scaleLinear::numberToPartOfDistance( number Number ) const 
 { 
@@ -208,6 +216,13 @@ double scigraphics::scaleLogarithm::logDistance( interval<number> Interval )
 
 // ============================================================
 
+scigraphics::scaleLogarithmPositive::scaleLogarithmPositive()
+{
+  setMarker( new markerLogarithmPositive() );
+}
+
+// ------------------------------------------------------------
+
 double scigraphics::scaleLogarithmPositive::numberToPartOfDistance( number Number ) const 
 { 
   if ( Number <= 0 ) 
@@ -231,6 +246,13 @@ scigraphics::number scigraphics::scaleLogarithmPositive::partOfDistanceToNumber(
 
 // ============================================================
 
+scigraphics::scaleLogarithmNegative::scaleLogarithmNegative()
+{
+  setMarker( new markerLogarithmNegative() );
+}
+
+// ------------------------------------------------------------
+
 double scigraphics::scaleLogarithmNegative::numberToPartOfDistance( number Number ) const 
 {
   if ( Number >= 0 ) 
@@ -253,6 +275,13 @@ scigraphics::number scigraphics::scaleLogarithmNegative::partOfDistanceToNumber(
 }
 
 // ============================================================
+      
+scigraphics::scaleSquare::scaleSquare() 
+{ 
+  setMarker( new markerLinear() ); 
+}
+
+// ------------------------------------------------------------
 
 scigraphics::number scigraphics::scaleSquare::signsqrt( number Val ) 
 { 

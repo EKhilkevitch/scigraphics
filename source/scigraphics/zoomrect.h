@@ -22,10 +22,14 @@
 #pragma once
 
 #include "scigraphics/numbers.h"
-#include "scigraphics/painter.h"
+#include "scigraphics/geometry.h"
 
 namespace scigraphics
 {
+
+// ============================================================
+
+  class painter;
 
 // ============================================================
 

@@ -21,8 +21,11 @@
 
 #pragma once
 
-#include "drawer.h"
-#include "painter.h"
+#include "scigraphics/drawer.h"
+#include "scigraphics/painter.h"
+#include "scigraphics/linestyle.h"
+#include "scigraphics/brushstyle.h"
+#include "scigraphics/textstyle.h"
 
 #include <vector>
 

@@ -23,14 +23,17 @@
 
 // ============================================================
 
-#include "scigraphics/geometry.h"
 #include "scigraphics/textstyle.h"
-#include "scigraphics/painter.h"
+#include "scigraphics/geometry.h"
 
 // ============================================================
 
 namespace scigraphics
 {
+
+// ============================================================
+
+  class painter;
 
 // ============================================================
 

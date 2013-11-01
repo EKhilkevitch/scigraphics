@@ -22,6 +22,7 @@
 // ============================================================
 
 #include "scigraphics/plot.h"
+#include "scigraphics/scale.h"
 
 #include <stdexcept>
 #include <iostream>

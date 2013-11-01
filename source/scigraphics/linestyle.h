@@ -25,6 +25,8 @@
 
 #include "scigraphics/color.h"
 
+// ============================================================
+
 namespace scigraphics
 {
 

@@ -26,6 +26,9 @@
 #endif
 
 #include "scigraphics/cursorpoint.h"
+#include "scigraphics/painter.h"
+#include "scigraphics/scale.h"
+
 #include <sstream>
 #include <cstdio>
 
@@ -73,7 +76,7 @@ void scigraphics::cursorPositionViewer::drawText( painter &Painter, const std::s
   wpoint Point = getRectangle().leftUp();
   Point.moveY( -(int)textVerticalIndent() );
   Point.moveX( +(int)textHorizontalIndent() );
-  Painter.drawTextW( Text, Point, drawer::HLeft|drawer::VDown, getTextStyle() );
+  Painter.drawTextW( Text, Point, painter::HLeft|painter::VDown, getTextStyle() );
 }
 
 // ------------------------------------------------------------

@@ -22,14 +22,17 @@
 #pragma once
 
 #include "scigraphics/selectionstyle.h"
-#include "scigraphics/scale.h"
-#include "scigraphics/painter.h"
 #include "scigraphics/plotelement.h"
+#include "scigraphics/geometry.h"
 
 #include <limits>
 
 namespace scigraphics 
 {
+
+// ============================================================
+
+  class pairScales;
 
 // ============================================================
 
@@ -104,8 +107,8 @@ namespace scigraphics
       void setIntervalPoints( const npoint &A, const npoint &B ) { setInterval(A.y(),B.y()); }
       void shift( number , number DeltaY ) { shiftInterval( DeltaY ); }
       
-      number minF( const pairScales &Scales ) const { return Scales.numberToFractionY(min()); }
-      number maxF( const pairScales &Scales ) const { return Scales.numberToFractionY(max()); }
+      number minF( const pairScales &Scales ) const;
+      number maxF( const pairScales &Scales ) const;
   };
 
   // ============================================================
@@ -121,8 +124,8 @@ namespace scigraphics
       void setIntervalPoints( const npoint &A, const npoint &B ) { setInterval(A.x(),B.x()); }
       void shift( number DeltaX, number ) { shiftInterval( DeltaX ); }
       
-      number minF( const pairScales &Scales ) const { return Scales.numberToFractionX(min()); }
-      number maxF( const pairScales &Scales ) const { return Scales.numberToFractionX(max()); }
+      number minF( const pairScales &Scales ) const;
+      number maxF( const pairScales &Scales ) const;
   };
 
 // ============================================================

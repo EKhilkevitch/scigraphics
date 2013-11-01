@@ -22,23 +22,19 @@
 #pragma once
 
 #include "scigraphics/numbers.h"
-#include "scigraphics/painter.h"
-
-#include <cstdio>
-#include <cmath>
-#include <cassert>
-#include <functional>
-#include <typeinfo>
-
+#include "scigraphics/geometry.h"
 
 namespace scigraphics
 {
 
-// ============================================================
+  // ============================================================
 
   class plot;
+  class painter;
   class floatRectangle;
   class selectionStrip;
+
+  // ============================================================
 
   class mouse
   {

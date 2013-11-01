@@ -22,6 +22,7 @@
 // ============================================================
 
 #include "scigraphics/plotlimits.h"
+#include "scigraphics/graphcollection.h"
 #include "scigraphics/numbers.h"
 #include "scigraphics/axisset.h"
 

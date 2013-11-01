@@ -23,13 +23,6 @@
 
 // ============================================================
 
-#include "scigraphics/axis.h"
-#include "scigraphics/axislabels.h"
-#include "scigraphics/axisticks.h"
-#include "scigraphics/axistitle.h"
-#include "scigraphics/grid.h"
-#include "scigraphics/scale.h"
-#include "scigraphics/painter.h"
 #include "scigraphics/container_ptr.h"
 #include "scigraphics/plotlimits.h"
 
@@ -41,6 +34,18 @@
 
 namespace scigraphics
 {
+
+// ============================================================
+
+  class painter;
+  class grid;
+  class scale;
+  class pairScales;
+  class numberStyle;
+  class axis;
+  class axisTicks;
+  class axisLabels;
+  class axisTitle;
 
 // ============================================================
 
@@ -79,10 +84,12 @@ namespace scigraphics
       const scale* getScale() const { return Scale; }
       void replaceScale( scale *S );
 
-      void setNumberLimits( numberLimits L ) { Scale->setNumberLimits(L); }
+      void setNumberLimits( numberLimits L );
 
-      void setAxisTitle( const std::string &T ) { AxisTitle->setTitle(T); }
-      std::string getAxisTitle() const { return AxisTitle->title(); }
+      void setAxisTitle( const std::string &Title );
+      std::string getAxisTitle() const;
+
+      void setNumberStyle( numberStyle *Style );
 
       virtual wcoord requiredIndent( bool Used ) const = 0;
 

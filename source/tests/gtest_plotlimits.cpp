@@ -11,6 +11,7 @@
 #include "scigraphics/plotlimits.h"
 #include "scigraphics/axisset.h"
 #include "scigraphics/graphsequence.h"
+#include "scigraphics/graphcollection.h"
 
 namespace scigraphics {};
 using namespace scigraphics;

@@ -26,14 +26,18 @@
 #include "scigraphics/numbers.h"
 #include "scigraphics/numlimits.h"
 #include "scigraphics/geometry.h"
-#include "scigraphics/marker.h"
+
+#include <vector>
 
 // ============================================================
 
 namespace scigraphics
 {
 
+// ============================================================
+
   class painter;
+  class marker;
 
 // ============================================================
 
@@ -98,7 +102,7 @@ namespace scigraphics
       double numberToPartOfDistance( number Number ) const;
       number partOfDistanceToNumber( double Part ) const;
     public:
-      scaleLinear() { setMarker( new markerLinear() ); }
+      scaleLinear();
   };
 
   class scaleLogarithm : public scale 
@@ -113,7 +117,7 @@ namespace scigraphics
       double numberToPartOfDistance( number Number ) const;
       number partOfDistanceToNumber( double Part ) const;
     public:
-      scaleLogarithmPositive() { setMarker( new markerLogarithmPositive() ); }
+      scaleLogarithmPositive();
       interval<number> getNumberInterval() const { return getNumberLimits().positiveLimits(); }
   };
   
@@ -123,7 +127,7 @@ namespace scigraphics
       double numberToPartOfDistance( number Number ) const;
       number partOfDistanceToNumber( double Part ) const;
     public:
-      scaleLogarithmNegative() { setMarker( new markerLogarithmNegative() ); }
+      scaleLogarithmNegative();
       interval<number> getNumberInterval() const { return getNumberLimits().negativeLimits(); }
   };
 
@@ -138,7 +142,7 @@ namespace scigraphics
       number partOfDistanceToNumber( double Part ) const;
 
     public:
-      scaleSquare() { setMarker( new markerLinear() ); }
+      scaleSquare();
   };
 
 // ============================================================
@@ -147,6 +151,7 @@ namespace scigraphics
   {
     private:
       const scale &ScaleX, &ScaleY;
+
     public:
       pairScales( const scale &SX, const scale &SY );
       point<fcoord> npoint2fpoint( point<number> Point ) const;

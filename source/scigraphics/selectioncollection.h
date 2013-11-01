@@ -25,14 +25,17 @@
 
 #include "scigraphics/selection.h"
 #include "scigraphics/plotelementcollection.h"
-#include "scigraphics/painter.h"
 
 // ============================================================
 
 namespace scigraphics 
 {
 
-// ============================================================
+  // ============================================================
+
+  class painter;
+
+  // ============================================================
 
   class selectionCollection : public templatePlotElementsCollection<selection>
   {
@@ -44,7 +47,7 @@ namespace scigraphics
       void shiftSelection( selectionStrip *Selection, fpoint From, fpoint To );
   };
 
-// ============================================================
+  // ============================================================
 
   template <class S> S* selectionCollection::create()
   {

@@ -23,32 +23,34 @@
 
 // ============================================================
 
-#include "scigraphics/drawer.h"
+#include "scigraphics/numbers.h"
 #include "scigraphics/geometry.h"
-#include "scigraphics/scale.h"
-#include "scigraphics/linestyle.h"
-#include "scigraphics/brushstyle.h"
-#include "scigraphics/textstyle.h"
-#include "scigraphics/pointstyle.h"
-#include "scigraphics/errorbarstyle.h"
 
 #include <string>
 #include <vector>
-#include <cstdio>
+  
+// ============================================================
 
 namespace scigraphics
 {
 
-// ============================================================
-
-  typedef point<fcoord> fpoint;
-  typedef rectangle<fcoord> frectangle;
+  // ============================================================
   
-  typedef point<number> npoint;
-  typedef rectangle<number> nrectangle;
+  class lineStyle;
+  class brushStyle;
+  class textStyle;
+  class pointStyle;
+  class errorBarStyle;
+  class drawer;
+  
+  // ============================================================
 
   class painter
   {
+    public:
+      enum textPosition { HLeft = 0x0001,       HRight = 0x0002,        HCenter = 0x0003,
+                          VUp   = 0x0100,       VDown = 0x0200,         VCenter = 0x0300 };
+
     private:
       drawer *Drawer;
       
@@ -64,13 +66,13 @@ namespace scigraphics
 
     public:
       painter( drawer *D = NULL ) : Drawer(D) {}
-      virtual ~painter() { delete Drawer; }
+      virtual ~painter();
       
-      void setDrawer( drawer *D ) { delete Drawer; Drawer = D; } 
+      void setDrawer( drawer *D );
       drawer* getDrawer() { return Drawer; }
       
-      wcoord plotWidth()  const { return ableToDraw() ? Drawer->width()  : 100; }
-      wcoord plotHeight() const { return ableToDraw() ? Drawer->height() : 100; }
+      wcoord plotWidth()  const;
+      wcoord plotHeight() const;
 
       void setIndents( const indents<wcoord>& Ids ) { Indents = Ids; update(); }
       const indents<wcoord> getIndents() const { return Indents; }
@@ -99,12 +101,12 @@ namespace scigraphics
       void drawLineW( wpoint A, wpoint B, const lineStyle &Style );
       void drawLineF( fpoint A, fpoint B, const lineStyle &Style );
 
-      void drawTextW( const std::string &String, wpoint Point, unsigned Position, 
-        const textStyle &Style = textStyle(), int ShiftLeft = 0, int ShiftUp = 0, double Angle = 0 );
       void drawTextF( const std::string &String, fpoint Point, unsigned PositionFlags, 
-        const textStyle &Style = textStyle(), int ShiftLeft = 0, int ShiftUp = 0, double Angle = 0 );
+        const textStyle &Style, int ShiftLeft = 0, int ShiftUp = 0, double Angle = 0 );
+      void drawTextW( const std::string &String, wpoint Point, unsigned Position, 
+        const textStyle &Style, int ShiftLeft = 0, int ShiftUp = 0, double Angle = 0 );
 
-      void drawRectangleF( const frectangle &Rect, const brushStyle &BrushStyle = brushStyle() );
+      void drawRectangleF( const frectangle &Rect, const brushStyle &BrushStyle );
       void drawRectangleF( const frectangle &Rect, const brushStyle &BrushStyle, const lineStyle &LineStyle );
       void drawRectangleW( const wrectangle &Rect, const brushStyle &BrushStyle, const lineStyle &LineStyle );
 
@@ -119,8 +121,8 @@ namespace scigraphics
       void drawPolygonF( const std::vector<fpoint> &Points, const brushStyle &Style );
       void drawPolygonW( const std::vector<wpoint> &Points, const brushStyle &Style );
 
-      wcoord textWidth( const std::string &Text, const textStyle &Style = textStyle() );
-      wcoord textHeight( const std::string &Text, const textStyle &Style = textStyle() );
+      wcoord textWidth( const std::string &Text, const textStyle &Style );
+      wcoord textHeight( const std::string &Text, const textStyle &Style );
   };
 
 // ============================================================

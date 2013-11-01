@@ -25,6 +25,10 @@
 #include "scigraphics/painter.h"
 #include "scigraphics/scale.h"
 #include "scigraphics/numberstyle.h"
+#include "scigraphics/color.h"
+#include "scigraphics/brushstyle.h"
+#include "scigraphics/linestyle.h"
+#include "scigraphics/textstyle.h"
 
 #include <iostream>
 #include <cmath>
@@ -249,7 +253,7 @@ void scigraphics::map::graphViewRectangle::drawRainbowMarkers( painter &Painter,
     wcoord Y  = Rectangle.up() - Rectangle.height() * Part;
     
     Painter.drawLineW( wpoint(X0,Y), wpoint(X1,Y), LineStyle );
-    Painter.drawTextW( NumberStyle.numberText(Marks[i]), wpoint( X1 + 4, Y ), drawer::HLeft|drawer::VCenter, TextStyle );
+    Painter.drawTextW( NumberStyle.numberText(Marks[i]), wpoint( X1 + 4, Y ), painter::HLeft|painter::VCenter, TextStyle );
   }
 }
 

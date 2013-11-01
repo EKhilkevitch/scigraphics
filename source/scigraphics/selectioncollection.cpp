@@ -22,6 +22,8 @@
 // ============================================================
 
 #include "scigraphics/selectioncollection.h"
+#include "scigraphics/painter.h"
+#include "scigraphics/scale.h"
 
 // ============================================================
       

@@ -22,12 +22,15 @@
 #pragma once
 
 #include "scigraphics/numbers.h"
-#include "scigraphics/painter.h"
 #include "scigraphics/linestyle.h"
-#include "scigraphics/scale.h"
 
 namespace scigraphics
 {
+
+// ============================================================
+
+  class painter;
+  class scale;
 
 // ============================================================
 

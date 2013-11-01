@@ -23,18 +23,25 @@
 
 #include "scigraphics/datamap.h"
 #include "scigraphics/numbers.h"
-#include "scigraphics/painter.h"
+#include "scigraphics/geometry.h"
 
 namespace scigraphics 
 {
+    
+  // ============================================================
 
+  class painter;
+  class color;
   class scale;
+  class pairScales;
+    
+  // ============================================================
 
   namespace map
   {
 
     // ============================================================
-
+    
     class graphView 
     {
       private:

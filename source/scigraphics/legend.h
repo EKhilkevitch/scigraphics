@@ -25,7 +25,6 @@
 
 #include "scigraphics/floatrect.h"
 #include "scigraphics/textstyle.h"
-#include "scigraphics/graphcollection.h"
 
 #include <list>
 #include <string>
@@ -34,6 +33,12 @@
 
 namespace scigraphics
 {
+
+// ============================================================
+
+  class graph;
+  class graphCollection;
+  class painter;
 
 // ============================================================
 

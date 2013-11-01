@@ -37,14 +37,18 @@ namespace scigraphics
 
 // ============================================================
 
+  class color;
+
+// ============================================================
+
   class graphCollection : public templatePlotElementsCollection<graph>
   {
     public:
 
       template < class G > G* create();
-      template < class G > G* create( const color Color );
+      template < class G > G* create( const color &Color );
       template < class G > G* create( const std::string &Legend );
-      template < class G > G* create( const std::string &Legend, const color Color );
+      template < class G > G* create( const std::string &Legend, const color &Color );
   };
 
 // ============================================================
@@ -56,7 +60,7 @@ namespace scigraphics
     return Graph;
   }
 
-  template < class G > G* graphCollection::create( const color Color )
+  template < class G > G* graphCollection::create( const color &Color )
   {
     G *Graph = new G( Color );
     append( Graph );
@@ -70,7 +74,7 @@ namespace scigraphics
     return Graph;
   }
 
-  template < class G > G* graphCollection::create( const std::string &Legend, const color Color )
+  template < class G > G* graphCollection::create( const std::string &Legend, const color &Color )
   {
     G *Graph = new G( Legend, Color );
     append( Graph );

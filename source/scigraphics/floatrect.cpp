@@ -22,6 +22,8 @@
 // ============================================================
 
 #include "scigraphics/floatrect.h"
+#include "scigraphics/painter.h"
+#include "scigraphics/textstyle.h"
 #include "scigraphics/brushstyle.h"
 
 // ============================================================

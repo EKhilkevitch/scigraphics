@@ -21,8 +21,12 @@
 
 #pragma once
 
+// ============================================================
+
 #include "scigraphics/color.h"
 #include "scigraphics/linestyle.h"
+
+// ============================================================
 
 namespace scigraphics
 {

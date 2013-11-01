@@ -22,6 +22,10 @@
 // ============================================================
 
 #include "scigraphics/selection.h"
+#include "scigraphics/scale.h"
+#include "scigraphics/painter.h"
+#include "scigraphics/brushstyle.h"
+#include "scigraphics/linestyle.h"
 
 // ============================================================
 
@@ -91,5 +95,34 @@ void scigraphics::selectionStrip::shiftPoints( npoint From, npoint To )
 }
 
 // ============================================================
+
+scigraphics::number scigraphics::selectionHorizontal::minF( const pairScales &Scales ) const 
+{ 
+  return Scales.numberToFractionY(min()); 
+}
+
+// ------------------------------------------------------------
+
+scigraphics::number scigraphics::selectionHorizontal::maxF( const pairScales &Scales ) const 
+{ 
+  return Scales.numberToFractionY(max()); 
+}
+
+// ============================================================
+
+scigraphics::number scigraphics::selectionVertical::minF( const pairScales &Scales ) const 
+{ 
+  return Scales.numberToFractionX(min()); 
+}
+
+// ------------------------------------------------------------
+
+scigraphics::number scigraphics::selectionVertical::maxF( const pairScales &Scales ) const 
+{ 
+  return Scales.numberToFractionX(max()); 
+}
+
+// ============================================================
+
       
 

@@ -26,6 +26,7 @@
 // ============================================================
 
 #include "scigraphics/numbers.h"
+
 #include <algorithm>
 #include <ostream>
 
@@ -147,6 +148,21 @@ namespace scigraphics
                              point<N>( NewRight, NewDown ) );
       }
   };
+
+// ============================================================
+
+  typedef point<wcoord> wpoint;
+  typedef rectangle<wcoord> wrectangle;
+
+  typedef point<fcoord> fpoint;
+  typedef rectangle<fcoord> frectangle;
+  
+  typedef point<number> npoint;
+  typedef rectangle<number> nrectangle;
+
+// ============================================================
+
+
 
 // ============================================================
 

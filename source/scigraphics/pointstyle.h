@@ -21,10 +21,11 @@
 
 #pragma once
 
+// ============================================================
+
 #include "scigraphics/color.h"
 
-#include <cstdio>
-#include <string>
+// ============================================================
 
 namespace scigraphics
 {

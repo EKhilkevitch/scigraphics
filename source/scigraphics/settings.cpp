@@ -18,8 +18,10 @@
  * along with scigraphics.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+// ============================================================
 
 #include "scigraphics/settings.h"
+#include "scigraphics/scale.h"
 
 #if _WIN32
 #  pragma warning( disable : 4800 )

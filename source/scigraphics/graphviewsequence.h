@@ -21,20 +21,33 @@
 
 #pragma once
 
+// ============================================================
+
 #include "scigraphics/datasequence.h"
 #include "scigraphics/numbers.h"
-#include "scigraphics/painter.h"
+#include "scigraphics/geometry.h"
 
 #include "scigraphics/linestyle.h"
 #include "scigraphics/pointstyle.h"
 #include "scigraphics/errorbarstyle.h"
 #include "scigraphics/brushstyle.h"
+    
+// ============================================================
 
 namespace scigraphics 
 {
+    
+  // ============================================================
+
+  class color;
+  class painter;
+  class pairScales;
+    
+  // ============================================================
+
   namespace sequence
   {
- 
+    
     // ============================================================
     
     class graphView

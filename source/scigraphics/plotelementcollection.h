@@ -25,13 +25,11 @@
 
 #include "scigraphics/plotelement.h"
 #include "scigraphics/container_ptr.h"
-#include "scigraphics/scale.h"
 
 #include <list>
 #include <map>
 #include <set>
 #include <stdexcept>
-#include <algorithm>
 #include <cassert>
 
 // ============================================================
@@ -42,6 +40,7 @@ namespace scigraphics
 // ============================================================
 
   class axisSet;
+  class scale;
 
 // ============================================================
 

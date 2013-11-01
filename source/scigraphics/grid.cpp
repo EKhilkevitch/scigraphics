@@ -22,6 +22,9 @@
 // ============================================================
 
 #include "scigraphics/grid.h"
+#include "scigraphics/painter.h"
+#include "scigraphics/scale.h"
+
 #include <iostream>
 
 // ============================================================

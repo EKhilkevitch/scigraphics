@@ -21,14 +21,21 @@
 
 #pragma once
 
+// ============================================================
+
 #include "scigraphics/numbers.h"
-#include "scigraphics/painter.h"
 #include "scigraphics/textstyle.h"
-#include "scigraphics/numberstyle.h"
-#include "scigraphics/scale.h"
+
+// ============================================================
 
 namespace scigraphics
 {
+
+// ============================================================
+
+  class numberStyle;
+  class painter;
+  class scale;
 
 // ============================================================
 
@@ -40,18 +47,23 @@ namespace scigraphics
     private:
       textStyle TextStyle;
       numberStyle *NumberStyle;
+
+    private:
+      axisLabels( const axisLabels& );
+      axisLabels& operator=( const axisLabels& );
       
     protected:
       virtual void drawOneLabel( painter &Painter, const scale &Scale, number Value ) = 0;
 
     public:
-      axisLabels() : TextStyle(DefaultAxisTextStyle), NumberStyle(new generalNumberStyle()) {} 
-      virtual ~axisLabels() { delete NumberStyle; };
+      axisLabels(); 
+      virtual ~axisLabels();
 
       const textStyle& getTextStyle() const { return TextStyle; }
       void setTextStyle( const textStyle &S ) { TextStyle = S; }
 
       const numberStyle& getNumberStyle() const { return *NumberStyle; }
+      void setNumberStyle( numberStyle *Style );
 
       virtual void draw( painter &Painter, const scale &Scale, const std::vector<number> &Marks ); 
   };

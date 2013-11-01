@@ -22,6 +22,10 @@
 // ============================================================
 
 #include "scigraphics/legend.h"
+#include "scigraphics/textstyle.h"
+#include "scigraphics/graphcollection.h"
+#include "scigraphics/painter.h"
+
 #include <iostream>
 #include <cassert>
 
@@ -158,7 +162,7 @@ scigraphics::wcoord scigraphics::legend::drawGraphLegend( painter &Painter, wcoo
   Graph.drawLegendExample( Painter, wrectangle( wpoint(x,y-GraphLegendHeight), wpoint(x+ExampleWidth,y) ) );
   
   x += ExampleWidth + textHorizontalIndent();
-  Painter.drawTextW( Graph.legend(), wpoint(x,y-GraphLegendHeight/2), drawer::HLeft|drawer::VCenter, Style );
+  Painter.drawTextW( Graph.legend(), wpoint(x,y-GraphLegendHeight/2), painter::HLeft|painter::VCenter, Style );
 
   return GraphLegendHeight;
 }

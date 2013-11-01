@@ -22,6 +22,7 @@
 // ============================================================
 
 #include "scigraphics/zoomrect.h"
+#include "scigraphics/painter.h"
 #include "scigraphics/brushstyle.h"
 #include "scigraphics/linestyle.h"
 

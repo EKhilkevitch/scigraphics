@@ -23,9 +23,10 @@
 
 // ============================================================
 
+#include "scigraphics/numbers.h"
+#include "scigraphics/geometry.h"
 #include "scigraphics/plotelement.h"
-#include "scigraphics/numlimits.h"
-#include "scigraphics/painter.h"
+#include "scigraphics/interval.h"
 
 #include <string>
 
@@ -33,6 +34,11 @@
 
 namespace scigraphics 
 {
+
+// ============================================================
+
+  class painter;
+  class numberLimits;
 
 // ============================================================
 
