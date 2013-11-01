@@ -109,8 +109,8 @@ namespace scigraphics
       public:
         dataVector() : OrderedByX(true) {}
 
-        int_t size() const { return Points.size(); }
-        const point_t at( int_t Index ) const { return Points.at(Index); }
+        int_t size() const { return static_cast<int_t>(Points.size()); }
+        const point_t at( int_t Index ) const { return Points.at( static_cast<size_t>(Index) ); }
 
         void append( const point_t &Point );
         void append( number X, number Y ) { append( point_t(X,Y) );  }

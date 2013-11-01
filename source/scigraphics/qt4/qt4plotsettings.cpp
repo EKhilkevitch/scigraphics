@@ -178,7 +178,7 @@ void qt4plotSettingsGroupSuperBox::updateWidgets()
 qt4plotSettingsScaleIntervals::qt4plotSettingsScaleIntervals( const scigraphics::axisSetCollection::axisPosition Axis, QWidget *Parent ) 
    : qt4plotSettingsGroupBox( axisPositionString(Axis) + " scale", Parent ), AxisType(Axis)
 {
-  ManualScaleBox = new QCheckBox("Manual");
+  ManualScaleBox = new QCheckBox("Manual",this);
   MinScaleEdit   = new qt4labeledLineEdit("Min","",this);
   MaxScaleEdit   = new qt4labeledLineEdit("Max","",this);
 
@@ -257,12 +257,12 @@ void qt4plotSettingsScaleIntervals::loadSettings( QSettings* Settings )
 qt4plotSettingsGraphType::qt4plotSettingsGraphType( QWidget *Parent ) : 
   qt4plotSettingsGroupBox( "Graph style", Parent )
 {
-  ShowPointsBtn = new QRadioButton( "Show points" );
-  ShowLinesBtn  = new QRadioButton( "Show lines" );
-  ShowLinesAndPointsBtn = new QRadioButton( "Show points and lines" );
+  ShowPointsBtn = new QRadioButton( "Show points", this );
+  ShowLinesBtn  = new QRadioButton( "Show lines", this );
+  ShowLinesAndPointsBtn = new QRadioButton( "Show points and lines", this );
   ShowLinesAndPointsBtn->setChecked(true);
-  ShowLineHystogramBtn = new QRadioButton("Show hystogram");
-  ErrorBarsChk = new QCheckBox("Show error bars");
+  ShowLineHystogramBtn = new QRadioButton( "Show hystogram", this );
+  ErrorBarsChk = new QCheckBox( "Show error bars", this );
 
   QVBoxLayout *VLayout = new QVBoxLayout();
   VLayout->addWidget( ShowPointsBtn );
@@ -345,8 +345,8 @@ void qt4plotSettingsGraphType::loadSettings( QSettings* Settings )
 qt4plotSettingsDecoration::qt4plotSettingsDecoration( QWidget *Parent ) :
   qt4plotSettingsGroupBox( "Decorations", Parent )
 {
-  ShowLegendChk = new QCheckBox("Show legend");
-  ShowCursorPositionChk = new QCheckBox("Show cursor position");
+  ShowLegendChk = new QCheckBox("Show legend",this);
+  ShowCursorPositionChk = new QCheckBox("Show cursor position",this);
 
   ShowLegendChk->setChecked(true);
   ShowCursorPositionChk->setChecked(true);
@@ -400,11 +400,11 @@ qt4plotSettingsScaleType::qt4plotSettingsScaleType( const scigraphics::axisSetCo
    : qt4plotSettingsGroupBox( axisPositionString(Axis) + " type", Parent ), AxisType(Axis) 
 {
 
-  LinearBtn  = new QRadioButton( "Linear" );
+  LinearBtn  = new QRadioButton( "Linear", this );
   LinearBtn->setChecked(true);
-  LogarithmPositiveBtn = new QRadioButton( "Logarithm (positive)" );
-  LogarithmNegativeBtn = new QRadioButton( "Logarithm (negative)" );
-  SquareBtn = new QRadioButton( "Square root" );
+  LogarithmPositiveBtn = new QRadioButton( "Logarithm (positive)", this );
+  LogarithmNegativeBtn = new QRadioButton( "Logarithm (negative)", this );
+  SquareBtn = new QRadioButton( "Square root", this );
 
   QVBoxLayout *VLayout = new QVBoxLayout();
   VLayout->addWidget( LinearBtn );
@@ -466,7 +466,7 @@ qt4plotSettingsSelections::qt4plotSettingsSelections( QWidget *Parent ) : qt4plo
 
   setMinimumWidth(185);
 
-  EnableSelectionBox   = new QCheckBox("Select time interval");
+  EnableSelectionBox   = new QCheckBox("Select time interval",this);
   MinValueEdit = new qt4labeledLineEdit( "Minimum ", "0", this );
   MaxValueEdit = new qt4labeledLineEdit( "Maximum ", "1", this );
   
