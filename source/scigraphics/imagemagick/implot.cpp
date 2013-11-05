@@ -67,7 +67,7 @@ void drawerIm::setLineStyle( const scigraphics::lineStyle &Style )
   if ( Image == NULL )
     return;
 
-  Image->fillColor( colorIm( scigraphics::color::Transparency ) );
+//  Image->fillColor( colorIm( scigraphics::color::Transparency ) );
   Image->strokeColor( colorIm( Style.getColor() ) );
   Image->strokeWidth( 0 );
   Image->lineWidth( Style.width() );
@@ -108,8 +108,10 @@ void drawerIm::setBrushStyle( const scigraphics::brushStyle &Style )
       break;
   }
   
-  Image->strokeWidth( 0 );
   Image->fillColor( colorIm( Color ) );
+  Image->strokeWidth( 0 );
+  Image->strokeColor( colorIm( Color ) );
+  //Image->strokeColor( Magick::Color(0, 0, 0, MaxRGB) );
 }
 
 // ----------------------------------------------------------------
@@ -159,8 +161,7 @@ void drawerIm::drawPolygon( const std::vector<scigraphics::wpoint> &Points )
   
   std::list< Magick::Coordinate > Polygon = polygonIm( Points );
 
-  //Image->strokeColor( Magick::Color(0, 0, 0, MaxRGB) );
-  
+  Image->strokeColor( Magick::Color(0, 0, 0, MaxRGB) );
   Image->draw( Magick::DrawablePolygon( Polygon ) );
 }
 
@@ -255,6 +256,8 @@ implot::implot( size_t SizeX, size_t SizeY )
 {
   drawerIm *Drawer = new drawerIm(SizeX,SizeY);
   setDrawer( Drawer );
+
+  setVisibleCursorPositionViewer(false);
 }
 
 // ----------------------------------------------------------------
