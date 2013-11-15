@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2011,2012 Evgeniy Khilkevitch 
  * 
@@ -38,7 +37,6 @@ void qt4plotView::dragEnterEvent( QDragEnterEvent *Event )
 
 void qt4plotView::dragMoveEvent( QDragMoveEvent *Event )
 {
-
   if ( DragEnabled )
     Event->acceptProposedAction();
 }
@@ -418,6 +416,13 @@ QPixmap qt4plot::createTranspPixmap( const int Width, const int Height )
   Mask.fill( Qt::color1 );
   Pixmap.setMask( Mask );
   return Pixmap;
+}
+
+// ----------------------------------------------------------------
+
+void qt4plot::replot()
+{
+  plot::replot();
 }
 
 // ----------------------------------------------------------------

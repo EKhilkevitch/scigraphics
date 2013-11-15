@@ -203,7 +203,7 @@ class qt4plot : public QWidget, public scigraphics::plot
     void mouseWheel( QWheelEvent *Event );
 
   public slots:
-    void replot() { plot::replot(); }
+    void replot();
     void setCrossCursor( bool Set );
 
   signals:

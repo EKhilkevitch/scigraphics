@@ -98,8 +98,11 @@ namespace scigraphics
       void clearPlotArea();
       void clearBordersArea();
 
+      void setLineStyle( const lineStyle &Style );
       void drawLineW( wpoint A, wpoint B, const lineStyle &Style );
+      void drawLineW( wpoint A, wpoint B );
       void drawLineF( fpoint A, fpoint B, const lineStyle &Style );
+      void drawLineF( fpoint A, fpoint B );
 
       void drawTextF( const std::string &String, fpoint Point, unsigned PositionFlags, 
         const textStyle &Style, int ShiftLeft = 0, int ShiftUp = 0, double Angle = 0 );

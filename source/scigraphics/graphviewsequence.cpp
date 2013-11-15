@@ -122,6 +122,8 @@ void scigraphics::sequence::graphViewGeneralLine::drawUnorderedByX( painter &Pai
   if ( Begin == End )
     return;
 
+  Painter.setLineStyle( getStyle() );
+  
   oneCoordinateXPoints OneCoordinateXpoints;
 
   sequence::data::iterator Point1 = Begin, Point2 = Begin;
@@ -164,6 +166,7 @@ void scigraphics::sequence::graphViewGeneralLine::drawLegendExample( painter &Pa
   wcoord VCenter = ( Rectangle.up() + Rectangle.down() )/2;
   wpoint Left( Rectangle.left()+1, VCenter );
   wpoint Right( Rectangle.right()-1, VCenter );
+  Painter.setLineStyle( getStyle() );
   drawLineBetweenPoints( Painter, Painter.wpoint2fpoint(Left), Painter.wpoint2fpoint(Right) );
 }
 
@@ -171,7 +174,7 @@ void scigraphics::sequence::graphViewGeneralLine::drawLegendExample( painter &Pa
 
 void scigraphics::sequence::graphViewLine::drawLineBetweenPoints( painter &Painter, const fpoint Pt1, const fpoint &Pt2 ) const
 {
-  Painter.drawLineF( Pt1, Pt2, getStyle() );
+  Painter.drawLineF( Pt1, Pt2 );
 }
 
 // ------------------------------------------------------------
@@ -242,8 +245,8 @@ void scigraphics::sequence::graphViewErrorBars::drawVerticalErrorBar( painter &P
 void scigraphics::sequence::graphViewLineHystogram::drawLineBetweenPoints( painter &Painter, fpoint Pt1, const fpoint &Pt2 ) const
 {
   fpoint PtMiddle( Pt2.x(), Pt1.y() );
-  Painter.drawLineF( Pt1, PtMiddle, getStyle() );
-  Painter.drawLineF( PtMiddle, Pt2, getStyle() );
+  Painter.drawLineF( Pt1, PtMiddle );
+  Painter.drawLineF( PtMiddle, Pt2 );
 }
       
 // ------------------------------------------------------------

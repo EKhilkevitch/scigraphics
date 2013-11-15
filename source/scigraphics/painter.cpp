@@ -199,25 +199,46 @@ void scigraphics::painter::clearBordersArea()
 
 // ------------------------------------------------------------
 
+void scigraphics::painter::setLineStyle( const lineStyle &Style )
+{
+  if ( ableToDraw() )
+    Drawer->setLineStyle( Style );
+}
+
+// ------------------------------------------------------------
+
 void scigraphics::painter::drawLineW( wpoint A, wpoint B, const lineStyle &Style ) 
 { 
   //std::cout << "painter::drawCoordLine()" << A.x() << " " << A.y() << " " << Style.getColor().name() << std::endl;
+  setLineStyle( Style );
+  drawLineW( A, B );
+}
+
+// ------------------------------------------------------------
+
+void scigraphics::painter::drawLineW( wpoint A, wpoint B )
+{
   if ( ableToDraw() )
-  {
-    Drawer->setLineStyle( Style );
     Drawer->drawLine( A, B ); 
-  }
 }
 
 // ------------------------------------------------------------
 
 void scigraphics::painter::drawLineF( fpoint A, fpoint B, const lineStyle &Style )
 {
+  setLineStyle( Style );
+  drawLineF( A, B );
+}
+
+// ------------------------------------------------------------
+
+void scigraphics::painter::drawLineF( fpoint A, fpoint B )
+{
   if ( ! ableToDraw() )
     return;
   wpoint WA = fpoint2wpoint(A);
   wpoint WB = fpoint2wpoint(B);
-  drawLineW( WA, WB, Style );
+  drawLineW( WA, WB );
 }
       
 // ------------------------------------------------------------
