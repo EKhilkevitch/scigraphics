@@ -104,7 +104,6 @@ namespace scigraphics
       drawer* getDrawer() { return Painter.getDrawer(); }
 
       void preparePainter();
-      void updateScaleLimits();
       void prepareForPainting();
 
       wcoord axisSetIndent( const axisSet &Set ) const;
@@ -127,6 +126,7 @@ namespace scigraphics
       mouse& mouseHandler() { return MouseHandler; }
       const mouse& mouseHandler() const { return MouseHandler; }
 
+      void updateScaleLimits();
 
     public:
       plot();
