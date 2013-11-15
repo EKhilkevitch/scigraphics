@@ -56,6 +56,8 @@ namespace scigraphics
 
       data_iterator operator++()                                { Index++; return *this; }
       data_iterator operator++(int)                             { data_iterator I = *this; ++(*this); return I; }
+      data_iterator operator--()                                { Index--; return *this; }
+      data_iterator operator--(int)                             { data_iterator I = *this; --(*this); return I; }
       difference_type operator-( const data_iterator &I ) const { return Index - I.Index; }
       data_iterator& operator+=( difference_type N )            { Index += N; return *this; }
       data_iterator& operator-=( difference_type N )            { *this += (-N); return *this; }
