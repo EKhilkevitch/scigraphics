@@ -262,6 +262,17 @@ drawerQt::drawerQt( QWidget *Prnt ) : Parent(Prnt)
   View->show();
 }
 
+// ----------------------------------------------------------------
+
+drawerQt::~drawerQt()
+{
+  delete View;
+  delete PixmapItem;
+  delete Scene;
+  delete Painter;
+  delete PlotPixmap;
+}
+
 // ================================================================
 
 qt4plot::qt4plot( QWidget* Parent, Qt::WindowFlags Flags ) : QWidget(Parent,Flags), plot()

@@ -42,6 +42,7 @@
 scigraphics::painter::~painter() 
 { 
   delete Drawer; 
+  Drawer = NULL;
 }
       
 // ------------------------------------------------------------

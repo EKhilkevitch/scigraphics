@@ -101,6 +101,10 @@ class drawerQt : public scigraphics::drawer
     QGraphicsPixmapItem *PixmapItem;
     QPixmap *PlotPixmap;
 
+  private:
+    drawerQt( const drawerQt& );
+    drawerQt& operator=( const drawerQt& );
+
   public:
     static QColor colorQt( const scigraphics::color& Color )         { return QColor( Color.red(), Color.green(), Color.blue(), 0xFF - Color.transparency() ); }
     static QPoint pointQt( const scigraphics::wpoint& Point )        { return QPoint(Point.x(),Point.y()); }
@@ -111,7 +115,6 @@ class drawerQt : public scigraphics::drawer
     static QPolygon polygonQt( const std::vector<scigraphics::wpoint> &Points );
    
   public:
-      
     void setLineStyle( const scigraphics::lineStyle &Style );
     void setBrushStyle( const scigraphics::brushStyle &Style );
     void setTextStyle( const scigraphics::textStyle &Style );
@@ -132,6 +135,7 @@ class drawerQt : public scigraphics::drawer
 
   public:
     drawerQt( QWidget *Parent );
+    ~drawerQt();
 
     QGraphicsScene* scene() { return Scene; }
     qt4plotView* view() { return View; }
