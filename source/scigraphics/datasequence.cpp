@@ -99,28 +99,29 @@ void scigraphics::sequence::dataVector::updateOrderedByX()
   if ( ! OrderedByX )      
     return;
 
-  if ( size() <= 1 ) 
+  if ( Points.empty() ) 
+  {
+    OrderedByX = true;
     return; 
+  }
 
-  if ( ! isValidNumber( last().x() ) )
+  point_t Last = Points[ Points.size()-1 ];
+
+  if ( Points.size() <= 1 )
+  {
+    OrderedByX = isValidNumber( Last.x() );
+    return;
+  }
+
+  if ( ! isValidNumber( Last.x() ) )
   {
     OrderedByX = false;
     return;
   }
-  
-  number LastValidX = invalidNumber();
-  int DataSize = static_cast<int>( size() );
-  for ( int i = DataSize-2; i >= 0; i-- )
-  {
-    if ( isValidNumber( Points[i].x() ) )
-    {
-      LastValidX = Points[i].x();
-      break;
-    }
-  }
-    
-  if ( isValidNumber(LastValidX) && LastValidX > last().x() )
-    OrderedByX = false;
+
+  point_t BeforeLast = Points[ Points.size()-1 ];
+  OrderedByX = ( Last.x() >= BeforeLast.x() );
+  return;
 }
 
 // ------------------------------------------------------------
@@ -162,10 +163,7 @@ void scigraphics::sequence::dataVector::recalculateLimits( coordinateType Coordi
 
   *Limits = numberLimits();
 
-  const iterator Begin = begin();
-  const iterator End   = end();
-
-  for ( iterator p = Begin; p != End; ++p )
+  for ( std::vector<point_t>::const_iterator p = Points.begin(); p != Points.end(); ++p )
   {
     if ( ! p->isValid() )
       continue;
