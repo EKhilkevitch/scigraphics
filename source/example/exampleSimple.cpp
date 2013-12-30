@@ -43,8 +43,13 @@ int main( int argc, char *argv[] )
   qt4plot Plot;
 
   scigraphics::graphSV *Sin = Plot.createGraphSV( "Sinus" );
-  for ( double x = -M_PI; x <= M_PI; x+= 0.1 )
-    Sin->append( x, std::sin(x) );
+  size_t GraphSize = 100000;
+  for ( unsigned i = 0; i < GraphSize; i++ )
+  {
+    double x = 2 * M_PI * i / GraphSize - M_PI;
+    double y = std::sin( x );
+    Sin->append( x, y );
+  }
 
   Plot.move( 200, 200 );
   Plot.resize( 700, 800 );

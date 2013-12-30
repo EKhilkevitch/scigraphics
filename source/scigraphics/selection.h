@@ -91,7 +91,7 @@ namespace scigraphics
 
       number min() const { return Interval.min(); }
       number max() const { return Interval.max(); }
-      interval<number> stripInterval() const { return Interval; }
+      const interval<number> stripInterval() const { return Interval; }
   };
 
   // ============================================================
