@@ -100,14 +100,12 @@ namespace scigraphics
         void updateLimitsXY( const point_t &Point, const coordinateType Type );
         void updateLimits( number Number, coordinateType Coordinate, numberLimits *Limits );
         void updateOrderedByX();
-        static bool needToRecalculateLimits( const interval<number> Interval );
         void recalculateLimits( coordinateType Coordinate, numberLimits *Limits );
-        void updateLimitsByValue( numberLimits *Limits, number Value, number PosDistance, number NegDistamce );
         static number pointValue( const point_t &Point, coordinateType Type );
         static number pointError( const point_t &Point, coordinateType Type );
 
       public:
-        dataVector() : OrderedByX(true) {}
+        dataVector();
 
         int_t size() const { return static_cast<int_t>(Points.size()); }
         const point_t at( int_t Index ) const { return Points.at( static_cast<size_t>(Index) ); }
@@ -125,6 +123,43 @@ namespace scigraphics
         bool isOrderedByX() const { return OrderedByX; }
     };
   
+    // ------------------------------------------------------------
+    
+    class dataUniformVector : public data
+    {
+      private:
+        number StepX;
+        std::vector<number> Values, Errors;
+        numberLimits LimitsX, LimitsY;
+
+      private:
+        void updateLimits();
+        void recalculateLimits();
+
+      public:
+        dataUniformVector();
+
+        int_t size() const { return static_cast<int_t>(Values.size()); }
+        const point_t at( int_t Index ) const;
+
+        number valueX( int_t Index ) const { return Index * stepX(); }
+        number valueY( int_t Index ) const { return Values.at( static_cast<size_t>(Index) ); }
+        number errorY( int_t Index ) const { return Errors.at( static_cast<size_t>(Index) ); }
+
+        void append( number Y ) { append( Y, 0 ); }
+        void append( number Y, number ErrY );
+
+        void setStepX( number StepX );
+        number stepX() const { return StepX; }
+
+        void clear();
+        
+        const numberLimits limitsX() const { return LimitsX; }
+        const numberLimits limitsY( const interval<number> &LimitsX ) const;
+
+        bool isOrderedByX() const { return true; }
+    };
+    
     // ------------------------------------------------------------
 
     std::ostream& operator<<( std::ostream& Stream, const point& Point );

@@ -51,7 +51,7 @@ namespace scigraphics
         void setViews( graphViewCollection *V );
  
       public:
-        graph( const std::string &Legend = std::string() );
+        explicit graph( const std::string &Legend = std::string() );
         ~graph();
         
         void draw( painter &Painter, const pairScales& Scales ) const;
@@ -82,11 +82,14 @@ namespace scigraphics
         
       protected:
         D& getCastedData()  { return dynamic_cast<D&>( getData() ); }
+        const D& getCastedData() const { return dynamic_cast<const D&>( getData() ); }
+
         V& getCastedViews() { return dynamic_cast<V&>( getViews() ); }
 
       public:
-        graphSpecified( const color &Color ) { init(Color); }
-        graphSpecified( const std::string &Legend, const color &Color ) : 
+        explicit graphSpecified( const color &Color ) 
+          { init(Color); }
+        explicit graphSpecified( const std::string &Legend, const color &Color ) : 
           graph(Legend) 
           { init(Color); }
 
@@ -95,16 +98,18 @@ namespace scigraphics
 
         data::point_t at( data::int_t Index ) const { return getData().at(Index); }
         data::point_t operator[]( data::int_t Index ) const { return at(Index); }
+        void clear()   { getCastedData().clear(); }
         
         color getColor() const { return getViews().getColor(); }
         void setColor( const color &Color ) { getViews().setColor(Color); }
-
-        void append( number X, number Y )                           { getCastedData().append(X,Y); }
-        void append( number X, number Y, number ErrY )              { getCastedData().append(X,Y,ErrY); }
-        void append( number X, number Y, number ErrX, number ErrY ) { getCastedData().append(X,Y,ErrX,ErrY); }
-        void appendInvalid()                                        { append( invalidNumber(), invalidNumber() ); }
-        void appendPolar( number Phi, number R )                    { append( R*std::cos(Phi), R*std::sin(Phi) ); } 
-        void clear()                                                { getCastedData().clear(); }
+        
+        void setLineWidth( unsigned Width ) { getCastedViews().setLineWidth(Width); }
+        void setPointSize( unsigned Size )  { getCastedViews().setPointSize(Size);  }
+        
+        void setVisibleLines( bool Show )        { getCastedViews().template setViewVisible<graphViewLine>(Show); }
+        void setVisiblePoints( bool Show )       { getCastedViews().template setViewVisible<graphViewPoints>(Show); }
+        void setVisibleErrorBars( bool Show )    { getCastedViews().template setViewVisible<graphViewErrorBars>(Show); }
+        void setVisibleLineHystogram( bool Show) { getCastedViews().template setViewVisible<graphViewLineHystogram>(Show); }
     };
   
     // ------------------------------------------------------------
@@ -112,35 +117,60 @@ namespace scigraphics
     class graphVector : public graphSpecified< dataVector, ordinarGraphViewCollection >
     {
       public:
-        graphVector( const color &Color = color() ) : 
+        explicit graphVector( const color &Color = color() ) : 
           graphSpecified< dataVector, ordinarGraphViewCollection >( Color ) {}
-        graphVector( const std::string &Legend, const color &Color ) : 
+        explicit graphVector( const std::string &Legend, const color &Color ) : 
           graphSpecified< dataVector, ordinarGraphViewCollection >( Legend, Color ) {}
 
         dataVector& getDataVector() { return getCastedData(); }
         ordinarGraphViewCollection& getViews() { return getCastedViews(); }
-        
-        void setLineWidth( unsigned Width ) { getViews().setLineWidth(Width); }
-        void setPointSize( unsigned Size )  { getViews().setPointSize(Size);  }
-        
-        void setVisibleLines( bool Show )        { getViews().setViewVisible<graphViewLine>(Show); }
-        void setVisiblePoints( bool Show )       { getViews().setViewVisible<graphViewPoints>(Show); }
-        void setVisibleErrorBars( bool Show )    { getViews().setViewVisible<graphViewErrorBars>(Show); }
-        void setVisibleLineHystogram( bool Show) { getViews().setViewVisible<graphViewLineHystogram>(Show); }
+
+        void append( number X, number Y )                           { getCastedData().append(X,Y); }
+        void append( number X, number Y, number ErrY )              { getCastedData().append(X,Y,ErrY); }
+        void append( number X, number Y, number ErrX, number ErrY ) { getCastedData().append(X,Y,ErrX,ErrY); }
+        void appendInvalid()                                        { append( invalidNumber(), invalidNumber() ); }
+        void appendPolar( number Phi, number R )                    { append( R*std::cos(Phi), R*std::sin(Phi) ); } 
     };
   
+    // ------------------------------------------------------------
+    
+    class graphUniformVector : public graphSpecified< dataUniformVector, ordinarGraphViewCollection >
+    {
+      public:
+        explicit graphUniformVector( const color &Color = color() ) : 
+          graphSpecified< dataUniformVector, ordinarGraphViewCollection >( Color ) {}
+        explicit graphUniformVector( const std::string &Legend, const color &Color ) : 
+          graphSpecified< dataUniformVector, ordinarGraphViewCollection >( Legend, Color ) {}
+
+        dataUniformVector& getDataVector() { return getCastedData(); }
+        const dataUniformVector& getDataVector() const { return getCastedData(); }
+
+        ordinarGraphViewCollection& getViews() { return getCastedViews(); }
+
+        void setStepX( number Step ) { getDataVector().setStepX( Step ); } 
+        number stepX() const { return getDataVector().stepX(); }
+        
+        void append( number Y )                           { getCastedData().append(Y); }
+        void append( number Y, number ErrY )              { getCastedData().append(Y,ErrY); }
+    };
+
     // ------------------------------------------------------------
 
     class graphAreaVector : public graphSpecified< dataVector, coveredAreaGraphViewCollection >
     {
       public:
-        graphAreaVector( const color &Color = color() ) : 
+        explicit graphAreaVector( const color &Color = color() ) : 
           graphSpecified< dataVector, coveredAreaGraphViewCollection >(Color) {}
-        graphAreaVector( const std::string &Legend, const color &Color ) : 
+        explicit graphAreaVector( const std::string &Legend, const color &Color ) : 
           graphSpecified< dataVector, coveredAreaGraphViewCollection >( Legend, Color ) {}
         
         dataVector& getDataVector() { return getCastedData(); }
         coveredAreaGraphViewCollection& getViewsColveredArea() { return getCastedViews(); }
+        
+        void append( number X, number Y )                           { getCastedData().append(X,Y); }
+        void append( number X, number Y, number ErrY )              { getCastedData().append(X,Y,ErrY); }
+        void append( number X, number Y, number ErrX, number ErrY ) { getCastedData().append(X,Y,ErrX,ErrY); }
+        void appendInvalid()                                        { append( invalidNumber(), invalidNumber() ); }
     };
 
     // ============================================================

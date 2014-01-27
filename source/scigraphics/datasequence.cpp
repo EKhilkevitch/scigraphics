@@ -30,6 +30,54 @@
 
 // ============================================================
 
+namespace
+{
+
+  // ------------------------------------------------------------
+  
+  bool needToRecalculateLimits( const scigraphics::interval<scigraphics::number> Interval );
+  void updateLimitsByValue( scigraphics::numberLimits *Limits, scigraphics::number Value, scigraphics::number PosDistance, scigraphics::number NegDistance );
+  
+  // ------------------------------------------------------------
+  
+  bool needToRecalculateLimits( const scigraphics::interval<scigraphics::number> Interval )
+  {
+    const double Epsilon = 1e-14;
+
+    scigraphics::number Distance = Interval.distance();
+    assert( Distance >= 0 );
+    if ( Distance == 0 )
+      return false;
+    
+    scigraphics::number MinAbs = Interval.minAbs();
+    assert( MinAbs >= 0 );
+    return ( MinAbs < Epsilon * Distance );
+  }
+  
+  // ------------------------------------------------------------
+  
+  void updateLimitsByValue( scigraphics::numberLimits *Limits, scigraphics::number Value, scigraphics::number PosDistance, scigraphics::number NegDistance )
+  {
+    assert( Limits != NULL );
+    assert( PosDistance >= 0 );
+    assert( NegDistance >= 0 );
+
+    const double DistMultiplier = 1e-15;
+
+    scigraphics::number MinPosValue = + DistMultiplier * PosDistance;
+    scigraphics::number MaxNegValue = - DistMultiplier * NegDistance;
+
+    if ( MaxNegValue <= Value && Value <= MinPosValue )
+      Value = 0;
+  
+    Limits->updateLimits( Value );
+  }
+
+  // ------------------------------------------------------------
+}
+
+// ============================================================
+
 const scigraphics::numberLimits scigraphics::sequence::data::limitsX() const
 {
   numberLimits Result;
@@ -77,6 +125,13 @@ const scigraphics::numberLimits scigraphics::sequence::data::limitsY( const inte
 }
 
 // ============================================================
+        
+scigraphics::sequence::dataVector::dataVector() : 
+  OrderedByX(true) 
+{
+}
+
+// ------------------------------------------------------------
 
 void scigraphics::sequence::dataVector::append( const point_t &Point )
 { 
@@ -158,8 +213,8 @@ void scigraphics::sequence::dataVector::recalculateLimits( coordinateType Coordi
 {
   assert( Limits != NULL );
 
-  number PosDistance = Limits->positiveLimits().distance();
-  number NegDistance = Limits->negativeLimits().distance();
+  const number PosDistance = Limits->positiveLimits().distance();
+  const number NegDistance = Limits->negativeLimits().distance();
 
   *Limits = numberLimits();
 
@@ -175,41 +230,6 @@ void scigraphics::sequence::dataVector::recalculateLimits( coordinateType Coordi
     updateLimitsByValue( Limits, Value - Error, PosDistance, NegDistance );
   }
 
-}
-
-// ------------------------------------------------------------
-
-void scigraphics::sequence::dataVector::updateLimitsByValue( numberLimits *Limits, number Value, number PosDistance, number NegDistance )
-{
-  assert( Limits != NULL );
-  assert( PosDistance >= 0 );
-  assert( NegDistance >= 0 );
-
-  const double DistMultiplier = 1e-15;
-
-  number MinPosValue = + DistMultiplier * PosDistance;
-  number MaxNegValue = - DistMultiplier * NegDistance;
-
-  if ( MaxNegValue <= Value && Value <= MinPosValue )
-    Value = 0;
-
-  Limits->updateLimits( Value );
-}
-
-// ------------------------------------------------------------
-
-bool scigraphics::sequence::dataVector::needToRecalculateLimits( const interval<number> Interval )
-{
-  const double Epsilon = 1e-14;
-
-  number Distance = Interval.distance();
-  assert( Distance >= 0 );
-  if ( Distance == 0 )
-    return false;
-  
-  number MinAbs   = Interval.minAbs();
-  assert( MinAbs   >= 0 );
-  return ( MinAbs < Epsilon * Distance );
 }
 
 // ------------------------------------------------------------
@@ -258,7 +278,120 @@ void scigraphics::sequence::dataVector::clear()
   Points.clear();
 }
 
+// ============================================================
+
+scigraphics::sequence::dataUniformVector::dataUniformVector() :
+  StepX( 1.0 )
+{
+}
+
 // ------------------------------------------------------------
+        
+const scigraphics::sequence::dataUniformVector::point_t scigraphics::sequence::dataUniformVector::at( int_t Index ) const
+{
+  assert( Values.size() == Errors.size() );
+
+  number X    = valueX( Index ); 
+  number ErrX = 0.0;
+  number Y    = valueY( Index );
+  number ErrY = errorY( Index );
+
+  return point_t( X, Y, ErrX, ErrY );
+}
+
+// ------------------------------------------------------------
+        
+void scigraphics::sequence::dataUniformVector::append( number Y, number ErrY )
+{
+  if ( ErrY == invalidNumber() || Y == invalidNumber() )
+    Y = ErrY = invalidNumber();
+
+  Values.push_back( Y );
+  Errors.push_back( ErrY );
+  updateLimits();
+}
+
+// ------------------------------------------------------------
+
+void scigraphics::sequence::dataUniformVector::setStepX( number StepX )
+{
+  if ( StepX <= 0 )
+    throw std::invalid_argument("StepX must be positive");
+  this->StepX = StepX;
+  recalculateLimits();
+}
+
+// ------------------------------------------------------------
+        
+void scigraphics::sequence::dataUniformVector::updateLimits()
+{
+  assert( Values.size() == Errors.size() );
+
+  if ( Values.empty() )
+  {
+    LimitsY = numberLimits();
+    return;
+  }
+
+  number LastY = Values.back();
+  number LastErr = Errors.back();
+
+  LimitsY.updateLimits( LastY + LastErr );
+  LimitsY.updateLimits( LastY - LastErr );
+  LimitsX.updateLimits( valueX( Values.size()-1 ) );
+
+  if ( needToRecalculateLimits( LimitsY.positiveLimits() ) || needToRecalculateLimits( LimitsY.negativeLimits() ) )  
+    recalculateLimits();
+}
+
+// ------------------------------------------------------------
+
+void scigraphics::sequence::dataUniformVector::recalculateLimits()
+{
+  assert( Values.size() == Errors.size() );
+
+  const int_t Size = size();
+  const number PosDistanceY = LimitsY.positiveLimits().distance();
+  const number NegDistanceY = LimitsY.negativeLimits().distance();
+  const number PosDistanceX = LimitsX.positiveLimits().distance();
+  const number NegDistanceX = LimitsX.negativeLimits().distance();
+
+  LimitsY = LimitsX = numberLimits();
+  for ( int_t i = 0; i < Size; i++ )
+  {
+    number Y = valueY( i );
+    number Err = errorY( i );
+    number X = valueX( i );
+
+    if ( isValidNumbers( Y, Err ) )
+    {
+      updateLimitsByValue( &LimitsY, Y + Err, PosDistanceY, NegDistanceY );
+      updateLimitsByValue( &LimitsY, Y - Err, PosDistanceY, NegDistanceY );
+      updateLimitsByValue( &LimitsX, X, PosDistanceX, NegDistanceX );
+    }
+  }
+}
+
+// ------------------------------------------------------------        
+
+void scigraphics::sequence::dataUniformVector::clear()
+{
+  LimitsX = LimitsY = numberLimits();
+  Values.clear();
+  Errors.clear();
+}
+
+// ------------------------------------------------------------        
+
+const scigraphics::numberLimits scigraphics::sequence::dataUniformVector::limitsY( const interval<number> &LimitsX ) const
+{
+  if ( LimitsX.min() <= limitsX().totalLimits().min() &&
+       LimitsX.max() >= limitsX().totalLimits().max() )
+    return LimitsY;
+  return data::limitsY( LimitsX );
+}
+
+// ============================================================
 
 std::ostream& scigraphics::sequence::operator<<( std::ostream& Stream, const point& Point )
 {
@@ -282,4 +415,5 @@ std::ostream& operator<<( std::ostream& Stream, const scigraphics::sequence::dat
 }
 
 // ============================================================
-    
+
+ 

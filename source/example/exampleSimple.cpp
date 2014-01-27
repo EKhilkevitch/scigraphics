@@ -26,6 +26,7 @@
 #include <cmath>
 
 #include "scigraphics/plot.h"
+#include "scigraphics/color.h"
 #include "scigraphics/qt4/qt4plot.h"
 
 // ======================================================
@@ -42,13 +43,25 @@ int main( int argc, char *argv[] )
 
   qt4plot Plot;
 
+#if 0
   scigraphics::graphSV *Sin = Plot.createGraphSV( "Sinus" );
-  size_t GraphSize = 100000;
+  const size_t GraphSize = 100000;
   for ( unsigned i = 0; i < GraphSize; i++ )
   {
     double x = 2 * M_PI * i / GraphSize - M_PI;
     double y = std::sin( x );
     Sin->append( x, y );
+  }
+#endif
+
+  scigraphics::sequence::graphUniformVector *Sin = Plot.createGraph<scigraphics::sequence::graphUniformVector>( "Sinus", scigraphics::color::Red );
+  const size_t GraphSize = 1000;
+  Sin->setStepX( 2 * M_PI / GraphSize );
+  for ( unsigned i = 0; i < GraphSize * 1; i++ )
+  {
+    double x = Sin->stepX() * i;
+    double y = 0.5 * std::sin( x );
+    Sin->append( y );
   }
 
   Plot.move( 200, 200 );
