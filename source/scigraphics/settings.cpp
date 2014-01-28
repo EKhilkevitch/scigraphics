@@ -21,6 +21,7 @@
 // ============================================================
 
 #include "scigraphics/settings.h"
+#include "scigraphics/plot.h"
 #include "scigraphics/scale.h"
 
 #if _WIN32

@@ -23,14 +23,22 @@
 
 // ============================================================
 
-#include "scigraphics/plot.h"
+#include "scigraphics/interval.h"
+#include "scigraphics/numbers.h"
+#include "scigraphics/axisset.h"
 
 // ============================================================
 
 namespace scigraphics
 {
+  
+  // ============================================================
 
-// ============================================================
+  class plot;
+  class scale;
+  namespace sequence { class graph; }
+
+  // ============================================================
 
   class settings
   {

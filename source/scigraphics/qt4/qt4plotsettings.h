@@ -31,15 +31,20 @@
 
 class QCheckBox;
 class QRadioButton;
-class QBoxLayout;
 class QSettings;
 class QTabWidget;
 class QLineEdit;
 class QLabel;
 class QValidator;
+class QBoxLayout;
 class QHBoxLayout;
 
 class qt4plot;
+
+namespace scigraphics
+{
+  class selectionStrip;
+}
 
 // ================================================================
 
