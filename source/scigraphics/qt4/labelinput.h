@@ -115,7 +115,7 @@ class labelEdit : public labelInput
     void setReadOnly( const bool E ) { edit()->setReadOnly(E); };
     void setValidator( QValidator *V ) { if ( V != NULL ) edit()->setValidator(V); }
     
-    void saveSettings( const QString &Name, QSettings *Settings ) const { Settings->setValue(Name,text()); }
+    void saveSettings( const QString &Name, QSettings *Settings ) { Settings->setValue(Name,text()); }
     void loadSettings( const QString &Name, QSettings *Settings, const QString &Default ) { setText( Settings->value(Name,Default).toString() ); }
 
   signals:
@@ -181,7 +181,7 @@ class labelSpin : public labelInput
     void setReadOnly( const bool E ) { spin()->setReadOnly(E); };
     void setRange( int Min, int Max ) { spin()->setRange(Min,Max); }
     
-    void saveSettings( const QString &Name, QSettings *Settings ) const { Settings->setValue(Name,value()); }
+    void saveSettings( const QString &Name, QSettings *Settings ) { Settings->setValue(Name,value()); }
     void loadSettings( const QString &Name, QSettings *Settings, const int Default ) { setValue( Settings->value(Name,Default).toInt() ); }
 
   signals:
@@ -215,7 +215,7 @@ class labelDoubleSpin : public labelInput
     void setDecimals( int D ) { spin()->setDecimals(D); }
     void setSingleStep( double S ) { spin()->setSingleStep(S); }
     
-    void saveSettings( const QString &Name, QSettings *Settings ) const { Settings->setValue(Name,value()); }
+    void saveSettings( const QString &Name, QSettings *Settings ) { Settings->setValue(Name,value()); }
     void loadSettings( const QString &Name, QSettings *Settings, const double Default ) { setValue( Settings->value(Name,Default).toDouble() ); }
 
   signals:
@@ -254,7 +254,7 @@ class labelCombo : public labelInput
     void setCurrentIndex( const int Index ) { combo()->setCurrentIndex(Index); }
     void setCurrentData( const QVariant& V ) { for ( int i = 0; i < combo()->count(); i++ ) { if (combo()->itemData(i)==V) setCurrentIndex(i); } }
     
-    void saveSettings( const QString &Name, QSettings *Settings ) const { Settings->setValue(Name,currentIndex()); }
+    void saveSettings( const QString &Name, QSettings *Settings ) { Settings->setValue(Name,currentIndex()); }
     void loadSettings( const QString &Name, QSettings *Settings, const int Default ) { setCurrentIndex( Settings->value(Name,Default).toInt() ); }
 
   signals:
