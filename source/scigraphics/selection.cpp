@@ -94,6 +94,13 @@ void scigraphics::selectionStrip::shiftPoints( npoint From, npoint To )
   shift( DeltaX, DeltaY );
 }
 
+// ------------------------------------------------------------
+      
+void scigraphics::selectionStrip::shiftInterval( number Delta ) 
+{ 
+  setInterval( min() + Delta, max() + Delta ); 
+}
+
 // ============================================================
 
 scigraphics::number scigraphics::selectionHorizontal::minF( const pairScales &Scales ) const 

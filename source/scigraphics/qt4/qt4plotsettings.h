@@ -79,19 +79,17 @@ class qt4plotSettingsGroupBox : public QGroupBox
     static QString axisPositionString( scigraphics::axisSetCollection::axisPosition Axis );
 
   public:
-    qt4plotSettingsGroupBox( const QString &Name = QString(), QWidget *Parent = NULL ) : QGroupBox(Name,Parent) {}
-    virtual void apply( scigraphics::settings & ) {}
+    qt4plotSettingsGroupBox( const QString &Name = QString(), QWidget *Parent = NULL );
+    virtual void applySettings( scigraphics::settings* ) {}
+    virtual void collectSettings( qt4plot* ) {}
     virtual void saveSettings( QSettings* ) const {}
     virtual void loadSettings( QSettings* ) {}
-
-    virtual void addPlot( qt4plot* ) {}
-    virtual void clearPlots() {}
 
   signals:
     void settingsUpdated();
 
   public slots:
-    virtual void updateWidgets() { emit settingsUpdated(); }
+    virtual void updateWidgets();
 };
 
 // ----------------------------------------------------------------
@@ -119,7 +117,9 @@ class qt4plotSettingsGroupSuperBox : public qt4plotSettingsGroupBox
   public:
     qt4plotSettingsGroupSuperBox( const QString &Name = QString(), QWidget *Parent = NULL ) : qt4plotSettingsGroupBox(Name,Parent) {}
 
-    void apply( scigraphics::settings &Settings );
+    void applySettings( scigraphics::settings* Settings );
+    void collectSettings( qt4plot* Plot );
+
     void saveSettings( QSettings* Settings ) const;
     void loadSettings( QSettings* Settings );
   
@@ -145,7 +145,7 @@ class qt4plotSettingsScaleIntervals : public qt4plotSettingsGroupBox
   public:
     qt4plotSettingsScaleIntervals( const scigraphics::axisSetCollection::axisPosition Axis, QWidget *Parent = NULL );
     
-    void apply( scigraphics::settings &Settings ) { Settings.setLimits(getLimits(),AxisType); }
+    void applySettings( scigraphics::settings* Settings );
     void saveSettings( QSettings* ) const;
     void loadSettings( QSettings* );
   
@@ -188,7 +188,7 @@ class qt4plotSettingsGraphType : public qt4plotSettingsGroupBox
   public:
     qt4plotSettingsGraphType( QWidget *Parent = NULL );
 
-    void apply( scigraphics::settings &Settings ) { Settings.setGraphType(getGraphType()); }
+    void applySettings( scigraphics::settings* Settings );
 
     void showLineHystogramControl( bool S );
     void showErrorBarsControl( bool S );
@@ -213,7 +213,7 @@ class qt4plotSettingsDecoration : public qt4plotSettingsGroupBox
   public:
     qt4plotSettingsDecoration( QWidget *Parent = NULL );
 
-    void apply( scigraphics::settings &Settings ) { Settings.setVisibleFloatingRectangles(getVisibleFloatingRectangles()); }
+    void applySettings( scigraphics::settings* Settings );
 
     void saveSettings( QSettings* Settings ) const;
     void loadSettings( QSettings* Settings );
@@ -236,7 +236,7 @@ class qt4plotSettingsScaleType : public qt4plotSettingsGroupBox
   public:
     qt4plotSettingsScaleType( const scigraphics::axisSetCollection::axisPosition Axis, QWidget *Parent = NULL );
     
-    void apply( scigraphics::settings &Settings ) { Settings.setScaleType(getScaleType(),AxisType); }
+    void applySettings( scigraphics::settings* Settings );
     
     void saveSettings( QSettings* Settings ) const;
     void loadSettings( QSettings* Settings );
@@ -265,8 +265,6 @@ class qt4plotSettingsSelections : public qt4plotSettingsGroupBox
   Q_OBJECT
 
   private:
-    QList<qt4plot*> Plots;
-    
     QCheckBox *EnableSelectionBox;
     qt4labeledLineEdit *MinValueEdit, *MaxValueEdit;
 
@@ -276,16 +274,13 @@ class qt4plotSettingsSelections : public qt4plotSettingsGroupBox
   public:
     qt4plotSettingsSelections( QWidget *Parent = NULL );
 
-    void apply( scigraphics::settings & );
+    void applySettings( scigraphics::settings* Settings );
+    void collectSettings( qt4plot* Plot );
     
     void saveSettings( QSettings* ) const {}
     void loadSettings( QSettings* ) {}
     
-    void addPlot( qt4plot* Plot );
-    void clearPlots();
-
   public slots:
-    void getLimitsFromPlot();
     void updateWidgetsEnables();
     void updateWidgets() { updateWidgetsEnables(); emit settingsUpdated(); }
 
@@ -363,22 +358,18 @@ class qt4plotSettings : public QWidget, public scigraphics::settings
   Q_OBJECT
 
   private:
-    QList<qt4plot*> Plots;
     QString SettingsName;
-
     qt4plotSettingsComposer *SettingsComposer;
 
   protected:
-    void collectSettings();
-    virtual void applySettings();
+    void updateSettingsFromSubWidgets();
+    virtual void applySettings( qt4plot *Plot );
     void emitSettingsChanged();
 
     void setComposer( qt4plotSettingsComposer *Composer );
 
     void initSettings( const QString &Name, const qt4plotSettingsGroupSuperBox::axisPositionsList &Positions,
       qt4plotSettingsComposer *Composer );
-
-    const QList<qt4plot*>& listOfPlots() { return Plots; }
 
   public:
 
@@ -410,14 +401,18 @@ class qt4plotSettings : public QWidget, public scigraphics::settings
     void delSettingWidget( unsigned Index );
     qt4plotSettingsGroupBox* getSettingWidget( unsigned Index );
 
-    void addPlot( qt4plot *Plot );
-    void clearPlots();
+    void connectToPlot( qt4plot *Plot );
+    void disconnectFromPlot( qt4plot *Plot );
+
+    void apply( qt4plot *Plot );
 
   public slots:
-    virtual void apply();
+    void updatePlotState();
+    void updatePlotSettings();
 
   signals:
     void settingsChanged();
+    void settingsChanged( const scigraphics::settings& );
 };
 
 // ================================================================

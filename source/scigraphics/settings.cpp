@@ -35,8 +35,9 @@
 // ============================================================
 
 scigraphics::settings::settings() : 
-  GraphType(Individual),
-  VisibleFloatingRectangles(Legend|CursorPosition)
+  SelectionStripType( NoneStrip ),
+  GraphType( Individual ),
+  VisibleFloatingRectangles( Legend|CursorPosition )
 {
   for ( unsigned i = 0; i < axisSetCollection::PositionsCount; i++ )
   {
@@ -71,6 +72,23 @@ scigraphics::scale* scigraphics::settings::createScale( scaleType Type )
 
 // ------------------------------------------------------------
 
+scigraphics::selectionStrip* scigraphics::settings::firstSelectionStrip( plot *Plot )
+{
+  if ( Plot == NULL )
+    return NULL;
+
+  for ( scigraphics::selectionCollection::iterator Sel = Plot->beginSelection(); Sel != Plot->endSelection(); ++Sel )
+  {
+    scigraphics::selectionStrip *Selection = dynamic_cast< scigraphics::selectionStrip* >( &*Sel );
+    if ( Selection != NULL )
+      return Selection;
+  }
+
+  return NULL;
+}
+
+// ------------------------------------------------------------
+
 void scigraphics::settings::apply( plot *Plot ) const
 {
   if ( Plot == NULL )
@@ -80,6 +98,7 @@ void scigraphics::settings::apply( plot *Plot ) const
   applyGraphType(Plot);
   applyLimits(Plot);
   applyFloatingRectangles(Plot);
+  applySelectionIntervals(Plot);
 
   Plot->replot();
 }
@@ -157,6 +176,44 @@ void scigraphics::settings::applyFloatingRectangles( plot *Plot ) const
 
 // ------------------------------------------------------------
 
+void scigraphics::settings::applySelectionIntervals( plot *Plot ) const
+{
+  assert( Plot != NULL );
+
+  selectionStrip *Selection = firstSelectionStrip( Plot );
+
+  switch ( SelectionStripType )
+  {
+    case NoneStrip:
+      if ( Selection != NULL )
+        Plot->clearSelections();
+      break;
+
+    case VerticalStrip:
+      if ( dynamic_cast<selectionVertical*>( Selection ) == NULL )
+      {
+        Plot->clearSelections();
+        Selection = Plot->createSelection<selectionVertical>();
+      }
+      Selection->setInterval( SelectionStripInterval );
+      break;
+
+    case HorizontalStrip:
+      if ( dynamic_cast<selectionHorizontal*>( Selection ) == NULL )
+      {
+        Plot->clearSelections();
+        Selection = Plot->createSelection<selectionHorizontal>();
+      }
+      Selection->setInterval( SelectionStripInterval );
+      break;
+
+    default:
+      std::abort();
+  }
+}
+
+// ------------------------------------------------------------
+
 scigraphics::interval<scigraphics::number> scigraphics::settings::correctLimits( interval<number> Limits )
 {
   if ( Limits.isSingular() )
@@ -195,9 +252,31 @@ void scigraphics::settings::setLimits( const interval<number> &Limits, axisSetCo
 
 // ------------------------------------------------------------
 
+void scigraphics::settings::setGraphType( unsigned Type ) 
+{ 
+  GraphType = Type; 
+}
+
+// ------------------------------------------------------------
+
 void scigraphics::settings::setVisibleFloatingRectangles( unsigned FloatRectangles )
 {
   VisibleFloatingRectangles = FloatRectangles;
+}
+
+// ------------------------------------------------------------
+      
+void scigraphics::settings::setSelectionInterval( selectionStripType Type, interval<number> Interval )
+{
+  SelectionStripType = Type;
+  SelectionStripInterval = Interval;
+}
+
+// ------------------------------------------------------------
+      
+void scigraphics::settings::setSelectionInterval( selectionStripType Type, number Min, number Max )
+{
+  setSelectionInterval( Type, interval<number>( Min, Max ) );
 }
 
 // ============================================================

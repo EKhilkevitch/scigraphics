@@ -112,7 +112,7 @@ int main( int argc, char *argv[] )
   Settings.addSettingWidget( new qt4plotSettingsSelections() );
   Settings.addSettingWidget( new qt4plotSettingsDecoration() );
   //Settings.replaceLayout( new QVBoxLayout() );
-  Settings.addPlot(&Plot);
+  Settings.connectToPlot(&Plot);
   Settings.show();
 
   Plot.move( 200, 200 );

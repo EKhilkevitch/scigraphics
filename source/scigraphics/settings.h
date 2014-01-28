@@ -36,6 +36,7 @@ namespace scigraphics
 
   class plot;
   class scale;
+  class selectionStrip;
   namespace sequence { class graph; }
 
   // ============================================================
@@ -68,24 +69,34 @@ namespace scigraphics
         CursorPosition  = 0x02
       };
 
+      enum selectionStripType
+      {
+        NoneStrip,
+        VerticalStrip,
+        HorizontalStrip
+      };
+
     private:
       scaleType ScaleTypes[ axisSetCollection::PositionsCount ];
       interval<number> ScaleLimits[ axisSetCollection::PositionsCount ];
+      selectionStripType SelectionStripType;
+      interval<number> SelectionStripInterval;
       unsigned GraphType;
       unsigned VisibleFloatingRectangles;
 
+    private:
       static scale* createScale( scaleType Type );
       static bool equalScaleTypes( const scale *S1, const scale *S2 );
       static interval<number> correctLimits( interval<number> Limits );
-
-    private:
       void applyGraphTypeToGraph( sequence::graph *Graph ) const;
+      static selectionStrip* firstSelectionStrip( plot *Plot );
 
     protected:
       void applyLimits( plot *Plot ) const;
       void applyGraphType( plot *Plot ) const;
       void applyScaleType( plot *Plot ) const;
       void applyFloatingRectangles( plot *Plot ) const;
+      void applySelectionIntervals( plot *Plot ) const;
 
     public:
       settings();
@@ -94,9 +105,11 @@ namespace scigraphics
       void apply( plot *Plot ) const;
 
       void setLimits( const interval<number> &Lims, axisSetCollection::axisPosition AxisPos );
-      void setGraphType( unsigned Type ) { GraphType = Type; }
+      void setGraphType( unsigned Type );
       void setScaleType( scaleType Type, axisSetCollection::axisPosition AxisPos );
       void setVisibleFloatingRectangles( unsigned FloatRectangles );
+      void setSelectionInterval( selectionStripType Type, interval<number> Interval );
+      void setSelectionInterval( selectionStripType Type, number Min, number Max );
   };
 
 // ============================================================

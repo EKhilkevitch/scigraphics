@@ -83,8 +83,9 @@ namespace scigraphics
       void shiftPointsF( fpoint From, fpoint To, const pairScales &Scales );
       void shiftPoints( npoint From, npoint To );
 
-      void setInterval( number A, number B ) { Interval.setMinMax(A,B); }
-      void shiftInterval( number Delta ) { setInterval( min() + Delta, max() + Delta ); }
+      void setInterval( number A, number B ) { setInterval( interval<number>(A,B) ); }
+      void setInterval( interval<number> I ) { Interval = I; }
+      void shiftInterval( number Delta );
 
       virtual fcoord minF( const pairScales &Scales ) const = 0; 
       virtual fcoord maxF( const pairScales &Scales ) const = 0; 

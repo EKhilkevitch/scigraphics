@@ -47,6 +47,8 @@ class QGraphicsPixmapItem;
 
 class qt4plot;
 
+namespace scigraphics { class settings; }
+
 // ================================================================
 
 class qt4plotView : public QGraphicsView
@@ -106,8 +108,8 @@ class drawerQt : public scigraphics::drawer
     drawerQt& operator=( const drawerQt& );
 
   public:
-    static QColor colorQt( const scigraphics::color& Color )         { return QColor( Color.red(), Color.green(), Color.blue(), 0xFF - Color.transparency() ); }
-    static QPoint pointQt( const scigraphics::wpoint& Point )        { return QPoint(Point.x(),Point.y()); }
+    static QColor colorQt( const scigraphics::color& Color );
+    static QPoint pointQt( const scigraphics::wpoint& Point );
     static QRect  rectangleQt( const scigraphics::wrectangle& Rect );
     static QPen   penQt( const scigraphics::lineStyle& Style );
     static QFont  fontQt( const scigraphics::textStyle &Style );
@@ -130,8 +132,8 @@ class drawerQt : public scigraphics::drawer
     scigraphics::wcoord textWidth( const std::string &Text, const scigraphics::textStyle &Style );
     scigraphics::wcoord textHeight( const std::string &Text, const scigraphics::textStyle &Style );
     
-    scigraphics::wcoord width()  const { return Scene == NULL ? 0 : Scene->width(); };
-    scigraphics::wcoord height() const { return Scene == NULL ? 0 : Scene->height(); };
+    scigraphics::wcoord width()  const;
+    scigraphics::wcoord height() const;
 
   public:
     drawerQt( QWidget *Parent );
@@ -169,16 +171,16 @@ class qt4plot : public QWidget, public scigraphics::plot
     friend class qt4plotMouseCallBack;
 
   protected:
-    drawerQt* getDrawerQt() { return dynamic_cast<drawerQt*>( getDrawer() ); }
+    drawerQt* getDrawerQt();
 
-    virtual void resizeEvent( QResizeEvent* ) { resizePlot(); }
+    void resizeEvent( QResizeEvent* );
 
     int sceneShift() const { return 10; }
     void printTestCornerRectangles();
 
     static unsigned plotMouseModifiers( Qt::KeyboardModifiers Modifiers );
     static unsigned plotMouseButtons( const QMouseEvent *Event );
-    static unsigned plotMouseButtons( QWheelEvent *Event ) { return plotMouseModifiers(Event->modifiers()); }
+    static unsigned plotMouseButtons( QWheelEvent *Event );
     static scigraphics::wpoint plotMousePoisition( const QMouseEvent *Event );
     static scigraphics::wpoint plotMousePoisition( const QWheelEvent *Event );
 
@@ -191,8 +193,8 @@ class qt4plot : public QWidget, public scigraphics::plot
     qt4plot( QWidget* Parent = NULL, Qt::WindowFlags Flags = 0 );
     virtual ~qt4plot() {};
 
-    void resize( int w, int h ) { QWidget::resize( w, h ); resizePlot(); }
-    void enableDrop( bool E ) { getDrawerQt()->view()->enableDrop(E); }
+    void resize( int Width, int Height );
+    void enableDrop( bool Enable );
 
     void emitSelectionChanged() { emit selectionChanged(); }
     void emitSelectionChangingFinished() { emit selectionChangingFinished(); }
@@ -209,6 +211,7 @@ class qt4plot : public QWidget, public scigraphics::plot
   public slots:
     void replot();
     void setCrossCursor( bool Set );
+    void updatePlotSettings( const scigraphics::settings& Settings );
 
   signals:
     void selectionChangingFinished();

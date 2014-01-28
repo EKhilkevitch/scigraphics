@@ -169,7 +169,7 @@ QWidget* qt4plotManager::createTabSettingsWidget( const qt4plotSettingsGroupSupe
   {
     qt4plotSettings *PlotSettings = new qt4plotSettings(SettingsWidget,"----",Positions,createComposer(Composer,i));
     Settings.append( PlotSettings );
-    PlotSettings->addPlot( Plots[i] );
+    PlotSettings->connectToPlot( Plots[i] );
     SettingsTab->addTab( PlotSettings, "" );
   }
   updateTabNames();
@@ -184,7 +184,7 @@ QWidget* qt4plotManager::createSharedSettingsWidget( const qt4plotSettingsGroupS
   qt4plotSettings *SharedSettings = new qt4plotSettings(SettingsWidget,"",Positions,Composer);
   Settings.append( SharedSettings );
   foreach( qt4plot *Plot, Plots )
-    SharedSettings->addPlot( Plot );
+    SharedSettings->connectToPlot( Plot );
   return SharedSettings;
 }
 
@@ -259,7 +259,7 @@ void qt4plotManager::loadSettings( QSettings* Settings )
 void qt4plotManager::replot()
 {
   foreach ( qt4plotSettings *S, Settings )
-    S->apply();
+    S->updatePlotSettings();
 }
 
 // ----------------------------------------------------------------

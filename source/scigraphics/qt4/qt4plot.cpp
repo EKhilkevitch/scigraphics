@@ -21,6 +21,7 @@
 // ================================================================
 
 #include "scigraphics/qt4/qt4plot.h"
+#include "scigraphics/settings.h"
 
 #include <QtGui>
 #include <QDebug>
@@ -58,6 +59,20 @@ void qt4plotView::dropEvent( QDropEvent *Event )
 }
 
 // ================================================================
+    
+QColor drawerQt::colorQt( const scigraphics::color& Color )         
+{ 
+  return QColor( Color.red(), Color.green(), Color.blue(), 0xFF - Color.transparency() ); 
+}
+
+// ----------------------------------------------------------------
+
+QPoint drawerQt::pointQt( const scigraphics::wpoint& Point )        
+{ 
+  return QPoint( Point.x(), Point.y() ); 
+}
+
+// ----------------------------------------------------------------
     
 QRect  drawerQt::rectangleQt( const scigraphics::wrectangle& Rect ) 
 { 
@@ -236,6 +251,20 @@ scigraphics::wcoord drawerQt::textHeight( const std::string &Text, const scigrap
 
 // ----------------------------------------------------------------
 
+scigraphics::wcoord drawerQt::width()  const 
+{ 
+  return Scene == NULL ? 0 : Scene->width(); 
+}
+
+// ----------------------------------------------------------------
+
+scigraphics::wcoord drawerQt::height() const 
+{ 
+  return Scene == NULL ? 0 : Scene->height(); 
+}
+
+// ----------------------------------------------------------------
+
 void drawerQt::flush()
 {
   PixmapItem->setPixmap( *PlotPixmap ); 
@@ -300,6 +329,20 @@ qt4plot::qt4plot( QWidget* Parent, Qt::WindowFlags Flags ) : QWidget(Parent,Flag
 }
 
 // ----------------------------------------------------------------
+    
+drawerQt* qt4plot::getDrawerQt() 
+{ 
+  return dynamic_cast<drawerQt*>( getDrawer() ); 
+}
+
+// ----------------------------------------------------------------
+
+void qt4plot::resizeEvent( QResizeEvent* ) 
+{ 
+  resizePlot(); 
+}
+
+// ----------------------------------------------------------------
 
 unsigned qt4plot::plotMouseModifiers( Qt::KeyboardModifiers Modifiers )
 {
@@ -327,6 +370,14 @@ unsigned qt4plot::plotMouseButtons( const QMouseEvent *Event )
   Result |= plotMouseModifiers( Event->modifiers() );
 
   return Result;
+}
+
+// ----------------------------------------------------------------
+
+unsigned qt4plot::plotMouseButtons( QWheelEvent *Event ) 
+{ 
+  Q_ASSERT( Event != NULL );
+  return plotMouseModifiers( Event->modifiers() ); 
 }
 
 // ----------------------------------------------------------------
@@ -362,6 +413,21 @@ void qt4plot::printTestCornerRectangles()
   getDrawerQt()->setBrushStyle( brushStyle(color::White) );
   getDrawerQt()->drawRectangle( wrectangle( wpoint(W-10,H-10), wpoint(W,H) ) );
   getDrawerQt()->flush();
+}
+
+// ----------------------------------------------------------------
+
+void qt4plot::resize( int Width, int Height ) 
+{ 
+  QWidget::resize( Width, Height ); 
+  resizePlot(); 
+}
+
+// ----------------------------------------------------------------
+
+void qt4plot::enableDrop( bool Enable )
+{ 
+  getDrawerQt()->view()->enableDrop(Enable); 
 }
 
 // ----------------------------------------------------------------
@@ -452,6 +518,13 @@ void qt4plot::setCrossCursor( bool Set )
   } else {
     unsetCursor();
   }
+}
+
+// ----------------------------------------------------------------
+    
+void qt4plot::updatePlotSettings( const scigraphics::settings& Settings )
+{
+  Settings.apply( this );
 }
 
 // ----------------------------------------------------------------

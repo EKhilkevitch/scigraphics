@@ -85,7 +85,7 @@ int main( int argc, char **argv )
   qt4plotSettings Settings;
   Settings.addSettingWidget( new qt4plotSettingsSelections(&Settings) );
   //Settings.replaceLayout( new QVBoxLayout() );
-  Settings.addPlot(&Plot);
+  Settings.connectToPlot(&Plot);
   Settings.show();
  
 

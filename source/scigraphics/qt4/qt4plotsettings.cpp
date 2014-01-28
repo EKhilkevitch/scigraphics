@@ -77,6 +77,20 @@ QString qt4labeledLineEdit::text() const
 
 // ================================================================
     
+qt4plotSettingsGroupBox::qt4plotSettingsGroupBox( const QString &Name, QWidget *Parent ) : 
+  QGroupBox(Name,Parent) 
+{
+}
+
+// ----------------------------------------------------------------
+    
+void qt4plotSettingsGroupBox::updateWidgets() 
+{ 
+  emit settingsUpdated(); 
+}
+
+// ----------------------------------------------------------------
+    
 QString qt4plotSettingsGroupBox::axisPositionString( scigraphics::axisSetCollection::axisPosition Axis )
 {
   switch ( Axis )
@@ -138,10 +152,18 @@ void qt4plotSettingsGroupSuperBox::addToList( qt4plotSettingsGroupBox *B )
 
 // ----------------------------------------------------------------
 
-void qt4plotSettingsGroupSuperBox::apply( scigraphics::settings &Settings ) 
+void qt4plotSettingsGroupSuperBox::applySettings( scigraphics::settings* Settings ) 
 {
   foreach ( qt4plotSettingsGroupBox *Box, Boxes )
-    Box->apply( Settings );
+    Box->applySettings( Settings );
+}
+
+// ----------------------------------------------------------------
+    
+void qt4plotSettingsGroupSuperBox::collectSettings( qt4plot* Plot )
+{
+  foreach ( qt4plotSettingsGroupBox *Box, Boxes )
+    Box->collectSettings( Plot );
 }
 
 // ----------------------------------------------------------------
@@ -218,6 +240,14 @@ scigraphics::interval<scigraphics::number> qt4plotSettingsScaleIntervals::getLim
   if ( ! ManualScaleBox->isChecked() )
     return scigraphics::interval<scigraphics::number>( scigraphics::plotLimits::AutoScaleMin, scigraphics::plotLimits::AutoScaleMax );
   return scigraphics::interval<scigraphics::number>( MinScaleEdit->text().toDouble(), MaxScaleEdit->text().toDouble() );
+}
+
+// ----------------------------------------------------------------
+
+void qt4plotSettingsScaleIntervals::applySettings( scigraphics::settings* Settings ) 
+{ 
+  Q_ASSERT( Settings != NULL );
+  Settings->setLimits( getLimits(), AxisType ); 
 }
 
 // ----------------------------------------------------------------
@@ -315,6 +345,13 @@ void qt4plotSettingsGraphType::showErrorBarsControl( bool S )
 }
 
 // ----------------------------------------------------------------
+    
+void qt4plotSettingsGraphType::applySettings( scigraphics::settings* Settings ) 
+{ 
+  Settings->setGraphType( getGraphType() ); 
+}
+
+// ----------------------------------------------------------------
 
 void qt4plotSettingsGraphType::saveSettings( QSettings* Settings ) const
 {
@@ -370,6 +407,13 @@ unsigned qt4plotSettingsDecoration::getVisibleFloatingRectangles() const
   if ( ShowLegendChk->isChecked() )             Result |= scigraphics::settings::Legend;
   if ( ShowCursorPositionChk->isChecked() )     Result |= scigraphics::settings::CursorPosition;
   return Result;
+}
+
+// ----------------------------------------------------------------
+
+void qt4plotSettingsDecoration::applySettings( scigraphics::settings* Settings ) 
+{ 
+  Settings->setVisibleFloatingRectangles( getVisibleFloatingRectangles() ); 
 }
 
 // ----------------------------------------------------------------
@@ -433,6 +477,13 @@ scigraphics::settings::scaleType qt4plotSettingsScaleType::getScaleType() const
   if ( LogarithmNegativeBtn->isChecked() )      return scigraphics::settings::LogarithmNegative;
   if ( SquareBtn->isChecked() )                 return scigraphics::settings::Square;
   return scigraphics::settings::Linear;
+}
+
+// ----------------------------------------------------------------
+    
+void qt4plotSettingsScaleType::applySettings( scigraphics::settings* Settings ) 
+{ 
+  Settings->setScaleType( getScaleType(), AxisType ); 
 }
 
 // ----------------------------------------------------------------
@@ -519,64 +570,38 @@ scigraphics::selectionStrip* qt4plotSettingsSelections::getFirstStripSelection( 
 
 // ----------------------------------------------
 
-void qt4plotSettingsSelections::getLimitsFromPlot()
+void qt4plotSettingsSelections::collectSettings( qt4plot *Plot )
 {
-  foreach ( qt4plot *Plot, Plots )
-  {
-    scigraphics::selectionStrip *Selection = getFirstStripSelection(Plot);
-    if ( Selection == NULL )
-    {
-      EnableSelectionBox->setChecked(false);
-    } else {
-      EnableSelectionBox->setChecked(true);
-      MinValueEdit->setText( QString::number( Selection->min() ) );
-      MaxValueEdit->setText( QString::number( Selection->max() ) );
-    }
+  if ( Plot == NULL )
+    return;
 
+  scigraphics::selectionStrip *Selection = getFirstStripSelection(Plot);
+  
+  if ( Selection == NULL )
+  {
+    EnableSelectionBox->setChecked(false);
+  } else {
+    EnableSelectionBox->setChecked(true);
+    MinValueEdit->setText( QString::number( Selection->min() ) );
+    MaxValueEdit->setText( QString::number( Selection->max() ) );
   }
+
   updateWidgetsEnables(); 
   emit limitsUpdatedFromPlot();
 }
 
 // ----------------------------------------------
 
-void qt4plotSettingsSelections::apply( scigraphics::settings & )
+void qt4plotSettingsSelections::applySettings( scigraphics::settings* Settings )
 {
-  foreach ( qt4plot *Plot, Plots )
+  if ( EnableSelectionBox->isChecked() )
   {
-    if ( EnableSelectionBox->isChecked() )
-    {
-      scigraphics::selectionStrip *Selection = getFirstStripSelection(Plot);
-      if ( Selection == NULL )
-        Selection = Plot->createSelection<scigraphics::selectionVertical>();
-
-      double Min = MinValueEdit->text().toDouble();
-      double Max = MaxValueEdit->text().toDouble(); 
-      Selection->setInterval( Min, Max );
-
-      Plot->emitSelectionChanged();
-    } else {
-      Plot->clearSelections();
-    }
-    Plot->emitSelectionChangingFinished();
+    double Min = MinValueEdit->text().toDouble();
+    double Max = MaxValueEdit->text().toDouble(); 
+    Settings->setSelectionInterval( scigraphics::settings::VerticalStrip, Min, Max );
+  } else {
+    Settings->setSelectionInterval( scigraphics::settings::NoneStrip, 0, 0 );
   }
-}
-    
-// ----------------------------------------------
-
-void qt4plotSettingsSelections::addPlot( qt4plot* Plot ) 
-{ 
-  Plots.append(Plot); 
-  connect( Plot, SIGNAL(selectionChanged()), this, SLOT(getLimitsFromPlot()) );
-}
-
-// ----------------------------------------------
-
-void qt4plotSettingsSelections::clearPlots() 
-{ 
-  foreach ( qt4plot *Plot, Plots )
-    disconnect( Plot, SIGNAL(selectionChanged()), this, SLOT(getLimitsFromPlot()) );
-  Plots.clear(); 
 }
 
 // ================================================================
@@ -769,11 +794,7 @@ void qt4plotSettings::addSettingWidget( qt4plotSettingsGroupBox *Widget )
   Q_ASSERT( Widget != NULL );
 
   SettingsComposer->addWidget( Widget );
-  connect( Widget, SIGNAL(settingsUpdated()), SLOT(apply()) );
-
-  Widget->clearPlots();
-  foreach( qt4plot *Plot, Plots )
-    Widget->addPlot( Plot );
+  connect( Widget, SIGNAL(settingsUpdated()), SLOT(updatePlotSettings()) );
 }
 
 // ----------------------------------------------------------------
@@ -794,28 +815,34 @@ qt4plotSettingsGroupBox* qt4plotSettings::getSettingWidget( unsigned Index )
 
 // ----------------------------------------------------------------
 
-void qt4plotSettings::addPlot( qt4plot *Plot ) 
-{ 
-  Plots.append(Plot); 
-  for ( unsigned i = 0; i < SettingsComposer->numberOfSettingsWidget(); i++ )
-    SettingsComposer->getSettingWidget(i)->addPlot(Plot);
-  apply(); 
+void qt4plotSettings::connectToPlot( qt4plot *Plot )
+{
+  if ( Plot == NULL )
+    return;
+  
+  connect( Plot, SIGNAL(selectionChanged()), SLOT(updatePlotState()) );
+  connect( this, SIGNAL(settingsChanged(const scigraphics::settings&)), Plot, SLOT(updatePlotSettings(const scigraphics::settings&)) );
+
+  updatePlotSettings();
 }
 
 // ----------------------------------------------------------------
 
-void qt4plotSettings::clearPlots() 
-{ 
-  Plots.clear(); 
-  for ( unsigned i = 0; i < SettingsComposer->numberOfSettingsWidget(); i++ )
-    SettingsComposer->getSettingWidget(i)->clearPlots();
-  apply();
+void qt4plotSettings::disconnectFromPlot( qt4plot *Plot )
+{
+  if ( Plot == NULL )
+    return;
+
+  disconnect( this, NULL, Plot, NULL );
+  disconnect( Plot, NULL, this, NULL );
 }
 
 // ----------------------------------------------------------------
 
 void qt4plotSettings::saveSettings( QSettings *Settings, const QString &Prefix ) const
 {
+  Q_ASSERT( Settings != NULL );
+  
   Settings->beginGroup( "qt4plotSettings::" + Prefix );
   for ( unsigned i = 0; i < SettingsComposer->numberOfSettingsWidget(); i++ )
     SettingsComposer->getSettingWidget(i)->saveSettings(Settings);
@@ -826,11 +853,13 @@ void qt4plotSettings::saveSettings( QSettings *Settings, const QString &Prefix )
 
 void qt4plotSettings::loadSettings( QSettings *Settings, const QString &Prefix )
 {
+  Q_ASSERT( Settings != NULL );
+
   Settings->beginGroup( "qt4plotSettings::" + Prefix );
   for ( unsigned i = 0; i < SettingsComposer->numberOfSettingsWidget(); i++ )
     SettingsComposer->getSettingWidget(i)->loadSettings(Settings);
   Settings->endGroup();
-  apply();
+  updatePlotSettings();
 }
 
 // ----------------------------------------------------------------
@@ -851,27 +880,49 @@ void qt4plotSettings::loadSettings( const QString &FileName )
 
 // ----------------------------------------------------------------
 
-void qt4plotSettings::apply()
+void qt4plotSettings::updatePlotState()
 {
-  collectSettings();
-  applySettings();
+  qt4plot *Plot = dynamic_cast<qt4plot*>( sender() );
+  if ( Plot == NULL )
+    return;
+
+  for ( unsigned i = 0; i < SettingsComposer->numberOfSettingsWidget(); i++ )
+    SettingsComposer->getSettingWidget(i)->collectSettings( Plot );
+}
+
+// ----------------------------------------------------------------
+
+void qt4plotSettings::updatePlotSettings()
+{
+  updateSettingsFromSubWidgets();
+  emit settingsChanged( *this );
+}
+
+// ----------------------------------------------------------------
+
+void qt4plotSettings::apply( qt4plot *Plot )
+{
+  if ( Plot == NULL )
+    return;
+
+  updateSettingsFromSubWidgets();
+  applySettings(Plot);
   emitSettingsChanged();
 }
 
 // ----------------------------------------------------------------
     
-void qt4plotSettings::collectSettings()
+void qt4plotSettings::updateSettingsFromSubWidgets()
 {
   for ( unsigned i = 0; i < SettingsComposer->numberOfSettingsWidget(); i++ )
-    SettingsComposer->getSettingWidget(i)->apply( *this );
+    SettingsComposer->getSettingWidget(i)->applySettings( this );
 }
 
 // ----------------------------------------------------------------
 
-void qt4plotSettings::applySettings()
+void qt4plotSettings::applySettings( qt4plot *Plot )
 {
-  foreach ( scigraphics::plot *Plot, Plots )
-    settings::apply(Plot);
+  settings::apply(Plot);
 }
 
 // ----------------------------------------------------------------
