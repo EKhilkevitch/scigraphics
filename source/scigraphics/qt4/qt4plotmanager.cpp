@@ -227,7 +227,7 @@ void qt4plotManager::updateTabNames()
 
 // ----------------------------------------------------------------
 
-void qt4plotManager::saveSettings( QSettings* Settings )
+void qt4plotManager::saveSettings( QSettings* Settings ) const
 {
   Settings->beginGroup( name() );
   for ( int i = 0; i < this->Settings.size(); i++ )

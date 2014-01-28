@@ -146,7 +146,7 @@ void qt4plotSettingsGroupSuperBox::apply( scigraphics::settings &Settings )
 
 // ----------------------------------------------------------------
 
-void qt4plotSettingsGroupSuperBox::saveSettings( QSettings* Settings ) 
+void qt4plotSettingsGroupSuperBox::saveSettings( QSettings* Settings ) const
 {
   Q_ASSERT( Settings != NULL );
 
@@ -231,7 +231,7 @@ void qt4plotSettingsScaleIntervals::updateWidgets()
 
 // ----------------------------------------------------------------
 
-void qt4plotSettingsScaleIntervals::saveSettings( QSettings* Settings )
+void qt4plotSettingsScaleIntervals::saveSettings( QSettings* Settings ) const
 {
   Settings->beginGroup( "scaleSettings::" + title() );
   Settings->setValue( "ManualScaleBox", ManualScaleBox->isChecked() );
@@ -316,7 +316,7 @@ void qt4plotSettingsGraphType::showErrorBarsControl( bool S )
 
 // ----------------------------------------------------------------
 
-void qt4plotSettingsGraphType::saveSettings( QSettings* Settings )
+void qt4plotSettingsGraphType::saveSettings( QSettings* Settings ) const
 {
   Settings->beginGroup( "graphTypeSettings" );
   Settings->setValue( "ShowPointsBtn", ShowPointsBtn->isChecked() );
@@ -374,7 +374,7 @@ unsigned qt4plotSettingsDecoration::getVisibleFloatingRectangles() const
 
 // ----------------------------------------------------------------
 
-void qt4plotSettingsDecoration::saveSettings( QSettings* Settings )
+void qt4plotSettingsDecoration::saveSettings( QSettings* Settings ) const
 {
   Q_ASSERT( Settings != NULL );
   Settings->beginGroup( "decorationSettings" );
@@ -437,7 +437,7 @@ scigraphics::settings::scaleType qt4plotSettingsScaleType::getScaleType() const
 
 // ----------------------------------------------------------------
 
-void qt4plotSettingsScaleType::saveSettings( QSettings* Settings )
+void qt4plotSettingsScaleType::saveSettings( QSettings* Settings ) const
 {
   Settings->beginGroup( "scaleTypeSettings::" + title() );
   Settings->setValue( "LinearBtn", LinearBtn->isChecked() );
@@ -814,7 +814,7 @@ void qt4plotSettings::clearPlots()
 
 // ----------------------------------------------------------------
 
-void qt4plotSettings::saveSettings( QSettings *Settings, const QString &Prefix )
+void qt4plotSettings::saveSettings( QSettings *Settings, const QString &Prefix ) const
 {
   Settings->beginGroup( "qt4plotSettings::" + Prefix );
   for ( unsigned i = 0; i < SettingsComposer->numberOfSettingsWidget(); i++ )
@@ -835,7 +835,7 @@ void qt4plotSettings::loadSettings( QSettings *Settings, const QString &Prefix )
 
 // ----------------------------------------------------------------
 
-void qt4plotSettings::saveSettings( const QString &FileName )
+void qt4plotSettings::saveSettings( const QString &FileName ) const
 {
   QSettings Settings( FileName, QSettings::IniFormat );
   saveSettings( &Settings );

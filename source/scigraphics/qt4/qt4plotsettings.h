@@ -76,7 +76,7 @@ class qt4plotSettingsGroupBox : public QGroupBox
   public:
     qt4plotSettingsGroupBox( const QString &Name = QString(), QWidget *Parent = NULL ) : QGroupBox(Name,Parent) {}
     virtual void apply( scigraphics::settings & ) {}
-    virtual void saveSettings( QSettings* ) {}
+    virtual void saveSettings( QSettings* ) const {}
     virtual void loadSettings( QSettings* ) {}
 
     virtual void addPlot( qt4plot* ) {}
@@ -115,7 +115,7 @@ class qt4plotSettingsGroupSuperBox : public qt4plotSettingsGroupBox
     qt4plotSettingsGroupSuperBox( const QString &Name = QString(), QWidget *Parent = NULL ) : qt4plotSettingsGroupBox(Name,Parent) {}
 
     void apply( scigraphics::settings &Settings );
-    void saveSettings( QSettings* Settings );
+    void saveSettings( QSettings* Settings ) const;
     void loadSettings( QSettings* Settings );
   
   public slots:
@@ -141,7 +141,7 @@ class qt4plotSettingsScaleIntervals : public qt4plotSettingsGroupBox
     qt4plotSettingsScaleIntervals( const scigraphics::axisSetCollection::axisPosition Axis, QWidget *Parent = NULL );
     
     void apply( scigraphics::settings &Settings ) { Settings.setLimits(getLimits(),AxisType); }
-    void saveSettings( QSettings* );
+    void saveSettings( QSettings* ) const;
     void loadSettings( QSettings* );
   
   public slots:
@@ -188,7 +188,7 @@ class qt4plotSettingsGraphType : public qt4plotSettingsGroupBox
     void showLineHystogramControl( bool S );
     void showErrorBarsControl( bool S );
     
-    void saveSettings( QSettings* Settings );
+    void saveSettings( QSettings* Settings ) const;
     void loadSettings( QSettings* Settings );
 };
 
@@ -210,7 +210,7 @@ class qt4plotSettingsDecoration : public qt4plotSettingsGroupBox
 
     void apply( scigraphics::settings &Settings ) { Settings.setVisibleFloatingRectangles(getVisibleFloatingRectangles()); }
 
-    void saveSettings( QSettings* Settings );
+    void saveSettings( QSettings* Settings ) const;
     void loadSettings( QSettings* Settings );
 };
 
@@ -233,7 +233,7 @@ class qt4plotSettingsScaleType : public qt4plotSettingsGroupBox
     
     void apply( scigraphics::settings &Settings ) { Settings.setScaleType(getScaleType(),AxisType); }
     
-    void saveSettings( QSettings* Settings );
+    void saveSettings( QSettings* Settings ) const;
     void loadSettings( QSettings* Settings );
 };
 
@@ -273,7 +273,7 @@ class qt4plotSettingsSelections : public qt4plotSettingsGroupBox
 
     void apply( scigraphics::settings & );
     
-    void saveSettings( QSettings* ) {}
+    void saveSettings( QSettings* ) const {}
     void loadSettings( QSettings* ) {}
     
     void addPlot( qt4plot* Plot );
@@ -395,10 +395,10 @@ class qt4plotSettings : public QWidget, public scigraphics::settings
     const QString& name() const { return SettingsName; }
     void setName( const QString &Name ) { SettingsName = Name; }
 
-    void saveSettings( const QString &FileName );
+    void saveSettings( const QString &FileName ) const;
     void loadSettings( const QString &FileName );
 
-    void saveSettings( QSettings *Settings, const QString &Prefix = QString() );
+    void saveSettings( QSettings *Settings, const QString &Prefix = QString() ) const;
     void loadSettings( QSettings *Settings, const QString &Prefix = QString() );
 
     void addSettingWidget( qt4plotSettingsGroupBox *Box );

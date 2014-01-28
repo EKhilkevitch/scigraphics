@@ -97,7 +97,7 @@ class qt4plotManager : public QObject
     void setSettingsName( unsigned i, const QString &N );
     void updateTabNames();
     
-    void saveSettings( QSettings* Settings );
+    void saveSettings( QSettings* Settings ) const;
     void loadSettings( QSettings* Settings );
     
   public slots:
