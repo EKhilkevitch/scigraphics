@@ -37,6 +37,14 @@ void scigraphics::sequence::graphViewCollection::erase( graphView *View )
 }
 
 // ------------------------------------------------------------
+
+void scigraphics::sequence::graphViewCollection::setAllViewsVisible( bool Show )
+{
+  for ( viewsList::iterator v = Views.begin(); v != Views.end(); ++v )
+    v->setVisible( Show );
+}
+
+// ------------------------------------------------------------
       
 void scigraphics::sequence::graphViewCollection::addView( graphView *View, bool Show ) 
 { 

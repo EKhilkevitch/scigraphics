@@ -67,6 +67,7 @@ namespace scigraphics
         template < class view > const view* getView() const;
 
         template < class view > void setViewVisible( bool Show );
+        void setAllViewsVisible( bool Show );
 
         template < class view > bool isViewExist();
         template < class view > typename view::style getViewStyle() const;
