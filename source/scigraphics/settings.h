@@ -89,7 +89,6 @@ namespace scigraphics
       static bool equalScaleTypes( const scale *S1, const scale *S2 );
       static interval<number> correctLimits( interval<number> Limits );
       void applyGraphTypeToGraph( sequence::graph *Graph ) const;
-      static selectionStrip* firstSelectionStrip( plot *Plot );
 
     protected:
       void applyLimits( plot *Plot ) const;
@@ -110,6 +109,8 @@ namespace scigraphics
       void setVisibleFloatingRectangles( unsigned FloatRectangles );
       void setSelectionInterval( selectionStripType Type, interval<number> Interval );
       void setSelectionInterval( selectionStripType Type, number Min, number Max );
+      
+      static selectionStrip* firstSelectionStrip( plot *Plot );
   };
 
 // ============================================================

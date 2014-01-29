@@ -279,6 +279,13 @@ scigraphics::floatRectangle* scigraphics::plot::getFloatRectangle( wpoint Point 
       return *f;
   return NULL;
 }
+
+// ------------------------------------------------------------
+      
+scigraphics::zoomRectangle&  scigraphics::plot::getZoomRectangle() 
+{ 
+  return ZoomRectangle; 
+}
       
 // ------------------------------------------------------------
 

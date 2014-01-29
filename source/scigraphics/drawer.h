@@ -51,9 +51,9 @@ namespace scigraphics
     public:
       virtual wcoord width() const  = 0;
       virtual wcoord height() const = 0;
-      wrectangle plotRectangle() const { return wrectangle( wpoint(0,0), wpoint(width(),height()) ); }
+      wrectangle plotRectangle() const;
 
-      virtual void eraseAll() { eraseRectangle( plotRectangle() ); }
+      virtual void eraseAll();
 
       virtual void setLineStyle( const lineStyle &Style ) = 0;
       virtual void setBrushStyle( const brushStyle &Style ) = 0;

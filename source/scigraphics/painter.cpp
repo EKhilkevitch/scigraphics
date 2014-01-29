@@ -76,6 +76,14 @@ scigraphics::wcoord scigraphics::painter::plotHeight() const
 
 // ------------------------------------------------------------
 
+void scigraphics::painter::setIndents( const indents<wcoord>& Ids ) 
+{ 
+  Indents = Ids; 
+  update(); 
+}
+
+// ------------------------------------------------------------
+
 void scigraphics::painter::flush() 
 { 
   if ( ableToDraw() ) 

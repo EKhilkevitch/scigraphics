@@ -160,7 +160,7 @@ void scigraphics::sequence::dataVector::updateOrderedByX()
     return; 
   }
 
-  point_t Last = Points[ Points.size()-1 ];
+  point_t Last = Points.back();
 
   if ( Points.size() <= 1 )
   {
@@ -174,9 +174,8 @@ void scigraphics::sequence::dataVector::updateOrderedByX()
     return;
   }
 
-  point_t BeforeLast = Points[ Points.size()-1 ];
+  point_t BeforeLast = Points[ Points.size()-2 ];
   OrderedByX = ( Last.x() >= BeforeLast.x() );
-  return;
 }
 
 // ------------------------------------------------------------

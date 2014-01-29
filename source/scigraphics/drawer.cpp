@@ -42,6 +42,20 @@ unsigned scigraphics::drawer::numOfLinesInString( const std::string &String )
 
 // ------------------------------------------------------------
 
+scigraphics::wrectangle scigraphics::drawer::plotRectangle() const 
+{ 
+  return wrectangle( wpoint(0,0), wpoint(width(),height()) ); 
+}
+
+// ------------------------------------------------------------
+      
+void scigraphics::drawer::eraseAll() 
+{ 
+  eraseRectangle( plotRectangle() ); 
+}
+
+// ------------------------------------------------------------
+
 void scigraphics::drawer::eraseRectangle( const wrectangle& Rectangle )
 {
   color Color = color::White;

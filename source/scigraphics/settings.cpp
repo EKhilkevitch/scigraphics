@@ -210,6 +210,7 @@ void scigraphics::settings::applySelectionIntervals( plot *Plot ) const
     default:
       std::abort();
   }
+
 }
 
 // ------------------------------------------------------------

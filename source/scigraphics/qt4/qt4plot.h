@@ -168,13 +168,13 @@ class qt4plot : public QWidget, public scigraphics::plot
 {
   Q_OBJECT
 
-    friend class qt4plotMouseCallBack;
+  friend class qt4plotMouseCallBack;
 
   protected:
     drawerQt* getDrawerQt();
-
     void resizeEvent( QResizeEvent* );
 
+  private:
     int sceneShift() const { return 10; }
     void printTestCornerRectangles();
 

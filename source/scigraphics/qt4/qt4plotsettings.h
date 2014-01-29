@@ -268,9 +268,6 @@ class qt4plotSettingsSelections : public qt4plotSettingsGroupBox
     QCheckBox *EnableSelectionBox;
     qt4labeledLineEdit *MinValueEdit, *MaxValueEdit;
 
-  private:
-    scigraphics::selectionStrip* getFirstStripSelection( scigraphics::plot *Plot );
-
   public:
     qt4plotSettingsSelections( QWidget *Parent = NULL );
 
@@ -282,7 +279,7 @@ class qt4plotSettingsSelections : public qt4plotSettingsGroupBox
     
   public slots:
     void updateWidgetsEnables();
-    void updateWidgets() { updateWidgetsEnables(); emit settingsUpdated(); }
+    void updateWidgets();
 
   signals:
     void limitsUpdatedFromPlot();

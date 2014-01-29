@@ -552,30 +552,18 @@ void qt4plotSettingsSelections::updateWidgetsEnables()
 }
 
 // ----------------------------------------------
-    
-scigraphics::selectionStrip* qt4plotSettingsSelections::getFirstStripSelection( scigraphics::plot *Plot )
-{
-  if ( Plot == NULL )
-    return NULL;
-    
-  for ( scigraphics::selectionCollection::iterator Sel = Plot->beginSelection(); Sel != Plot->endSelection(); ++Sel )
-  {
-    scigraphics::selectionStrip *Selection = dynamic_cast< scigraphics::selectionStrip* >( &*Sel );
-    if ( Selection != NULL )
-      return Selection;
-  }
 
-  return NULL;
+void qt4plotSettingsSelections::updateWidgets() 
+{ 
+  updateWidgetsEnables(); 
+  emit settingsUpdated(); 
 }
 
 // ----------------------------------------------
 
 void qt4plotSettingsSelections::collectSettings( qt4plot *Plot )
 {
-  if ( Plot == NULL )
-    return;
-
-  scigraphics::selectionStrip *Selection = getFirstStripSelection(Plot);
+  scigraphics::selectionStrip *Selection = scigraphics::settings::firstSelectionStrip(Plot);
   
   if ( Selection == NULL )
   {

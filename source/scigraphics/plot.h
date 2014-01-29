@@ -99,12 +99,19 @@ namespace scigraphics
       void prepareAxisSets();
       void prepareFloatRectangles();
 
+      void preparePainter();
+      void prepareForPainting();
+
+      void setSelectionInterval( selectionStrip *Selection, wpoint Pt1, wpoint Pt2 );
+      void shiftSelection( selectionStrip *Selection, wpoint From, wpoint To );
+
+      zoomRectangle&  getZoomRectangle();
+      floatRectangle* getFloatRectangle( wpoint Point );
+      selection*      getSelection( wpoint Point );
+
     protected:
       void setDrawer( drawer *D ) { Painter.setDrawer(D); }
       drawer* getDrawer() { return Painter.getDrawer(); }
-
-      void preparePainter();
-      void prepareForPainting();
 
       wcoord axisSetIndent( const axisSet &Set ) const;
       void updateIndents();
@@ -112,22 +119,12 @@ namespace scigraphics
       mouseCallBack& getMouseCallBack() { return CallBackContainer.get(); }
       void setMouseCallBack( mouseCallBack *C ) { CallBackContainer.set(C); }
       
-    public:
-      painter& getPainter() { return Painter; }
-      const painter& getPainter() const { return Painter; }
- 
-      void setSelectionInterval( selectionStrip *Selection, wpoint Pt1, wpoint Pt2 );
-      void shiftSelection( selectionStrip *Selection, wpoint From, wpoint To );
-
-      zoomRectangle&  getZoomRectangle() { return ZoomRectangle; }
-      floatRectangle* getFloatRectangle( wpoint Point );
-      selection*      getSelection( wpoint Point );
-
       mouse& mouseHandler() { return MouseHandler; }
       const mouse& mouseHandler() const { return MouseHandler; }
-
-      void updateScaleLimits();
-
+      
+      painter& getPainter() { return Painter; }
+      const painter& getPainter() const { return Painter; }
+      
     public:
       plot();
       virtual ~plot();
@@ -181,6 +178,8 @@ namespace scigraphics
       void setScaleIntervalY( interval<number> L )     { setScaleInterval(axisSetCollection::Left,L); }
       void setScaleIntervalY( number Min, number Max ) { setScaleIntervalY(interval<number>(Min,Max)); }
       interval<number> scaleIntervalY() const          { return scaleInterval(axisSetCollection::Left); }
+      
+      void updateScaleLimits();
 
       interval<number> visibleInterval( axisSetCollection::axisPosition Position ) const;
       interval<number> visibleIntervalX() const { return visibleInterval(axisSetCollection::Bottom); }

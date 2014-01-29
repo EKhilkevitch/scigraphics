@@ -74,7 +74,7 @@ namespace scigraphics
       wcoord plotWidth()  const;
       wcoord plotHeight() const;
 
-      void setIndents( const indents<wcoord>& Ids ) { Indents = Ids; update(); }
+      void setIndents( const indents<wcoord>& Ids );
       const indents<wcoord> getIndents() const { return Indents; }
       
       const wrectangle& plotRectangle() const { return PlotRectangle; }
