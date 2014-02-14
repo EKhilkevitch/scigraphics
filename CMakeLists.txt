@@ -19,8 +19,17 @@ if ( NOT LIBRARY_TYPE )
   endif()
 endif()
 
+if ( NOT IMAGEMAGICK_ENABLED )
+  if ( WIN32 )
+    set( IMAGEMAGICK_ENABLED 0 )
+  else()
+    set( IMAGEMAGICK_ENABLED 1 )
+  endif()  
+endif()
+
 message( "LIBRARY_TYPE = ${LIBRARY_TYPE}" )
 message( "CMAKE_BUILD_TYPE = ${CMAKE_BUILD_TYPE}" )
+message( "IMAGEMAGICK_ENABLED = ${IMAGEMAGICK_ENABLED}" )
 
 #Profiling 
 #set( CMAKE_BUILD_TYPE Release )
