@@ -22,7 +22,6 @@
 // ============================================================
 
 #include "scigraphics/mouse.h"
-#include "scigraphics/painter.h"
 #include "scigraphics/plot.h"
 
 #include <cassert>

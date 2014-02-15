@@ -102,13 +102,6 @@ namespace scigraphics
       void preparePainter();
       void prepareForPainting();
 
-      void setSelectionInterval( selectionStrip *Selection, wpoint Pt1, wpoint Pt2 );
-      void shiftSelection( selectionStrip *Selection, wpoint From, wpoint To );
-
-      zoomRectangle&  getZoomRectangle();
-      floatRectangle* getFloatRectangle( wpoint Point );
-      selection*      getSelection( wpoint Point );
-
     protected:
       void setDrawer( drawer *D ) { Painter.setDrawer(D); }
       drawer* getDrawer() { return Painter.getDrawer(); }
@@ -121,9 +114,21 @@ namespace scigraphics
       
       mouse& mouseHandler() { return MouseHandler; }
       const mouse& mouseHandler() const { return MouseHandler; }
-      
+     
+#if _MSC_VER
+    public:
+#else
+    protected:
+#endif
       painter& getPainter() { return Painter; }
       const painter& getPainter() const { return Painter; }
+      
+      zoomRectangle&  getZoomRectangle();
+      floatRectangle* getFloatRectangle( wpoint Point );
+      selection*      getSelection( wpoint Point );
+      
+      void setSelectionInterval( selectionStrip *Selection, wpoint Pt1, wpoint Pt2 );
+      void shiftSelection( selectionStrip *Selection, wpoint From, wpoint To );
       
     public:
       plot();
