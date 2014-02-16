@@ -146,6 +146,8 @@ namespace scigraphics
 
         number coordinateX( int_t IndexX ) const { return intervalX().min() + deltaX()*IndexX; }
         number coordinateY( int_t IndexY ) const { return intervalY().min() + deltaY()*IndexY; }
+        int_t nearestIndexX( number X ) const { return ( X - intervalX().min() )/deltaX(); }
+        int_t nearestIndexY( number Y ) const { return ( Y - intervalY().min() )/deltaY(); }
 
         void set( int_t IndexX, int_t IndexY, number Z, number ErrZ = 0 );
         const point_t at( int_t Index ) const;

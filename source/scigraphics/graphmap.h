@@ -115,6 +115,8 @@ namespace scigraphics
 
         number coordinateX( unsigned IndexX ) const { return getCastedData().coordinateX(IndexX); }
         number coordinateY( unsigned IndexY ) const { return getCastedData().coordinateY(IndexY); }
+        int nearestIndexX( number X ) const { return getCastedData().nearestIndexX(X); }
+        int nearestIndexY( number Y ) const { return getCastedData().nearestIndexY(Y); }
 
         data::point_t at( data::int_t Index ) const { return getData().at(Index); }
         data::point_t at( data::int_t IndexX, unsigned IndexY ) const { return getCastedData().at(IndexX,IndexY); }
