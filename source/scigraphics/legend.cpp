@@ -61,13 +61,15 @@ scigraphics::textStyle scigraphics::legend::updateLegendRectangle( painter &Pain
   textStyle Style = getLegendTextStyle();
   legendSize LegendSizes;
 
-  do
+  while ( true )
   {
     LegendSizes = sizesForLegendRectangle( Painter, Style, Graphics );
+    if ( Style.getFontSize() <= minFontSize() )
+      break;
     if ( LegendSizes.height() < Painter.height() )
       break;
     Style.setFontSize( Style.getFontSize() - 1 );
-  } while ( Style.getFontSize() > minFontSize() );
+  }
 
   setRectangleFromLegendSize( Painter, LegendSizes );
   return Style;
@@ -103,7 +105,7 @@ scigraphics::legend::legendSize scigraphics::legend::sizesForLegendRectangle( pa
 
   if ( Size.height() > 0 )
     Size.addToHeight( VerticalDistance );
-
+      
   return Size;
 }
 
