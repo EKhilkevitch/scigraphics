@@ -82,6 +82,13 @@ int main( int argc, char **argv )
   for ( double Phi = 0; Phi <= 10*M_PI; Phi += 0.05 )
     SpiralNg->appendPolar( Phi, -2 * sqrt( Phi ) );
 
+  for ( unsigned i = 1; i < 20; i++ )
+  {
+    scigraphics::graphSV *Circle = Manager.plot(5)->createGraphSV( ( "Circle" + QString::number(i) ).toStdString() );
+    for ( double Phi = 0; Phi <= 2*M_PI; Phi += 0.05 )
+      Circle->appendPolar( Phi, i );
+  }
+
   scigraphics::graphAV *Polygons = Manager.plot(6)->createGraphAV("Polygons");
   Polygons->append( 0, 0 );
   Polygons->append( 0, 2 );
