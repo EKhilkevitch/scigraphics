@@ -68,6 +68,8 @@ scigraphics::textStyle scigraphics::legend::updateLegendRectangle( painter &Pain
       break;
     if ( LegendSizes.height() < Painter.height() )
       break;
+    if ( Style.getFontSize() <= minFontSize() )
+      break;
     Style.setFontSize( Style.getFontSize() - 1 );
   }
 
