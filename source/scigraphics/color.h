@@ -64,11 +64,12 @@ namespace scigraphics
         static color fromHSV( unsigned H, unsigned S, unsigned V, unsigned T = 0 );
 
         color( rgb Value = Black ) : RGB(Value) {}
+        color( const color &C ) : RGB( C.RGB ) {}
         color( int R, int G, int B, int T = 0x00 );
-
         ~color() {};
 
         color& operator=( rgb Value ) { RGB = Value; return *this; } 
+        color& operator=( const color &C ) { RGB = C.RGB; return *this; }
 
         unsigned valueRgb()  const { return RGB; }
         unsigned int red()   const { return ( valueRgb() >> 16 ) & 0xFF; }
@@ -86,7 +87,8 @@ namespace scigraphics
         void setTransparency( double Part );
         std::string name( bool WithPrefix = true ) const;
 
-        void darker( int Value );
+        color darker( double Value ) const;
+        color lighter( double Value ) const;
 
     };
 

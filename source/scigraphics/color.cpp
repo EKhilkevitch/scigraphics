@@ -158,9 +158,17 @@ unsigned scigraphics::color::value() const
 
 // ------------------------------------------------------------
 
-void scigraphics::color::darker( int Value )
+scigraphics::color scigraphics::color::darker( double Value ) const
 {
-  *this = color( red()-Value, green()-Value, blue()-Value, transparency() ); 
+  Value *= 100;
+  return color( red()-Value, green()-Value, blue()-Value, transparency() ); 
+}
+
+// ------------------------------------------------------------
+        
+scigraphics::color scigraphics::color::lighter( double Value ) const
+{
+  return darker( -Value ); 
 }
 
 // ============================================================
