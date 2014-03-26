@@ -85,6 +85,7 @@ namespace scigraphics
         const D& getCastedData() const { return dynamic_cast<const D&>( getData() ); }
 
         V& getCastedViews() { return dynamic_cast<V&>( getViews() ); }
+        const V& getCastedViews() const { return dynamic_cast<const V&>( getViews() ); }
 
       public:
         explicit graphSpecified( const color &Color ) 
