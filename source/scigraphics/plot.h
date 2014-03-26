@@ -115,7 +115,7 @@ namespace scigraphics
       mouse& mouseHandler() { return MouseHandler; }
       const mouse& mouseHandler() const { return MouseHandler; }
      
-#if _MSC_VER
+#if _MSC_VER <= 1400
     public:
 #else
     protected:
