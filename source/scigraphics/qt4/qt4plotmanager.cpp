@@ -250,7 +250,11 @@ void qt4plotManager::loadSettings( QSettings* Settings )
   QList<int> MainSplitterSizes = MainSplitter->sizes();
   for ( int i = 0; i < MainSplitterSizes.size(); i++ )
     MainSplitterSizes[i] = Settings->value( "MainSplitterSizes" + QString::number(i), MainSplitter->height()/MainSplitter->count() ).toInt();
-  MainSplitter->setSizes( MainSplitterSizes );
+  int SizesSum = 0;
+  for ( int i = 0; i < MainSplitterSizes.size(); i++ )
+    SizesSum += MainSplitterSizes[i];
+  if ( SizesSum > 0 )
+    MainSplitter->setSizes( MainSplitterSizes );
   Settings->endGroup();
 }
 
