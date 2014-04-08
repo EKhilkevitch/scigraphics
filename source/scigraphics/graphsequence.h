@@ -27,6 +27,8 @@
 #include "scigraphics/graphviewcollection.h"
 #include "scigraphics/datasequence.h"
 
+#include <cmath>
+
 // ============================================================
 
 namespace scigraphics 

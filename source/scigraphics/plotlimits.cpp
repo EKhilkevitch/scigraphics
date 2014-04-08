@@ -326,7 +326,10 @@ scigraphics::plotLimits::limitsXY scigraphics::plotLimits::limitsForGraphics( co
   limitsXY Result;
 
   for ( graphCollection::const_iterator g = Graphics.begin(); g != Graphics.end(); ++g )
-    updateLimitsXYForGraphic( &Result, *g, Graphics );
+  {
+    if ( g->isVisible() )
+      updateLimitsXYForGraphic( &Result, *g, Graphics );
+  }
 
   std::set< const axisSet* > Axis = Graphics.setOfGraphAxisSet();
   for ( std::set< const axisSet* >::const_iterator a = Axis.begin(); a != Axis.end(); ++a )

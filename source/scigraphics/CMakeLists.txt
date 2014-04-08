@@ -3,6 +3,7 @@ cmake_minimum_required( VERSION 2.6 )
 project( graphicsLib ) 
 
 set( graphics_source_files 
+        graph.cpp
         graphsequence.cpp
         graphmap.cpp
         numlimits.cpp

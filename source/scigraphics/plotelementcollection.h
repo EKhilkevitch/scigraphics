@@ -112,7 +112,7 @@ namespace scigraphics
       void bindGraphToAxisSet( const plotElement *PlotElement, const axisSet *X, const axisSet *Y );
   };
 
-// ============================================================
+  // ============================================================
 
   template <class T> class templatePlotElementsCollection : public plotElementsCollection
   {
@@ -123,20 +123,10 @@ namespace scigraphics
       typedef typename templatePlotElementList::const_reverse_iterator const_reverse_iterator;
 
     private:
-      template <class R, class I> static R castIterator( const I& Iterator )
-      {
-        assert( sizeof(R) == sizeof(I) );
-        return *reinterpret_cast<const R*>( &Iterator );
-      }
+      template <class R, class I> static R castIterator( const I& Iterator );
 
     public:
-      void append( plotElement *PlotElement ) 
-      {
-        if ( PlotElement != NULL )
-          if ( dynamic_cast<T*>( PlotElement ) == NULL )
-            throw std::invalid_argument("Invalid type of appended argument");
-        plotElementsCollection::append( PlotElement );
-      }
+      void append( plotElement *PlotElement );
       
       iterator begin() { return castIterator<iterator>(getPlotElementsList().begin()); }
       iterator end()   { return castIterator<iterator>(getPlotElementsList().end());   }
@@ -151,7 +141,25 @@ namespace scigraphics
       const T* back() const  { return dynamic_cast<const T*>( &getPlotElementsList().back() ); }
   };
 
-// ============================================================
+  // ============================================================
+  
+  template <class T> template <class R, class I> R templatePlotElementsCollection<T>::castIterator( const I& Iterator )
+  {
+    assert( sizeof(R) == sizeof(I) );
+    return *reinterpret_cast<const R*>( &Iterator );
+  }
+
+  // ------------------------------------------------------------
+ 
+  template <class T> void templatePlotElementsCollection<T>::append( plotElement *PlotElement ) 
+  {
+    if ( PlotElement != NULL )
+      if ( dynamic_cast<T*>( PlotElement ) == NULL )
+        throw std::invalid_argument("Invalid type of appended argument");
+    plotElementsCollection::append( PlotElement );
+  }
+
+  // ============================================================
 
 }
 

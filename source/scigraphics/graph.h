@@ -45,12 +45,13 @@ namespace scigraphics
   class graph : public plotElement
   {
     private:
+      bool Visible;
       bool ShowLegend;
       bool DrawOverGrid;
       std::string Legend;
 
     public:
-      graph() : ShowLegend(true), DrawOverGrid(true) {}
+      graph();
       virtual ~graph()  {}
 
       virtual numberLimits limitsX() const = 0;
@@ -58,16 +59,19 @@ namespace scigraphics
 
       virtual std::string legend() const { return Legend; }
       virtual void setLegend( const std::string &L ) { Legend = L; }
-      virtual bool showLegend() const { return ShowLegend; }
-      virtual void setShowLegend( bool Enable ) { ShowLegend = Enable; }
+      virtual bool showLegend() const { return ShowLegend && isVisible(); }
+      virtual void setShowLegend( bool S ) { ShowLegend = S; }
       virtual wcoord legendExampleWidth() const  { return 0; }
       virtual wcoord legendExampleHeight() const { return 0; }
 
       virtual void draw( painter &Painter, const pairScales& Scales ) const = 0;
       virtual void drawLegendExample( painter &Painter, const wrectangle &Rectangle ) const = 0;
 
-      void setDrawOverGrid( bool D ) { DrawOverGrid = D; }
+      virtual void setDrawOverGrid( bool D ) { DrawOverGrid = D; }
       virtual bool isDrawOverGrid() const { return DrawOverGrid; }
+
+      virtual void setVisible( bool V ) { Visible = V; }
+      virtual bool isVisible() const { return Visible; }
   };
 
 // ============================================================

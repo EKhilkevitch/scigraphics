@@ -24,8 +24,6 @@
 #include "scigraphics/graphsequence.h"
 
 #include <cassert>
-#include <iostream>
-#include <stdexcept>
 
 // ============================================================
 

@@ -116,11 +116,14 @@ void scigraphics::plotElementsCollection::draw( painter &Painter, bool isGridDra
 {
   for ( plotElementList::const_iterator p = PlotElementsList.begin(); p != PlotElementsList.end(); ++p )
   {
-    if ( isGridDrawn == p->isDrawOverGrid() )
-    {
-      pairScales Scales = getPairScales( &*p );
-      p->draw(Painter,Scales);
-    }
+    if ( ! p->isVisible() )
+      continue;
+
+    if ( isGridDrawn != p->isDrawOverGrid() )
+      continue;
+      
+    pairScales Scales = getPairScales( &*p );
+    p->draw(Painter,Scales);
   }
 }
 
