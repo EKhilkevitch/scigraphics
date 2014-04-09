@@ -25,6 +25,7 @@
 
 #include <iostream>
 #include <algorithm>
+#include <limits>
 
 namespace scigraphics 
 {
@@ -47,28 +48,34 @@ namespace scigraphics
       const data_t *Data;
       int_t Index;
       int_t DataSize;
-      mutable point_t CurrPoint;
+
+      struct currentPoint
+      {
+        point_t Point;
+        int_t Index;
+        currentPoint() : Index( std::numeric_limits<int_t>::max() ) {}
+      } mutable CurrentPoint;
 
     public:
       data_iterator();
       data_iterator( const data_t &D, int_t I );
       ~data_iterator() {}
 
-      data_iterator operator++()                                { Index++; return *this; }
-      data_iterator operator++(int)                             { data_iterator I = *this; ++(*this); return I; }
-      data_iterator operator--()                                { Index--; return *this; }
-      data_iterator operator--(int)                             { data_iterator I = *this; --(*this); return I; }
+      data_iterator operator++();
+      data_iterator operator++(int);
+      data_iterator operator--();
+      data_iterator operator--(int);
       difference_type operator-( const data_iterator &I ) const { return Index - I.Index; }
       data_iterator& operator+=( difference_type N )            { Index += N; return *this; }
       data_iterator& operator-=( difference_type N )            { *this += (-N); return *this; }
-      data_iterator operator+( difference_type N ) const        { data_iterator I = *this; I += N; return I; }
-      data_iterator operator-( difference_type N ) const        { return *this + (-N); }
+      data_iterator operator+( difference_type N ) const;
+      data_iterator operator-( difference_type N ) const;
       bool operator==( const data_iterator& I ) const           { return I.Index == Index; }
       bool operator!=( const data_iterator& I ) const           { return !(*this==I); }
       bool operator<(  const data_iterator& I ) const           { return Index < I.Index; }
 
-      value_type operator *() const                             { return Data->at(Index); }
-      pointer operator->() const                                { CurrPoint = Data->at(Index); return &CurrPoint; }
+      value_type operator *() const;
+      pointer operator->() const;
 
   };
 
@@ -77,7 +84,7 @@ namespace scigraphics
   template <class DT> data_iterator<DT>::data_iterator() :
     Data( NULL ),
     Index( 0 ),
-    DataSize( 0 ) 
+    DataSize( 0 )
   {
   }
 
@@ -90,6 +97,80 @@ namespace scigraphics
   {
   }
   
+  // ------------------------------------------------------------
+  
+  template <class DT> data_iterator<DT> data_iterator<DT>::operator++()
+  {
+    ++Index;
+    return *this;
+  }
+  
+  // ------------------------------------------------------------
+  
+  template <class DT> data_iterator<DT> data_iterator<DT>::operator++(int)
+  {
+    data_iterator Iterator = *this; 
+    ++(*this); 
+    return Iterator;
+  }
+  
+  // ------------------------------------------------------------
+  
+  template <class DT> data_iterator<DT> data_iterator<DT>::operator--()
+  {
+    --Index;
+    return *this;
+  }
+  
+  // ------------------------------------------------------------
+  
+  template <class DT> data_iterator<DT> data_iterator<DT>::operator--(int)
+  {
+    data_iterator Iterator = *this; 
+    --(*this);
+    return Iterator;
+  }
+  
+  // ------------------------------------------------------------
+      
+  template <class DT> data_iterator<DT> data_iterator<DT>::operator+( difference_type N ) const
+  { 
+    data_iterator Iterator = *this; 
+    Iterator += N; 
+    return Iterator;
+  }
+  
+  // ------------------------------------------------------------
+
+  template <class DT> data_iterator<DT> data_iterator<DT>::operator-( difference_type N ) const        
+  { 
+    return (*this) + (-N); 
+  }
+  
+  // ------------------------------------------------------------
+      
+  template <class DT> typename data_iterator<DT>::value_type data_iterator<DT>::operator*() const
+  { 
+    if ( CurrentPoint.Index != Index )
+    {
+      CurrentPoint.Point = Data->at(Index);
+      CurrentPoint.Index = Index;
+    }
+    return CurrentPoint.Point;
+  }
+  
+  // ------------------------------------------------------------
+  
+  template <class DT> typename data_iterator<DT>::pointer data_iterator<DT>::operator->() const                                
+  { 
+    if ( CurrentPoint.Index != Index )
+    {
+      CurrentPoint.Point = Data->at(Index);
+      CurrentPoint.Index = Index;
+    }
+    return &CurrentPoint.Point;
+  }
+
   // ============================================================
 }
 
