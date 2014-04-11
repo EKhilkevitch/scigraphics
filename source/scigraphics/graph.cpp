@@ -32,6 +32,13 @@ scigraphics::graph::graph() :
 {
 }
 
+// ------------------------------------------------------------
+      
+bool scigraphics::graph::showLegend() const 
+{ 
+  return ShowLegend && isVisible(); 
+}
+
 // ============================================================
 
 

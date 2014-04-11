@@ -59,7 +59,7 @@ namespace scigraphics
 
       virtual std::string legend() const { return Legend; }
       virtual void setLegend( const std::string &L ) { Legend = L; }
-      virtual bool showLegend() const { return ShowLegend && isVisible(); }
+      virtual bool showLegend() const;
       virtual void setShowLegend( bool S ) { ShowLegend = S; }
       virtual wcoord legendExampleWidth() const  { return 0; }
       virtual wcoord legendExampleHeight() const { return 0; }
