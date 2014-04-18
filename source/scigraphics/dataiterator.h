@@ -65,9 +65,9 @@ namespace scigraphics
       data_iterator operator++(int);
       data_iterator operator--();
       data_iterator operator--(int);
-      difference_type operator-( const data_iterator &I ) const { return Index - I.Index; }
-      data_iterator& operator+=( difference_type N )            { Index += N; return *this; }
-      data_iterator& operator-=( difference_type N )            { *this += (-N); return *this; }
+      difference_type operator-( const data_iterator &I ) const;
+      data_iterator& operator+=( difference_type N );
+      data_iterator& operator-=( difference_type N );
       data_iterator operator+( difference_type N ) const;
       data_iterator operator-( difference_type N ) const;
       bool operator==( const data_iterator& I ) const           { return I.Index == Index; }
@@ -148,8 +148,31 @@ namespace scigraphics
   }
   
   // ------------------------------------------------------------
+  
+  template <class DT> typename data_iterator<DT>::difference_type data_iterator<DT>::operator-( const data_iterator &I ) const 
+  { 
+    return Index - I.Index; 
+  }
+  
+  // ------------------------------------------------------------
+  
+  template <class DT> data_iterator<DT>& data_iterator<DT>::operator+=( difference_type N )            
+  { 
+    Index += N; 
+    return *this; 
+  }
+  
+  // ------------------------------------------------------------
+  
+  template <class DT> data_iterator<DT>& data_iterator<DT>::operator-=( difference_type N )            
+  { 
+    *this += (-N); 
+    return *this; 
+  }
+  
+  // ------------------------------------------------------------
       
-  template <class DT> typename data_iterator<DT>::value_type data_iterator<DT>::operator*() const
+  template <class DT> const typename data_iterator<DT>::value_type data_iterator<DT>::operator*() const
   { 
     if ( CurrentPoint.Index != Index )
     {
