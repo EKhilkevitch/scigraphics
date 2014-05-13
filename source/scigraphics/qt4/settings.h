@@ -92,7 +92,7 @@ namespace scigraphics
 
     signals:
       void settingsChanged();
-      void settingsChanged( const scigraphics::settings& );
+      void settingsChanged( const settings& );
   };
 
   // ================================================================
