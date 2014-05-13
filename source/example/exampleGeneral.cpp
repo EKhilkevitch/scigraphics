@@ -21,14 +21,15 @@
 
 // ======================================================
 
-#include <QApplication>
 #include <QtGui>
 #include <cmath>
 
 #include "scigraphics/plot.h"
 #include "scigraphics/numberstyle.h"
-#include "scigraphics/qt4/qt4plot.h"
-#include "scigraphics/qt4/qt4plotsettings.h"
+#include "scigraphics/qt4/plot.h"
+#include "scigraphics/qt4/settings.h"
+#include "scigraphics/qt4/settingsbox.h"
+#include "scigraphics/qt4/settingscomposer.h"
 
 // ======================================================
 
@@ -42,7 +43,7 @@ int main( int argc, char *argv[] )
 {
   QApplication app(argc,argv);
 
-  qt4plot Plot;
+  scigraphics::qt4plot Plot;
 
   scigraphics::graphSV *Sqr = Plot.createGraphSequenceVector( "x^2" );
   for ( double x = -0.4; x <= 2; x+= 0.0005 )
@@ -104,13 +105,13 @@ int main( int argc, char *argv[] )
   Plot.setAxisTitle( scigraphics::axisSetCollection::Right, "This is axis Y right" );
   Plot.setAxisNumberStyle( scigraphics::axisSetCollection::Right, new scigraphics::sprintfNumberStyle("%e") );
 
-  qt4plotSettingsGroupSuperBox::axisPositionsList AxisPositions = qt4plotSettingsGroupSuperBox::defaultAxisPositions();
+  scigraphics::qt4settingsGroupSuperBox::axisPositionsList AxisPositions = scigraphics::qt4settingsGroupSuperBox::defaultAxisPositions();
   AxisPositions << scigraphics::axisSetCollection::Top;
   AxisPositions << scigraphics::axisSetCollection::Right;
 
-  qt4plotSettings Settings( NULL, "", AxisPositions, new qt4plotSettingsComposerTabs() );
-  Settings.addSettingWidget( new qt4plotSettingsSelections() );
-  Settings.addSettingWidget( new qt4plotSettingsDecoration() );
+  scigraphics::qt4settings Settings( NULL, "", AxisPositions, new scigraphics::qt4settingsComposerTabs() );
+  Settings.addSettingWidget( new scigraphics::qt4settingsSelections() );
+  Settings.addSettingWidget( new scigraphics::qt4settingsDecoration() );
   //Settings.replaceLayout( new QVBoxLayout() );
   Settings.connectToPlot(&Plot);
   Settings.show();

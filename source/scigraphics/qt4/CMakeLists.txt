@@ -5,15 +5,24 @@ find_package(Qt4 REQUIRED)
 include(${QT_USE_FILE})
 
 set ( graphics_qt_source_files
-        qt4plotsettings.cpp
-        qt4plotmanager.cpp
-        qt4plot.cpp
+        plotview.cpp
+        drawer.cpp
+        mousecallback.cpp
+        plot.cpp
+        labeledline.cpp
+        settingsbox.cpp
+        settingscomposer.cpp
+        settings.cpp
+        manager.cpp
     )
 
 set( moc_headers 
-        qt4plotsettings.h
-        qt4plotmanager.h
-        qt4plot.h
+        plotview.h
+        plot.h
+        labeledline.h
+        settingsbox.h
+        settings.h
+        manager.h
    )
 
 qt4_wrap_cpp( moc_sources ${moc_headers} )

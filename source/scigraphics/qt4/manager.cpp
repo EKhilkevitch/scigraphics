@@ -21,26 +21,45 @@
 
 // ================================================================
 
-#include "scigraphics/qt4/qt4plotmanager.h"
-#include "scigraphics/qt4/qt4plotsettings.h"
-#include "scigraphics/qt4/qt4plot.h"
+#include "scigraphics/qt4/manager.h"
+#include "scigraphics/qt4/settings.h"
+#include "scigraphics/qt4/settingsbox.h"
+#include "scigraphics/qt4/settingscomposer.h"
+#include "scigraphics/qt4/plot.h"
 
-#include <QtGui>
+#include <QSplitter>
+#include <QSettings>
+#include <QStackedLayout>
+#include <QTabWidget>
+#include <QDebug>
 
 // ================================================================
 
-qt4plotManager::qt4plotManager( unsigned NumOfPlots, unsigned NumOfRows, QObject *Parent )
+scigraphics::qt4plotManager::qt4plotManager( unsigned NumOfPlots, unsigned NumOfRows, QObject *Parent ) :
+  QObject( Parent )
 {
   setDefaultName();
   createPlots( NumOfPlots, NumOfRows );
-  createSettings( SharedSettings, qt4plotSettingsGroupSuperBox::defaultAxisPositions(), NULL );
+  createSettings( SharedSettings, qt4settingsGroupSuperBox::defaultAxisPositions(), NULL );
 }
 
 // ----------------------------------------------------------------
 
-qt4plotManager::qt4plotManager( unsigned NumOfPlots, unsigned NumOfRows, QObject *Parent,
-      const settingsMode SettingsMode, const qt4plotSettingsGroupSuperBox::axisPositionsList &Positions,
-      qt4plotSettingsComposer *Composer ) : QObject(Parent)
+scigraphics::qt4plotManager::qt4plotManager( unsigned NumOfPlots, unsigned NumOfRows, QObject *Parent,
+      const settingsMode SettingsMode ) : 
+  QObject(Parent)
+{
+  setDefaultName();
+  createPlots( NumOfPlots, NumOfRows );
+  createSettings( Plots.size() <= 1 ? SharedSettings : SettingsMode, qt4settingsGroupSuperBox::defaultAxisPositions(), NULL );
+}
+
+// ----------------------------------------------------------------
+
+scigraphics::qt4plotManager::qt4plotManager( unsigned NumOfPlots, unsigned NumOfRows, QObject *Parent,
+      const settingsMode SettingsMode, const QList<axisSetCollection::axisPosition> &Positions,
+      qt4settingsComposer *Composer ) : 
+  QObject(Parent)
 {
   setDefaultName();
   createPlots( NumOfPlots, NumOfRows );
@@ -48,19 +67,8 @@ qt4plotManager::qt4plotManager( unsigned NumOfPlots, unsigned NumOfRows, QObject
 }
 
 // ----------------------------------------------------------------
-    
-qt4plotManager::qt4plotManager( const QList<unsigned> &PlotsInRows, QObject *Parent, const settingsMode SettingsMode,
-      const qt4plotSettingsGroupSuperBox::axisPositionsList &Positions,
-      qt4plotSettingsComposer *Composer ) : QObject(Parent)
-{
-  setDefaultName();
-  createPlots( PlotsInRows );
-  createSettings( Plots.size() <= 1 ? SharedSettings : SettingsMode, Positions, Composer );
-}
 
-// ----------------------------------------------------------------
-
-qt4plotManager::~qt4plotManager() 
+scigraphics::qt4plotManager::~qt4plotManager() 
 { 
   delete PlotWidget; 
   delete SettingsWidget; 
@@ -68,7 +76,7 @@ qt4plotManager::~qt4plotManager()
 
 // ----------------------------------------------------------------
 
-void qt4plotManager::createPlots( const QList<unsigned> &PlotsInRows )
+void scigraphics::qt4plotManager::createPlots( const QList<unsigned> &PlotsInRows )
 {
   QWidget *Parent = dynamic_cast<QWidget*>( parent() );
   PlotWidget = new QWidget(Parent);
@@ -88,7 +96,7 @@ void qt4plotManager::createPlots( const QList<unsigned> &PlotsInRows )
 
 // ----------------------------------------------------------------
 
-void qt4plotManager::createPlots( const unsigned NumOfPlots, const unsigned NumOfRows )
+void scigraphics::qt4plotManager::createPlots( const unsigned NumOfPlots, const unsigned NumOfRows )
 {
   QList<unsigned> PlotsInRows;
   unsigned PlotsInList = 0;
@@ -107,7 +115,7 @@ void qt4plotManager::createPlots( const unsigned NumOfPlots, const unsigned NumO
 
 // ----------------------------------------------------------------
 
-QSplitter* qt4plotManager::createVerticalPlotSplitter( const unsigned NumOfPlotsInSplitter )
+QSplitter* scigraphics::qt4plotManager::createVerticalPlotSplitter( const unsigned NumOfPlotsInSplitter )
 {
   QSplitter *Splitter = new QSplitter(PlotWidget);
   Splitter->setOrientation( Qt::Horizontal );
@@ -123,7 +131,7 @@ QSplitter* qt4plotManager::createVerticalPlotSplitter( const unsigned NumOfPlots
 
 // ----------------------------------------------------------------
 
-qt4plot* qt4plotManager::createNextPlot()
+scigraphics::qt4plot* scigraphics::qt4plotManager::createNextPlot()
 {
   qt4plot *Plot = new qt4plot(PlotWidget);
   Plot->setMinimumSize(200,200);
@@ -133,7 +141,8 @@ qt4plot* qt4plotManager::createNextPlot()
 
 // ----------------------------------------------------------------
 
-void qt4plotManager::createSettings( const settingsMode SettingsMode, const qt4plotSettingsGroupSuperBox::axisPositionsList &Positions, qt4plotSettingsComposer *Composer )
+void scigraphics::qt4plotManager::createSettings( const settingsMode SettingsMode, 
+  const qt4settingsGroupSuperBox::axisPositionsList &Positions, qt4settingsComposer *Composer )
 {
   QWidget *Parent = dynamic_cast<QWidget*>( parent() );
   SettingsWidget = new QWidget(Parent);
@@ -151,7 +160,7 @@ void qt4plotManager::createSettings( const settingsMode SettingsMode, const qt4p
       break;
   }
 
-  foreach ( qt4plotSettings *S, Settings )
+  foreach ( qt4settings *S, Settings )
     connect( S, SIGNAL(settingsChanged()), SIGNAL(settingsChanged()) );
 
         
@@ -161,13 +170,13 @@ void qt4plotManager::createSettings( const settingsMode SettingsMode, const qt4p
 
 // ----------------------------------------------------------------
 
-QWidget* qt4plotManager::createTabSettingsWidget( const qt4plotSettingsGroupSuperBox::axisPositionsList &Positions,
-  qt4plotSettingsComposer *Composer )
+QWidget* scigraphics::qt4plotManager::createTabSettingsWidget( const qt4settingsGroupSuperBox::axisPositionsList &Positions,
+  qt4settingsComposer *Composer )
 {
   SettingsTab = new QTabWidget(SettingsWidget); 
   for ( int i = 0; i < Plots.size(); i++ )  
   {
-    qt4plotSettings *PlotSettings = new qt4plotSettings(SettingsWidget,"----",Positions,createComposer(Composer,i));
+    qt4settings *PlotSettings = new qt4settings(SettingsWidget,"----",Positions,createComposer(Composer,i));
     Settings.append( PlotSettings );
     PlotSettings->connectToPlot( Plots[i] );
     SettingsTab->addTab( PlotSettings, "" );
@@ -178,10 +187,10 @@ QWidget* qt4plotManager::createTabSettingsWidget( const qt4plotSettingsGroupSupe
 
 // ----------------------------------------------------------------
     
-QWidget* qt4plotManager::createSharedSettingsWidget( const qt4plotSettingsGroupSuperBox::axisPositionsList &Positions,
-  qt4plotSettingsComposer *Composer )
+QWidget* scigraphics::qt4plotManager::createSharedSettingsWidget( const qt4settingsGroupSuperBox::axisPositionsList &Positions,
+  qt4settingsComposer *Composer )
 {
-  qt4plotSettings *SharedSettings = new qt4plotSettings(SettingsWidget,"",Positions,Composer);
+  qt4settings *SharedSettings = new qt4settings(SettingsWidget,"",Positions,Composer);
   Settings.append( SharedSettings );
   foreach( qt4plot *Plot, Plots )
     SharedSettings->connectToPlot( Plot );
@@ -190,7 +199,7 @@ QWidget* qt4plotManager::createSharedSettingsWidget( const qt4plotSettingsGroupS
 
 // ----------------------------------------------------------------
 
-qt4plotSettingsComposer* qt4plotManager::createComposer( qt4plotSettingsComposer *Composer, int Index )
+scigraphics::qt4settingsComposer* scigraphics::qt4plotManager::createComposer( qt4settingsComposer *Composer, int Index )
 {
   if ( Composer == NULL )
     return NULL;
@@ -201,7 +210,7 @@ qt4plotSettingsComposer* qt4plotManager::createComposer( qt4plotSettingsComposer
 
 // ----------------------------------------------------------------
 
-void qt4plotManager::setSettingsName( unsigned i, const QString &N )
+void scigraphics::qt4plotManager::setSettingsName( unsigned i, const QString &N )
 {
   if ( i >= (unsigned)Settings.size() )
   {
@@ -215,11 +224,11 @@ void qt4plotManager::setSettingsName( unsigned i, const QString &N )
 
 // ----------------------------------------------------------------
 
-void qt4plotManager::updateTabNames()
+void scigraphics::qt4plotManager::updateTabNames()
 {
   for ( int i = 0; SettingsTab != NULL && i < SettingsTab->count(); i++ )
   {
-    qt4plotSettings *SettingsWgt = dynamic_cast<qt4plotSettings*>( SettingsTab->widget(i) );
+    qt4settings *SettingsWgt = dynamic_cast<qt4settings*>( SettingsTab->widget(i) );
     if ( SettingsWgt != NULL )
       SettingsTab->setTabText( i, SettingsWgt->name() );
   }
@@ -227,7 +236,7 @@ void qt4plotManager::updateTabNames()
 
 // ----------------------------------------------------------------
 
-void qt4plotManager::saveSettings( QSettings* Settings ) const
+void scigraphics::qt4plotManager::saveSettings( QSettings* Settings ) const
 {
   Settings->beginGroup( name() );
   for ( int i = 0; i < this->Settings.size(); i++ )
@@ -242,7 +251,7 @@ void qt4plotManager::saveSettings( QSettings* Settings ) const
 
 // ----------------------------------------------------------------
 
-void qt4plotManager::loadSettings( QSettings* Settings )
+void scigraphics::qt4plotManager::loadSettings( QSettings* Settings )
 {
   Settings->beginGroup( name() );
   for ( int i = 0; i < this->Settings.size(); i++ )
@@ -260,15 +269,15 @@ void qt4plotManager::loadSettings( QSettings* Settings )
 
 // ----------------------------------------------------------------
     
-void qt4plotManager::replot()
+void scigraphics::qt4plotManager::replot()
 {
-  foreach ( qt4plotSettings *S, Settings )
+  foreach ( qt4settings *S, Settings )
     S->updatePlotSettings();
 }
 
 // ----------------------------------------------------------------
 
-void qt4plotManager::show()
+void scigraphics::qt4plotManager::show()
 {
   PlotWidget->show();
   SettingsWidget->show();

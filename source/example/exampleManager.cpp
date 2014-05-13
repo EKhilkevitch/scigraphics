@@ -25,9 +25,10 @@
 #include <QtGui>
 #include <cmath>
 
-#include "scigraphics/qt4/qt4plot.h"
-#include "scigraphics/qt4/qt4plotsettings.h"
-#include "scigraphics/qt4/qt4plotmanager.h"
+#include "scigraphics/qt4/plot.h"
+#include "scigraphics/qt4/settings.h"
+#include "scigraphics/qt4/settingsbox.h"
+#include "scigraphics/qt4/manager.h"
 
 // ======================================================
 
@@ -41,9 +42,9 @@ int main( int argc, char **argv )
 {
   QApplication app(argc,argv);
 
-  qt4plotManager Manager( 8, 3, NULL, qt4plotManager::TabSettings );
+  scigraphics::qt4plotManager Manager( 8, 3, NULL, scigraphics::qt4plotManager::TabSettings );
   for ( unsigned i = 0; i < Manager.numberOfSettings(); i++ )
-    Manager.settings(i)->addSettingWidget( new qt4plotSettingsSelections(NULL) );
+    Manager.settings(i)->addSettingWidget( new scigraphics::qt4settingsSelections(NULL) );
 
   scigraphics::graphSV *Sqr = Manager.plot(0)->createGraphSV( "x^2" );
   

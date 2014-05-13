@@ -27,7 +27,7 @@
 
 #include "scigraphics/plot.h"
 #include "scigraphics/color.h"
-#include "scigraphics/qt4/qt4plot.h"
+#include "scigraphics/qt4/plot.h"
 
 // ======================================================
 
@@ -41,7 +41,7 @@ int main( int argc, char *argv[] )
 {
   QApplication app(argc,argv);
 
-  qt4plot Plot;
+  scigraphics::qt4plot Plot;
 
   scigraphics::graphSV *Sin = Plot.createGraphSV( "Sinus" );
   const size_t GraphSize = 1000;

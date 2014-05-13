@@ -27,8 +27,9 @@
 
 #include "scigraphics/plot.h"
 #include "scigraphics/graphmap.h"
-#include "scigraphics/qt4/qt4plot.h"
-#include "scigraphics/qt4/qt4plotsettings.h"
+#include "scigraphics/qt4/plot.h"
+#include "scigraphics/qt4/settings.h"
+#include "scigraphics/qt4/settingsbox.h"
 
 // ======================================================
 
@@ -42,7 +43,7 @@ int main( int argc, char **argv )
 {
   QApplication app(argc,argv);
 
-  qt4plot Plot;
+  scigraphics::qt4plot Plot;
 
   std::vector< scigraphics::graphMV* > Maps( 12, (scigraphics::graphMV*)NULL );
 
@@ -82,8 +83,8 @@ int main( int argc, char **argv )
     }
   }
 
-  qt4plotSettings Settings;
-  Settings.addSettingWidget( new qt4plotSettingsSelections(&Settings) );
+  scigraphics::qt4settings Settings;
+  Settings.addSettingWidget( new scigraphics::qt4settingsSelections(&Settings) );
   //Settings.replaceLayout( new QVBoxLayout() );
   Settings.connectToPlot(&Plot);
   Settings.show();

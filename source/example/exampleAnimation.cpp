@@ -21,13 +21,9 @@
 
 // ======================================================
 
-#include <QApplication>
-#include <QtGui>
-
 #include "exampleAnimation.h"
-
-#include "scigraphics/qt4/qt4plot.h"
-#include "scigraphics/qt4/qt4plotsettings.h"
+#include "scigraphics/qt4/plot.h"
+#include <QtGui>
 
 // ======================================================
 
@@ -69,7 +65,7 @@ int main( int argc, char **argv )
 {
   QApplication app(argc,argv);
   
-  qt4plot Plot;
+  scigraphics::qt4plot Plot;
   plotAnimator Animator( &Plot );
 
   Plot.move( 200, 200 );

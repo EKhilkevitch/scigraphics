@@ -46,7 +46,7 @@ namespace scigraphics
   typedef sequence::graphAreaVector graphAV;
   typedef map::graphVector graphMV;
 
-// ============================================================
+  // ============================================================
 
   class plot 
   {
@@ -220,7 +220,7 @@ namespace scigraphics
       void setReplotOnMouseActions( bool R ) { mouseHandler().setReplotOnMouseActions(R); }
   };
 
-// ============================================================
+  // ============================================================
 
 }
 

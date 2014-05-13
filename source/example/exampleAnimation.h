@@ -21,12 +21,8 @@
 
 // ======================================================
 
-#include <QApplication>
-#include <QtGui>
+#include "scigraphics/qt4/plot.h"
 #include <cmath>
-
-#include "scigraphics/qt4/qt4plot.h"
-#include "scigraphics/qt4/qt4plotsettings.h"
 
 // ======================================================
 
@@ -41,7 +37,7 @@ class plotAnimator : public QObject
   Q_OBJECT
 
   private:
-    qt4plot *Plot;
+    scigraphics::qt4plot *Plot;
     scigraphics::graphSV *Sin, *Sqr, *SpiralPl, *SpiralNg;
 
     unsigned Count;
@@ -92,7 +88,7 @@ class plotAnimator : public QObject
 
 
   public:
-    plotAnimator( qt4plot *P ) : Plot(P)
+    plotAnimator( scigraphics::qt4plot *P ) : Plot(P)
     {
       Count = 0;
 
