@@ -24,6 +24,7 @@
 #warning "Usage of this file is deprecated"
 
 #include "scigraphics/qt4/plot.h"
+#include "scigraphics/qt4/drawer.h"
 
 class qt4plot : public scigraphics::qt4plot
 {
@@ -31,4 +32,6 @@ class qt4plot : public scigraphics::qt4plot
     qt4plot( QWidget* Parent = NULL, Qt::WindowFlags Flags = 0 ) : 
       scigraphics::qt4plot( Parent, Flags ) {}
 };
+
+typedef scigraphics::qt4drawer drawerQt;
 

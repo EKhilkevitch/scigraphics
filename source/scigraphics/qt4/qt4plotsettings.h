@@ -23,11 +23,24 @@
 #warning "Usage of this file is deprecated"
 
 #include "scigraphics/qt4/settings.h"
+#include "scigraphics/qt4/settingsbox.h"
+#include "scigraphics/qt4/settingscomposer.h"
+
+typedef scigraphics::qt4settingsGroupSuperBox qt4plotSettingsGroupSuperBox;
+typedef scigraphics::qt4settingsComposerTabs qt4plotSettingsComposerTabs;
 
 class qt4plotSettings : public scigraphics::qt4settings
 {
   public:
     qt4plotSettings( QWidget *Parent = NULL, const QString &Name = QString() ) : 
       scigraphics::qt4settings( Parent, Name ) {}
+    qt4plotSettings( QWidget *Parent, const QList<scigraphics::axisSetCollection::axisPosition> &Positions ) :
+      scigraphics::qt4settings( Parent, Positions ) {}
+    qt4plotSettings( QWidget *Parent, const QString &Name, const QList<scigraphics::axisSetCollection::axisPosition> &Positions, scigraphics::qt4settingsComposer *Composer = NULL ) :
+      scigraphics::qt4settings( Parent, Name, Positions, Composer ) {}
+    qt4plotSettings( QWidget *Parent, scigraphics::qt4settingsComposer *Composer ) :
+      scigraphics::qt4settings( Parent, Composer ) {}
 };
+
+
 
