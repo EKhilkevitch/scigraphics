@@ -92,7 +92,7 @@ namespace scigraphics
       bool  empty() const { return PlotElementsList.empty(); }
 
       virtual void append( plotElement *PlotElement );
-      virtual void erase( plotElement *PlotElement );
+      virtual void remove( plotElement *PlotElement );
       virtual void clear();
 
       bool exist( const plotElement *PlotElement ) const;
@@ -139,6 +139,8 @@ namespace scigraphics
 
       const T* front() const { return dynamic_cast<const T*>( &getPlotElementsList().front() ); }
       const T* back() const  { return dynamic_cast<const T*>( &getPlotElementsList().back() ); }
+
+      iterator erase( iterator Iterator );
   };
 
   // ============================================================
@@ -157,6 +159,13 @@ namespace scigraphics
       if ( dynamic_cast<T*>( PlotElement ) == NULL )
         throw std::invalid_argument("Invalid type of appended argument");
     plotElementsCollection::append( PlotElement );
+  }
+  
+  // ------------------------------------------------------------
+      
+  template <class T> typename templatePlotElementsCollection<T>::iterator templatePlotElementsCollection<T>::erase( iterator Iterator ) 
+  { 
+    return castIterator<iterator>( getPlotElementsList().erase( castIterator<plotElementList::iterator>(Iterator) ) ); 
   }
 
   // ============================================================

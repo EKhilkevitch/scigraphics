@@ -57,7 +57,7 @@ namespace scigraphics
         public:
           iterator_wrapper() {}
           iterator_wrapper( const container_iterator &I ) : Iterator(I) {}
-          template <class iw> iterator_wrapper( const iw &I ) : Iterator( I.get() ) {}
+          iterator_wrapper( const iterator_wrapper &I ) : Iterator( I.get() ) {}
           iterator_wrapper& operator=( const container_iterator &I ) { Iterator = I; return *this; }
           reference operator*() const { return **Iterator; }
           pointer operator->() const { return *Iterator; }
@@ -97,8 +97,8 @@ namespace scigraphics
       
       container_ptr& operator=( const container_ptr &Cnt );
 
-      void push_back( T *Value ) { Container.push_back( Value ); }
-      void erase( iterator I ) { delete &*I; Container.erase(I.get()); }
+      void push_back( T *Value );
+      iterator erase( iterator I );
 
       void clear();
 
@@ -164,13 +164,30 @@ namespace scigraphics
   }
 
   // ------------------------------------------------------------
+  
+  template < template <class,class> class container, class T, class Allocator > void container_ptr<container,T,Allocator>::push_back( T *Value ) 
+  { 
+    Container.push_back( Value ); 
+  }
+  
+  // ------------------------------------------------------------
+  
+  template < template <class,class> class container, class T, class Allocator > typename container_ptr<container,T,Allocator>::iterator container_ptr<container,T,Allocator>::erase( iterator I ) 
+  { 
+    delete &*I; 
+    typename container_t::iterator Next = Container.erase(I.get()); 
+    return iterator(Next);
+  }
+  
+  // ------------------------------------------------------------
 
   template < template <class,class> class container, class T, class Allocator > void container_ptr<container,T,Allocator>::clear()
   {
     for ( iterator i = Container.begin(); i != Container.end(); ++i )
       delete &( *i );
     Container.clear();
-  }  
+  } 
+
   // ------------------------------------------------------------
       
   template < template <class,class> class container, class T, class Allocator > T* container_ptr<container,T,Allocator>::set( unsigned Index, T *Pointer )

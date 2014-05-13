@@ -147,16 +147,17 @@ namespace scigraphics
 
       void appendGraphic( graph *Graph );
       void bindGraphToAxis( const graph *Graph, axisSetCollection::axisPosition AxisX, axisSetCollection::axisPosition AxisY );
-      void clearGraphics() { Graphics.clear(); GraphicsColorSequence.reset(); }
-      void removeGraphic( graph *Graph ) { Graphics.erase(Graph); }
+      void clearGraphics();
+      void removeGraphic( graph *Graph );
+      graphCollection::iterator eraseGraphic( graphCollection::iterator Iterator );
       graphCollection::iterator beginGraph() { return Graphics.begin(); }
       graphCollection::iterator endGraph()   { return Graphics.end(); }
       graphCollection::const_iterator beginGraph() const { return Graphics.begin(); }
       graphCollection::const_iterator endGraph()   const { return Graphics.end(); }
 
       template <class S> S* createSelection() { return Selections.create<S>(); }
-      void deleteSelection( selection *S ) { Selections.erase( S ); }
-      void clearSelections() { Selections.clear(); }
+      void deleteSelection( selection *Selection );
+      void clearSelections();
       selectionCollection::iterator beginSelection() { return Selections.begin(); }
       selectionCollection::iterator endSelection()   { return Selections.end(); }
       selectionCollection::const_iterator beginSelection() const { return Selections.begin(); }

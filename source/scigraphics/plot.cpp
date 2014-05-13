@@ -347,6 +347,42 @@ void scigraphics::plot::bindGraphToAxis( const graph *Graph, axisSetCollection::
 }
 
 // ------------------------------------------------------------
+
+void scigraphics::plot::clearGraphics() 
+{ 
+  Graphics.clear(); 
+  GraphicsColorSequence.reset(); 
+}
+
+// ------------------------------------------------------------
+
+void scigraphics::plot::removeGraphic( graph *Graph ) 
+{ 
+  Graphics.remove(Graph);
+}
+      
+// ------------------------------------------------------------
+
+scigraphics::graphCollection::iterator scigraphics::plot::eraseGraphic( graphCollection::iterator Iterator )
+{
+  return Graphics.erase(Iterator);
+}
+
+// ------------------------------------------------------------
+
+void scigraphics::plot::deleteSelection( selection *Selection ) 
+{ 
+  Selections.remove( Selection ); 
+}
+
+// ------------------------------------------------------------
+
+void scigraphics::plot::clearSelections() 
+{ 
+  Selections.clear(); 
+}
+
+// ------------------------------------------------------------
       
 void scigraphics::plot::addScalesShift( double Shift, axisSet::direction Direction )
 {

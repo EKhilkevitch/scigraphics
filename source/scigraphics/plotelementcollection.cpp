@@ -77,7 +77,7 @@ void scigraphics::plotElementsCollection::append( plotElement *PlotElement )
 
 // ------------------------------------------------------------
 
-void scigraphics::plotElementsCollection::erase( plotElement *PlotElement )
+void scigraphics::plotElementsCollection::remove( plotElement *PlotElement )
 {
   plotElementList::iterator PlotIterator = find_pointer( PlotElementsList.begin(), PlotElementsList.end(), PlotElement );
   if ( PlotIterator == PlotElementsList.end() )
