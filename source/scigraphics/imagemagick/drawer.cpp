@@ -21,20 +21,20 @@
 
 // ================================================================
 
-#include "scigraphics/imagemagick/implot.h"
+#include "scigraphics/imagemagick/drawer.h"
+#include "scigraphics/color.h"
+#include "scigraphics/linestyle.h"
 #include "scigraphics/textstyle.h"
+#include "scigraphics/brushstyle.h"
 
 #include <Magick++.h>
 typedef Magick::Quantum Quantum;
 
 #include <cassert>
-#include <iostream>
-#include <list>
-
 
 // ================================================================
 
-Magick::Color drawerIm::colorIm( const scigraphics::color& Color )
+Magick::Color scigraphics::imdrawer::colorIm( const color& Color )
 {
   Magick::Color ImColor; 
   ImColor.redQuantum( (double)Color.red()/0xFF * MaxRGB );
@@ -46,14 +46,14 @@ Magick::Color drawerIm::colorIm( const scigraphics::color& Color )
 
 // ----------------------------------------------------------------
     
-Magick::Coordinate drawerIm::coordinateIm( const scigraphics::wpoint &Point )
+Magick::Coordinate scigraphics::imdrawer::coordinateIm( const wpoint &Point )
 {
   return Magick::Coordinate( Point.x(), Point.y() );
 }
 
 // ----------------------------------------------------------------
     
-std::list< Magick::Coordinate > drawerIm::polygonIm( const std::vector<scigraphics::wpoint> &Points )
+std::list< Magick::Coordinate > scigraphics::imdrawer::polygonIm( const std::vector<wpoint> &Points )
 {
   std::list< Magick::Coordinate > Polygon;
   for ( unsigned i = 0; i < Points.size(); i++ )
@@ -63,7 +63,7 @@ std::list< Magick::Coordinate > drawerIm::polygonIm( const std::vector<scigraphi
 
 // ----------------------------------------------------------------
 
-void drawerIm::setLineStyle( const scigraphics::lineStyle &Style )
+void scigraphics::imdrawer::setLineStyle( const lineStyle &Style )
 {
   if ( Image == NULL )
     return;
@@ -77,10 +77,10 @@ void drawerIm::setLineStyle( const scigraphics::lineStyle &Style )
 
   switch ( Style.getStyle() )
   {
-    case scigraphics::lineStyle::Solid:
+    case lineStyle::Solid:
       Image->strokeDashArray( NULL );
       break;
-    case scigraphics::lineStyle::Dash:
+    case lineStyle::Dash:
       Image->strokeDashArray( DashPattern );
       break;
     default:
@@ -92,19 +92,19 @@ void drawerIm::setLineStyle( const scigraphics::lineStyle &Style )
 
 // ----------------------------------------------------------------
 
-void drawerIm::setBrushStyle( const scigraphics::brushStyle &Style )
+void scigraphics::imdrawer::setBrushStyle( const brushStyle &Style )
 {
   if ( Image == NULL )
     return;
 
-  scigraphics::color Color = Style.getColor();
+  color Color = Style.getColor();
   switch ( Style.getStyle() )
   {
-    case scigraphics::brushStyle::Solid:
+    case brushStyle::Solid:
       break;
 
     default:
-    case scigraphics::brushStyle::None:
+    case brushStyle::None:
       Color.setTransparency( 1 );
       break;
   }
@@ -117,7 +117,7 @@ void drawerIm::setBrushStyle( const scigraphics::brushStyle &Style )
 
 // ----------------------------------------------------------------
 
-void drawerIm::setTextStyle( const scigraphics::textStyle &Style )
+void scigraphics::imdrawer::setTextStyle( const textStyle &Style )
 {
   if ( Image == NULL )
     return;
@@ -132,7 +132,7 @@ void drawerIm::setTextStyle( const scigraphics::textStyle &Style )
 
 // ----------------------------------------------------------------
     
-void drawerIm::drawLine( const scigraphics::wpoint &A, const scigraphics::wpoint &B )
+void scigraphics::imdrawer::drawLine( const wpoint &A, const wpoint &B )
 {
   if ( Image == NULL )
     return;
@@ -142,7 +142,7 @@ void drawerIm::drawLine( const scigraphics::wpoint &A, const scigraphics::wpoint
 
 // ----------------------------------------------------------------
 
-void drawerIm::drawRectangle( const scigraphics::wrectangle& Rectangle )
+void scigraphics::imdrawer::drawRectangle( const wrectangle& Rectangle )
 {
   if ( Image == NULL )
     return;
@@ -152,7 +152,7 @@ void drawerIm::drawRectangle( const scigraphics::wrectangle& Rectangle )
     
 // ----------------------------------------------------------------
     
-void drawerIm::drawPolygon( const std::vector<scigraphics::wpoint> &Points ) 
+void scigraphics::imdrawer::drawPolygon( const std::vector<wpoint> &Points ) 
 {
   if ( Points.size() < 3 )
     return;
@@ -168,7 +168,7 @@ void drawerIm::drawPolygon( const std::vector<scigraphics::wpoint> &Points )
 
 // ----------------------------------------------------------------
 
-void drawerIm::drawText( const std::string &Text, const scigraphics::wrectangle& Rectangle, double RotAngle )
+void scigraphics::imdrawer::drawText( const std::string &Text, const wrectangle& Rectangle, double RotAngle )
 {
   if ( Image == NULL )
     return;
@@ -185,7 +185,7 @@ void drawerIm::drawText( const std::string &Text, const scigraphics::wrectangle&
 
 // ----------------------------------------------------------------
 
-scigraphics::wcoord drawerIm::textWidth( const std::string &Text, const scigraphics::textStyle &Style )
+scigraphics::wcoord scigraphics::imdrawer::textWidth( const std::string &Text, const textStyle &Style )
 {
   if ( Image == NULL )
     return drawer::textWidth( Text, Style );
@@ -199,7 +199,7 @@ scigraphics::wcoord drawerIm::textWidth( const std::string &Text, const scigraph
 
 // ----------------------------------------------------------------
 
-scigraphics::wcoord drawerIm::textHeight( const std::string &Text, const scigraphics::textStyle &Style )
+scigraphics::wcoord scigraphics::imdrawer::textHeight( const std::string &Text, const textStyle &Style )
 {
   if ( Image == NULL )
     return drawer::textHeight( Text, Style );
@@ -213,21 +213,21 @@ scigraphics::wcoord drawerIm::textHeight( const std::string &Text, const scigrap
 
 // ----------------------------------------------------------------
 
-scigraphics::wcoord drawerIm::width()  const 
+scigraphics::wcoord scigraphics::imdrawer::width()  const 
 { 
   return Image == NULL ? 0 : Image->columns(); 
 };
 
 // ----------------------------------------------------------------
 
-scigraphics::wcoord drawerIm::height() const 
+scigraphics::wcoord scigraphics::imdrawer::height() const 
 { 
   return Image == NULL ? 0 : Image->rows(); 
 };
 
 // ----------------------------------------------------------------
 
-drawerIm::drawerIm( size_t SizeX, size_t SizeY ) :
+scigraphics::imdrawer::imdrawer( size_t SizeX, size_t SizeY ) :
   Image( NULL )  
 {
   Image = new Magick::Image( Magick::Geometry(SizeX,SizeY), Magick::Color("white") );
@@ -235,7 +235,7 @@ drawerIm::drawerIm( size_t SizeX, size_t SizeY ) :
 
 // ----------------------------------------------------------------
     
-void drawerIm::write( const std::string &FileName )
+void scigraphics::imdrawer::write( const std::string &FileName )
 {
   if ( Image == NULL )
     return;
@@ -244,7 +244,7 @@ void drawerIm::write( const std::string &FileName )
 
 // ----------------------------------------------------------------
 
-void drawerIm::display()
+void scigraphics::imdrawer::display()
 {
   if ( Image == NULL )
     return;
@@ -253,37 +253,4 @@ void drawerIm::display()
 
 // ================================================================
 
-implot::implot( size_t SizeX, size_t SizeY )
-{
-  drawerIm *Drawer = new drawerIm(SizeX,SizeY);
-  setDrawer( Drawer );
-
-  setVisibleCursorPositionViewer(false);
-}
-
-// ----------------------------------------------------------------
-    
-void implot::write( const std::string &FileName )
-{
-  drawerIm *Drawer = getDrawerIm();
-  if ( Drawer == NULL )
-    return;
-
-  replot();
-  Drawer->write( FileName );
-}
-
-// ----------------------------------------------------------------
-    
-void implot::display()
-{
-  drawerIm *Drawer = getDrawerIm();
-  if ( Drawer == NULL )
-    return;
-
-  replot();
-  Drawer->display();
-}
-
-// ================================================================
 

@@ -21,17 +21,34 @@
 
 #pragma once
 
-#warning "Usage of this file is deprecated"
+// ============================================================
 
-#include "scigraphics/imagemagick/plot.h"
-#include "scigraphics/imagemagick/drawer.h"
+#include "scigraphics/plot.h"
 
-class implot : public scigraphics::implot
+// ================================================================
+
+namespace scigraphics
 {
-  public:
-    implot( size_t SizeX, size_t SizeY ) : 
-      scigraphics::implot( SizeX, SizeY ) {}
-};
 
-typedef scigraphics::imdrawer drawerIm;
+  // ================================================================
+  
+  class imdrawer;
+  
+  // ================================================================
+  
+  class implot : public plot
+  {
+    protected:
+      imdrawer* getDrawerIm();
+
+    public:
+      implot( size_t SizeX, size_t SizeY );
+
+      void write( const std::string &FileName );
+      void display();
+  };
+
+  // ================================================================
+
+}
 

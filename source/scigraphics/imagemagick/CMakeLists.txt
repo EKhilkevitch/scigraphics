@@ -5,7 +5,8 @@ project( graphicsIm )
 find_package(ImageMagick COMPONENTS Magick++)
 
 set( graphics_im_source_files 
-      implot.cpp
+      plot.cpp
+      drawer.cpp
    )
 
 include_directories(${ImageMagick_INCLUDE_DIRS})

@@ -21,9 +21,7 @@
 
 // ======================================================
 
-#include "scigraphics/plot.h"
-#include "scigraphics/imagemagick/implot.h"
-#include "scigraphics/graphmap.h"
+#include "scigraphics/imagemagick/plot.h"
 
 // ======================================================
 
@@ -35,7 +33,7 @@
 
 int main()
 {
-  implot Plot( 900, 700 );
+  scigraphics::implot Plot( 900, 700 );
 
   scigraphics::graphSV *Sqr = Plot.createGraphSV( "x^2" );
   
