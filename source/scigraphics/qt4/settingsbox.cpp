@@ -469,7 +469,8 @@ void scigraphics::qt4settingsScaleType::loadSettings( QSettings* Settings )
 
 // ================================================================
 
-scigraphics::qt4settingsSelections::qt4settingsSelections( QWidget *Parent ) : qt4settingsGroupBox( "Selection", Parent )
+scigraphics::qt4settingsSelections::qt4settingsSelections( QWidget *Parent ) : 
+  qt4settingsGroupBox( "Selection", Parent )
 {
   setMinimumWidth(185);
 
@@ -511,7 +512,7 @@ void scigraphics::qt4settingsSelections::updateWidgetsEnables()
 
 void scigraphics::qt4settingsSelections::updateWidgets() 
 { 
-  updateWidgetsEnables(); 
+  updateWidgetsEnables();
   emit settingsUpdated(); 
 }
 

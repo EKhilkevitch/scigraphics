@@ -29,6 +29,7 @@
 #include "scigraphics/qt4/settings.h"
 #include "scigraphics/qt4/settingsbox.h"
 #include "scigraphics/qt4/manager.h"
+#include "scigraphics/scale.h"
 
 // ======================================================
 

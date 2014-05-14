@@ -22,10 +22,18 @@
 // ============================================================
 
 #include "scigraphics/plot.h"
+#include "scigraphics/painter.h"
 #include "scigraphics/scale.h"
+#include "scigraphics/legend.h"
+#include "scigraphics/cursorpoint.h"
+#include "scigraphics/zoomrect.h"
+#include "scigraphics/mouse.h"
+#include "scigraphics/mousecallback.h"
+#include "scigraphics/plotlimits.h"
 
 #include <stdexcept>
 #include <iostream>
+#include <list>
 
 #if _WIN32
 #  pragma warning( disable : 4355 )
@@ -33,19 +41,80 @@
 
 // ============================================================
 
-scigraphics::plot::plot() : 
-  MouseHandler(*this), 
-  CallBackContainer(*this),
+namespace scigraphics
+{
+  struct plotInternalData
+  {
+    painter Painter;
+    
+    plotLimits PlotLimits;
+
+    colorSequence GraphicsColorSequence;
+
+    zoomRectangle ZoomRectangle;
+
+    legend Legend;
+    cursorPositionViewer CursorPositionViewer;
+    std::list< floatRectangle* > FloatRectangles;
+
+    axisSetCollection AxisSets;
+    
+    mouse MouseHandler;
+    mouseCallBackContainer CallBackContainer;
+
+    plotInternalData( plot &Plot );
+    ~plotInternalData();
+      
+    void prepareAxisSets( plot &Plot );
+    void prepareFloatRectangles();
+  };
+}
+
+// ------------------------------------------------------------
+
+scigraphics::plotInternalData::plotInternalData( plot &Plot ) :
+  MouseHandler( Plot ), 
+  CallBackContainer( Plot ),
   GraphicsColorSequence( colorSequence::defaultColorSequence() )
 {
-  prepareAxisSets();
+  prepareAxisSets(Plot);
   prepareFloatRectangles();
+}
+
+// ------------------------------------------------------------
+
+scigraphics::plotInternalData::~plotInternalData()
+{
+}
+
+// ------------------------------------------------------------
+
+void scigraphics::plotInternalData::prepareAxisSets( plot &Plot )
+{
+  Plot.Graphics.setDefaultAxisSets( &AxisSets[axisSetCollection::Bottom], &AxisSets[axisSetCollection::Left] );
+  Plot.Selections.setDefaultAxisSets( &AxisSets[axisSetCollection::Bottom], &AxisSets[axisSetCollection::Left] );
+}
+
+// ------------------------------------------------------------
+
+void scigraphics::plotInternalData::prepareFloatRectangles()
+{
+  FloatRectangles.push_back( &Legend );
+  FloatRectangles.push_back( &CursorPositionViewer );
+}
+
+// ============================================================
+
+scigraphics::plot::plot() : 
+  Pimpl( new plotInternalData(*this) )
+{
 }
 
 // ------------------------------------------------------------
 
 scigraphics::plot::~plot()
 {
+  delete Pimpl;
 }
 
 // ------------------------------------------------------------
@@ -74,31 +143,6 @@ scigraphics::graphAV* scigraphics::plot::createGraphAV( const std::string &Legen
 scigraphics::graphMV* scigraphics::plot::createGraphMV( const std::string &Legend ) 
 { 
   return createGraph<graphMV>(Legend); 
-}
-
-// ------------------------------------------------------------
-
-scigraphics::color scigraphics::plot::selectNextGraphColor( const color &Color )
-{
-  if ( Color == color::White )
-    return nextGraphColor();
-  return Color;
-}
-
-// ------------------------------------------------------------
-
-void scigraphics::plot::prepareAxisSets()
-{
-  Graphics.setDefaultAxisSets( &AxisSets[axisSetCollection::Bottom], &AxisSets[axisSetCollection::Left] );
-  Selections.setDefaultAxisSets( &AxisSets[axisSetCollection::Bottom], &AxisSets[axisSetCollection::Left] );
-}
-
-// ------------------------------------------------------------
-
-void scigraphics::plot::prepareFloatRectangles()
-{
-  FloatRectangles.push_back( &Legend );
-  FloatRectangles.push_back( &CursorPositionViewer );
 }
 
 // ------------------------------------------------------------
@@ -151,16 +195,30 @@ void scigraphics::plot::replotFloatRectangles()
 
 void scigraphics::plot::preparePainter()
 {
-  Painter.update();
+  Pimpl->Painter.update();
 }
 
 // ------------------------------------------------------------
 
 void scigraphics::plot::updateScaleLimits()
 {
-  plotLimits::limitsXY Limits = PlotLimits.limitsForGraphics( Graphics );
-  AxisSets.setAxisNumberLimits( &Limits );
-  AxisSets.setScalesTo1x1ifNeeded( Painter );
+  plotLimits::limitsXY Limits = Pimpl->PlotLimits.limitsForGraphics( Graphics );
+  Pimpl->AxisSets.setAxisNumberLimits( &Limits );
+  Pimpl->AxisSets.setScalesTo1x1ifNeeded( Pimpl->Painter );
+}
+
+// ------------------------------------------------------------
+
+void scigraphics::plot::setDrawer( drawer *Drawer ) 
+{ 
+  Pimpl->Painter.setDrawer(Drawer); 
+}
+
+// ------------------------------------------------------------
+
+scigraphics::drawer* scigraphics::plot::getDrawer() 
+{ 
+  return Pimpl->Painter.getDrawer(); 
 }
 
 // ------------------------------------------------------------
@@ -177,104 +235,153 @@ scigraphics::wcoord scigraphics::plot::axisSetIndent( const axisSet &AxisSet ) c
 void scigraphics::plot::updateIndents()
 {
   indents<wcoord> Indents;
-  Indents.setLeft(  axisSetIndent(AxisSets[axisSetCollection::Left])   );
-  Indents.setRight( axisSetIndent(AxisSets[axisSetCollection::Right])  );
-  Indents.setUp(    axisSetIndent(AxisSets[axisSetCollection::Top])    );
-  Indents.setDown(  axisSetIndent(AxisSets[axisSetCollection::Bottom]) );
+  Indents.setLeft(  axisSetIndent(Pimpl->AxisSets[axisSetCollection::Left])   );
+  Indents.setRight( axisSetIndent(Pimpl->AxisSets[axisSetCollection::Right])  );
+  Indents.setUp(    axisSetIndent(Pimpl->AxisSets[axisSetCollection::Top])    );
+  Indents.setDown(  axisSetIndent(Pimpl->AxisSets[axisSetCollection::Bottom]) );
 
-  Painter.setIndents( Indents );
+  Pimpl->Painter.setIndents( Indents );
+}
+
+// ------------------------------------------------------------
+
+scigraphics::mouseCallBack& scigraphics::plot::getMouseCallBack() 
+{ 
+  return Pimpl->CallBackContainer.get(); 
+}
+
+// ------------------------------------------------------------
+
+void scigraphics::plot::setMouseCallBack( mouseCallBack *CallBack ) 
+{ 
+  Pimpl->CallBackContainer.set(CallBack); 
+}
+
+// ------------------------------------------------------------
+      
+scigraphics::mouse& scigraphics::plot::mouseHandler() 
+{ 
+  return Pimpl->MouseHandler; 
+}
+
+// ------------------------------------------------------------
+
+const scigraphics::mouse& scigraphics::plot::mouseHandler() const 
+{ 
+  return Pimpl->MouseHandler; 
+}
+      
+// ------------------------------------------------------------
+
+scigraphics::painter& scigraphics::plot::getPainter() 
+{ 
+  return Pimpl->Painter; 
+}
+
+// ------------------------------------------------------------
+
+const scigraphics::painter& scigraphics::plot::getPainter() const 
+{ 
+  return Pimpl->Painter; 
 }
 
 // ------------------------------------------------------------
       
 void scigraphics::plot::clearPlotArea()
 {
-  Painter.clearPlotArea();
+  Pimpl->Painter.clearPlotArea();
+}
+
+// ------------------------------------------------------------
+      
+void scigraphics::plot::flush() 
+{ 
+  Pimpl->Painter.flush(); 
 }
 
 // ------------------------------------------------------------
 
 void scigraphics::plot::clearBorders()
 {
-  Painter.clearBordersArea();
+  Pimpl->Painter.clearBordersArea();
 }
 
 // ------------------------------------------------------------
 
 void scigraphics::plot::drawGrid()
 {
-  AxisSets.drawGrid(Painter);
+  Pimpl->AxisSets.drawGrid(Pimpl->Painter);
 }
 
 // ------------------------------------------------------------
 
 void scigraphics::plot::drawAxis()
 {
-  AxisSets.drawAxis(Painter);
+  Pimpl->AxisSets.drawAxis(Pimpl->Painter);
 }
 
 // ------------------------------------------------------------
 
 void scigraphics::plot::drawFloatRectangles()
 {
-  Legend.draw( Painter, Graphics );
-  CursorPositionViewer.draw( Painter, getBottomLeftPairScales(), MouseHandler.lastPosition() );
+  Pimpl->Legend.draw( Pimpl->Painter, Graphics );
+  Pimpl->CursorPositionViewer.draw( Pimpl->Painter, getBottomLeftPairScales(), Pimpl->MouseHandler.lastPosition() );
 }
 
 // ------------------------------------------------------------
 
 void scigraphics::plot::drawAxisTicks()
 {
-  AxisSets.drawAxisTicks(Painter);
+  Pimpl->AxisSets.drawAxisTicks(Pimpl->Painter);
 }
 
 // ------------------------------------------------------------
 
 void scigraphics::plot::drawAxisLabels()
 {
-  AxisSets.drawAxisLabels(Painter);
+  Pimpl->AxisSets.drawAxisLabels(Pimpl->Painter);
 }
 
 // ------------------------------------------------------------
 
 void scigraphics::plot::drawAxisTitles()
 {
-  AxisSets.drawAxisTitles(Painter);
+  Pimpl->AxisSets.drawAxisTitles(Pimpl->Painter);
 }
 
 // ------------------------------------------------------------
 
 void scigraphics::plot::drawGraphicsOverGrid()
 {
-  Graphics.draw( Painter, true );
+  Graphics.draw( Pimpl->Painter, true );
 }
 
 // ------------------------------------------------------------
 
 void scigraphics::plot::drawGraphicsUnderGrid()
 {
-  Graphics.draw( Painter, false );
+  Graphics.draw( Pimpl->Painter, false );
 }
 
 // ------------------------------------------------------------
 
 void scigraphics::plot::drawSelections()
 {
-  Selections.draw( Painter, true );
+  Selections.draw( Pimpl->Painter, true );
 }
 
 // ------------------------------------------------------------
 
 void scigraphics::plot::drawZoomRectangle()
 {
-  ZoomRectangle.draw( Painter );
+  Pimpl->ZoomRectangle.draw( Pimpl->Painter );
 }
 
 // ------------------------------------------------------------
 
 scigraphics::floatRectangle* scigraphics::plot::getFloatRectangle( wpoint Point )
 {
-  for ( std::list< floatRectangle* >::reverse_iterator f = FloatRectangles.rbegin(); f != FloatRectangles.rend(); ++f )
+  for ( std::list< floatRectangle* >::reverse_iterator f = Pimpl->FloatRectangles.rbegin(); f != Pimpl->FloatRectangles.rend(); ++f )
     if ( (*f)->containPoint( Point ) )
       return *f;
   return NULL;
@@ -284,14 +391,14 @@ scigraphics::floatRectangle* scigraphics::plot::getFloatRectangle( wpoint Point 
       
 scigraphics::zoomRectangle&  scigraphics::plot::getZoomRectangle() 
 { 
-  return ZoomRectangle; 
+  return Pimpl->ZoomRectangle; 
 }
       
 // ------------------------------------------------------------
 
 scigraphics::selection* scigraphics::plot::getSelection( wpoint Point )
 {
-  fpoint FPoint = Painter.wpoint2fpoint(Point);
+  fpoint FPoint = Pimpl->Painter.wpoint2fpoint(Point);
   return Selections.getSelectionOnPoint( FPoint );
 }
       
@@ -299,8 +406,8 @@ scigraphics::selection* scigraphics::plot::getSelection( wpoint Point )
 
 void scigraphics::plot::setSelectionInterval( selectionStrip *Selection, wpoint Pt1, wpoint Pt2 )
 {
-  fpoint FPoint1 = Painter.wpoint2fpoint(Pt1);
-  fpoint FPoint2 = Painter.wpoint2fpoint(Pt2);
+  fpoint FPoint1 = Pimpl->Painter.wpoint2fpoint(Pt1);
+  fpoint FPoint2 = Pimpl->Painter.wpoint2fpoint(Pt2);
   Selections.setSelectionInterval( Selection, FPoint1, FPoint2 );
 }
 
@@ -308,8 +415,8 @@ void scigraphics::plot::setSelectionInterval( selectionStrip *Selection, wpoint 
       
 void scigraphics::plot::shiftSelection( selectionStrip *Selection, wpoint From, wpoint To )
 {
-  fpoint FFrom = Painter.wpoint2fpoint(From);
-  fpoint FTo   = Painter.wpoint2fpoint(To);
+  fpoint FFrom = Pimpl->Painter.wpoint2fpoint(From);
+  fpoint FTo   = Pimpl->Painter.wpoint2fpoint(To);
   Selections.shiftSelection( Selection, FFrom, FTo );
 }
 
@@ -317,9 +424,39 @@ void scigraphics::plot::shiftSelection( selectionStrip *Selection, wpoint From, 
 
 scigraphics::pairScales scigraphics::plot::getBottomLeftPairScales() 
 {
-  return AxisSets.getBottomLeftPairScales();
+  return Pimpl->AxisSets.getBottomLeftPairScales();
 }
       
+// ------------------------------------------------------------
+
+scigraphics::color scigraphics::plot::nextGraphColor() 
+{ 
+  return Pimpl->GraphicsColorSequence.next(); 
+}
+
+// ------------------------------------------------------------
+
+scigraphics::color scigraphics::plot::currentGraphColor() const 
+{ 
+  return Pimpl->GraphicsColorSequence.current(); 
+}
+
+// ------------------------------------------------------------
+
+scigraphics::color scigraphics::plot::selectNextGraphColor( const color &Color )
+{
+  if ( Color == color::White )
+    return nextGraphColor();
+  return Color;
+}
+
+// ------------------------------------------------------------
+
+void scigraphics::plot::resetGraphColor() 
+{ 
+  Pimpl->GraphicsColorSequence.reset(); 
+}
+
 // ------------------------------------------------------------
 
 void scigraphics::plot::appendGraphic( graph *Graph )
@@ -336,8 +473,8 @@ void scigraphics::plot::bindGraphToAxis( const graph *Graph, axisSetCollection::
   if ( Graph == NULL )
     throw std::invalid_argument("Zero graphic pointer is ibvalid");
 
-  const axisSet *AxisX = &AxisSets[AxisPosX];
-  const axisSet *AxisY = &AxisSets[AxisPosY];
+  const axisSet *AxisX = &Pimpl->AxisSets[AxisPosX];
+  const axisSet *AxisY = &Pimpl->AxisSets[AxisPosY];
 
   assert( AxisX != NULL && AxisY != NULL );
   if ( AxisX->getDirection() != axisSet::DirectionX || AxisY->getDirection() != axisSet::DirectionY )
@@ -351,7 +488,7 @@ void scigraphics::plot::bindGraphToAxis( const graph *Graph, axisSetCollection::
 void scigraphics::plot::clearGraphics() 
 { 
   Graphics.clear(); 
-  GraphicsColorSequence.reset(); 
+  Pimpl->GraphicsColorSequence.reset(); 
 }
 
 // ------------------------------------------------------------
@@ -386,79 +523,79 @@ void scigraphics::plot::clearSelections()
       
 void scigraphics::plot::addScalesShift( double Shift, axisSet::direction Direction )
 {
-  AxisSets.addScalesShift(Shift,Direction);
+  Pimpl->AxisSets.addScalesShift(Shift,Direction);
 }
 
 // ------------------------------------------------------------
       
 void scigraphics::plot::mulScalesZoom( double Zoom, axisSet::direction Direction )
 {
-  AxisSets.mulScalesZoom(Zoom,Direction);
+  Pimpl->AxisSets.mulScalesZoom(Zoom,Direction);
 }
 
 // ------------------------------------------------------------
       
 void scigraphics::plot::resetScales( axisSet::direction Direction )
 {
-  AxisSets.resetScales(Direction);
+  Pimpl->AxisSets.resetScales(Direction);
 }
       
 // ------------------------------------------------------------
 
 void scigraphics::plot::resetAllScales()
 {
-  AxisSets.resetAllScales();
+  Pimpl->AxisSets.resetAllScales();
 }
 
 // ------------------------------------------------------------
 
 void scigraphics::plot::setScalesTo1x1( bool SetTo1x1 )
 {
-  AxisSets.setFixedScalesTo1x1( SetTo1x1 );
+  Pimpl->AxisSets.setFixedScalesTo1x1( SetTo1x1 );
 }
 
 // ------------------------------------------------------------
       
 const scigraphics::scale* scigraphics::plot::scaleWithPosition( axisSetCollection::axisPosition Position ) const
 {
-  return AxisSets[Position].getScale();
+  return Pimpl->AxisSets[Position].getScale();
 }
 
 // ------------------------------------------------------------
 
 scigraphics::scale* scigraphics::plot::scaleWithPosition( axisSetCollection::axisPosition Position ) 
 {
-  return AxisSets[Position].getScale();
+  return Pimpl->AxisSets[Position].getScale();
 }
 
 // ------------------------------------------------------------
 
 void scigraphics::plot::replaceScaleWithPosition( axisSetCollection::axisPosition Position, scale *Scale )
 {
-  AxisSets[Position].replaceScale(Scale);
+  Pimpl->AxisSets[Position].replaceScale(Scale);
 }
 
 // ------------------------------------------------------------
 
 void scigraphics::plot::setScaleInterval( axisSetCollection::axisPosition Position, interval<number> Limits )
 {
-  const axisSet *Set = &AxisSets[Position];
-  PlotLimits.setInterval( Set, Limits );
+  const axisSet *Set = &Pimpl->AxisSets[Position];
+  Pimpl->PlotLimits.setInterval( Set, Limits );
 }
 
 // ------------------------------------------------------------
       
 scigraphics::interval<scigraphics::number> scigraphics::plot::scaleInterval( axisSetCollection::axisPosition Position ) const
 {
-  const axisSet *Set = &AxisSets[Position];
-  return PlotLimits.getInterval(Set);
+  const axisSet *Set = &Pimpl->AxisSets[Position];
+  return Pimpl->PlotLimits.getInterval(Set);
 }
 
 // ------------------------------------------------------------
       
 scigraphics::interval<scigraphics::number> scigraphics::plot::visibleInterval( axisSetCollection::axisPosition Position ) const
 {
-  const axisSet *Set = &AxisSets[Position];
+  const axisSet *Set = &Pimpl->AxisSets[Position];
   return Set->getScale()->getVisivleInterval();
 }
 
@@ -466,21 +603,21 @@ scigraphics::interval<scigraphics::number> scigraphics::plot::visibleInterval( a
 
 void scigraphics::plot::setScaleLock( axisSetCollection::axisPosition Position, bool Lock )
 {
-  AxisSets[Position].getScale()->setLock(Lock);
+  Pimpl->AxisSets[Position].getScale()->setLock(Lock);
 }
 
 // ------------------------------------------------------------
 
 void scigraphics::plot::setAxisTitle( axisSetCollection::axisPosition Position, const std::string &Title )
 {
-  AxisSets[Position].setAxisTitle( Title );
+  Pimpl->AxisSets[Position].setAxisTitle( Title );
 }
 
 // ------------------------------------------------------------
       
 std::string scigraphics::plot::getAxisTitle( axisSetCollection::axisPosition Position ) const
 {
-  return AxisSets[Position].getAxisTitle();
+  return Pimpl->AxisSets[Position].getAxisTitle();
 }
 
 // ------------------------------------------------------------
@@ -495,15 +632,64 @@ void scigraphics::plot::setBottomLeftAxisTitles( const std::string &TitleX, cons
 
 void scigraphics::plot::setAxisNumberStyle( axisSetCollection::axisPosition Position, numberStyle *Style )
 {
-  AxisSets[Position].setNumberStyle(Style);
+  Pimpl->AxisSets[Position].setNumberStyle(Style);
+}
+
+// ------------------------------------------------------------
+
+void scigraphics::plot::setDisallowedMouseOperations( unsigned Operation ) 
+{ 
+  mouseHandler().setDisallowedOperations(Operation); 
+}
+
+// ------------------------------------------------------------
+
+void scigraphics::plot::setAllowedMouseOperations( unsigned Operation )    
+{ 
+  mouseHandler().setAllowedOperations(Operation);    
+}
+
+// ------------------------------------------------------------
+
+void scigraphics::plot::setMouseOperations( unsigned Operations )          
+{ 
+  mouseHandler().setOperations(Operations);          
+}
+
+// ------------------------------------------------------------
+
+unsigned scigraphics::plot::allowedOperations() const                      
+{ 
+  return mouseHandler().allowedOperations(); 
+}
+      
+// ------------------------------------------------------------
+
+void scigraphics::plot::setReplotOnMouseActions( bool Replot ) 
+{ 
+  mouseHandler().setReplotOnMouseActions(Replot); 
+}
+
+// ------------------------------------------------------------
+
+void scigraphics::plot::setVisibleLegend( bool Visible ) 
+{ 
+  Pimpl->Legend.setVisible(Visible); 
+}
+
+// ------------------------------------------------------------
+
+void scigraphics::plot::setVisibleCursorPositionViewer( bool Visible ) 
+{ 
+  Pimpl->CursorPositionViewer.setVisible(Visible); 
 }
 
 // ------------------------------------------------------------
       
 void scigraphics::plot::setStretchFactors( double SX, double SY )
 {
-  PlotLimits.setStretchFactorX(SX);
-  PlotLimits.setStretchFactorY(SY);
+  Pimpl->PlotLimits.setStretchFactorX(SX);
+  Pimpl->PlotLimits.setStretchFactorY(SY);
 }
 
 // ============================================================

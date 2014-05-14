@@ -26,6 +26,7 @@
 
 #include "scigraphics/plot.h"
 #include "scigraphics/numberstyle.h"
+#include "scigraphics/mouse.h"
 #include "scigraphics/qt4/plot.h"
 #include "scigraphics/qt4/settings.h"
 #include "scigraphics/qt4/settingsbox.h"

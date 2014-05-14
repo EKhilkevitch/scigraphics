@@ -24,27 +24,36 @@
 // ============================================================
 
 #include "scigraphics/axisset.h"
-#include "scigraphics/painter.h"
 #include "scigraphics/graphcollection.h"
+#include "scigraphics/selectioncollection.h"
 #include "scigraphics/graphsequence.h"
 #include "scigraphics/graphmap.h"
-#include "scigraphics/selectioncollection.h"
-#include "scigraphics/plotlimits.h"
-#include "scigraphics/zoomrect.h"
-#include "scigraphics/mouse.h"
-#include "scigraphics/mousecallback.h"
-#include "scigraphics/legend.h"
-#include "scigraphics/cursorpoint.h"
-#include "scigraphics/scale.h"
+
+#include <string>
 
 // ============================================================
 
 namespace scigraphics
 {
+  
+  // ============================================================
 
   typedef sequence::graphVector graphSV;
   typedef sequence::graphAreaVector graphAV;
   typedef map::graphVector graphMV;
+
+  // ============================================================
+ 
+  struct plotInternalData;
+
+  class color;
+  class mouse;
+  class painter;
+  class drawer;
+
+  class floatRectangle;
+  class zoomRectangle;
+  class mouseCallBack;
 
   // ============================================================
 
@@ -52,32 +61,17 @@ namespace scigraphics
   {
     friend class mouse;
     friend class settings;
+    friend struct plotInternalData;
 
     private:
       plot( const plot& );
       plot& operator=( const plot& );
 
     private:
-      painter Painter;
-      
-      plotLimits PlotLimits;
-
       graphCollection Graphics;
       selectionCollection Selections;
 
-      colorSequence GraphicsColorSequence;
-
-      zoomRectangle ZoomRectangle;
-
-      legend Legend;
-      cursorPositionViewer CursorPositionViewer;
-      std::list< floatRectangle* > FloatRectangles;
-
-      axisSetCollection AxisSets;
-      
-      mouse MouseHandler;
-
-      mouseCallBackContainer CallBackContainer;
+      plotInternalData *Pimpl;
 
     private:
       void drawAxis();
@@ -92,36 +86,33 @@ namespace scigraphics
       void drawZoomRectangle();
       void clearBorders();
       void clearPlotArea();
-      void flush() { Painter.flush(); }
+      void flush();
       
       void replotFloatRectangles();
-
-      void prepareAxisSets();
-      void prepareFloatRectangles();
 
       void preparePainter();
       void prepareForPainting();
 
     protected:
-      void setDrawer( drawer *D ) { Painter.setDrawer(D); }
-      drawer* getDrawer() { return Painter.getDrawer(); }
+      void setDrawer( drawer *Drawer );
+      drawer* getDrawer();
 
       wcoord axisSetIndent( const axisSet &Set ) const;
       void updateIndents();
 
-      mouseCallBack& getMouseCallBack() { return CallBackContainer.get(); }
-      void setMouseCallBack( mouseCallBack *C ) { CallBackContainer.set(C); }
+      mouseCallBack& getMouseCallBack();
+      void setMouseCallBack( mouseCallBack *CallBack );
       
-      mouse& mouseHandler() { return MouseHandler; }
-      const mouse& mouseHandler() const { return MouseHandler; }
+      mouse& mouseHandler();
+      const mouse& mouseHandler() const;
      
 #if _MSC_VER <= 1400
     public:
 #else
     protected:
 #endif
-      painter& getPainter() { return Painter; }
-      const painter& getPainter() const { return Painter; }
+      painter& getPainter();
+      const painter& getPainter() const;
       
       zoomRectangle&  getZoomRectangle();
       floatRectangle* getFloatRectangle( wpoint Point );
@@ -165,10 +156,10 @@ namespace scigraphics
 
       pairScales getBottomLeftPairScales();
 
-      color nextGraphColor() { return GraphicsColorSequence.next(); }
-      color currentGraphColor() const { return GraphicsColorSequence.current(); }
+      color nextGraphColor();
+      color currentGraphColor() const;
       color selectNextGraphColor( const color &Color = color::White );
-      void resetGraphColor() { GraphicsColorSequence.reset(); }
+      void resetGraphColor();
       
       const scale* scaleWithPosition( axisSetCollection::axisPosition Position ) const;
       scale* scaleWithPosition( axisSetCollection::axisPosition Position );
@@ -209,15 +200,14 @@ namespace scigraphics
 
       void setAxisNumberStyle( axisSetCollection::axisPosition Position, numberStyle *Style );
 
-      void setDisallowedMouseOperations( unsigned Operation ) { mouseHandler().setDisallowedOperations(Operation); }
-      void setAllowedMouseOperations( unsigned Operation )    { mouseHandler().setAllowedOperations(Operation);    }
-      void setMouseOperations( unsigned Operations )          { mouseHandler().setOperations(Operations);          }
-      unsigned allowedOperations() const                      { return mouseHandler().allowedOperations(); }
+      void setDisallowedMouseOperations( unsigned Operation );
+      void setAllowedMouseOperations( unsigned Operation );
+      void setMouseOperations( unsigned Operations );
+      unsigned allowedOperations() const;
+      void setReplotOnMouseActions( bool Relpot );
      
-      void setVisibleLegend( bool V ) { Legend.setVisible(V); }
-      void setVisibleCursorPositionViewer( bool V ) { CursorPositionViewer.setVisible(V); }
-
-      void setReplotOnMouseActions( bool R ) { mouseHandler().setReplotOnMouseActions(R); }
+      void setVisibleLegend( bool Visible );
+      void setVisibleCursorPositionViewer( bool Visible );
   };
 
   // ============================================================

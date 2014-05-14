@@ -20,9 +20,13 @@
 
 
 #pragma once
+  
+// ============================================================
 
 #include "scigraphics/numbers.h"
 #include "scigraphics/geometry.h"
+  
+// ============================================================
 
 namespace scigraphics
 {
@@ -134,7 +138,7 @@ namespace scigraphics
           wpoint lastPoint() const { return LastPoint; }
 
         public:
-          mouseActionHandler( plot &P, wpoint Point ) : mouseHandler(P), InitPoint(Point), LastPoint(Point) {}
+          mouseActionHandler( plot &P, wpoint Point );
           virtual ~mouseActionHandler() {}
 
           virtual void moved( wpoint ) {}

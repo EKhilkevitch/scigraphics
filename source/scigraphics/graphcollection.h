@@ -51,7 +51,7 @@ namespace scigraphics
       template < class G > G* create( const std::string &Legend, const color &Color );
   };
 
-// ============================================================
+  // ============================================================
   
   template < class G > G* graphCollection::create()
   {
@@ -59,6 +59,8 @@ namespace scigraphics
     append( Graph );
     return Graph;
   }
+  
+  // ------------------------------------------------------------
 
   template < class G > G* graphCollection::create( const color &Color )
   {
@@ -66,6 +68,8 @@ namespace scigraphics
     append( Graph );
     return Graph;
   }
+  
+  // ------------------------------------------------------------
 
   template < class G > G* graphCollection::create( const std::string &Legend )
   {
@@ -73,6 +77,8 @@ namespace scigraphics
     append( Graph );
     return Graph;
   }
+  
+  // ------------------------------------------------------------
 
   template < class G > G* graphCollection::create( const std::string &Legend, const color &Color )
   {
@@ -81,7 +87,7 @@ namespace scigraphics
     return Graph;
   }
 
-// ============================================================
+  // ============================================================
 
 }
 

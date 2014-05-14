@@ -92,8 +92,6 @@ int main()
   }
 #endif
 
-  Plot.setDisallowedMouseOperations( scigraphics::mouse::allowing::SelectH );
-  
   Plot.setAxisTitle( scigraphics::axisSetCollection::Bottom, "This is axis X bottom" " -> \xce\xbc" );
   Plot.setAxisTitle( scigraphics::axisSetCollection::Top, "This is axis X top" );
   Plot.setAxisTitle( scigraphics::axisSetCollection::Left, "This is axis Y left" );

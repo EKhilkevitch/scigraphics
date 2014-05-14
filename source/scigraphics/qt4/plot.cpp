@@ -26,6 +26,7 @@
 #include "scigraphics/qt4/mousecallback.h"
 #include "scigraphics/qt4/plotview.h"
 #include "scigraphics/settings.h"
+#include "scigraphics/scale.h"
 
 #include <QMouseEvent>
 #include <QBitmap>

@@ -22,6 +22,7 @@
 // ================================================================
 
 #include "scigraphics/imagemagick/implot.h"
+#include "scigraphics/textstyle.h"
 
 #include <Magick++.h>
 typedef Magick::Quantum Quantum;

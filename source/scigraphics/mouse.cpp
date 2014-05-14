@@ -23,6 +23,10 @@
 
 #include "scigraphics/mouse.h"
 #include "scigraphics/plot.h"
+#include "scigraphics/painter.h"
+#include "scigraphics/floatrect.h"
+#include "scigraphics/zoomrect.h"
+#include "scigraphics/mousecallback.h"
 
 #include <cassert>
 
@@ -81,6 +85,15 @@ void scigraphics::mouse::mouseHandler::resetScales()
 {
   Plot.resetScales( axisSet::DirectionX );
   Plot.resetScales( axisSet::DirectionY );
+}
+
+// ============================================================
+
+scigraphics::mouse::mouseActionHandler::mouseActionHandler( plot &P, wpoint Point ) : 
+  mouseHandler(P), 
+  InitPoint(Point), 
+  LastPoint(Point) 
+{
 }
 
 // ============================================================
