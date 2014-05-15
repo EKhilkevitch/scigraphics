@@ -24,6 +24,7 @@
 #include "scigraphics/qt4/settingsbox.h"
 #include "scigraphics/qt4/labeledline.h"
 #include "scigraphics/qt4/plot.h"
+#include "scigraphics/selection.h"
 
 #include <QGridLayout>
 #include <QCheckBox>

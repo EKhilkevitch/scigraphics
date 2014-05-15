@@ -23,6 +23,8 @@
 #include "scigraphics/settings.h"
 #include "scigraphics/plot.h"
 #include "scigraphics/scale.h"
+#include "scigraphics/selection.h"
+#include "scigraphics/graphsequence.h"
 
 #if _WIN32
 #  pragma warning( disable : 4800 )

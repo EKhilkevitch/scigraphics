@@ -23,8 +23,8 @@
 
 // ============================================================
 
-#include "scigraphics/selection.h"
 #include "scigraphics/plotelementcollection.h"
+#include "scigraphics/geometry.h"
 
 // ============================================================
 
@@ -33,6 +33,8 @@ namespace scigraphics
 
   // ============================================================
 
+  class selection;
+  class selectionStrip;
   class painter;
 
   // ============================================================

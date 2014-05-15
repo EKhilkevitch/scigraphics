@@ -34,7 +34,7 @@ namespace scigraphics
 
   class pairScales;
 
-// ============================================================
+  // ============================================================
 
   class selection : public plotElement
   {

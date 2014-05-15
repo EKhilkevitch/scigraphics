@@ -24,6 +24,7 @@
 #include "scigraphics/legend.h"
 #include "scigraphics/textstyle.h"
 #include "scigraphics/graphcollection.h"
+#include "scigraphics/graph.h"
 #include "scigraphics/painter.h"
 
 #include <iostream>
@@ -133,6 +134,13 @@ void scigraphics::legend::setRectangleFromLegendSize( painter &Painter, const le
 
 // ------------------------------------------------------------
 
+scigraphics::wcoord scigraphics::legend::interTextVerticalDistance( const textStyle &Style ) 
+{ 
+  return std::max<wcoord>( Style.getFontSize()/3, 2 ); 
+}
+
+// ------------------------------------------------------------
+
 std::list<std::string> scigraphics::legend::legendsList( const graphCollection &Graphics )
 {
   std::list< std::string > Legends;
@@ -184,6 +192,13 @@ void scigraphics::legend::drawAllLegends( painter &Painter, const graphCollectio
       y -=  LegendHeight + interTextVerticalDistance(Style);
     }
   }
+}
+
+// ------------------------------------------------------------
+
+scigraphics::legend::legend() : 
+  floatRectangle(InitLegendRectangle) 
+{
 }
 
 // ------------------------------------------------------------

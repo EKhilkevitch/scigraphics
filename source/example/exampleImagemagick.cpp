@@ -22,6 +22,8 @@
 // ======================================================
 
 #include "scigraphics/imagemagick/plot.h"
+#include "scigraphics/graphsequence.h"
+#include "scigraphics/graphmap.h"
 
 // ======================================================
 

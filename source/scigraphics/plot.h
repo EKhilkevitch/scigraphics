@@ -24,10 +24,9 @@
 // ============================================================
 
 #include "scigraphics/axisset.h"
+#include "scigraphics/color.h"
 #include "scigraphics/graphcollection.h"
 #include "scigraphics/selectioncollection.h"
-#include "scigraphics/graphsequence.h"
-#include "scigraphics/graphmap.h"
 
 #include <string>
 
@@ -37,6 +36,17 @@ namespace scigraphics
 {
   
   // ============================================================
+
+  namespace sequence
+  {
+    class graphVector;
+    class graphAreaVector;
+  };
+
+  namespace map
+  {
+    class graphVector;
+  };
 
   typedef sequence::graphVector graphSV;
   typedef sequence::graphAreaVector graphAV;

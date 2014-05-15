@@ -22,6 +22,7 @@
 // ======================================================
 
 #include "scigraphics/qt4/plot.h"
+#include "scigraphics/graphsequence.h"
 #include <cmath>
 
 // ======================================================

@@ -22,12 +22,10 @@
 // ======================================================
 
 #include <QApplication>
-#include <QtGui>
 #include <cmath>
 
-#include "scigraphics/plot.h"
-#include "scigraphics/color.h"
 #include "scigraphics/qt4/plot.h"
+#include "scigraphics/graphsequence.h"
 
 // ======================================================
 

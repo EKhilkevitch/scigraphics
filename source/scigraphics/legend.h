@@ -76,7 +76,7 @@ namespace scigraphics
       static legendSize sizesForLegendRectangle( painter &Painter, const textStyle &Style, const graphCollection &Graphics );
       void setRectangleFromLegendSize( painter &Painter, const legendSize &LegendSize );
 
-      static wcoord interTextVerticalDistance( const textStyle &Style ) { return std::max<wcoord>( Style.getFontSize()/3, 2 ); }
+      static wcoord interTextVerticalDistance( const textStyle &Style );
       static wcoord textHorizontalIndent() { return 5; }
       static unsigned minFontSize() { return 5; }
 
@@ -84,7 +84,7 @@ namespace scigraphics
       void drawAllLegends( painter &Painter, const graphCollection &Graphics, const textStyle &Style );
 
     public:
-      legend() : floatRectangle(InitLegendRectangle) {}
+      legend();
 
       const textStyle& getLegendTextStyle() const { return TextStyle; }
       void draw( painter &Painter, const graphCollection &Graphics );

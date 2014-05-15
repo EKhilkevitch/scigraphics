@@ -27,6 +27,7 @@
 #include "scigraphics/floatrect.h"
 #include "scigraphics/zoomrect.h"
 #include "scigraphics/mousecallback.h"
+#include "scigraphics/selection.h"
 
 #include <cassert>
 

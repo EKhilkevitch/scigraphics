@@ -18,13 +18,13 @@
  * along with scigraphics.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 #pragma once
 
 // ============================================================
 
-#include "scigraphics/graph.h"
 #include "scigraphics/plotelementcollection.h"
+
+#include <string>
 
 #if _WIN32
   #pragma warning(1 : 4519)
@@ -37,6 +37,7 @@ namespace scigraphics
 
 // ============================================================
 
+  class graph;
   class color;
 
 // ============================================================

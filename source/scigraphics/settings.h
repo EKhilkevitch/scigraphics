@@ -37,7 +37,11 @@ namespace scigraphics
   class plot;
   class scale;
   class selectionStrip;
-  namespace sequence { class graph; }
+  
+  namespace sequence 
+  { 
+    class graph; 
+  }
 
   // ============================================================
 

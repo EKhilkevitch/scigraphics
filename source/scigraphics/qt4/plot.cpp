@@ -27,6 +27,8 @@
 #include "scigraphics/qt4/plotview.h"
 #include "scigraphics/settings.h"
 #include "scigraphics/scale.h"
+#include "scigraphics/linestyle.h"
+#include "scigraphics/brushstyle.h"
 
 #include <QMouseEvent>
 #include <QBitmap>
