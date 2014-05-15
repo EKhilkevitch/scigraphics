@@ -31,6 +31,7 @@
 #include "scigraphics/mousecallback.h"
 #include "scigraphics/plotlimits.h"
 #include "scigraphics/selection.h"
+#include "scigraphics/graph.h"
 #include "scigraphics/graphsequence.h"
 #include "scigraphics/graphmap.h"
 

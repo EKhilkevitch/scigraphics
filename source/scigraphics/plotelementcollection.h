@@ -126,7 +126,7 @@ namespace scigraphics
       template <class R, class I> static R castIterator( const I& Iterator );
 
     public:
-      void append( plotElement *PlotElement );
+      void append( T *PlotElement );
       
       iterator begin() { return castIterator<iterator>(getPlotElementsList().begin()); }
       iterator end()   { return castIterator<iterator>(getPlotElementsList().end());   }
@@ -153,11 +153,8 @@ namespace scigraphics
 
   // ------------------------------------------------------------
  
-  template <class T> void templatePlotElementsCollection<T>::append( plotElement *PlotElement ) 
+  template <class T> void templatePlotElementsCollection<T>::append( T *PlotElement ) 
   {
-    if ( PlotElement != NULL )
-      if ( dynamic_cast<T*>( PlotElement ) == NULL )
-        throw std::invalid_argument("Invalid type of appended argument");
     plotElementsCollection::append( PlotElement );
   }
   
