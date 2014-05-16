@@ -127,7 +127,7 @@ namespace scigraphics
     public:
       virtual void append( T *PlotElement );
       virtual void remove( T *PlotElement );
-      virtual bool exists( T *PlotElement );
+      virtual bool exists( const T *PlotElement ) const;
       virtual void clear();
       
       iterator begin() { return castIterator<iterator>(getPlotElementsList().begin()); }
@@ -157,21 +157,22 @@ namespace scigraphics
  
   template <class T> void templatePlotElementsCollection<T>::append( T *PlotElement ) 
   {
-    appendPlotElement( PlotElement );
+    // reinterpret_cast for MSVC becouse of C2664 error
+    appendPlotElement( reinterpret_cast<plotElement*>(PlotElement) );
   }
   
   // ------------------------------------------------------------
   
   template <class T> void templatePlotElementsCollection<T>::remove( T *PlotElement ) 
   {
-    removePlotElement( PlotElement );
+    removePlotElement( reinterpret_cast<plotElement*>(PlotElement) );
   }
   
   // ------------------------------------------------------------
   
-  template <class T> bool templatePlotElementsCollection<T>::exists( T *PlotElement )
+  template <class T> bool templatePlotElementsCollection<T>::exists( const T *PlotElement ) const
   {
-    return existsPlotElement( PlotElement );
+    return existsPlotElement( reinterpret_cast<const plotElement*>(PlotElement) );
   }
   
   // ------------------------------------------------------------
