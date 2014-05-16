@@ -58,12 +58,12 @@ scigraphics::pairScales scigraphics::plotElementsCollection::axisSetsPair::creat
 
 // ============================================================
 
-void scigraphics::plotElementsCollection::append( plotElement *PlotElement )
+void scigraphics::plotElementsCollection::appendPlotElement( plotElement *PlotElement )
 {
   if ( PlotElement == NULL )
     throw std::invalid_argument("Object must be not NULL");
 
-  if ( exist(PlotElement) )
+  if ( existsPlotElement(PlotElement) )
     throw std::runtime_error("Object alredy in list");
 
   if ( DefaultAxisSets.isZero() )
@@ -77,7 +77,7 @@ void scigraphics::plotElementsCollection::append( plotElement *PlotElement )
 
 // ------------------------------------------------------------
 
-void scigraphics::plotElementsCollection::remove( plotElement *PlotElement )
+void scigraphics::plotElementsCollection::removePlotElement( plotElement *PlotElement )
 {
   plotElementList::iterator PlotIterator = find_pointer( PlotElementsList.begin(), PlotElementsList.end(), PlotElement );
   if ( PlotIterator == PlotElementsList.end() )
@@ -88,7 +88,7 @@ void scigraphics::plotElementsCollection::remove( plotElement *PlotElement )
 
 // ------------------------------------------------------------
       
-void scigraphics::plotElementsCollection::clear() 
+void scigraphics::plotElementsCollection::clearAllElements() 
 { 
   PlotElementsList.clear(); 
   AxisBindMap.clear(); 
@@ -96,7 +96,7 @@ void scigraphics::plotElementsCollection::clear()
 
 // ------------------------------------------------------------
       
-bool scigraphics::plotElementsCollection::exist( const plotElement *PlotElement ) const
+bool scigraphics::plotElementsCollection::existsPlotElement( const plotElement *PlotElement ) const
 {
   return find_pointer( PlotElementsList.begin(), PlotElementsList.end(), PlotElement ) != PlotElementsList.end();
 }
@@ -209,7 +209,7 @@ void scigraphics::plotElementsCollection::bindGraphToAxisSet( const plotElement 
   if ( X == NULL || Y == NULL || PlotElement == NULL )
     throw std::invalid_argument("Argument must be not NULL");
   
-  if ( ! exist(PlotElement) )
+  if ( ! existsPlotElement(PlotElement) )
     throw std::invalid_argument( "Plot element not found in collection" );
 
   AxisBindMap[ PlotElement ] = axisSetsPair(X,Y); 

@@ -158,11 +158,11 @@ TEST( test_graphCollection, exist )
   Collection.setDefaultAxisSets( &SetX, &SetY );
 
   graph *Graph = new sequence::graphVector(color::Black);
-  ASSERT_TRUE( ! Collection.exist(NULL) );
-  ASSERT_TRUE( ! Collection.exist(Graph) );
+  ASSERT_TRUE( ! Collection.exists(NULL) );
+  ASSERT_TRUE( ! Collection.exists(Graph) );
 
   Collection.append( Graph );
-  ASSERT_TRUE( Collection.exist(Graph) );
+  ASSERT_TRUE( Collection.exists(Graph) );
 }
 
 // ---------------------------------------------------------

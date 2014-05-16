@@ -83,6 +83,11 @@ namespace scigraphics
       
       const axisSetsPair *getAxisSetsPair( const plotElement *PlotElement ) const;
       pairScales getPairScales( const plotElement *PlotElement ) const;
+
+      void appendPlotElement( plotElement *PlotElement );
+      void removePlotElement( plotElement *PlotElement );
+      bool existsPlotElement( const plotElement *PlotElement ) const;
+      void clearAllElements();
       
     public:
       plotElementsCollection() {}
@@ -90,12 +95,6 @@ namespace scigraphics
 
       size_t size() const { return PlotElementsList.size(); }
       bool  empty() const { return PlotElementsList.empty(); }
-
-      virtual void append( plotElement *PlotElement );
-      virtual void remove( plotElement *PlotElement );
-      virtual void clear();
-
-      bool exist( const plotElement *PlotElement ) const;
 
       void setDefaultAxisSets( const axisSet *X, const axisSet *Y );
 
@@ -126,7 +125,10 @@ namespace scigraphics
       template <class R, class I> static R castIterator( const I& Iterator );
 
     public:
-      void append( T *PlotElement );
+      virtual void append( T *PlotElement );
+      virtual void remove( T *PlotElement );
+      virtual bool exists( T *PlotElement );
+      virtual void clear();
       
       iterator begin() { return castIterator<iterator>(getPlotElementsList().begin()); }
       iterator end()   { return castIterator<iterator>(getPlotElementsList().end());   }
@@ -155,7 +157,28 @@ namespace scigraphics
  
   template <class T> void templatePlotElementsCollection<T>::append( T *PlotElement ) 
   {
-    plotElementsCollection::append( PlotElement );
+    appendPlotElement( PlotElement );
+  }
+  
+  // ------------------------------------------------------------
+  
+  template <class T> void templatePlotElementsCollection<T>::remove( T *PlotElement ) 
+  {
+    removePlotElement( PlotElement );
+  }
+  
+  // ------------------------------------------------------------
+  
+  template <class T> bool templatePlotElementsCollection<T>::exists( T *PlotElement )
+  {
+    return existsPlotElement( PlotElement );
+  }
+  
+  // ------------------------------------------------------------
+  
+  template <class T> void templatePlotElementsCollection<T>::clear() 
+  {
+    clearAllElements();
   }
   
   // ------------------------------------------------------------
