@@ -31,6 +31,7 @@
 #include <algorithm>
 #include <limits>
 #include <cstdlib>
+#include <cstdio>
 
 // ============================================================
 
@@ -56,6 +57,10 @@ void scigraphics::color::setTransparency( double Part )
 
 std::string scigraphics::color::name( bool WithPrefix ) const 
 { 
+#if _WIN32 && _MSC_VER
+  int (__cdecl *snprintf)( char *buffer, size_t count, const char *format, ... ) = _snprintf;
+#endif
+
   char Name[32];
   snprintf(Name,sizeof(Name)-1, WithPrefix ? "0x%08X" : "%08X",valueRgb());
   return std::string(Name); 

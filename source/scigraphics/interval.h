@@ -23,7 +23,6 @@
 
 #include <algorithm>
 #include <ostream>
-#include <cmath>
 
 // ============================================================
 
@@ -37,7 +36,7 @@ namespace scigraphics
     protected:
       T Min, Max;
 
-      static inline T rabs( T Number ) { return std::fabs(Number); } // Number < 0 ? -Number : +Number;  }
+      static inline T rabs( T Number ) { return Number < static_cast<T>(0) ? -Number : +Number;  }
 
     public:
       interval() : 

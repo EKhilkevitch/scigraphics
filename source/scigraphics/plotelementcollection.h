@@ -23,13 +23,11 @@
 
 // ============================================================
 
-#include "scigraphics/plotelement.h"
 #include "scigraphics/container_ptr.h"
 
 #include <list>
 #include <map>
 #include <set>
-#include <stdexcept>
 #include <cassert>
 
 // ============================================================
@@ -39,8 +37,11 @@ namespace scigraphics
 
   // ============================================================
 
+  class plotElement;
+  class pairScales;
   class axisSet;
   class scale;
+  class painter;
 
   // ============================================================
 
@@ -90,8 +91,8 @@ namespace scigraphics
       void clearAllElements();
       
     public:
-      plotElementsCollection() {}
-      virtual ~plotElementsCollection() {}
+      plotElementsCollection();
+      virtual ~plotElementsCollection();
 
       size_t size() const { return PlotElementsList.size(); }
       bool  empty() const { return PlotElementsList.empty(); }

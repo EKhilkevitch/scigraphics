@@ -20,21 +20,20 @@
 
 
 #pragma once
+  
+// ============================================================
 
 #include <string>
-#include <cstdio>
 #include <vector>
 
-#ifdef _WIN32
-#  define snprintf _snprintf
-#endif
-
 #include "scigraphics/interval.h"
+  
+// ============================================================
 
 namespace scigraphics
 {
 
-// ============================================================
+  // ============================================================
 
     class color
     {

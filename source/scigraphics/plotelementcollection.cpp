@@ -23,8 +23,11 @@
 // ============================================================
 
 #include "scigraphics/plotelementcollection.h"
+#include "scigraphics/plotelement.h"
 #include "scigraphics/axisset.h"
 #include "scigraphics/scale.h"
+
+#include <stdexcept>
 
 // ============================================================
 
@@ -57,6 +60,18 @@ scigraphics::pairScales scigraphics::plotElementsCollection::axisSetsPair::creat
 }
 
 // ============================================================
+
+scigraphics::plotElementsCollection::plotElementsCollection()
+{
+}
+
+// ------------------------------------------------------------
+
+scigraphics::plotElementsCollection::~plotElementsCollection()
+{
+}
+
+// ------------------------------------------------------------
 
 void scigraphics::plotElementsCollection::appendPlotElement( plotElement *PlotElement )
 {

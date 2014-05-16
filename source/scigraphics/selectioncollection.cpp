@@ -26,6 +26,8 @@
 #include "scigraphics/painter.h"
 #include "scigraphics/scale.h"
 
+#include <stdexcept>
+
 // ============================================================
       
 scigraphics::selection* scigraphics::selectionCollection::getSelectionOnPoint( const fpoint &Point )
