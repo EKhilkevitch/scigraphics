@@ -24,10 +24,24 @@
 #warning "Usage of this file is deprecated"
 
 #include "scigraphics/qt4/manager.h"
+#include "scigraphics/qt4/qt4plot.h"
+
+#include <cassert>
 
 class qt4plotManager : public scigraphics::qt4plotManager
 {
   public:
     qt4plotManager( unsigned NumOfPlots, unsigned NumOfRows = 1, QObject *Parent = NULL ) : 
       scigraphics::qt4plotManager( NumOfPlots, NumOfRows, Parent ) {}
+    qt4plotManager( unsigned NumOfPlots, unsigned NumOfRows, QObject *Parent, const settingsMode SettingsMode ) :
+      scigraphics::qt4plotManager( NumOfPlots, NumOfRows, Parent, SettingsMode ) {}
+    inline qt4plot* plot( unsigned i );
 };
+
+qt4plot* qt4plotManager::plot( unsigned i ) 
+{ 
+  assert( sizeof(qt4plot) == sizeof(scigraphics::qt4plot) );
+  return reinterpret_cast<qt4plot*>(scigraphics::qt4plotManager::plot(i)); 
+}
+
+

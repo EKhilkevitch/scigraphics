@@ -23,8 +23,10 @@
 
 #warning "Usage of this file is deprecated"
 
-#include "scigraphics/qt4/plot.h"
 #include "scigraphics/qt4/drawer.h"
+#include "scigraphics/qt4/plot.h"
+#include "scigraphics/graphsequence.h"
+#include "scigraphics/graphmap.h"
 
 class qt4plot : public scigraphics::qt4plot
 {
