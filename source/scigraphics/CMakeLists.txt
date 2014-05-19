@@ -12,6 +12,7 @@ set( graphics_source_files
         plot.cpp
         color.cpp
         numberstyle.cpp
+        linestyle.cpp
         drawer.cpp
         painter.cpp
         axis.cpp

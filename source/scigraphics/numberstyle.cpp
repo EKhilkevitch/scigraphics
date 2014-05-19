@@ -31,14 +31,14 @@
 #include <string>
 #include <cassert>
 
-#if _WIN32
-#  define snprintf _snprintf
-#endif
-
 // ============================================================
 
 void scigraphics::sprintfNumberStyle::fillBuffer( char *Buf, size_t Size, number Value )  const
 { 
+#if _WIN32 && _MSC_VER
+  int (__cdecl *snprintf)( char *buffer, size_t count, const char *format, ... ) = _snprintf;
+#endif
+
   assert( Buf != NULL );
   assert( Size > 0 );
   Buf[Size-1] = '\0'; 

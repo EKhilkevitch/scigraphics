@@ -48,19 +48,14 @@ namespace scigraphics
       color Color;
 
     protected:
-      void setDefault() 
-        { 
-          Style = Solid;
-          Width = 1;
-          Color = color::Black;
-        }
+      void setDefault();
     
     public:
-      lineStyle() { setDefault(); }
-      lineStyle( style S ) { setDefault(); Style = S; }
-      lineStyle( unsigned W ) { setDefault(); Width = W; }
-      lineStyle( color C )    { setDefault(); Color = C; }
-      lineStyle( unsigned W, color C ) { setDefault(); Color = C; Width = W; }
+      lineStyle(); 
+      lineStyle( style Stype );
+      lineStyle( unsigned Width );
+      lineStyle( color Color );
+      lineStyle( unsigned Width, color Color );
 
       unsigned width() const { return Style == None ? 0 : Width; }
       void setWidth( unsigned W ) { Width = W; }
