@@ -83,6 +83,10 @@ void scigraphics::cursorPositionViewer::drawText( painter &Painter, const std::s
       
 std::string scigraphics::cursorPositionViewer::pointText( painter &Painter, const pairScales &Scales, const wpoint &Point ) const
 {
+#if _WIN32 && _MSC_VER
+  int (__cdecl *snprintf)( char *buffer, size_t count, const char *format, ... ) = _snprintf;
+#endif
+  
   npoint NPoint = Scales.wpoint2npoint( Point, Painter );
 
   char Buffer[ 256 ];
