@@ -86,7 +86,7 @@ namespace scigraphics
     public slots:
       void replot();
       void setCrossCursor( bool Set );
-      void updatePlotSettings( qt4settings *Settings );
+      void updatePlotSettings( scigraphics::qt4settings *Settings );
 
     signals:
       void selectionChangingFinished();

@@ -146,7 +146,7 @@ void scigraphics::qt4settings::connectToPlot( qt4plot *Plot )
     return;
   
   connect( Plot, SIGNAL(selectionChanged()), SLOT(updatePlotState()) );
-  connect( this, SIGNAL(settingsChanged(qt4settings*)), Plot, SLOT(updatePlotSettings(qt4settings*)) );
+  connect( this, SIGNAL(settingsChanged(scigraphics::qt4settings*)), Plot, SLOT(updatePlotSettings(scigraphics::qt4settings*)) );
 
   updatePlotSettings();
 }
@@ -234,10 +234,8 @@ void scigraphics::qt4settings::apply( qt4plot *Plot )
   applySettings(Plot);
   emitSettingsChanged();
 
-  //qDebug() << "qt4settings::apply()" << Plot << NeedToEmitSelectionChangedAfterApplying;
   if ( NeedToEmitSelectionChangedAfterApplying )
   {
-    //qDebug() << "qt4settings::apply: emitSelectionChanged()";
     Plot->emitSelectionChanged();
     NeedToEmitSelectionChangedAfterApplying = false;
   }
@@ -255,7 +253,6 @@ void scigraphics::qt4settings::updateSettingsFromSubWidgets()
 
 void scigraphics::qt4settings::applySettings( plot *Plot )
 {
-  //qDebug() << "qt4settings::applySettings()" << Plot << NeedToEmitSelectionChangedAfterApplying;
   plotSettings()->apply(Plot);
 }
 
