@@ -23,7 +23,7 @@
 
 // ================================================================
 
-#include "scigraphics/settings.h"
+#include "scigraphics/axisset.h"
 
 #include <QWidget>
 #include <QList>
@@ -36,7 +36,10 @@ namespace scigraphics
 {
 
   // ================================================================
-  
+ 
+  class settings;
+  class plot;
+
   class qt4plot;
   class qt4settingsComposer;
   class qt4settingsGroupBox;
@@ -44,18 +47,25 @@ namespace scigraphics
   
   // ================================================================
 
-  class qt4settings : public QWidget, public settings
+  class qt4settings : public QWidget
   {
     Q_OBJECT
 
     private:
+      settings *Settings;
+
       QString SettingsName;
       qt4settingsComposer *SettingsComposer;
+      bool NeedToEmitSelectionChangedAfterApplying;
 
     protected:
       void updateSettingsFromSubWidgets();
-      virtual void applySettings( qt4plot *Plot );
+      void applySettings( plot *Plot );
       void emitSettingsChanged();
+
+      // For qt4settingsSelections and selectionChanged() signal.
+      friend class qt4settingsSelections;
+      void needToEmitSelectionChangedAfterApplying( bool NeedToEmit );
 
       void setComposer( qt4settingsComposer *Composer );
 
@@ -67,6 +77,7 @@ namespace scigraphics
       qt4settings( QWidget *Parent, const QList<axisSetCollection::axisPosition> &Positions );
       qt4settings( QWidget *Parent, const QString &Name, const QList<axisSetCollection::axisPosition> &Positions, qt4settingsComposer *Composer = NULL );
       qt4settings( QWidget *Parent, qt4settingsComposer *Composer );
+      ~qt4settings();
 
       const QString& name() const { return SettingsName; }
       void setName( const QString &Name ) { SettingsName = Name; }
@@ -84,6 +95,8 @@ namespace scigraphics
       void connectToPlot( qt4plot *Plot );
       void disconnectFromPlot( qt4plot *Plot );
 
+      settings* plotSettings() { return Settings; }
+
       void apply( qt4plot *Plot );
 
     public slots:
@@ -92,7 +105,7 @@ namespace scigraphics
 
     signals:
       void settingsChanged();
-      void settingsChanged( const settings& );
+      void settingsChanged( scigraphics::qt4settings* );
   };
 
   // ================================================================

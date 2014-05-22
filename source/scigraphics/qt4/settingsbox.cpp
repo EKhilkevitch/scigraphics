@@ -24,6 +24,7 @@
 #include "scigraphics/qt4/settingsbox.h"
 #include "scigraphics/qt4/labeledline.h"
 #include "scigraphics/qt4/plot.h"
+#include "scigraphics/qt4/settings.h"
 #include "scigraphics/selection.h"
 
 #include <QGridLayout>
@@ -110,7 +111,7 @@ void scigraphics::qt4settingsGroupSuperBox::addToList( qt4settingsGroupBox *B )
 
 // ----------------------------------------------------------------
 
-void scigraphics::qt4settingsGroupSuperBox::applySettings( scigraphics::settings* Settings ) 
+void scigraphics::qt4settingsGroupSuperBox::applySettings( qt4settings* Settings ) 
 {
   foreach ( qt4settingsGroupBox *Box, Boxes )
     Box->applySettings( Settings );
@@ -202,10 +203,10 @@ scigraphics::interval<scigraphics::number> scigraphics::qt4settingsScaleInterval
 
 // ----------------------------------------------------------------
 
-void scigraphics::qt4settingsScaleIntervals::applySettings( settings* Settings ) 
+void scigraphics::qt4settingsScaleIntervals::applySettings( qt4settings* Settings ) 
 { 
   Q_ASSERT( Settings != NULL );
-  Settings->setLimits( getLimits(), AxisType ); 
+  Settings->plotSettings()->setLimits( getLimits(), AxisType ); 
 }
 
 // ----------------------------------------------------------------
@@ -304,9 +305,9 @@ void scigraphics::qt4settingsGraphType::showErrorBarsControl( bool S )
 
 // ----------------------------------------------------------------
     
-void scigraphics::qt4settingsGraphType::applySettings( scigraphics::settings* Settings ) 
+void scigraphics::qt4settingsGraphType::applySettings( qt4settings* Settings ) 
 { 
-  Settings->setGraphType( getGraphType() ); 
+  Settings->plotSettings()->setGraphType( getGraphType() ); 
 }
 
 // ----------------------------------------------------------------
@@ -369,9 +370,9 @@ unsigned scigraphics::qt4settingsDecoration::getVisibleFloatingRectangles() cons
 
 // ----------------------------------------------------------------
 
-void scigraphics::qt4settingsDecoration::applySettings( scigraphics::settings* Settings ) 
+void scigraphics::qt4settingsDecoration::applySettings( qt4settings* Settings ) 
 { 
-  Settings->setVisibleFloatingRectangles( getVisibleFloatingRectangles() ); 
+  Settings->plotSettings()->setVisibleFloatingRectangles( getVisibleFloatingRectangles() ); 
 }
 
 // ----------------------------------------------------------------
@@ -439,9 +440,9 @@ scigraphics::settings::scaleType scigraphics::qt4settingsScaleType::getScaleType
 
 // ----------------------------------------------------------------
     
-void scigraphics::qt4settingsScaleType::applySettings( scigraphics::settings* Settings ) 
+void scigraphics::qt4settingsScaleType::applySettings( qt4settings* Settings ) 
 { 
-  Settings->setScaleType( getScaleType(), AxisType ); 
+  Settings->plotSettings()->setScaleType( getScaleType(), AxisType ); 
 }
 
 // ----------------------------------------------------------------
@@ -538,16 +539,19 @@ void scigraphics::qt4settingsSelections::collectSettings( qt4plot *Plot )
 
 // ----------------------------------------------
 
-void scigraphics::qt4settingsSelections::applySettings( scigraphics::settings* Settings )
+void scigraphics::qt4settingsSelections::applySettings( qt4settings* Settings )
 {
-  if ( EnableSelectionBox->isChecked() )
-  {
-    double Min = MinValueEdit->text().toDouble();
-    double Max = MaxValueEdit->text().toDouble(); 
-    Settings->setSelectionInterval( scigraphics::settings::VerticalStrip, Min, Max );
-  } else {
-    Settings->setSelectionInterval( scigraphics::settings::NoneStrip, 0, 0 );
-  }
+  double Min = MinValueEdit->text().toDouble();
+  double Max = MaxValueEdit->text().toDouble(); 
+  settings::selectionStripType StripType = EnableSelectionBox->isChecked() ? settings::VerticalStrip : settings::NoneStrip;
+ 
+  bool NeedToEmitSelectionChanged = false;
+  NeedToEmitSelectionChanged = NeedToEmitSelectionChanged || Settings->plotSettings()->getSelectionStripType() != StripType;
+  NeedToEmitSelectionChanged = NeedToEmitSelectionChanged || Settings->plotSettings()->getSelectionStripInterval().min() != Min;
+  NeedToEmitSelectionChanged = NeedToEmitSelectionChanged || Settings->plotSettings()->getSelectionStripInterval().max() != Max;
+  Settings->needToEmitSelectionChangedAfterApplying( NeedToEmitSelectionChanged );
+  
+  Settings->plotSettings()->setSelectionInterval( StripType, Min, Max );
 }
 
 // ================================================================

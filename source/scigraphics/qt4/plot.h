@@ -34,7 +34,7 @@ namespace scigraphics
 
   // ============================================================
   
-  class settings;
+  class qt4settings;
   class qt4drawer;
   
   // ============================================================
@@ -86,7 +86,7 @@ namespace scigraphics
     public slots:
       void replot();
       void setCrossCursor( bool Set );
-      void updatePlotSettings( const settings& Settings );
+      void updatePlotSettings( qt4settings *Settings );
 
     signals:
       void selectionChangingFinished();

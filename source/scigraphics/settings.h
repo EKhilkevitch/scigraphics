@@ -105,16 +105,20 @@ namespace scigraphics
       settings();
       virtual ~settings() {}
 
-      void apply( plot *Plot ) const;
+      virtual void apply( plot *Plot ) const;
 
       void setLimits( const interval<number> &Lims, axisSetCollection::axisPosition AxisPos );
       void setGraphType( unsigned Type );
       void setScaleType( scaleType Type, axisSetCollection::axisPosition AxisPos );
       void setVisibleFloatingRectangles( unsigned FloatRectangles );
+      
       void setSelectionInterval( selectionStripType Type, interval<number> Interval );
       void setSelectionInterval( selectionStripType Type, number Min, number Max );
+      selectionStripType getSelectionStripType() const { return SelectionStripType; }
+      interval<number> getSelectionStripInterval() const { return SelectionStripInterval; }
       
       static selectionStrip* firstSelectionStrip( plot *Plot );
+
   };
 
 // ============================================================

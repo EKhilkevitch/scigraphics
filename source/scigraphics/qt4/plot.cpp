@@ -25,7 +25,7 @@
 #include "scigraphics/qt4/drawer.h"
 #include "scigraphics/qt4/mousecallback.h"
 #include "scigraphics/qt4/plotview.h"
-#include "scigraphics/settings.h"
+#include "scigraphics/qt4/settings.h"
 #include "scigraphics/scale.h"
 #include "scigraphics/linestyle.h"
 #include "scigraphics/brushstyle.h"
@@ -259,9 +259,10 @@ void scigraphics::qt4plot::setCrossCursor( bool Set )
 
 // ----------------------------------------------------------------
     
-void scigraphics::qt4plot::updatePlotSettings( const scigraphics::settings& Settings )
+void scigraphics::qt4plot::updatePlotSettings( qt4settings *Settings )
 {
-  Settings.apply( this );
+  if ( Settings != NULL )
+    Settings->apply( this );
 }
 
 // ----------------------------------------------------------------

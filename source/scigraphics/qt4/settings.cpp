@@ -21,6 +21,7 @@
 
 // ================================================================
 
+#include "scigraphics/settings.h"
 #include "scigraphics/qt4/settings.h"
 #include "scigraphics/qt4/settingsbox.h"
 #include "scigraphics/qt4/settingscomposer.h"
@@ -32,7 +33,8 @@
 // ================================================================
 
 scigraphics::qt4settings::qt4settings( QWidget *Parent, const QString &Name ) : 
-  QWidget(Parent), 
+  QWidget(Parent),
+  Settings( new settings() ),
   SettingsComposer(NULL) 
 { 
   initSettings( Name, qt4settingsGroupSuperBox::defaultAxisPositions(), NULL ); 
@@ -42,6 +44,7 @@ scigraphics::qt4settings::qt4settings( QWidget *Parent, const QString &Name ) :
 
 scigraphics::qt4settings::qt4settings( QWidget *Parent, const QList<axisSetCollection::axisPosition> &Positions ) : 
   QWidget(Parent), 
+  Settings( new settings() ),
   SettingsComposer(NULL)
 { 
   initSettings( QString(), Positions, NULL ); 
@@ -51,6 +54,7 @@ scigraphics::qt4settings::qt4settings( QWidget *Parent, const QList<axisSetColle
 
 scigraphics::qt4settings::qt4settings( QWidget *Parent, const QString &Name, const QList<axisSetCollection::axisPosition> &Positions, qt4settingsComposer *Composer ) : 
   QWidget(Parent), 
+  Settings( new settings() ),
   SettingsComposer(NULL)
 { 
   initSettings( Name, Positions, Composer ); 
@@ -60,9 +64,18 @@ scigraphics::qt4settings::qt4settings( QWidget *Parent, const QString &Name, con
 
 scigraphics::qt4settings::qt4settings( QWidget *Parent, qt4settingsComposer *Composer ) : 
   QWidget(Parent), 
+  Settings( new settings() ),
   SettingsComposer(NULL)
 { 
   initSettings( QString(), qt4settingsGroupSuperBox::defaultAxisPositions(), Composer ); 
+}
+
+// ----------------------------------------------------------------
+
+scigraphics::qt4settings::~qt4settings()
+{
+  delete Settings;
+  Settings = NULL;
 }
 
 // ----------------------------------------------------------------
@@ -90,6 +103,13 @@ void scigraphics::qt4settings::setComposer( qt4settingsComposer *Composer )
   QStackedLayout *Layout = new QStackedLayout();
   Layout->addWidget( SettingsComposer );
   setLayout( Layout );
+}
+
+// ----------------------------------------------------------------
+
+void scigraphics::qt4settings::needToEmitSelectionChangedAfterApplying( bool NeedToEmit ) 
+{ 
+  NeedToEmitSelectionChangedAfterApplying = NeedToEmitSelectionChangedAfterApplying || NeedToEmit; 
 }
 
 // ----------------------------------------------------------------
@@ -126,7 +146,7 @@ void scigraphics::qt4settings::connectToPlot( qt4plot *Plot )
     return;
   
   connect( Plot, SIGNAL(selectionChanged()), SLOT(updatePlotState()) );
-  connect( this, SIGNAL(settingsChanged(const settings&)), Plot, SLOT(updatePlotSettings(const settings&)) );
+  connect( this, SIGNAL(settingsChanged(qt4settings*)), Plot, SLOT(updatePlotSettings(qt4settings*)) );
 
   updatePlotSettings();
 }
@@ -200,12 +220,12 @@ void scigraphics::qt4settings::updatePlotState()
 void scigraphics::qt4settings::updatePlotSettings()
 {
   updateSettingsFromSubWidgets();
-  emit settingsChanged( *this );
+  emit settingsChanged( this );
 }
 
 // ----------------------------------------------------------------
 
-void scigraphics::qt4settings::apply( qt4plot *Plot )
+void scigraphics::qt4settings::apply( qt4plot *Plot ) 
 {
   if ( Plot == NULL )
     return;
@@ -213,6 +233,14 @@ void scigraphics::qt4settings::apply( qt4plot *Plot )
   updateSettingsFromSubWidgets();
   applySettings(Plot);
   emitSettingsChanged();
+
+  //qDebug() << "qt4settings::apply()" << Plot << NeedToEmitSelectionChangedAfterApplying;
+  if ( NeedToEmitSelectionChangedAfterApplying )
+  {
+    //qDebug() << "qt4settings::apply: emitSelectionChanged()";
+    Plot->emitSelectionChanged();
+    NeedToEmitSelectionChangedAfterApplying = false;
+  }
 }
 
 // ----------------------------------------------------------------
@@ -225,9 +253,10 @@ void scigraphics::qt4settings::updateSettingsFromSubWidgets()
 
 // ----------------------------------------------------------------
 
-void scigraphics::qt4settings::applySettings( qt4plot *Plot )
+void scigraphics::qt4settings::applySettings( plot *Plot )
 {
-  settings::apply(Plot);
+  //qDebug() << "qt4settings::applySettings()" << Plot << NeedToEmitSelectionChangedAfterApplying;
+  plotSettings()->apply(Plot);
 }
 
 // ----------------------------------------------------------------

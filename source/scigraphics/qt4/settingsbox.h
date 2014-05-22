@@ -43,6 +43,7 @@ namespace scigraphics
   
   class qt4plot;
   class qt4labeledLineEdit;
+  class qt4settings;
 
   // ================================================================
 
@@ -55,7 +56,7 @@ namespace scigraphics
 
     public:
       qt4settingsGroupBox( const QString &Name = QString(), QWidget *Parent = NULL );
-      virtual void applySettings( settings* ) {}
+      virtual void applySettings( qt4settings* ) {}
       virtual void collectSettings( qt4plot* ) {}
       virtual void saveSettings( QSettings* ) const {}
       virtual void loadSettings( QSettings* ) {}
@@ -92,7 +93,7 @@ namespace scigraphics
     public:
       qt4settingsGroupSuperBox( const QString &Name = QString(), QWidget *Parent = NULL ) : qt4settingsGroupBox(Name,Parent) {}
 
-      void applySettings( scigraphics::settings* Settings );
+      void applySettings( qt4settings* Settings );
       void collectSettings( qt4plot* Plot );
 
       void saveSettings( QSettings* Settings ) const;
@@ -120,7 +121,7 @@ namespace scigraphics
     public:
       qt4settingsScaleIntervals( const scigraphics::axisSetCollection::axisPosition Axis, QWidget *Parent = NULL );
       
-      void applySettings( scigraphics::settings* Settings );
+      void applySettings( qt4settings* Settings );
       void saveSettings( QSettings* ) const;
       void loadSettings( QSettings* );
     
@@ -163,7 +164,7 @@ namespace scigraphics
     public:
       qt4settingsGraphType( QWidget *Parent = NULL );
 
-      void applySettings( scigraphics::settings* Settings );
+      void applySettings( qt4settings* Settings );
 
       void showLineHystogramControl( bool S );
       void showErrorBarsControl( bool S );
@@ -188,7 +189,7 @@ namespace scigraphics
     public:
       qt4settingsDecoration( QWidget *Parent = NULL );
 
-      void applySettings( scigraphics::settings* Settings );
+      void applySettings( qt4settings* Settings );
 
       void saveSettings( QSettings* Settings ) const;
       void loadSettings( QSettings* Settings );
@@ -211,7 +212,7 @@ namespace scigraphics
     public:
       qt4settingsScaleType( const scigraphics::axisSetCollection::axisPosition Axis, QWidget *Parent = NULL );
       
-      void applySettings( scigraphics::settings* Settings );
+      void applySettings( qt4settings* Settings );
       
       void saveSettings( QSettings* Settings ) const;
       void loadSettings( QSettings* Settings );
@@ -246,7 +247,7 @@ namespace scigraphics
     public:
       qt4settingsSelections( QWidget *Parent = NULL );
 
-      void applySettings( scigraphics::settings* Settings );
+      void applySettings( qt4settings* Settings );
       void collectSettings( qt4plot* Plot );
       
       void saveSettings( QSettings* ) const {}
