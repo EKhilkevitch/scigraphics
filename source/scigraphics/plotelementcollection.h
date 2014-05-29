@@ -50,7 +50,7 @@ namespace scigraphics
     public:
       typedef container_ptr< std::list, plotElement > plotElementList;
       
-    protected:
+    private:
       class axisSetsPair
       {
         private:
@@ -70,12 +70,12 @@ namespace scigraphics
           const axisSet* axisSetY() const { return AxisY; }
       };
       
+      typedef std::map< const plotElement*, axisSetsPair > axisBindMap;
+      
+    private:
       axisSetsPair DefaultAxisSets;
 
-      typedef std::map< const plotElement*, axisSetsPair > axisBindMap;
       axisBindMap AxisBindMap;
-
-    private:
       plotElementList PlotElementsList;
 
     protected:
@@ -88,6 +88,7 @@ namespace scigraphics
       void appendPlotElement( plotElement *PlotElement );
       void removePlotElement( plotElement *PlotElement );
       bool existsPlotElement( const plotElement *PlotElement ) const;
+      plotElementList::iterator erasePlotElementIterator( plotElementList::iterator Iterator );
       void clearAllElements();
       
     public:
@@ -186,8 +187,8 @@ namespace scigraphics
   // ------------------------------------------------------------
       
   template <class T> typename templatePlotElementsCollection<T>::iterator templatePlotElementsCollection<T>::erase( iterator Iterator ) 
-  { 
-    return castIterator<iterator>( getPlotElementsList().erase( castIterator<plotElementList::iterator>(Iterator) ) ); 
+  {
+    return castIterator<iterator>( erasePlotElementIterator( castIterator<plotElementList::iterator>(Iterator) ) );
   }
 
   // ============================================================

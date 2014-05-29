@@ -97,8 +97,17 @@ void scigraphics::plotElementsCollection::removePlotElement( plotElement *PlotEl
   plotElementList::iterator PlotIterator = find_pointer( PlotElementsList.begin(), PlotElementsList.end(), PlotElement );
   if ( PlotIterator == PlotElementsList.end() )
     return;
+  erasePlotElementIterator( PlotIterator );
+  assert( PlotElementsList.size() == AxisBindMap.size() );
+}
+
+// ------------------------------------------------------------
+
+scigraphics::plotElementsCollection::plotElementList::iterator scigraphics::plotElementsCollection::erasePlotElementIterator( plotElementList::iterator Iterator )
+{
+  plotElement *PlotElement = &*Iterator;
   AxisBindMap.erase( PlotElement );
-  PlotElementsList.erase( PlotIterator );
+  return PlotElementsList.erase( Iterator );
 }
 
 // ------------------------------------------------------------
