@@ -25,6 +25,7 @@
 
 #include "scigraphics/qt4/manager.h"
 #include "scigraphics/qt4/qt4plot.h"
+#include "scigraphics/qt4/qt4plotsettings.h"
 
 #include <cassert>
 
@@ -36,12 +37,19 @@ class qt4plotManager : public scigraphics::qt4plotManager
     qt4plotManager( unsigned NumOfPlots, unsigned NumOfRows, QObject *Parent, const settingsMode SettingsMode ) :
       scigraphics::qt4plotManager( NumOfPlots, NumOfRows, Parent, SettingsMode ) {}
     inline qt4plot* plot( unsigned i );
+    inline qt4plotSettings* settings( unsigned i );
 };
 
 qt4plot* qt4plotManager::plot( unsigned i ) 
 { 
   assert( sizeof(qt4plot) == sizeof(scigraphics::qt4plot) );
   return reinterpret_cast<qt4plot*>(scigraphics::qt4plotManager::plot(i)); 
+}
+    
+inline qt4plotSettings* qt4plotManager::settings( unsigned i )
+{
+  assert( sizeof(qt4plotSettings) == sizeof(scigraphics::qt4settings) );
+  return reinterpret_cast<qt4plotSettings*>(scigraphics::qt4plotManager::settings(i));
 }
 
 
