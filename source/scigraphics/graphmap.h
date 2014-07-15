@@ -113,18 +113,18 @@ namespace scigraphics
         void setIntervalX( number Min, number Max ) { getCastedData().setIntervalX( Min, Max ); }
         void setIntervalY( number Min, number Max ) { getCastedData().setIntervalY( Min, Max ); }
 
-        number coordinateX( unsigned IndexX ) const { return getCastedData().coordinateX(IndexX); }
-        number coordinateY( unsigned IndexY ) const { return getCastedData().coordinateY(IndexY); }
+        number coordinateX( size_t IndexX ) const { return getCastedData().coordinateX(IndexX); }
+        number coordinateY( size_t IndexY ) const { return getCastedData().coordinateY(IndexY); }
         int nearestIndexX( number X ) const { return getCastedData().nearestIndexX(X); }
         int nearestIndexY( number Y ) const { return getCastedData().nearestIndexY(Y); }
 
         data::point_t at( data::int_t Index ) const { return getData().at(Index); }
-        data::point_t at( data::int_t IndexX, unsigned IndexY ) const { return getCastedData().at(IndexX,IndexY); }
+        data::point_t at( data::int_t IndexX, size_t IndexY ) const { return getCastedData().at(IndexX,IndexY); }
         data::point_t operator[]( data::int_t Index ) const { return at(Index); }
         data::point_t firstPoint() const { return getData().firstPoint(); }
         data::point_t lastPoint() const  { return getData().lastPoint();  }
     
-        void set( unsigned ix, unsigned iy, number Val ) { getCastedData().set( ix, iy, Val ); }
+        void set( size_t ix, size_t iy, number Val ) { getCastedData().set( ix, iy, Val ); }
     };
     
     // ------------------------------------------------------------

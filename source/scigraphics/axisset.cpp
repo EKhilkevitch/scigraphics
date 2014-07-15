@@ -270,7 +270,7 @@ scigraphics::axisSetCollection::~axisSetCollection()
 
 scigraphics::axisSet& scigraphics::axisSetCollection::at( axisPosition Position )
 {
-  unsigned Index = (unsigned)Position;
+  size_t Index = static_cast<size_t>(Position);
   if ( Index >= AxisSets.size() )
     throw std::out_of_range( "Invalid axis position" );
   return AxisSets[Index];

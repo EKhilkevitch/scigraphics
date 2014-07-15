@@ -120,13 +120,13 @@ namespace scigraphics
       const T& front() const { return *Container.front(); }
       const T& back() const  { return *Container.back(); }
 
-      const T& operator[]( unsigned i ) const { return *( Container[i] ); }
-      T& operator[]( unsigned i ) { return *( Container[i] ); }
+      const T& operator[]( size_t i ) const { return *( Container[i] ); }
+      T& operator[]( size_t i ) { return *( Container[i] ); }
 
-      const T& at( unsigned i ) const { return *( Container.at(i) ); }
-      T& at( unsigned i ) { return *( Container.at(i) ); }
+      const T& at( size_t i ) const { return *( Container.at(i) ); }
+      T& at( size_t i ) { return *( Container.at(i) ); }
 
-      T* set( unsigned Index, T *Pointer );
+      T* set( size_t Index, T *Pointer );
 
       const container_t& get() const { return Container; }
 
@@ -190,7 +190,7 @@ namespace scigraphics
 
   // ------------------------------------------------------------
       
-  template < template <class,class> class container, class T, class Allocator > T* container_ptr<container,T,Allocator>::set( unsigned Index, T *Pointer )
+  template < template <class,class> class container, class T, class Allocator > T* container_ptr<container,T,Allocator>::set( size_t Index, T *Pointer )
   {
     T* ContainedPointer = Container.at(Index);
     if ( ContainedPointer != Pointer )

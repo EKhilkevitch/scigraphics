@@ -244,7 +244,7 @@ void scigraphics::map::graphViewRectangle::drawRainbowMarkers( painter &Painter,
   lineStyle LineStyle( color::Black );
   textStyle TextStyle( 13 );
 
-  for ( unsigned i = 0; i < Marks.size(); i++ )
+  for ( size_t i = 0; i < Marks.size(); i++ )
   {
     double Part = ScaleZ.numberToFraction( Marks[i] );
     

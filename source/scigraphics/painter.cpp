@@ -415,7 +415,7 @@ void scigraphics::painter::drawPolygonF( const std::vector<fpoint> &FPoints, con
   std::vector<wpoint> WPoints;
   WPoints.reserve( FPoints.size() );
 
-  for ( unsigned i = 0; i < FPoints.size(); i++ )
+  for ( size_t i = 0; i < FPoints.size(); i++ )
     WPoints.push_back( fpoint2wpoint(FPoints[i]) );
 
   assert( WPoints.size() == FPoints.size() );

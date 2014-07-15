@@ -94,11 +94,11 @@ void scigraphics::map::dataVector::resize( size_t SX, size_t SY )
 {
   std::vector< value > NewValues( SX * SY );
   
-  for ( unsigned ix = 0; ix < std::min<size_t>( SX, sizeX() ); ix++ )
+  for ( size_t ix = 0; ix < std::min<size_t>( SX, sizeX() ); ix++ )
   {
-    for ( unsigned iy = 0; iy < std::min<size_t>( SY, sizeY() ); iy++ )
+    for ( size_t iy = 0; iy < std::min<size_t>( SY, sizeY() ); iy++ )
     {
-      unsigned Idx = ix + iy * SX;
+      size_t Idx = ix + iy * SX;
       NewValues.at( Idx ) = Values.at( index( ix, iy ) );
     }
   }
@@ -132,7 +132,7 @@ const scigraphics::map::dataVector::point_t scigraphics::map::dataVector::at( in
       
 void scigraphics::map::dataVector::set( int IndexX, int IndexY, number Z, number ErrZ )
 {
-  unsigned Index = index( IndexX, IndexY );
+  size_t Index = index( IndexX, IndexY );
   Values.at(Index) = value( Z, ErrZ );
   LimitsZCache.isValid = false;
 }

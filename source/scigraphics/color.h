@@ -101,7 +101,7 @@ namespace scigraphics
     {
       private:
         std::vector< color > Sequence;
-        unsigned CurrentIndex;
+        size_t CurrentIndex;
 
       public:
         colorSequence() { reset(); }

@@ -207,7 +207,7 @@ std::vector<scigraphics::number> scigraphics::markerLogarithmNegative::marks( co
   else
     Result = marksInPositiveInterval( interval<number>( -Interval.min(), -Interval.max() ) );
 
-  for ( unsigned i = 0; i < Result.size(); i++ )
+  for ( size_t i = 0; i < Result.size(); i++ )
     Result[i] *= -1;
 
   return Result;

@@ -183,7 +183,7 @@ scigraphics::color scigraphics::colorSequence::current() const
   if ( Sequence.empty() )
     return color();
 
-  unsigned SequenceIndex = CurrentIndex % Sequence.size();
+  size_t SequenceIndex = CurrentIndex % Sequence.size();
   return Sequence.at( SequenceIndex );
 }
 
@@ -214,7 +214,7 @@ void scigraphics::colorSequence::clear()
 
 void scigraphics::colorSequence::reset()
 {
-  CurrentIndex = std::numeric_limits<unsigned>::max();
+  CurrentIndex = std::numeric_limits<size_t>::max();
 }
 
 // ------------------------------------------------------------
