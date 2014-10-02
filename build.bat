@@ -15,33 +15,28 @@ if not exist %BUILD_DIR% (
   mkdir %BUILD_DIR% || goto End
 )
 
-cd %BUILD_DIR% || goto End
+pushd %BUILD_DIR% || goto End
 cmake -G "NMake Makefiles" %1 %2 %3 %4 %5 %6 %7 %8 %9 .. || goto End
 nmake || goto End
+popd
 
 rem =========================================
 
 :End
 
 if %ERRORLEVEL% GTR 0 (
+  echo.
   echo Build failure.
-  goto Exit
-)
-
-echo.
-echo Successfully build
-echo.
-goto Exit
-
-rem =========================================
-
-:Exit
-
-cd %CURRENT_DIR%
-
-if %ERRORLEVEL% GTR 0 (
-  exit /b 1 
+  echo.
+  popd
+  exit /b 1
 ) else (
+  echo.
+  echo Successfully build
+  echo.
+  popd
   exit /b 0
 )
+
+rem =========================================
 
