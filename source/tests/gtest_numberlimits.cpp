@@ -8,8 +8,8 @@
 #include <gtest/gtest.h>
 
 #include "numlimits.h"
+#include "geometry.h"
 
-namespace scigraphics {};
 using namespace scigraphics;
 
 // =========================================================
@@ -175,6 +175,124 @@ TEST( test_numberLimits, updateLimits )
   ASSERT_NEAR(  2.0, Limits.positiveLimits().max(), 1e-5 );
   ASSERT_NEAR( -3.0, Limits.negativeLimits().min(), 1e-5 );
   ASSERT_NEAR( -3.0, Limits.negativeLimits().max(), 1e-5 );
+}
+
+// ---------------------------------------------------------
+
+TEST( test_numberLimits, updateLimits_2 )
+{
+  typedef std::vector<double> dvector;
+  dvector Numbers;
+  for ( int i = -10; i <= 20; i++ )
+    Numbers.push_back( i );
+
+  numberLimits Limits;
+  Limits.updateLimits( Numbers.begin(), Numbers.end() );
+  
+  EXPECT_NEAR( -10.0, Limits.totalLimits().min(), 1e-5 );
+  EXPECT_NEAR(  20.0, Limits.totalLimits().max(), 1e-5 );
+  EXPECT_NEAR(   1.0, Limits.positiveLimits().min(), 1e-5 );
+  EXPECT_NEAR(  20.0, Limits.positiveLimits().max(), 1e-5 );
+  EXPECT_NEAR( -10.0, Limits.negativeLimits().min(), 1e-5 );
+  EXPECT_NEAR( - 1.0, Limits.negativeLimits().max(), 1e-5 );
+}
+
+// ---------------------------------------------------------
+
+TEST( test_numberLimits, updateLimitsOrdered )
+{
+  struct cmp
+  {
+    bool operator()( fpoint Point, double Value ) { return Point.x() < Value; }
+  };
+
+  struct extract
+  {
+    number operator()( fpoint Point ) { return Point.x(); }
+  };
+  
+  typedef std::vector<fpoint> pvector;
+  pvector Points;
+  for ( int i = -10; i <= 20; i++ )
+    Points.push_back( fpoint( i, 0.5*i ) );
+  
+  numberLimits Limits;
+  Limits.updateLimitsOrdered( Points.begin(), Points.end(), cmp(), extract() );
+  
+  EXPECT_NEAR( -10.0, Limits.totalLimits().min(), 1e-5 );
+  EXPECT_NEAR(  20.0, Limits.totalLimits().max(), 1e-5 );
+  EXPECT_NEAR(   1.0, Limits.positiveLimits().min(), 1e-5 );
+  EXPECT_NEAR(  20.0, Limits.positiveLimits().max(), 1e-5 );
+  EXPECT_NEAR( -10.0, Limits.negativeLimits().min(), 1e-5 );
+  EXPECT_NEAR( - 1.0, Limits.negativeLimits().max(), 1e-5 );
+}
+
+// ---------------------------------------------------------
+
+TEST( test_numberLimits, boundsOfInterval )
+{
+  typedef std::vector<double> dvector;
+  dvector Numbers;
+  for ( size_t i = 0; i < 20; i++ )
+    Numbers.push_back( 0.1 * i );
+
+  std::pair< dvector::const_iterator, dvector::const_iterator > Result;
+
+  Result = numberLimits::boundsOfInterval( Numbers.begin(), Numbers.end(), 0.45, 1.3 + 1e-7 );
+  EXPECT_EQ(  5, Result.first - Numbers.begin() );
+  EXPECT_EQ( 14, Result.second - Numbers.begin() );
+  
+  Result = numberLimits::boundsOfInterval( Numbers.begin(), Numbers.end(), -0.45, 1.3 + 1e-7 );
+  EXPECT_EQ(  0, Result.first - Numbers.begin() );
+  EXPECT_EQ( 14, Result.second - Numbers.begin() );
+  
+  Result = numberLimits::boundsOfInterval( Numbers.begin(), Numbers.end(), 0.45, 21.3 + 1e-7 );
+  EXPECT_EQ(  5, Result.first - Numbers.begin() );
+  EXPECT_EQ( 20, Result.second - Numbers.begin() );
+
+//  std::cout << *Result.first << " .. " << *Result.second << std::endl;
+}
+
+// ---------------------------------------------------------
+
+TEST( test_numberLimits, boundsOfInterval_2 )
+{
+  struct cmp
+  {
+    bool operator()( fpoint Point, double Value ) { return Point.x() < Value; }
+  };
+  
+  typedef std::vector<fpoint> pvector;
+  
+  pvector Points;
+  for ( size_t i = 0; i < 20; i++ )
+    Points.push_back( fpoint( 0.1 * i, i ) );
+
+  std::pair< pvector::const_iterator, pvector::const_iterator > Result = numberLimits::boundsOfInterval( Points.begin(), Points.end(), 0.45, 1.3 + 1e-7, cmp() );
+  EXPECT_EQ(  5, Result.first - Points.begin() );
+  EXPECT_EQ( 14, Result.second - Points.begin() );
+}
+
+// ---------------------------------------------------------
+
+TEST( test_numberLimits, boundsOfInterval_3 )
+{
+  typedef std::vector<int> ivector;
+  ivector Numbers;
+  for ( size_t i = 0; i < 20; i++ )
+    Numbers.push_back( i );
+  for ( size_t i = 0; i < 4; i++ )
+    Numbers.push_back( 4 );
+  std::sort( Numbers.begin(), Numbers.end() );
+  
+  std::pair< ivector::const_iterator, ivector::const_iterator > Result;
+
+  Result = numberLimits::boundsOfInterval( Numbers.begin(), Numbers.end(), 4, 13 );
+  EXPECT_EQ(  4, Result.first - Numbers.begin() );
+  EXPECT_EQ( 13+4, Result.second - Numbers.begin() );
+  ASSERT_TRUE( Result.second != Numbers.end() );
+  EXPECT_EQ( 13, *Result.second );
+//  std::cout << *Result.first << " .. " << *Result.second << std::endl;
 }
 
 // =========================================================

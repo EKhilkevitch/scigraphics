@@ -35,6 +35,14 @@ namespace
 
   // ------------------------------------------------------------
   
+  struct numberPointXCmp
+  {
+    bool operator()( const scigraphics::sequence::point &Point, scigraphics::number Number ) { return Point.x() < Number; }
+    bool operator()( scigraphics::number Number, const scigraphics::sequence::point &Point ) { return Number < Point.x(); }
+  };
+  
+  // ------------------------------------------------------------
+  
   bool needToRecalculateLimits( const scigraphics::interval<scigraphics::number> Interval );
   void updateLimitsByValue( scigraphics::numberLimits *Limits, scigraphics::number Value, scigraphics::number PosDistance, scigraphics::number NegDistance );
   
@@ -42,7 +50,7 @@ namespace
   
   bool needToRecalculateLimits( const scigraphics::interval<scigraphics::number> Interval )
   {
-    const double Epsilon = 1e-14;
+    const scigraphics::number Epsilon = std::numeric_limits<scigraphics::number>::epsilon();
 
     scigraphics::number Distance = Interval.distance();
     assert( Distance >= 0 );
@@ -62,7 +70,7 @@ namespace
     assert( PosDistance >= 0 );
     assert( NegDistance >= 0 );
 
-    const double DistMultiplier = 1e-15;
+    const scigraphics::number DistMultiplier = std::numeric_limits<scigraphics::number>::epsilon();
 
     scigraphics::number MinPosValue = + DistMultiplier * PosDistance;
     scigraphics::number MaxNegValue = - DistMultiplier * NegDistance;
@@ -81,7 +89,7 @@ namespace
 const scigraphics::numberLimits scigraphics::sequence::data::limitsX() const
 {
   numberLimits Result;
-  
+ 
   const iterator Begin = begin();
   const iterator End   = end();
 
@@ -103,12 +111,18 @@ const scigraphics::numberLimits scigraphics::sequence::data::limitsY( const inte
 {
   if ( ! numberLimits::isValidInterval(LimitsX) )
     return numberLimits();
+ 
+  iterator Begin = begin();
+  iterator End   = end();
+
+  if ( isOrderedByX() )
+  {
+    std::pair<iterator,iterator> BeginEndInLimitsX = numberLimits::boundsOfInterval( Begin, End, LimitsX.min(), LimitsX.max(), numberPointXCmp() );
+    Begin = BeginEndInLimitsX.first;
+    End = BeginEndInLimitsX.second;
+  }
 
   numberLimits Result;
-  
-  const iterator Begin = begin();
-  const iterator End   = end();
-
   for ( iterator p = Begin; p != End; ++p )
   {
     if ( ! p->isValid() )

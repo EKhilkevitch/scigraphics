@@ -34,6 +34,13 @@ bool scigraphics::numberLimits::isValidInterval( interval<number> I )
 
 // ------------------------------------------------------------
       
+scigraphics::numberLimits::numberLimits() 
+{ 
+  clear(); 
+}
+
+// ------------------------------------------------------------
+      
 void scigraphics::numberLimits::updateLimits( number Number ) 
 {
   updateInterval( &TotalLimits, Number );
