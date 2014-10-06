@@ -118,6 +118,8 @@ namespace scigraphics
         void recalculate( const data &Data );
         void clear();
 
+        bool canUseCachedLimitsY( const interval<number> &LimitsX ) const;
+
         const numberLimits& limitsX() const;
         const numberLimits& limitsY() const;
     };

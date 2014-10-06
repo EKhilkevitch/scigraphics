@@ -114,6 +114,14 @@ void scigraphics::sequence::numberLimitsDataCache::clear()
 
 // ------------------------------------------------------------
 
+bool scigraphics::sequence::numberLimitsDataCache::canUseCachedLimitsY( const interval<number> &LimitsX ) const
+{
+  return ( LimitsX.min() <= limitsX().totalLimits().min() ) &&
+         ( LimitsX.max() >= limitsX().totalLimits().max() );
+}
+
+// ------------------------------------------------------------
+
 void scigraphics::sequence::numberLimitsDataCache::update( const point_t &Point, const data &Data )
 {
   if ( ! Point.isValid() )
@@ -349,8 +357,7 @@ void scigraphics::sequence::dataVector::updateOrderedByX()
 
 const scigraphics::numberLimits scigraphics::sequence::dataVector::limitsY( const interval<number> &LimitsX ) const
 {
-  if ( LimitsX.min() <= limitsX().totalLimits().min() &&
-       LimitsX.max() >= limitsX().totalLimits().max() )
+  if ( LimitsCache.canUseCachedLimitsY(LimitsX) )
     return LimitsCache.limitsY();
   return data::limitsY( LimitsX );
 }
@@ -420,8 +427,7 @@ void scigraphics::sequence::dataUniformVector::clear()
 
 const scigraphics::numberLimits scigraphics::sequence::dataUniformVector::limitsY( const interval<number> &LimitsX ) const
 {
-  if ( LimitsX.min() <= limitsX().totalLimits().min() &&
-       LimitsX.max() >= limitsX().totalLimits().max() )
+  if ( LimitsCache.canUseCachedLimitsY(LimitsX) )
     return LimitsCache.limitsY();
   return data::limitsY( LimitsX );
 }
