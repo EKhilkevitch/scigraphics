@@ -107,12 +107,11 @@ namespace scigraphics
     class graphViewGeneralLine : public graphViewStyle<lineStyle,graphViewOrdered>
     {
       protected:
-        virtual void drawLineBetweenPoints( painter &Painter, const fpoint Pt1, const fpoint &Pt2 ) const = 0;
+        virtual void drawLineBetweenPoints( painter &Painter, std::vector<wpoint> *Points ) const = 0;
         void drawUnorderedByX( painter &Painter, const pairScales& Scales, sequence::data::iterator Begin, sequence::data::iterator End ) const;
         
       public:
-        graphViewGeneralLine( style S ) : graphViewStyle<lineStyle,graphViewOrdered>(S) {}
-
+        graphViewGeneralLine( style Style );
         void drawLegendExample( painter &Painter, const wrectangle &Rectangle ) const;
     };
     
@@ -121,7 +120,7 @@ namespace scigraphics
     class graphViewLine : public graphViewGeneralLine
     {
       protected:
-        void drawLineBetweenPoints( painter &Painter, const fpoint Pt1, const fpoint &Pt2 ) const;
+        void drawLineBetweenPoints( painter &Painter, std::vector<wpoint> *Points ) const;
       public:
         graphViewLine( style S ) : graphViewGeneralLine(S) {}
     };
@@ -157,7 +156,7 @@ namespace scigraphics
     class graphViewLineHystogram : public graphViewGeneralLine
     {
       protected:
-        void drawLineBetweenPoints( painter &Painter, const fpoint Pt1, const fpoint &Pt2 ) const;
+        void drawLineBetweenPoints( painter &Painter, std::vector<wpoint> *Points ) const;
       public:
         graphViewLineHystogram( style S ) : graphViewGeneralLine(S) {}
     };

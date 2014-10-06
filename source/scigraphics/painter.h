@@ -93,7 +93,7 @@ namespace scigraphics
       bool canSeparatePointsF( fpoint Pt1, fpoint Pt2 ) const;
       bool canSepareteXcoordsF( fcoord X1, fcoord X2 ) const;
      
-      void update() { updatePlotRectangle(); }
+      void update();
       void flush();
       void clearPlotArea();
       void clearBordersArea();
@@ -101,6 +101,8 @@ namespace scigraphics
       void setLineStyle( const lineStyle &Style );
       void drawLineW( wpoint A, wpoint B, const lineStyle &Style );
       void drawLineW( wpoint A, wpoint B );
+      void drawLineW( const std::vector<wpoint> &Points, const lineStyle &Style );
+      void drawLineW( const std::vector<wpoint> &Points );
       void drawLineF( fpoint A, fpoint B, const lineStyle &Style );
       void drawLineF( fpoint A, fpoint B );
 

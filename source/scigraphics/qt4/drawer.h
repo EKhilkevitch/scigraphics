@@ -79,6 +79,7 @@ namespace scigraphics
       void setTextStyle( const textStyle &Style );
 
       void drawLine( const wpoint &A, const wpoint &B );
+      void drawPolyline( const std::vector<wpoint> &Points );
       void drawRectangle( const wrectangle& Rectangle );
       void drawPolygon( const std::vector<wpoint> &Points );
       void drawText( const std::string &Text, const wrectangle& Rectangle, double RotAngle );

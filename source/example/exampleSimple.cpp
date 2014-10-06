@@ -42,11 +42,13 @@ int main( int argc, char *argv[] )
   scigraphics::qt4plot Plot;
 
   scigraphics::graphSV *Sin = Plot.createGraphSV( "Sinus" );
-  const size_t GraphSize = 1000;
+  const size_t GraphSize = 100000;
   for ( unsigned i = 0; i < GraphSize; i++ )
   {
     double x = 2 * M_PI * i / GraphSize - M_PI;
     double y = std::sin( x );
+    if ( -0.4 < x && x < -0.2 )
+      x = scigraphics::invalidNumber();
     Sin->append( x, y );
   }
 

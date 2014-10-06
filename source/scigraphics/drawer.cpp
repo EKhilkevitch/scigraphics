@@ -48,6 +48,14 @@ scigraphics::wrectangle scigraphics::drawer::plotRectangle() const
 }
 
 // ------------------------------------------------------------
+
+void scigraphics::drawer::drawPolyline( const std::vector<wpoint> &Points )
+{
+  for ( size_t i = 1; i < Points.size(); i++ )
+    drawLine( Points[i-1], Points[i] );
+}
+
+// ------------------------------------------------------------
       
 void scigraphics::drawer::eraseAll() 
 { 

@@ -91,6 +91,13 @@ void scigraphics::painter::flush()
 }
 
 // ------------------------------------------------------------
+
+void scigraphics::painter::update() 
+{ 
+  updatePlotRectangle(); 
+}
+
+// ------------------------------------------------------------
       
 void scigraphics::painter::updatePlotRectangle()
 {
@@ -229,6 +236,22 @@ void scigraphics::painter::drawLineW( wpoint A, wpoint B )
 {
   if ( ableToDraw() )
     Drawer->drawLine( A, B ); 
+}
+
+// ------------------------------------------------------------
+
+void scigraphics::painter::drawLineW( const std::vector<wpoint> &Points, const lineStyle &Style )
+{
+  setLineStyle( Style );
+  drawLineW( Points );
+}
+
+// ------------------------------------------------------------
+
+void scigraphics::painter::drawLineW( const std::vector<wpoint> &Points )
+{
+  if ( ableToDraw() )
+    Drawer->drawPolyline( Points );
 }
 
 // ------------------------------------------------------------

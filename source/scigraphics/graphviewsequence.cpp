@@ -29,58 +29,133 @@
 #include <cmath>
 #include <limits>
 #include <cassert>
+#include <cstddef>
 
 // ============================================================
 
 namespace scigraphics 
 {
-  class oneCoordinateXPoints 
+  
+  // ============================================================
+  
+  class pointsWithSameXCoord
   {
     private:
-      fcoord X;
-      interval<fcoord> Y;
-
-      static fcoord invalidValueX() { return std::numeric_limits<fcoord>::max(); }
+      wcoord X;
+      wcoord MinY, MaxY, FirstY, LastY;
+      size_t Count;
 
     public:
-      oneCoordinateXPoints() { clear(); }
+      pointsWithSameXCoord();
+      void clear();
 
-      fpoint min() const { return fpoint( X, Y.min() ); }
-      fpoint max() const { return fpoint( X, Y.max() ); }
+      wpoint min()  const { return wpoint( X, MinY );  }
+      wpoint max()  const { return wpoint( X, MaxY );  }
+      wpoint last() const { return wpoint( X, LastY ); }
 
-      bool canSeparate( const painter &Painter, fpoint Point ) const { return X == invalidValueX() || Painter.canSepareteXcoordsF( X, Point.x() ); }
-
-      void append( fpoint Point )
-      {
-        if ( X == std::numeric_limits<fcoord>::max() )
-        {
-          X = Point.x();
-          Y = interval<fcoord>( Point.y(), Point.y() );
-        } else {
-          Y.updateInterval( Point.y() );
-        }
-      }
-
-      void flush( painter &Painter, const lineStyle &Style ) const 
-      {
-        if ( X != invalidValueX() && !Y.isSingular() )
-          Painter.drawLineF( min(), max(), Style );
-      }
-
-      void clear() { X = invalidValueX(); Y = interval<fcoord>(0,0); }
+      bool canSeparate( const painter &Painter, fpoint Point );
+      void append( const painter &Painter, fpoint Point );
+      void addToPolyline( std::vector<wpoint> *Polyline ) const;
   };
+
+  // ============================================================
 
   class checkIsLessThan
   {
     private:
       const pairScales &Scales;
     public:
-      checkIsLessThan( const pairScales &S ) : Scales(S) {}
-
-      inline bool operator()( const fcoord FValue, const sequence::data::point_t &Point ) const { return FValue < Scales.numberToFractionX(Point.x()); }
-      inline bool operator()( const sequence::data::point_t &Point, const fcoord FValue ) const { return Scales.numberToFractionX(Point.x()) < FValue; }
+      checkIsLessThan( const pairScales &Scales );
+      bool operator()( const fcoord FValue, const sequence::data::point_t &Point ) const;
+      bool operator()( const sequence::data::point_t &Point, const fcoord FValue ) const;
   };
+
+  // ============================================================
+  
+  pointsWithSameXCoord::pointsWithSameXCoord() 
+  {
+    clear();
+  }
+
+  // ------------------------------------------------------------
+  
+  void pointsWithSameXCoord::clear()
+  {
+    X = 0; 
+    MinY = MaxY = FirstY = LastY = 0;
+    Count = 0;
+  }
+  
+  // ------------------------------------------------------------
+  
+  bool pointsWithSameXCoord::canSeparate( const painter &Painter, fpoint Point )
+  {
+    if ( Count == 0 )
+      return true;
+    return X != Painter.fcoord2wcoordX( Point.x() );
+  }
+  
+  // ------------------------------------------------------------
+      
+  void pointsWithSameXCoord::append( const painter &Painter, fpoint Point )
+  {
+    LastY = Painter.fcoord2wcoordY( Point.y() );
+    if ( Count == 0 )
+    {
+      X = Painter.fcoord2wcoordX( Point.x() );
+      MinY = MaxY = FirstY = LastY;
+    } else {
+      MinY = std::min( MinY, LastY );
+      MaxY = std::max( MaxY, LastY );
+    }
+    Count += 1;
+  }
+  
+  // ------------------------------------------------------------
+      
+  void pointsWithSameXCoord::addToPolyline( std::vector<wpoint> *Polyline ) const
+  {
+    assert( Polyline != NULL );
+
+    if ( Count == 0 )
+      return;
+
+    Polyline->push_back( wpoint( X, FirstY ) );
+   
+    if ( MinY != FirstY )
+      Polyline->push_back( wpoint( X, MinY ) );
+
+    if ( MaxY != MinY )
+      Polyline->push_back( wpoint( X, MaxY ) );
+
+    if ( MaxY != LastY )
+      Polyline->push_back( wpoint( X, LastY ) );
+  }
+  
+  // ============================================================
+
+  checkIsLessThan::checkIsLessThan( const pairScales &S ) :
+    Scales( S )
+  {
+  }
+  
+  // ------------------------------------------------------------
+      
+  bool checkIsLessThan::operator()( const fcoord FValue, const sequence::data::point_t &Point ) const 
+  { 
+    return FValue < Scales.numberToFractionX(Point.x()); 
+  }
+  
+  // ------------------------------------------------------------
+  
+  bool checkIsLessThan::operator()( const sequence::data::point_t &Point, const fcoord FValue ) const 
+  { 
+    return Scales.numberToFractionX(Point.x()) < FValue; 
+  }
+
+  // ============================================================
 }
+
 
 // ============================================================
       
@@ -117,6 +192,13 @@ void scigraphics::sequence::graphViewOrdered::drawOrderedByX( painter &Painter, 
 }
 
 // ============================================================
+        
+scigraphics::sequence::graphViewGeneralLine::graphViewGeneralLine( style Style ) : 
+  graphViewStyle<lineStyle,graphViewOrdered>(Style) 
+{
+}
+
+// ------------------------------------------------------------
 
 void scigraphics::sequence::graphViewGeneralLine::drawUnorderedByX( painter &Painter, const pairScales& Scales, sequence::data::iterator Begin, sequence::data::iterator End ) const
 {
@@ -128,38 +210,35 @@ void scigraphics::sequence::graphViewGeneralLine::drawUnorderedByX( painter &Pai
 
   Painter.setLineStyle( getStyle() );
   
-  oneCoordinateXPoints OneCoordinateXpoints;
+  std::vector< wpoint > Polyline;
+  Polyline.reserve( (End - Begin)*2 );
 
-  sequence::data::iterator Point1 = Begin, Point2 = Begin;
-  ++Point2;
+  pointsWithSameXCoord PointsWithSameXCoord;
 
-  for ( ; Point2 != End; Point1++, Point2++ )
+  sequence::data::iterator Point = Begin;
+
+  while ( true )
   {
-    if ( Point1->isValid() && Point2->isValid() )
+    if ( Point != End && Point->isValid() )
     {
-      fpoint Pt1 = Scales.npoint2fpoint(*Point1);
-      fpoint Pt2 = Scales.npoint2fpoint(*Point2);
-
-      if ( OneCoordinateXpoints.canSeparate(Painter,Pt2) || OneCoordinateXpoints.canSeparate(Painter,Pt1) )
+      fpoint CurrFPoint = Scales.npoint2fpoint(*Point);
+      if ( PointsWithSameXCoord.canSeparate( Painter, CurrFPoint ) )
       {
-        OneCoordinateXpoints.flush(Painter,getStyle());
-        
-        drawLineBetweenPoints( Painter, Pt1, Pt2 );
-        
-        OneCoordinateXpoints.clear();
-        OneCoordinateXpoints.append( Pt2 );
-      } else {
-        OneCoordinateXpoints.append( Pt1 );
-        OneCoordinateXpoints.append( Pt2 );
-      }
-
+        PointsWithSameXCoord.addToPolyline( &Polyline );
+        PointsWithSameXCoord.clear();
+      } 
+      PointsWithSameXCoord.append( Painter, CurrFPoint );
     } else {
-      OneCoordinateXpoints.flush(Painter,getStyle());
-      OneCoordinateXpoints.clear();
+      PointsWithSameXCoord.addToPolyline( &Polyline );
+      PointsWithSameXCoord.clear();
+      drawLineBetweenPoints( Painter, &Polyline );
+//      Painter.drawLineW( Polyline );
+      Polyline.clear();
+      if ( Point == End )
+        break;
     }
+    ++Point;
   }
-    
-  OneCoordinateXpoints.flush(Painter,getStyle());
 
 }
 
@@ -167,18 +246,22 @@ void scigraphics::sequence::graphViewGeneralLine::drawUnorderedByX( painter &Pai
 
 void scigraphics::sequence::graphViewGeneralLine::drawLegendExample( painter &Painter, const wrectangle &Rectangle ) const
 {
-  wcoord VCenter = ( Rectangle.up() + Rectangle.down() )/2;
-  wpoint Left( Rectangle.left()+1, VCenter );
-  wpoint Right( Rectangle.right()-1, VCenter );
+  const wcoord VCenter = ( Rectangle.up() + Rectangle.down() )/2;
+
+  std::vector<wpoint> Polyline;
+  Polyline.push_back( wpoint( Rectangle.left()+1, VCenter ) );
+  Polyline.push_back( wpoint( Rectangle.right()-1, VCenter ) );
+  
   Painter.setLineStyle( getStyle() );
-  drawLineBetweenPoints( Painter, Painter.wpoint2fpoint(Left), Painter.wpoint2fpoint(Right) );
+  drawLineBetweenPoints( Painter, &Polyline );
 }
 
 // ------------------------------------------------------------
 
-void scigraphics::sequence::graphViewLine::drawLineBetweenPoints( painter &Painter, const fpoint Pt1, const fpoint &Pt2 ) const
+void scigraphics::sequence::graphViewLine::drawLineBetweenPoints( painter &Painter, std::vector<wpoint> *Points ) const
 {
-  Painter.drawLineF( Pt1, Pt2 );
+  assert( Points != NULL );
+  Painter.drawLineW( *Points );
 }
 
 // ------------------------------------------------------------
@@ -246,11 +329,31 @@ void scigraphics::sequence::graphViewErrorBars::drawVerticalErrorBar( painter &P
 
 // ------------------------------------------------------------
 
-void scigraphics::sequence::graphViewLineHystogram::drawLineBetweenPoints( painter &Painter, fpoint Pt1, const fpoint &Pt2 ) const
+void scigraphics::sequence::graphViewLineHystogram::drawLineBetweenPoints( painter &Painter, std::vector<wpoint> *Points ) const
 {
-  fpoint PtMiddle( Pt2.x(), Pt1.y() );
-  Painter.drawLineF( Pt1, PtMiddle );
-  Painter.drawLineF( PtMiddle, Pt2 );
+  assert( Points != NULL );
+
+  const size_t Size = Points->size();
+  if ( Size <= 1 )
+    return;
+
+  Points->resize( 2*Size-1, wpoint(0,0) );
+  for ( size_t i = Size-1; i >= 1; i-- )
+  {
+    size_t j = i*2;
+    assert( j >= 1 );
+    assert( j >= i );
+    assert( j < Points->size() );
+
+    wpoint Prev   = (*Points)[i-1];
+    wpoint Next   = (*Points)[i];
+    wpoint Middle( Next.x(), Prev.y() );
+
+    (*Points)[j] = Next;
+    (*Points)[j-1] = Middle;
+  }
+
+  Painter.drawLineW( *Points );
 }
       
 // ------------------------------------------------------------

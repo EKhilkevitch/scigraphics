@@ -175,6 +175,27 @@ void scigraphics::qt4drawer::drawLine( const wpoint &A, const wpoint &B )
 
 // ----------------------------------------------------------------
 
+void scigraphics::qt4drawer::drawPolyline( const std::vector<wpoint> &Points )
+{
+  if ( Painter == NULL )
+    return;
+  if ( Points.size() <= 1 )
+    return;
+
+  QVector<QLine> Lines;
+  Lines.reserve( Points.size()-1 );
+
+  for ( size_t i = 1; i < Points.size(); i++ )
+  {
+    QPoint Point1 = pointQt(Points[i-1]);
+    QPoint Point2 = pointQt(Points[i]);
+    Lines.append( QLine( Point1, Point2 ) );
+  }
+  Painter->drawLines( Lines );
+}
+
+// ----------------------------------------------------------------
+
 void scigraphics::qt4drawer::drawRectangle( const wrectangle& Rectangle )
 {
   if ( Painter == NULL )
