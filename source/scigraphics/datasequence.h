@@ -85,24 +85,56 @@ namespace scigraphics
     };
   
     // ------------------------------------------------------------
+    
+    class numberLimitsDataCache
+    {
+      public:
+        enum coordinateType 
+        { 
+          CoordinateX, 
+          CoordinateY 
+        };
+        
+        typedef data::point_t point_t;
+        typedef data::iterator iterator;
+
+      private:
+        numberLimits LimitsX, LimitsY;
+
+      private:
+        static void updateLimits( const point_t &Point, const coordinateType Type, const data &Data, numberLimits *Limits );
+        static void updateLimits( number Number, const coordinateType Type, const data &Data, numberLimits *Limits );
+        static bool needToRecalculate( const interval<number> Interval );
+        static void recalculate( const coordinateType Type, const data &Data, numberLimits *Limits );
+        static void updateByValue( number Value, number PosDistance, number NegDistance, numberLimits *Limits );
+        
+        static number pointValue( const point_t &Point, coordinateType Type );
+        static number pointError( const point_t &Point, coordinateType Type );
+
+      public:
+        numberLimitsDataCache();
+
+        void update( const point_t &Point, const data &Data );
+        void recalculate( const data &Data );
+        void clear();
+
+        const numberLimits& limitsX() const;
+        const numberLimits& limitsY() const;
+    };
+    
+    // ------------------------------------------------------------
         
     class dataVector : public data
     {
       private:
-        enum coordinateType { CrdX, CrdY };
-
         std::vector<point_t> Points;
-        numberLimits LimitsX, LimitsY;
+
         bool OrderedByX;
+        numberLimitsDataCache LimitsCache;
 
       private:
         void appendPoint( const point_t &Point ) { Points.push_back(Point); }
-        void updateLimitsXY( const point_t &Point, const coordinateType Type );
-        void updateLimits( number Number, coordinateType Coordinate, numberLimits *Limits );
         void updateOrderedByX();
-        void recalculateLimits( coordinateType Coordinate, numberLimits *Limits );
-        static number pointValue( const point_t &Point, coordinateType Type );
-        static number pointError( const point_t &Point, coordinateType Type );
 
       public:
         dataVector();
@@ -117,7 +149,7 @@ namespace scigraphics
 
         void clear();
         
-        const numberLimits limitsX() const { return LimitsX; }
+        const numberLimits limitsX() const { return LimitsCache.limitsX(); }
         const numberLimits limitsY( const interval<number> &LimitsX ) const;
         
         bool isOrderedByX() const { return OrderedByX; }
@@ -130,11 +162,7 @@ namespace scigraphics
       private:
         number StepX;
         std::vector<number> Values, Errors;
-        numberLimits LimitsX, LimitsY;
-
-      private:
-        void updateLimits();
-        void recalculateLimits();
+        numberLimitsDataCache LimitsCache;
 
       public:
         dataUniformVector();
@@ -154,7 +182,7 @@ namespace scigraphics
 
         void clear();
         
-        const numberLimits limitsX() const { return LimitsX; }
+        const numberLimits limitsX() const { return LimitsCache.limitsX(); }
         const numberLimits limitsY( const interval<number> &LimitsX ) const;
 
         bool isOrderedByX() const { return true; }
