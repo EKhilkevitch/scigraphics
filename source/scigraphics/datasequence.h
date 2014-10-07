@@ -100,6 +100,7 @@ namespace scigraphics
 
       private:
         numberLimits LimitsX, LimitsY;
+        bool RecalculateRequest;
 
       private:
         static void updateLimits( const point_t &Point, const coordinateType Type, const data &Data, numberLimits *Limits );
@@ -116,6 +117,8 @@ namespace scigraphics
 
         void update( const point_t &Point, const data &Data );
         void recalculate( const data &Data );
+        void setRecalculateRequest();
+        void recalculateIfRequired( const data &Data );
         void clear();
 
         bool canUseCachedLimitsY( const interval<number> &LimitsX ) const;

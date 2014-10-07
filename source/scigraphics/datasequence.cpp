@@ -101,7 +101,8 @@ const scigraphics::numberLimits scigraphics::sequence::data::limitsY( const inte
 
 // ============================================================
 
-scigraphics::sequence::numberLimitsDataCache::numberLimitsDataCache()
+scigraphics::sequence::numberLimitsDataCache::numberLimitsDataCache() :
+  RecalculateRequest( false )
 {
 }
 
@@ -158,6 +159,23 @@ void scigraphics::sequence::numberLimitsDataCache::recalculate( const data &Data
     }
   }
 
+  RecalculateRequest = false;
+}
+
+// ------------------------------------------------------------
+
+void scigraphics::sequence::numberLimitsDataCache::setRecalculateRequest()
+{
+  RecalculateRequest = true;
+}
+
+// ------------------------------------------------------------
+
+void scigraphics::sequence::numberLimitsDataCache::recalculateIfRequired( const data &Data )
+{
+  if ( RecalculateRequest )
+    recalculate( Data );
+  RecalculateRequest = false;
 }
 
 // ------------------------------------------------------------
