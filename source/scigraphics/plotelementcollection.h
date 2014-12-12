@@ -25,7 +25,6 @@
 
 #include "scigraphics/container_ptr.h"
 
-#include <list>
 #include <map>
 #include <set>
 #include <cassert>
@@ -48,7 +47,7 @@ namespace scigraphics
   class plotElementsCollection 
   {
     public:
-      typedef container_ptr< std::list, plotElement > plotElementList;
+      typedef container_ptr< plotElement > plotElementList;
       
     private:
       class axisSetsPair
@@ -118,7 +117,7 @@ namespace scigraphics
   template <class T> class templatePlotElementsCollection : public plotElementsCollection
   {
     public:
-      typedef container_ptr< std::list, T > templatePlotElementList;
+      typedef container_ptr< T > templatePlotElementList;
       typedef typename templatePlotElementList::iterator iterator;
       typedef typename templatePlotElementList::const_iterator const_iterator;
       typedef typename templatePlotElementList::const_reverse_iterator const_reverse_iterator;

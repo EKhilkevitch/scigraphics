@@ -138,11 +138,11 @@ namespace scigraphics
       };
       
     private:
-      typedef container_ptr< std::vector, axisSet > container;
+      typedef container_ptr< axisSet > container;
       typedef container::iterator axis_iterator;
       typedef container::const_iterator axis_const_iterator;
 
-      container_ptr< std::vector, axisSet > AxisSets;
+      container AxisSets;
       bool KeepScales1x1;
 
     private:

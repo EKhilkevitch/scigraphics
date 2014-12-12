@@ -29,6 +29,7 @@
 #include "scigraphics/mousecallback.h"
 #include "scigraphics/selection.h"
 
+#include <typeinfo>
 #include <cmath>
 #include <cassert>
 

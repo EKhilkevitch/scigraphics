@@ -38,7 +38,7 @@ namespace scigraphics
     class graphViewCollection : public graphView
     {
       public:
-        typedef container_ptr< std::list, graphView > viewsList;
+        typedef container_ptr< graphView > viewsList;
 
       private:
         color DefaultColor;

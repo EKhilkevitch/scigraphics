@@ -25,6 +25,7 @@
 
 #include <algorithm>
 #include <typeinfo>
+#include <vector>
 
 // ============================================================
 
@@ -36,19 +37,19 @@ namespace scigraphics
   template <class type, class iterator> iterator find_same_type( iterator Begin, iterator End, const type *Pointer );
   template <class type, class iterator> iterator find_type( iterator Begin, iterator End );
 
-  template < template <class,class> class container, class T, class Allocator = std::allocator<T*> > class container_type_ptr
+  template < class T, template <class,class> class container = std::vector, class Allocator = std::allocator<T*> > class container_type_ptr
   {
     public:
-      typedef typename container_ptr<container,T>::container_t container_t;
-      typedef typename container_ptr<container,T>::iterator iterator;
-      typedef typename container_ptr<container,T>::const_iterator const_iterator;
+      typedef typename container_ptr<T,container>::container_t container_t;
+      typedef typename container_ptr<T,container>::iterator iterator;
+      typedef typename container_ptr<T,container>::const_iterator const_iterator;
 
     private:
-      container_ptr<container,T> Container;
+      container_ptr<T,container> Container;
 
     public:
       container_type_ptr() {}
-      container_type_ptr( const container_ptr<container,T> &Cnt );
+      container_type_ptr( const container_ptr<T,container> &Cnt );
 
       bool push_back( T *Value, bool Replace = true );
       template <class U> bool push_back( bool Replace = false );
@@ -75,7 +76,7 @@ namespace scigraphics
 
   // ============================================================
 
-  template < template <class,class> class container, class T, class Allocator > container_type_ptr<container,T,Allocator>::container_type_ptr( const container_ptr<container,T> &Cnt ) 
+  template < class T, template <class,class> class container, class Allocator > container_type_ptr<T,container,Allocator>::container_type_ptr( const container_ptr<T,container> &Cnt ) 
   { 
     for ( const_iterator i = Cnt.begin(); i != Cnt.end(); ++i ) 
     {
@@ -99,7 +100,7 @@ namespace scigraphics
 
   // ------------------------------------------------------------
 
-  template < template <class,class> class container, class T, class Allocator > bool container_type_ptr<container,T,Allocator>::push_back( T *Value, bool Replace ) 
+  template < class T, template <class,class> class container, class Allocator > bool container_type_ptr<T,container,Allocator>::push_back( T *Value, bool Replace ) 
   { 
     if ( Value == NULL ) 
       return false;
@@ -123,7 +124,7 @@ namespace scigraphics
 
   // ------------------------------------------------------------
 
-  template < template <class,class> class container, class T, class Allocator > template <class U> bool container_type_ptr<container,T,Allocator>::push_back( bool Replace ) 
+  template < class T, template <class,class> class container, class Allocator > template <class U> bool container_type_ptr<T,container,Allocator>::push_back( bool Replace ) 
   { 
     T *NewElement = new U();
     bool Pushed = false;
