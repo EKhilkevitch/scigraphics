@@ -103,11 +103,28 @@ void scigraphics::plotElementsCollection::removePlotElement( plotElement *PlotEl
 
 // ------------------------------------------------------------
 
+void scigraphics::plotElementsCollection::releasePlotElement( plotElement *PlotElement )
+{
+  plotElementList::iterator PlotIterator = find_pointer( PlotElementsList.begin(), PlotElementsList.end(), PlotElement );
+  if ( PlotIterator == PlotElementsList.end() )
+    return;
+  releasePlotElementIterator( PlotIterator ); 
+}
+
+// ------------------------------------------------------------
+
 scigraphics::plotElementsCollection::plotElementList::iterator scigraphics::plotElementsCollection::erasePlotElementIterator( plotElementList::iterator Iterator )
 {
   plotElement *PlotElement = &*Iterator;
   AxisBindMap.erase( PlotElement );
   return PlotElementsList.erase( Iterator );
+}
+      
+scigraphics::plotElementsCollection::plotElementList::iterator scigraphics::plotElementsCollection::releasePlotElementIterator( plotElementList::iterator Iterator )
+{
+  plotElement *PlotElement = &*Iterator;
+  AxisBindMap.erase( PlotElement );
+  return PlotElementsList.release( Iterator, NULL );
 }
 
 // ------------------------------------------------------------

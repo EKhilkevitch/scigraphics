@@ -59,7 +59,7 @@ namespace scigraphics
         public:
           iterator_wrapper() {}
           iterator_wrapper( const container_iterator &I ) : Iterator( I ) {}
-          template <class it> iterator_wrapper( const it &I ) : Iterator( I.get() ) {}
+          template <class it, class W> iterator_wrapper( const iterator_wrapper<it,W> &I ) : Iterator( I.get() ) {}
 
           iterator_wrapper& operator=( const container_iterator &I ) { Iterator = I; return *this; }
 
@@ -145,6 +145,7 @@ namespace scigraphics
 
       T* release( size_t Index );
       T* release( iterator Iterator );
+      iterator release( iterator Iterator, T** Pointer );
       T* releaseFront();
       T* releaseBack();
       
@@ -161,7 +162,7 @@ namespace scigraphics
 
   // ============================================================
   
-    template < class T, template <class,class> class container, class Allocator > container_ptr<T,container,Allocator>::container_ptr( const container_ptr &Cnt ) 
+  template < class T, template <class,class> class container, class Allocator > container_ptr<T,container,Allocator>::container_ptr( const container_ptr &Cnt ) 
   { 
     *this = Cnt; 
   }
@@ -263,7 +264,7 @@ namespace scigraphics
   }
   
   // ------------------------------------------------------------
-      
+
   template < class T, template <class,class> class container, class Allocator > T* container_ptr<T,container,Allocator>::release( size_t Index )
   {
     iterator Iterator = begin();
@@ -275,9 +276,20 @@ namespace scigraphics
   
   template < class T, template <class,class> class container, class Allocator > T* container_ptr<T,container,Allocator>::release( iterator Iterator )
   {
-    T* Pointer = &*Iterator;
-    Container.erase( Iterator.get() );
-    return Pointer;
+    T *Pointer = NULL;
+    release( Iterator, &Pointer );
+    return Pointer;    
+  }
+  
+  // ------------------------------------------------------------
+  
+  template < class T, template <class,class> class container, class Allocator > typename container_ptr<T,container,Allocator>::iterator 
+    container_ptr<T,container,Allocator>::release( iterator Iterator, T** Pointer )
+  {
+    if ( Pointer != NULL )
+      *Pointer = &*Iterator;
+    typename container_t::iterator Next = Container.erase( Iterator.get() );
+    return iterator(Next);
   }
       
   // ------------------------------------------------------------

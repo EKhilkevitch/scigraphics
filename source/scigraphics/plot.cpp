@@ -504,6 +504,13 @@ void scigraphics::plot::removeGraphic( graph *Graph )
       
 // ------------------------------------------------------------
 
+void scigraphics::plot::releaseGraphic( graph *Graph )
+{
+  Graphics.release(Graph);
+}
+
+// ------------------------------------------------------------
+
 scigraphics::graphCollection::iterator scigraphics::plot::eraseGraphic( graphCollection::iterator Iterator )
 {
   return Graphics.erase(Iterator);

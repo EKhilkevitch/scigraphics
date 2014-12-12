@@ -150,6 +150,7 @@ namespace scigraphics
       void bindGraphToAxis( const graph *Graph, axisSetCollection::axisPosition AxisX, axisSetCollection::axisPosition AxisY );
       void clearGraphics();
       void removeGraphic( graph *Graph );
+      void releaseGraphic( graph *Graph );
       graphCollection::iterator eraseGraphic( graphCollection::iterator Iterator );
       graphCollection::iterator beginGraph() { return Graphics.begin(); }
       graphCollection::iterator endGraph()   { return Graphics.end(); }

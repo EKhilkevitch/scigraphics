@@ -86,8 +86,10 @@ namespace scigraphics
 
       void appendPlotElement( plotElement *PlotElement );
       void removePlotElement( plotElement *PlotElement );
+      void releasePlotElement( plotElement *PlotElement );
       bool existsPlotElement( const plotElement *PlotElement ) const;
       plotElementList::iterator erasePlotElementIterator( plotElementList::iterator Iterator );
+      plotElementList::iterator releasePlotElementIterator( plotElementList::iterator Iterator );
       void clearAllElements();
       
     public:
@@ -128,6 +130,7 @@ namespace scigraphics
     public:
       virtual void append( T *PlotElement );
       virtual void remove( T *PlotElement );
+      virtual void release( T *PlotElement );
       virtual bool exists( const T *PlotElement ) const;
       virtual void clear();
       
@@ -167,6 +170,13 @@ namespace scigraphics
   template <class T> void templatePlotElementsCollection<T>::remove( T *PlotElement ) 
   {
     removePlotElement( reinterpret_cast<plotElement*>(PlotElement) );
+  }
+  
+  // ------------------------------------------------------------
+  
+  template <class T> void templatePlotElementsCollection<T>::release( T *PlotElement ) 
+  {
+    releasePlotElement( reinterpret_cast<plotElement*>(PlotElement) );
   }
   
   // ------------------------------------------------------------
