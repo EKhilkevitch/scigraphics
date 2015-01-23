@@ -26,13 +26,13 @@
 #include "scigraphics/selection.h"
 #include "scigraphics/graphsequence.h"
 
-#if _WIN32
-#  pragma warning( disable : 4800 )
-#endif
-
 #include <cassert>
 #include <typeinfo>
 #include <stdexcept>
+
+#if _MSC_VER
+#  pragma warning( disable : 4800 )
+#endif
 
 // ============================================================
 

@@ -26,8 +26,9 @@
 
 #include <string>
 
-#if _WIN32
-  #pragma warning(1 : 4519)
+#if _MSC_VER
+#  pragma warning( push )
+#  pragma warning( disable : 4519 )
 #endif
 
 // ============================================================
@@ -91,4 +92,8 @@ namespace scigraphics
   // ============================================================
 
 }
+
+#if _MSC_VER
+#  pragma warning( pop )
+#endif
 

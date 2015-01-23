@@ -39,7 +39,7 @@
 #include <iostream>
 #include <list>
 
-#if _WIN32
+#if _MSC_VER
 #  pragma warning( disable : 4355 )
 #endif
 

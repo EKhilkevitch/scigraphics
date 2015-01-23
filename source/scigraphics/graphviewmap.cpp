@@ -35,7 +35,7 @@
 #include <cassert>
 #include <stdexcept>
 
-#if _WIN32
+#if _MSC_VER
 #  pragma warning( disable : 4244 )
 #endif
 
