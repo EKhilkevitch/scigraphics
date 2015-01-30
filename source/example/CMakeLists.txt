@@ -6,9 +6,12 @@ find_package(Qt4 REQUIRED)
 include( ${QT_USE_FILE} )
 
 if(WIN32)
-  link_libraries( ${QT_QTMAIN_LIBRARY} )
   set( gui_type WIN32 )
 endif(WIN32)
+
+if ( MSVC )
+  link_libraries( ${QT_QTMAIN_LIBRARY} )
+endif()
 
 project( examapleSimple )
 add_executable( exampleSimple ${gui_type} exampleSimple.cpp )
