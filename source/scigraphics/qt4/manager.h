@@ -72,7 +72,7 @@ namespace scigraphics
     protected:
       void createPlots( const QList<unsigned> &PlotsInRows );
       void createPlots( const unsigned NumOfPlots, const unsigned NumOfRows );
-      void setDefaultName() { setName("qt4plotManager"); }
+      void setDefaultName();
 
       qt4plot* createNextPlot();
       QSplitter* createVerticalPlotSplitter( const unsigned NumOfPlotsinSplitter );
@@ -94,16 +94,16 @@ namespace scigraphics
       QWidget* plotWidget() { return PlotWidget; }
       QWidget* settingsWidget() { return SettingsWidget; }
       
-      size_t numberOfPlots() const { return Plots.size(); }
-      qt4plot* plot( unsigned i ) { return Plots[i]; }
+      size_t numberOfPlots() const;
+      qt4plot* plot( size_t Index );
 
-      size_t numberOfSettings() const { return Settings.size(); }
-      qt4settings* settings( unsigned i ) { return Settings[i]; }
+      size_t numberOfSettings() const;
+      qt4settings* settings( size_t Index );
 
-      const QString& name() const { return Name; }
-      void setName( const QString &N ) { Name = N; }
+      const QString& name() const;
+      void setName( const QString &Name );
      
-      void setSettingsName( unsigned i, const QString &N );
+      void setSettingsName( size_t Index, const QString &Name );
       void updateTabNames();
       
       void saveSettings( QSettings* Settings ) const;

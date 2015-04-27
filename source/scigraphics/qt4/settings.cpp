@@ -124,7 +124,7 @@ void scigraphics::qt4settings::addSettingWidget( qt4settingsGroupBox *Widget )
 
 // ----------------------------------------------------------------
 
-void scigraphics::qt4settings::delSettingWidget( unsigned Index )
+void scigraphics::qt4settings::delSettingWidget( size_t Index )
 {
   Q_ASSERT( SettingsComposer != NULL );
   SettingsComposer->delWidget( Index );
@@ -132,7 +132,7 @@ void scigraphics::qt4settings::delSettingWidget( unsigned Index )
 
 // ----------------------------------------------------------------
     
-scigraphics::qt4settingsGroupBox* scigraphics::qt4settings::getSettingWidget( unsigned Index )
+scigraphics::qt4settingsGroupBox* scigraphics::qt4settings::getSettingWidget( size_t Index )
 {
   Q_ASSERT( SettingsComposer != NULL );
   return SettingsComposer->getSettingWidget( Index );
@@ -169,7 +169,7 @@ void scigraphics::qt4settings::saveSettings( QSettings *Settings, const QString 
   Q_ASSERT( Settings != NULL );
   
   Settings->beginGroup( "qt4settings::" + Prefix );
-  for ( unsigned i = 0; i < SettingsComposer->numberOfSettingsWidget(); i++ )
+  for ( size_t i = 0; i < SettingsComposer->numberOfSettingsWidget(); i++ )
     SettingsComposer->getSettingWidget(i)->saveSettings(Settings);
   Settings->endGroup();
 }
@@ -181,7 +181,7 @@ void scigraphics::qt4settings::loadSettings( QSettings *Settings, const QString 
   Q_ASSERT( Settings != NULL );
 
   Settings->beginGroup( "qt4settings::" + Prefix );
-  for ( unsigned i = 0; i < SettingsComposer->numberOfSettingsWidget(); i++ )
+  for ( size_t i = 0; i < SettingsComposer->numberOfSettingsWidget(); i++ )
     SettingsComposer->getSettingWidget(i)->loadSettings(Settings);
   Settings->endGroup();
   updatePlotSettings();
@@ -211,7 +211,7 @@ void scigraphics::qt4settings::updatePlotState()
   if ( Plot == NULL )
     return;
 
-  for ( unsigned i = 0; i < SettingsComposer->numberOfSettingsWidget(); i++ )
+  for ( size_t i = 0; i < SettingsComposer->numberOfSettingsWidget(); i++ )
     SettingsComposer->getSettingWidget(i)->collectSettings( Plot );
 }
 
@@ -245,7 +245,7 @@ void scigraphics::qt4settings::apply( qt4plot *Plot )
     
 void scigraphics::qt4settings::updateSettingsFromSubWidgets()
 {
-  for ( unsigned i = 0; i < SettingsComposer->numberOfSettingsWidget(); i++ )
+  for ( size_t i = 0; i < SettingsComposer->numberOfSettingsWidget(); i++ )
     SettingsComposer->getSettingWidget(i)->applySettings( this );
 }
 

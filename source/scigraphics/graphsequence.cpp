@@ -24,6 +24,7 @@
 #include "scigraphics/graphsequence.h"
 
 #include <cassert>
+#include <cmath>
 
 // ============================================================
 
@@ -100,4 +101,61 @@ scigraphics::sequence::graph::~graph()
 
 // ============================================================
 
+scigraphics::sequence::graphVector::graphVector( const color &Color ) : 
+  graphSpecified< dataVector, ordinarGraphViewCollection >( Color ) 
+{
+}
+
+// ------------------------------------------------------------
+
+scigraphics::sequence::graphVector::graphVector( const std::string &Legend, const color &Color ) : 
+  graphSpecified< dataVector, ordinarGraphViewCollection >( Legend, Color ) 
+{
+}
+
+// ------------------------------------------------------------
+        
+void scigraphics::sequence::graphVector::appendInvalid()                                        
+{ 
+  append( invalidNumber(), invalidNumber() ); 
+}
+
+// ------------------------------------------------------------
+
+void scigraphics::sequence::graphVector::appendPolar( number Phi, number R )                    
+{ 
+  number X = R*std::cos(Phi);
+  number Y = R*std::sin(Phi);
+  append( X, Y ); 
+} 
+
+// ------------------------------------------------------------
+
+scigraphics::sequence::graphUniformVector::graphUniformVector( const color &Color ) : 
+  graphSpecified< dataUniformVector, ordinarGraphViewCollection >( Color ) 
+{
+}
+
+// ------------------------------------------------------------
+
+scigraphics::sequence::graphUniformVector::graphUniformVector( const std::string &Legend, const color &Color ) : 
+  graphSpecified< dataUniformVector, ordinarGraphViewCollection >( Legend, Color ) 
+{
+}
+
+// ------------------------------------------------------------
+
+scigraphics::sequence::graphAreaVector::graphAreaVector( const color &Color ) : 
+          graphSpecified< dataVector, coveredAreaGraphViewCollection >(Color) 
+{
+}
+
+// ------------------------------------------------------------
+
+scigraphics::sequence::graphAreaVector::graphAreaVector( const std::string &Legend, const color &Color ) : 
+          graphSpecified< dataVector, coveredAreaGraphViewCollection >( Legend, Color ) 
+{
+}
+
+// ============================================================
 

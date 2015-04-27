@@ -89,8 +89,8 @@ namespace scigraphics
       void loadSettings( QSettings *Settings, const QString &Prefix = QString() );
 
       void addSettingWidget( qt4settingsGroupBox *Box );
-      void delSettingWidget( unsigned Index );
-      qt4settingsGroupBox* getSettingWidget( unsigned Index );
+      void delSettingWidget( size_t Index );
+      qt4settingsGroupBox* getSettingWidget( size_t Index );
 
       void connectToPlot( qt4plot *Plot );
       void disconnectFromPlot( qt4plot *Plot );

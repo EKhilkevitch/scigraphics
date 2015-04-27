@@ -130,6 +130,15 @@ scigraphics::sequence::ordinarGraphViewCollection::ordinarGraphViewCollection()
 
 // ------------------------------------------------------------
 
+void scigraphics::sequence::ordinarGraphViewCollection::setLineStyle( lineStyle::style LineStyle )
+{
+  lineStyle Style = getViewStyle<graphViewLine>();
+  Style.setStyle( LineStyle );
+  setViewStyle<graphViewLine>( Style );
+}
+
+// ------------------------------------------------------------
+
 void scigraphics::sequence::ordinarGraphViewCollection::setLineWidth( unsigned Width )
 {
   lineStyle Style = getViewStyle<graphViewLine>();

@@ -7,7 +7,8 @@
 #include "scigraphics/graphsequence.h"
 #include "scigraphics/axisset.h"
 
-namespace scigraphics {};
+#include <list>
+
 using namespace scigraphics;
 
 // =========================================================

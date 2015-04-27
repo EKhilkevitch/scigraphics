@@ -25,6 +25,8 @@
 #include "scigraphics/graphsequence.h"
 #include "scigraphics/graphmap.h"
 
+#include <cmath>
+
 // ======================================================
 
 #ifndef M_PI

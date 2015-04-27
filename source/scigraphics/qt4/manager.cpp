@@ -76,6 +76,48 @@ scigraphics::qt4plotManager::~qt4plotManager()
 
 // ----------------------------------------------------------------
 
+size_t scigraphics::qt4plotManager::numberOfPlots() const 
+{ 
+  return Plots.size(); 
+}
+
+// ----------------------------------------------------------------
+      
+scigraphics::qt4plot* scigraphics::qt4plotManager::plot( size_t Index ) 
+{ 
+  return Plots[Index]; 
+}
+
+// ----------------------------------------------------------------
+
+size_t scigraphics::qt4plotManager::numberOfSettings() const 
+{ 
+  return Settings.size(); 
+}
+
+// ----------------------------------------------------------------
+      
+scigraphics::qt4settings* scigraphics::qt4plotManager::settings( size_t Index ) 
+{ 
+  return Settings[Index]; 
+}
+
+// ----------------------------------------------------------------
+      
+const QString& scigraphics::qt4plotManager::name() const 
+{ 
+  return Name; 
+}
+
+// ----------------------------------------------------------------
+
+void scigraphics::qt4plotManager::setName( const QString &N ) 
+{ 
+  Name = N; 
+}
+
+// ----------------------------------------------------------------
+
 void scigraphics::qt4plotManager::createPlots( const QList<unsigned> &PlotsInRows )
 {
   QWidget *Parent = dynamic_cast<QWidget*>( parent() );
@@ -111,6 +153,13 @@ void scigraphics::qt4plotManager::createPlots( const unsigned NumOfPlots, const 
   Q_ASSERT( PlotsInList == NumOfPlots );
 
   createPlots( PlotsInRows );
+}
+
+// ----------------------------------------------------------------
+
+void scigraphics::qt4plotManager::setDefaultName() 
+{ 
+  setName( "qt4plotManager" ); 
 }
 
 // ----------------------------------------------------------------
@@ -210,15 +259,15 @@ scigraphics::qt4settingsComposer* scigraphics::qt4plotManager::createComposer( q
 
 // ----------------------------------------------------------------
 
-void scigraphics::qt4plotManager::setSettingsName( unsigned i, const QString &N )
+void scigraphics::qt4plotManager::setSettingsName( size_t Index, const QString &Name )
 {
-  if ( i >= (unsigned)Settings.size() )
+  if ( Index >= static_cast<size_t>(Settings.size()) )
   {
-    qWarning() << "setSettingsName: index " << i << "out of rage: 0 .." << Settings.size();
+    qWarning() << "setSettingsName: index " << Index << "out of rage: 0 .." << Settings.size();
     return;
   } 
 
-  Settings[i]->setName(N);
+  Settings[Index]->setName(Name);
   updateTabNames();
 }
 

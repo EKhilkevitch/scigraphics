@@ -25,7 +25,6 @@
 #include "scigraphics/container_type_ptr.h"
 #include "scigraphics/graphviewsequence.h"
 
-#include <list>
 #include <stdexcept>
 
 namespace scigraphics 
@@ -87,6 +86,7 @@ namespace scigraphics
       public:
         ordinarGraphViewCollection();
         
+        void setLineStyle( lineStyle::style LineStyle );
         void setLineWidth( unsigned Width );
         void setPointSize( unsigned Size );
     };

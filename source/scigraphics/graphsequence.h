@@ -27,7 +27,7 @@
 #include "scigraphics/graphviewcollection.h"
 #include "scigraphics/datasequence.h"
 
-#include <cmath>
+#include <string>
 
 // ============================================================
 
@@ -49,8 +49,8 @@ namespace scigraphics
         graph& operator=( const graph& );
 
       protected:
-        void setData( data *D );
-        void setViews( graphViewCollection *V );
+        void setData( data *Data );
+        void setViews( graphViewCollection *Views );
  
       public:
         explicit graph( const std::string &Legend = std::string() );
@@ -90,11 +90,8 @@ namespace scigraphics
         const V& getCastedViews() const { return dynamic_cast<const V&>( getViews() ); }
 
       public:
-        explicit graphSpecified( const color &Color ) 
-          { init(Color); }
-        explicit graphSpecified( const std::string &Legend, const color &Color ) : 
-          graph(Legend) 
-          { init(Color); }
+        explicit graphSpecified( const color &Color );
+        explicit graphSpecified( const std::string &Legend, const color &Color );
 
         size_t size() const { return getData().size(); }
         bool empty() const  { return getData().empty(); }
@@ -108,6 +105,7 @@ namespace scigraphics
         
         void setLineWidth( unsigned Width ) { getCastedViews().setLineWidth(Width); }
         void setPointSize( unsigned Size )  { getCastedViews().setPointSize(Size);  }
+        void setLineStyle( lineStyle::style LineStyle ) { getCastedViews().setLineStyle(LineStyle); }
         
         void setVisibleLines( bool Show )        { getCastedViews().template setViewVisible<graphViewLine>(Show); }
         void setVisiblePoints( bool Show )       { getCastedViews().template setViewVisible<graphViewPoints>(Show); }
@@ -120,10 +118,8 @@ namespace scigraphics
     class graphVector : public graphSpecified< dataVector, ordinarGraphViewCollection >
     {
       public:
-        explicit graphVector( const color &Color = color() ) : 
-          graphSpecified< dataVector, ordinarGraphViewCollection >( Color ) {}
-        explicit graphVector( const std::string &Legend, const color &Color ) : 
-          graphSpecified< dataVector, ordinarGraphViewCollection >( Legend, Color ) {}
+        explicit graphVector( const color &Color = color() );
+        explicit graphVector( const std::string &Legend, const color &Color );
 
         dataVector& getDataVector() { return getCastedData(); }
         ordinarGraphViewCollection& getViews() { return getCastedViews(); }
@@ -131,8 +127,8 @@ namespace scigraphics
         void append( number X, number Y )                           { getCastedData().append(X,Y); }
         void append( number X, number Y, number ErrY )              { getCastedData().append(X,Y,ErrY); }
         void append( number X, number Y, number ErrX, number ErrY ) { getCastedData().append(X,Y,ErrX,ErrY); }
-        void appendInvalid()                                        { append( invalidNumber(), invalidNumber() ); }
-        void appendPolar( number Phi, number R )                    { append( R*std::cos(Phi), R*std::sin(Phi) ); } 
+        void appendInvalid();
+        void appendPolar( number Phi, number R );
     };
   
     // ------------------------------------------------------------
@@ -140,10 +136,8 @@ namespace scigraphics
     class graphUniformVector : public graphSpecified< dataUniformVector, ordinarGraphViewCollection >
     {
       public:
-        explicit graphUniformVector( const color &Color = color() ) : 
-          graphSpecified< dataUniformVector, ordinarGraphViewCollection >( Color ) {}
-        explicit graphUniformVector( const std::string &Legend, const color &Color ) : 
-          graphSpecified< dataUniformVector, ordinarGraphViewCollection >( Legend, Color ) {}
+        explicit graphUniformVector( const color &Color = color() );
+        explicit graphUniformVector( const std::string &Legend, const color &Color );
 
         dataUniformVector& getDataVector() { return getCastedData(); }
         const dataUniformVector& getDataVector() const { return getCastedData(); }
@@ -153,8 +147,8 @@ namespace scigraphics
         void setStepX( number Step ) { getDataVector().setStepX( Step ); } 
         number stepX() const { return getDataVector().stepX(); }
         
-        void append( number Y )                           { getCastedData().append(Y); }
-        void append( number Y, number ErrY )              { getCastedData().append(Y,ErrY); }
+        void append( number Y )              { getCastedData().append(Y); }
+        void append( number Y, number ErrY ) { getCastedData().append(Y,ErrY); }
     };
 
     // ------------------------------------------------------------
@@ -162,10 +156,8 @@ namespace scigraphics
     class graphAreaVector : public graphSpecified< dataVector, coveredAreaGraphViewCollection >
     {
       public:
-        explicit graphAreaVector( const color &Color = color() ) : 
-          graphSpecified< dataVector, coveredAreaGraphViewCollection >(Color) {}
-        explicit graphAreaVector( const std::string &Legend, const color &Color ) : 
-          graphSpecified< dataVector, coveredAreaGraphViewCollection >( Legend, Color ) {}
+        explicit graphAreaVector( const color &Color = color() );
+        explicit graphAreaVector( const std::string &Legend, const color &Color );
         
         dataVector& getDataVector() { return getCastedData(); }
         coveredAreaGraphViewCollection& getViewsColveredArea() { return getCastedViews(); }
@@ -186,6 +178,21 @@ namespace scigraphics
       graphViewCollection *Views = createViewCollection();
       Views->setColor( Color );
       setViews( Views );
+    }
+    
+    // ------------------------------------------------------------
+        
+    template < class D, class V > graphSpecified<D,V>::graphSpecified( const color &Color )
+    { 
+      init(Color); 
+    }
+    
+    // ------------------------------------------------------------
+    
+    template < class D, class V > graphSpecified<D,V>::graphSpecified( const std::string &Legend, const color &Color ) : 
+      graph(Legend) 
+    { 
+      init(Color); 
     }
     
     // ============================================================

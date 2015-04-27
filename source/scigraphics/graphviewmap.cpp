@@ -84,7 +84,7 @@ scigraphics::color scigraphics::map::graphViewRectangle::pointColorStrategy::poi
 
 scigraphics::color scigraphics::map::graphViewRectangle::grayscalePointColorStrategy::relativeValueColor( double Value ) const
 {
-  if ( Value < 0 || 1 < Value )
+  if ( Value < 0.0 || 1.0 < Value )
     return invalidValueColor();
   
   int ColorValue = Value * 0xFF;
@@ -95,10 +95,10 @@ scigraphics::color scigraphics::map::graphViewRectangle::grayscalePointColorStra
 
 scigraphics::color scigraphics::map::graphViewRectangle::redYellowBluePointColorStrategy::relativeValueColor( double Value ) const
 {
-  if ( Value < 0 || 1 < Value )
+  if ( Value < 0.0 || 1.0 < Value )
     return invalidValueColor();
 
-  int HsvHue = (1-Value)*240; 
+  int HsvHue = ( 1.0 - Value )*240; 
   int HsvSaturation = 100;
   int HsvValue = 80;
 
@@ -109,16 +109,14 @@ scigraphics::color scigraphics::map::graphViewRectangle::redYellowBluePointColor
 
 scigraphics::color scigraphics::map::graphViewRectangle::yellowRedBluePointColorStrategy::relativeValueColor( double Value ) const
 {
-  
   if ( Value < 0 || 1 < Value )
     return invalidValueColor();
 
-  int HsvHue = 360 + 60 - (1-Value)*180; 
+  int HsvHue = 360 + 60 - ( 1.0 - Value )*180; 
   int HsvSaturation = 100;
   int HsvValue = 80;
 
   return color::fromHSV( HsvHue % 360, HsvSaturation, HsvValue );
-
 }
 
 // ------------------------------------------------------------
@@ -217,8 +215,8 @@ void scigraphics::map::graphViewRectangle::drawRainbowRectangle( painter &Painte
 
   for ( unsigned i = 0; i < NumOfRainbowLines; i++ )
   {
-    double Part0 = (double)i/(NumOfRainbowLines);
-    double Part1 = (double)(i+1)/(NumOfRainbowLines);
+    double Part0 = static_cast<double>(i)/(NumOfRainbowLines);
+    double Part1 = static_cast<double>(i+1)/(NumOfRainbowLines);
     
     wcoord Y0 = Rectangle.up() - Rectangle.height() * Part0;
     wcoord Y1 = Rectangle.up() - Rectangle.height() * Part1;

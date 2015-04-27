@@ -71,6 +71,7 @@ int main( int argc, char *argv[] )
   scigraphics::graphSV *Cos = Plot.createGraphSequenceVector( "Cos+1" );
   for ( double x = 0; x <= 3; x+= 0.1 )
     Cos->append( x, std::cos(x)+1 );
+  Cos->setLineStyle( scigraphics::lineStyle::Dash );
   Plot.bindGraphToAxis( Cos, scigraphics::axisSetCollection::Top, scigraphics::axisSetCollection::Right );
 
   scigraphics::graphAV *Polygons = Plot.createGraphAV("Polygons");
