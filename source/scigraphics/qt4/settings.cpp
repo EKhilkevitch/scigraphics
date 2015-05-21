@@ -140,6 +140,14 @@ scigraphics::qt4settingsGroupBox* scigraphics::qt4settings::getSettingWidget( si
 
 // ----------------------------------------------------------------
 
+size_t scigraphics::qt4settings::numberOfSettingsWidget() const
+{
+  Q_ASSERT( SettingsComposer != NULL );
+  return SettingsComposer->numberOfSettingsWidget();
+}
+
+// ----------------------------------------------------------------
+
 void scigraphics::qt4settings::connectToPlot( qt4plot *Plot )
 {
   if ( Plot == NULL )

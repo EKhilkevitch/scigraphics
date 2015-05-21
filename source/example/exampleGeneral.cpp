@@ -116,6 +116,7 @@ int main( int argc, char *argv[] )
   scigraphics::qt4settings Settings( NULL, "", AxisPositions, new scigraphics::qt4settingsComposerTabs() );
   Settings.addSettingWidget( new scigraphics::qt4settingsSelections() );
   Settings.addSettingWidget( new scigraphics::qt4settingsDecoration() );
+  //Settings.getSettingWidget<scigraphics::qt4settingsGraphType>()->showErrorBarsControl( false );
   //Settings.replaceLayout( new QVBoxLayout() );
   Settings.connectToPlot(&Plot);
   Settings.show();

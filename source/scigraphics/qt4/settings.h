@@ -73,7 +73,7 @@ namespace scigraphics
         qt4settingsComposer *Composer );
 
     public:
-      qt4settings( QWidget *Parent = NULL, const QString &Name = QString() );
+      explicit qt4settings( QWidget *Parent = NULL, const QString &Name = QString() );
       qt4settings( QWidget *Parent, const QList<axisSetCollection::axisPosition> &Positions );
       qt4settings( QWidget *Parent, const QString &Name, const QList<axisSetCollection::axisPosition> &Positions, qt4settingsComposer *Composer = NULL );
       qt4settings( QWidget *Parent, qt4settingsComposer *Composer );
@@ -91,6 +91,8 @@ namespace scigraphics
       void addSettingWidget( qt4settingsGroupBox *Box );
       void delSettingWidget( size_t Index );
       qt4settingsGroupBox* getSettingWidget( size_t Index );
+      template <class widgetType> widgetType* getSettingWidget();
+      size_t numberOfSettingsWidget() const;
 
       void connectToPlot( qt4plot *Plot );
       void disconnectFromPlot( qt4plot *Plot );
@@ -108,6 +110,19 @@ namespace scigraphics
       void settingsChanged( scigraphics::qt4settings* );
   };
 
+  // ================================================================
+  
+  template <class widgetType> widgetType* qt4settings::getSettingWidget()
+  {
+    for ( size_t i = 0; i < numberOfSettingsWidget(); i++ )
+    {
+      widgetType* Widget = dynamic_cast<widgetType*>( getSettingWidget(i) );
+      if ( Widget != NULL )
+        return Widget;
+    }
+    return NULL;
+  }
+  
   // ================================================================
 
 }

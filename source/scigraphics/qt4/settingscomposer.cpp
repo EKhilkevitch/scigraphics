@@ -29,6 +29,13 @@
 #include <QTabWidget>
 
 // ================================================================
+      
+scigraphics::qt4settingsComposer::qt4settingsComposer( QWidget *Parent ) : 
+  QWidget(Parent) 
+{
+}
+
+// ----------------------------------------------
 
 void scigraphics::qt4settingsComposer::addToCollection( qt4settingsGroupBox *Widget )
 {
@@ -48,7 +55,7 @@ void scigraphics::qt4settingsComposer::delFromCollection( qt4settingsGroupBox *W
 
 // ----------------------------------------------
 
-scigraphics::qt4settingsGroupBox* scigraphics::qt4settingsComposer::getFromCollection( unsigned Index )
+scigraphics::qt4settingsGroupBox* scigraphics::qt4settingsComposer::getFromCollection( size_t Index )
 {
   Q_ASSERT( (int)Index < WidgetCollection.size() );
   qt4settingsGroupBox *Widget = WidgetCollection[Index];
@@ -74,10 +81,24 @@ void scigraphics::qt4settingsComposer::delWidget( qt4settingsGroupBox *Widget )
 
 // ----------------------------------------------
 
-void scigraphics::qt4settingsComposer::delWidget( unsigned Index )
+void scigraphics::qt4settingsComposer::delWidget( size_t Index )
 {
   qt4settingsGroupBox *Widget = getSettingWidget(Index);
   delWidget( Widget );
+}
+
+// ----------------------------------------------
+      
+scigraphics::qt4settingsGroupBox* scigraphics::qt4settingsComposer::getSettingWidget( size_t Index ) 
+{ 
+  return getFromCollection(Index); 
+}
+
+// ----------------------------------------------
+
+size_t scigraphics::qt4settingsComposer::numberOfSettingsWidget() const 
+{ 
+  return WidgetCollection.size(); 
 }
 
 // ----------------------------------------------

@@ -48,25 +48,22 @@ namespace scigraphics
     protected:
       void addToCollection( qt4settingsGroupBox *Widget );
       void delFromCollection( qt4settingsGroupBox *Widget );
-      qt4settingsGroupBox* getFromCollection( unsigned Index );
-      unsigned sizeOfCollection() const { return WidgetCollection.size(); }
+      qt4settingsGroupBox* getFromCollection( size_t Index );
 
     protected:
       virtual void addToComposer( qt4settingsGroupBox *Widget ) = 0;
       virtual void delFromComposer( qt4settingsGroupBox *Widget ) = 0;
 
     public:
-      qt4settingsComposer( QWidget *Parent ) : QWidget(Parent) {}
+      explicit qt4settingsComposer( QWidget *Parent );
       void addWidget( qt4settingsGroupBox *Widget );
       void delWidget( qt4settingsGroupBox *Widget );
-      void delWidget( unsigned Index );
-      qt4settingsGroupBox* getSettingWidget( unsigned Index ) { return getFromCollection(Index); }
-      unsigned numberOfSettingsWidget() const { return sizeOfCollection(); }
+      void delWidget( size_t Index );
+      qt4settingsGroupBox* getSettingWidget( size_t Index );
+      size_t numberOfSettingsWidget() const;
       void clearWidgets();
 
       virtual qt4settingsComposer* createNewComposer( QWidget *Parent ) const = 0;
-
-      virtual ~qt4settingsComposer() {}
   };
 
   // ----------------------------------------------------------------
