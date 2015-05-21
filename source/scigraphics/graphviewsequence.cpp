@@ -211,7 +211,7 @@ void scigraphics::sequence::graphViewGeneralLine::drawUnorderedByX( painter &Pai
   Painter.setLineStyle( getStyle() );
   
   std::vector< wpoint > Polyline;
-  Polyline.reserve( (End - Begin)*2 );
+  Polyline.reserve( static_cast<size_t>(End - Begin)*2 );
 
   pointsWithSameXCoord PointsWithSameXCoord;
 
