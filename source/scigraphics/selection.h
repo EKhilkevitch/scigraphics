@@ -25,8 +25,6 @@
 #include "scigraphics/plotelement.h"
 #include "scigraphics/geometry.h"
 
-#include <limits>
-
 namespace scigraphics 
 {
 
@@ -51,7 +49,7 @@ namespace scigraphics
       frectangle getRectangleF( const pairScales& Scales ) const; 
 
     public:
-      selection( const selectionStyle &S = selectionStyle() ) : SelectionStyle(S) {}
+      explicit selection( const selectionStyle &SelectionStyle = selectionStyle() );
       virtual ~selection() {}
 
       void setSelectionStyle( const selectionStyle &S ) { SelectionStyle = S; }
@@ -70,12 +68,10 @@ namespace scigraphics
       interval<number> Interval;
 
     protected:
-      bool inInterval( number N ) const { return Interval.inInterval(N); }
+      bool inInterval( number N ) const;
 
     public:
-      selectionStrip( const selectionStyle &S = selectionStyle() ) : 
-        selection(S),
-        Interval( invalidNumber(), invalidNumber() ) {}
+      explicit selectionStrip( const selectionStyle &SelectionStyle = selectionStyle() );
 
       virtual void setIntervalPoints( const npoint &A, const npoint &B ) = 0;
       void setIntervalPointsF( const fpoint &A, const fpoint &B, const pairScales &Scales );
@@ -83,8 +79,8 @@ namespace scigraphics
       void shiftPointsF( fpoint From, fpoint To, const pairScales &Scales );
       void shiftPoints( npoint From, npoint To );
 
-      void setInterval( number A, number B ) { setInterval( interval<number>(A,B) ); }
-      void setInterval( interval<number> I ) { Interval = I; }
+      void setInterval( number Min, number Max );
+      void setInterval( interval<number> Interval );
       void shiftInterval( number Delta );
 
       virtual fcoord minF( const pairScales &Scales ) const = 0; 
@@ -100,13 +96,13 @@ namespace scigraphics
   class selectionHorizontal : public selectionStrip
   {
     protected:
-      npoint firstCorner() const  { return npoint( - std::numeric_limits<number>::max(), min() ); }
-      npoint secondCorner() const { return npoint( + std::numeric_limits<number>::max(), max() ); }
+      npoint firstCorner() const;
+      npoint secondCorner() const;
 
     public:
-      selectionHorizontal( const selectionStyle &S = selectionStyle() ) : selectionStrip(S) {}
+      explicit selectionHorizontal( const selectionStyle &SelectionStyle = selectionStyle() );
 
-      void setIntervalPoints( const npoint &A, const npoint &B ) { setInterval(A.y(),B.y()); }
+      void setIntervalPoints( const npoint &PointA, const npoint &PointB );
       void shift( number , number DeltaY ) { shiftInterval( DeltaY ); }
       
       number minF( const pairScales &Scales ) const;
@@ -118,12 +114,13 @@ namespace scigraphics
   class selectionVertical : public selectionStrip
   {
     protected:
-      fpoint firstCorner() const  { return fpoint( min(), - std::numeric_limits<number>::max() ); }
-      fpoint secondCorner() const { return fpoint( max(), + std::numeric_limits<number>::max() ); }
+      fpoint firstCorner() const;
+      fpoint secondCorner() const;
 
     public:
-      selectionVertical( const selectionStyle &S = selectionStyle() ) : selectionStrip(S) {}
-      void setIntervalPoints( const npoint &A, const npoint &B ) { setInterval(A.x(),B.x()); }
+      explicit selectionVertical( const selectionStyle &SelectionStyle = selectionStyle() );
+
+      void setIntervalPoints( const npoint &PointA, const npoint &PointB );
       void shift( number DeltaX, number ) { shiftInterval( DeltaX ); }
       
       number minF( const pairScales &Scales ) const;

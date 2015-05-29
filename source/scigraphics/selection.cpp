@@ -27,7 +27,16 @@
 #include "scigraphics/brushstyle.h"
 #include "scigraphics/linestyle.h"
 
+#include <limits>
+
 // ============================================================
+      
+scigraphics::selection::selection( const selectionStyle &S ) : 
+  SelectionStyle(S) 
+{
+}
+
+// ------------------------------------------------------------
 
 scigraphics::fpoint scigraphics::selection::firstCornerF( const pairScales& Scales ) const
 {
@@ -69,6 +78,21 @@ bool scigraphics::selection::pointInSelection( const fpoint &Point, const pairSc
 
 // ============================================================
       
+scigraphics::selectionStrip::selectionStrip( const selectionStyle &S ) :
+  selection(S),
+  Interval( invalidNumber(), invalidNumber() ) 
+{
+}
+
+// ------------------------------------------------------------
+      
+bool scigraphics::selectionStrip::inInterval( number Number ) const 
+{ 
+  return Interval.inInterval(Number); 
+}
+
+// ------------------------------------------------------------
+      
 void scigraphics::selectionStrip::setIntervalPointsF( const fpoint &A, const fpoint &B, const pairScales &Scales )
 {
   npoint NA = Scales.fpoint2npoint( A );
@@ -93,6 +117,20 @@ void scigraphics::selectionStrip::shiftPoints( npoint From, npoint To )
   number DeltaY = To.y() - From.y();
   shift( DeltaX, DeltaY );
 }
+      
+// ------------------------------------------------------------
+
+void scigraphics::selectionStrip::setInterval( number A, number B ) 
+{ 
+  setInterval( interval<number>(A,B) ); 
+}
+
+// ------------------------------------------------------------
+
+void scigraphics::selectionStrip::setInterval( interval<number> I ) 
+{ 
+  Interval = I; 
+}
 
 // ------------------------------------------------------------
       
@@ -102,6 +140,34 @@ void scigraphics::selectionStrip::shiftInterval( number Delta )
 }
 
 // ============================================================
+      
+scigraphics::selectionHorizontal::selectionHorizontal( const selectionStyle &S ) : 
+  selectionStrip(S) 
+{
+}
+
+// ------------------------------------------------------------
+
+scigraphics::npoint scigraphics::selectionHorizontal::firstCorner() const  
+{ 
+  return npoint( - std::numeric_limits<number>::max(), min() ); 
+}
+
+// ------------------------------------------------------------
+
+scigraphics::npoint scigraphics::selectionHorizontal::secondCorner() const 
+{ 
+  return npoint( + std::numeric_limits<number>::max(), max() ); 
+}
+
+// ------------------------------------------------------------
+      
+void scigraphics::selectionHorizontal::setIntervalPoints( const npoint &PointA, const npoint &PointB ) 
+{ 
+  setInterval( PointA.y(), PointB.y() ); 
+}
+
+// ------------------------------------------------------------
 
 scigraphics::number scigraphics::selectionHorizontal::minF( const pairScales &Scales ) const 
 { 
@@ -116,6 +182,34 @@ scigraphics::number scigraphics::selectionHorizontal::maxF( const pairScales &Sc
 }
 
 // ============================================================
+      
+scigraphics::selectionVertical::selectionVertical( const selectionStyle &S ) : 
+  selectionStrip(S) 
+{
+}
+
+// ------------------------------------------------------------
+      
+scigraphics::fpoint scigraphics::selectionVertical::firstCorner() const  
+{ 
+  return fpoint( min(), - std::numeric_limits<number>::max() ); 
+}
+
+// ------------------------------------------------------------
+
+scigraphics::fpoint scigraphics::selectionVertical::secondCorner() const 
+{ 
+  return fpoint( max(), + std::numeric_limits<number>::max() ); 
+}
+
+// ------------------------------------------------------------
+      
+void scigraphics::selectionVertical::setIntervalPoints( const npoint &PointA, const npoint &PointB ) 
+{ 
+  setInterval( PointA.x(), PointB.x() ); 
+}
+
+// ------------------------------------------------------------
 
 scigraphics::number scigraphics::selectionVertical::minF( const pairScales &Scales ) const 
 { 

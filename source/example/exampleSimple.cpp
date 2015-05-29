@@ -52,6 +52,12 @@ int main( int argc, char *argv[] )
     Sin->append( x, y );
   }
 
+#if 1
+  Plot.setAxisTitle( scigraphics::axisSetCollection::Bottom, "This is axis X bottom" );
+  Plot.setAxisTitle( scigraphics::axisSetCollection::Left, "This is axis Y left" );
+  Plot.setAxisTitle( scigraphics::axisSetCollection::Right, "This is axis Y right" );
+#endif
+
   Plot.move( 200, 200 );
   Plot.resize( 700, 800 );
   Plot.show();

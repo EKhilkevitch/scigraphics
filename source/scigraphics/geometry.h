@@ -37,102 +37,91 @@ namespace scigraphics
 
 // ============================================================
 
-  template <class N> class point
+  template <class T> class point
   {
     private:
-      N X, Y;
+      T X, Y;
+
     public:
-      point( N x, N y ) : 
-        X(x), 
-        Y(y) {}
-      template <class pnt> point( const pnt &P ) : 
-        X(P.x()), 
-        Y(P.y()) {}
-      N x() const { return X; }
-      N y() const { return Y; }
+      point( T x, T y );
+      template <class pnt> point( const pnt &Point );
 
-      point<N>& moveX( N Delta ) { X += Delta; return *this; }
-      point<N>& moveY( N Delta ) { Y += Delta; return *this; }
-      point<N>& moveXY( N DX, N DY ) { moveX(DX); moveY(DY); return *this; }
+      T x() const { return X; }
+      T y() const { return Y; }
 
-      static point<N> zero() { return point<N>(0,0); }
+      point<T>& moveX( T Delta );
+      point<T>& moveY( T Delta );
+      point<T>& moveXY( T DeltaX, T DeltaY );
+
+      static point<T> zero();
   };
 
-  template <class T> bool operator==( const point<T> &P1, const point<T> &P2 ) { return P1.x() == P2.x() && P1.y() == P2.y(); }
-  template <class T> bool operator!=( const point<T> &P1, const point<T> &P2 ) { return !( P1 == P2 ); }
+  template <class T> bool operator==( const point<T> &P1, const point<T> &P2 );
+  template <class T> bool operator!=( const point<T> &P1, const point<T> &P2 );
   template <class T> std::ostream& operator<<( std::ostream &Stream, point<T> Point );
 
   // ============================================================
 
-  template <class N> class rectangle
+  template <class T> class rectangle
   {
     private:
-      point<N> CornerLD, CornerRU;
+      point<T> CornerLD, CornerRU;
+
     protected:
-      static N abs( N Val ) { return Val >= 0 ? Val : -Val; }
+      static T abs( T Number );
 
     public:
-      rectangle() : 
-        CornerLD( point<N>::zero() ), 
-        CornerRU( point<N>::zero() ) {}
-      rectangle( const point<N>& Pt1, const point<N>& Pt2 ) :
-         CornerLD( std::min( Pt1.x(), Pt2.x() ), std::min( Pt1.y(), Pt2.y() ) ), 
-         CornerRU( std::max( Pt1.x(), Pt2.x() ), std::max( Pt1.y(), Pt2.y() ) ) {}
+      rectangle();
+      rectangle( const point<T>& Pt1, const point<T>& Pt2 );
       
-      point<N>  leftUp()    const { return point<N>( left(), up() ); }
-      point<N>  rightDown() const { return point<N>( right(), down() ); }
-      point<N>  leftDown()  const { return point<N>( left(), down() ); }
-      point<N>  rightUp()   const { return point<N>( right(), up() ); }
-      point<N>  center()    const { return point<N>( (left()+right())/2, (up()+down())/2 ); }
+      point<T>  leftUp() const;
+      point<T>  rightDown() const;
+      point<T>  leftDown() const;
+      point<T>  rightUp() const;
+      point<T>  center() const;
 
-      N left() const   { return CornerLD.x(); }
-      N right() const  { return CornerRU.x(); }
-      N up() const     { return CornerRU.y(); }
-      N down() const   { return CornerLD.y(); }
-      N width() const  { return abs( right() - left() ); }
-      N height() const { return abs( down() - up() ); }
+      T left() const   { return CornerLD.x(); }
+      T right() const  { return CornerRU.x(); }
+      T up() const     { return CornerRU.y(); }
+      T down() const   { return CornerLD.y(); }
+      T width() const;
+      T height() const;
       
-      template <class T> bool contain( const point<T> &Point ) const;
+      template <class pnt> bool contain( const point<pnt> &Point ) const;
       
-      void moveX( N Delta ) { CornerLD.moveX(Delta); CornerRU.moveX(Delta); }
-      void moveY( N Delta ) { CornerLD.moveY(Delta); CornerRU.moveY(Delta); }
-      void moveXY( N DeltaX, N DeltaY ) { moveX(DeltaX); moveY(DeltaY); }
+      void moveX( T Delta );
+      void moveY( T Delta );
+      void moveXY( T DeltaX, T DeltaY );
   };
 
-  template <class T> bool operator==( const rectangle<T> &R1, const rectangle<T> &R2 ) { return R1.leftUp()==R2.leftUp() && R1.rightDown() == R2.rightDown(); }
+  template <class T> bool operator==( const rectangle<T> &R1, const rectangle<T> &R2 );
   template <class T> std::ostream& operator<<( std::ostream &Stream, const rectangle<T> &Rectangle );
 
   // ============================================================
      
-  template <class N> class indents
+  template <class T> class indents
   {
     private:
-      N Left, Right;
-      N Up, Down; 
+      T Left, Right;
+      T Up, Down; 
+
     public:
-      indents() : Left(0), 
-                  Right(0),
-                  Up(0),
-                  Down(0) {}
-      indents( N L, N R, N U, N D ) :
-                 Left(L), 
-                 Right(R), 
-                 Up(U), 
-                 Down(D) {}
+      indents();
+      indents( T Left, T Right, T Up, T Down );
 
-      N left() const { return Left; }
-      void setLeft( N Value ) { Left = Value; }
+      T left() const { return Left; }
+      void setLeft( T Value ) { Left = Value; }
 
-      N right() const { return Right; }
-      void setRight( N Value ) { Right = Value; }
+      T right() const { return Right; }
+      void setRight( T Value ) { Right = Value; }
 
-      N up() const { return Up; }
-      void setUp( N Value ) { Up = Value; }
+      T up() const { return Up; }
+      void setUp( T Value ) { Up = Value; }
 
-      N down() const { return Down; }
-      void setDown( N Value ) { Down = Value; }
+      T down() const { return Down; }
+      void setDown( T Value ) { Down = Value; }
 
-      rectangle<N> apply( const rectangle<N> &R ) const;
+      rectangle<T> apply( const rectangle<T> &Rectangle ) const;
   };
 
   // ============================================================
@@ -148,15 +137,172 @@ namespace scigraphics
 
   // ============================================================
 
+  template <class T> point<T>::point( T x, T y ) : 
+        X(x), 
+        Y(y) 
+  {
+  }
+  
+  // ------------------------------------------------------------
+      
+  template <class T> template <class pnt> point<T>::point( const pnt &Pnt ) : 
+        X( Pnt.x() ), 
+        Y( Pnt.y() ) 
+  {
+  }
+  
+  // ------------------------------------------------------------
+      
+  template <class T> point<T>& point<T>::moveX( T Delta ) 
+  { 
+    X += Delta; 
+    return *this; 
+  }
+  
+  // ------------------------------------------------------------
+  
+  template <class T> point<T>& point<T>::moveY( T Delta ) 
+  { 
+    Y += Delta; 
+    return *this; 
+  }
+  
+  // ------------------------------------------------------------
+  
+  template <class T> point<T>& point<T>::moveXY( T DX, T DY ) 
+  { 
+    moveX(DX); 
+    moveY(DY); 
+    return *this; 
+  }
+  
+  // ------------------------------------------------------------
+
+  template <class T> point<T> point<T>::zero() 
+  { 
+    return point<T>( 0, 0 ); 
+  }
+  // ------------------------------------------------------------
+  
+  template <class T> bool operator==( const point<T> &Point1, const point<T> &Point2 ) 
+  { 
+    return Point1.x() == Point2.x() && Point1.y() == Point2.y(); 
+  }
+  
+  // ------------------------------------------------------------
+  
+  template <class T> bool operator!=( const point<T> &Point1, const point<T> &Point2 ) 
+  { 
+    return !( Point1 == Point2 ); 
+  }
+  
+  // ------------------------------------------------------------
+  
   template <class T> std::ostream& operator<<( std::ostream &Stream, point<T> Point ) 
   { 
     Stream << "( " << Point.x() << " : " << Point.y() << " )"; 
     return Stream; 
   }
+
+  // ============================================================
+  
+  template <class T> T rectangle<T>::abs( T Number )
+  { 
+    return Number >= static_cast<T>(0) ? +Number : -Number; 
+  }
+  
+  // ------------------------------------------------------------
+  
+  template <class T> rectangle<T>::rectangle() : 
+        CornerLD( point<T>::zero() ), 
+        CornerRU( point<T>::zero() ) 
+  {
+  }
+
+  // ------------------------------------------------------------
+
+  template <class T> rectangle<T>::rectangle( const point<T>& Point1, const point<T>& Point2 ) :
+         CornerLD( std::min( Point1.x(), Point2.x() ), std::min( Point1.y(), Point2.y() ) ), 
+         CornerRU( std::max( Point1.x(), Point2.x() ), std::max( Point1.y(), Point2.y() ) ) 
+  {
+  }
   
   // ------------------------------------------------------------
       
-  template <class N> template <class T> bool rectangle<N>::contain( const point<T> &Point ) const 
+  template <class T> point<T>  rectangle<T>::leftUp()    const 
+  { 
+    return point<T>( left(), up() ); 
+  }
+
+  // ------------------------------------------------------------
+  
+  template <class T> point<T>  rectangle<T>::rightDown() const 
+  { 
+    return point<T>( right(), down() ); 
+  }
+  
+  // ------------------------------------------------------------
+  
+  template <class T> point<T>  rectangle<T>::leftDown()  const 
+  { 
+    return point<T>( left(), down() ); 
+  }
+
+  // ------------------------------------------------------------
+  
+  template <class T> point<T>  rectangle<T>::rightUp()   const 
+  { 
+    return point<T>( right(), up() ); 
+  }
+
+  // ------------------------------------------------------------
+  
+  template <class T> point<T>  rectangle<T>::center()    const 
+  { 
+    return point<T>( (left()+right())/2, (up()+down())/2 ); 
+  }
+
+  // ------------------------------------------------------------
+  
+  template <class T> T rectangle<T>::width() const  
+  { 
+    return abs( right() - left() ); 
+  }
+  
+  // ------------------------------------------------------------
+  
+  template <class T> T rectangle<T>::height() const 
+  { 
+    return abs( down() - up() ); 
+  }
+  
+  // ------------------------------------------------------------
+      
+  template <class T> void rectangle<T>::moveX( T Delta ) 
+  { 
+    CornerLD.moveX(Delta); 
+    CornerRU.moveX(Delta); 
+  }
+  
+  // ------------------------------------------------------------
+  
+  template <class T> void rectangle<T>::moveY( T Delta ) 
+  { 
+    CornerLD.moveY(Delta); 
+    CornerRU.moveY(Delta); 
+  }
+  
+  // ------------------------------------------------------------
+  
+  template <class T> void rectangle<T>::moveXY( T DeltaX, T DeltaY ) 
+  { 
+    moveX(DeltaX); 
+    moveY(DeltaY); 
+  }
+
+  // ------------------------------------------------------------
+      
+  template <class T> template <class pnt> bool rectangle<T>::contain( const point<pnt> &Point ) const 
   { 
     return left() <= Point.x()  && 
            Point.x() <= right() && 
@@ -165,6 +311,14 @@ namespace scigraphics
   }
   
   // ------------------------------------------------------------
+ 
+  template <class T> bool operator==( const rectangle<T> &R1, const rectangle<T> &R2 ) 
+  { 
+    return R1.leftUp()==R2.leftUp() && 
+           R1.rightDown() == R2.rightDown(); 
+  }
+
+  // ------------------------------------------------------------
   
   template <class T> std::ostream& operator<<( std::ostream &Stream, const rectangle<T> &Rectangle ) 
   {
@@ -172,22 +326,44 @@ namespace scigraphics
     return Stream;
   }
   
+  // ============================================================
+
+  template <class T> indents<T>::indents() : 
+    Left(0), 
+    Right(0),
+    Up(0),
+    Down(0) 
+  {
+  }
+
+  // ------------------------------------------------------------
+      
+  template <class T> indents<T>::indents( T L, T R, T U, T D ) :
+    Left(L), 
+    Right(R), 
+    Up(U), 
+    Down(D) 
+  {
+  }
+
   // ------------------------------------------------------------
 
-  template <class N> rectangle<N> indents<N>::apply( const rectangle<N> &R ) const 
+
+  template <class T> rectangle<T> indents<T>::apply( const rectangle<T> &R ) const 
   {
-    N NewLeft  = R.left() + Left;
-    N NewRight = R.right() - Right;
-    N NewUp    = R.up() - Up;
-    N NewDown  = R.down() + Down;
+    T NewLeft  = R.left() + Left;
+    T NewRight = R.right() - Right;
+    T NewUp    = R.up() - Up;
+    T NewDown  = R.down() + Down;
 
     if ( NewLeft >= NewRight )
       NewLeft = NewRight = ( NewLeft+NewRight)/2;
+
     if ( NewDown >= NewUp )
       NewUp = NewDown = ( NewUp + NewDown )/2;
 
-    return rectangle<N>( point<N>( NewLeft, NewUp ),
-                         point<N>( NewRight, NewDown ) );
+    return rectangle<T>( point<T>( NewLeft, NewUp ),
+                         point<T>( NewRight, NewDown ) );
   }
 
   // ============================================================
