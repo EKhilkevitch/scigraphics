@@ -29,8 +29,8 @@
 #include "scigraphics/painter.h"
 #include "scigraphics/scale.h"
 
-#include <sstream>
 #include <cstdio>
+#include <algorithm>
 
 // ============================================================
 
@@ -41,6 +41,20 @@ const scigraphics::wrectangle scigraphics::cursorPositionViewer::InitCursorRecta
 scigraphics::cursorPositionViewer::cursorPositionViewer() : 
   floatRectangle(InitCursorRectangle)
 {
+}
+
+// ------------------------------------------------------------
+
+unsigned scigraphics::cursorPositionViewer::textVerticalIndent() const 
+{ 
+  return std::max( getTextStyle().getFontSize()/3, 2U ); 
+}
+
+// ------------------------------------------------------------
+
+unsigned scigraphics::cursorPositionViewer::textHorizontalIndent() const 
+{ 
+  return 5; 
 }
 
 // ------------------------------------------------------------

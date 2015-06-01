@@ -28,13 +28,45 @@
 #include "scigraphics/painter.h"
 
 #include <iostream>
+#include <algorithm>
 #include <cassert>
 
 // ============================================================
 
 const scigraphics::wrectangle scigraphics::legend::InitLegendRectangle( wpoint(0,0), wpoint(0,0) );
 
+// ============================================================
+
+scigraphics::legend::legendSize::legendSize() :
+  Width(0), 
+  Height(0) 
+{
+}
+
 // ------------------------------------------------------------
+          
+scigraphics::legend::legendSize::legendSize( wcoord W, wcoord H ) : 
+  Width(W), 
+  Height(H) 
+{
+}
+
+// ------------------------------------------------------------
+          
+void scigraphics::legend::legendSize::updateWidth( wcoord W )  
+{ 
+  Width = std::max( W, Width ); 
+}
+
+// ------------------------------------------------------------
+          
+void scigraphics::legend::legendSize::updateHeight( wcoord H ) 
+{ 
+  Height += H; 
+}
+
+// ============================================================
+
 
 bool scigraphics::legend::shouldDrawGraphLegend( const graph &Graph ) 
 { 
@@ -137,6 +169,20 @@ void scigraphics::legend::setRectangleFromLegendSize( painter &Painter, const le
 scigraphics::wcoord scigraphics::legend::interTextVerticalDistance( const textStyle &Style ) 
 { 
   return std::max<wcoord>( Style.getFontSize()/3, 2 ); 
+}
+      
+// ------------------------------------------------------------
+
+scigraphics::wcoord scigraphics::legend::textHorizontalIndent() 
+{ 
+  return 5; 
+}
+
+// ------------------------------------------------------------
+
+unsigned scigraphics::legend::minFontSize() 
+{ 
+  return 5; 
 }
 
 // ------------------------------------------------------------

@@ -47,7 +47,7 @@ namespace scigraphics
       int Transperancy;
 
     public:
-      brushStyle( color C = color::Black, style S = Solid ) : Style(S), Color(C) {}
+      explicit brushStyle( color Color = color::Black, style Style = Solid );
       
       style getStyle() const { return Style; }
       void setStyle( style S ) { Style = S; }

@@ -48,10 +48,10 @@ namespace scigraphics
       bool vectorInMarkLimits( const std::vector<number> &Marks ) const;
 
     public:
-      marker() : NumberOfMarks(4,9) {}
-      virtual ~marker() {}
+      marker();
+      virtual ~marker();
 
-      void setNumberOfMarks( int Min, int Max ) { NumberOfMarks.setMinMax(Min,Max); }
+      void setNumberOfMarks( int Min, int Max );
       interval<int> numberOfMarks() const { return NumberOfMarks; }
 
       virtual std::vector<number> marks( const interval<number> Interval ) const = 0;

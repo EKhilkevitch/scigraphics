@@ -48,8 +48,8 @@ namespace scigraphics
         bool Visible;
 
       public:
-        graphView() : Visible(true) {}
-        virtual ~graphView() {}
+        graphView();
+        virtual ~graphView();
 
         void setVisible( bool V ) { Visible = V; }
         bool isVisible() const { return Visible; }
@@ -57,8 +57,8 @@ namespace scigraphics
         virtual void draw( painter &Painter, const pairScales& Scales, const data &Data, const scale &ScaleZ ) const = 0;
         virtual void drawLegendExample( painter &Painter, const wrectangle &Rectangle, const scale &ScaleZ ) const = 0;
         
-        virtual wcoord legendExampleWidth() const  { return 80; }
-        virtual wcoord legendExampleHeight() const { return 200; }
+        virtual wcoord legendExampleWidth() const;
+        virtual wcoord legendExampleHeight() const;
     };
 
     // ============================================================
@@ -111,7 +111,7 @@ namespace scigraphics
         virtual void drawRainbowRectangleBorder( painter &Painter, const wrectangle &Rectangle ) const;
         virtual void drawRainbowRectangle( painter &Painter, const wrectangle &Rectangle ) const;
         virtual void drawRainbowMarkers( painter &Painter, const wrectangle &Rectangle, const scale &ScaleZ ) const;
-        wcoord rainbowRectangleWidth() const { return legendExampleWidth()/3; }
+        wcoord rainbowRectangleWidth() const;
 
       public:
         graphViewRectangle();

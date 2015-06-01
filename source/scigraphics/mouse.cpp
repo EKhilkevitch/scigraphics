@@ -34,6 +34,20 @@
 #include <cassert>
 
 // ============================================================
+          
+scigraphics::mouse::allowing::allowing( unsigned A ) : 
+  AllowedOperations(A) 
+{
+}
+
+// ============================================================
+          
+scigraphics::mouse::mouseHandler::mouseHandler( plot &P ) : 
+  Plot(P) 
+{
+}
+
+// ------------------------------------------------------------
 
 scigraphics::fpoint scigraphics::mouse::mouseHandler::wpoint2fpoint( wpoint Point ) const
 {
@@ -100,6 +114,20 @@ scigraphics::mouse::mouseActionHandler::mouseActionHandler( plot &P, wpoint Poin
 }
 
 // ============================================================
+
+scigraphics::mouse::noneAction::noneAction( plot &Plot, wpoint Point ) : 
+  mouseActionHandler(Plot,Point) 
+{
+}
+
+// ============================================================
+
+scigraphics::mouse::moveAction::moveAction( plot &Plot, wpoint Point ) : 
+  mouseActionHandler(Plot,Point) 
+{
+}
+
+// ------------------------------------------------------------
 
 void scigraphics::mouse::moveAction::moved( wpoint Point )
 {
@@ -178,6 +206,13 @@ void scigraphics::mouse::zoomAction::applyZooms( wpoint Point )
 }
 
 // ============================================================
+          
+scigraphics::mouse::resetAction::resetAction( plot &Plot, wpoint Point ) : 
+  mouseActionHandler(Plot,Point) 
+{
+}
+
+// ------------------------------------------------------------
 
 void scigraphics::mouse::resetAction::reset()
 {
@@ -261,6 +296,14 @@ void scigraphics::mouse::selectAction::released( wpoint )
 }
 
 // ============================================================
+          
+scigraphics::mouse::selectHorizontalAction::selectHorizontalAction( plot &Plot, wpoint Point ) : 
+  selectAction(Plot,Point) 
+{ 
+  initSelection(); 
+} 
+
+// ------------------------------------------------------------
 
 scigraphics::selectionStrip* scigraphics::mouse::selectHorizontalAction::createSelection()
 {
@@ -268,6 +311,14 @@ scigraphics::selectionStrip* scigraphics::mouse::selectHorizontalAction::createS
 }
 
 // ============================================================
+          
+scigraphics::mouse::selectVerticalAction::selectVerticalAction( plot &Plot, wpoint Point ) : 
+  selectAction(Plot,Point) 
+{ 
+  initSelection(); 
+} 
+
+// ------------------------------------------------------------
 
 scigraphics::selectionStrip* scigraphics::mouse::selectVerticalAction::createSelection()
 {
@@ -276,8 +327,8 @@ scigraphics::selectionStrip* scigraphics::mouse::selectVerticalAction::createSel
 
 // ============================================================
 
-scigraphics::mouse::moveSelectionAction::moveSelectionAction( plot &P, wpoint Point )
-  : mouseActionHandler( P, Point ),
+scigraphics::mouse::moveSelectionAction::moveSelectionAction( plot &Plot, wpoint Point ) : 
+  mouseActionHandler( Plot, Point ),
   Selection( getSelection(Point) )
 {
 }
@@ -308,6 +359,13 @@ void scigraphics::mouse::moveSelectionAction::changeSelectionInterval( wpoint Po
 }
 
 // ============================================================
+          
+scigraphics::mouse::resetSelectionAction::resetSelectionAction( plot &Plot, wpoint Point ) : 
+  mouseActionHandler(Plot,Point) 
+{
+}
+
+// ------------------------------------------------------------
 
 void scigraphics::mouse::resetSelectionAction::released( wpoint )
 {
@@ -315,6 +373,34 @@ void scigraphics::mouse::resetSelectionAction::released( wpoint )
 }
 
 // ============================================================
+          
+double scigraphics::mouse::mouseWheelHandler::deltaDumpFactor() const 
+{ 
+  return 0.25; 
+}
+
+// ------------------------------------------------------------
+
+scigraphics::mouse::mouseWheelHandler::mouseWheelHandler( plot &Plot ) : 
+  mouseHandler(Plot) 
+{
+}
+
+// ============================================================
+
+scigraphics::mouse::mouseNoneWheel::mouseNoneWheel( plot &Plot ) : 
+  mouseWheelHandler(Plot) 
+{
+}
+
+// ============================================================
+          
+scigraphics::mouse::mouseHorizontalWheel::mouseHorizontalWheel( plot &Plot ) : 
+  mouseWheelHandler(Plot) 
+{
+}
+
+// ------------------------------------------------------------
 
 void scigraphics::mouse::mouseHorizontalWheel::wheel( wpoint, wheeldelta Delta )
 {
@@ -322,6 +408,13 @@ void scigraphics::mouse::mouseHorizontalWheel::wheel( wpoint, wheeldelta Delta )
 }
 
 // ============================================================
+          
+scigraphics::mouse::mouseVerticalWheel::mouseVerticalWheel( plot &Plot ) : 
+  mouseWheelHandler(Plot) 
+{
+}
+
+// ------------------------------------------------------------
 
 void scigraphics::mouse::mouseVerticalWheel::wheel( wpoint, wheeldelta Delta )
 {
@@ -329,6 +422,20 @@ void scigraphics::mouse::mouseVerticalWheel::wheel( wpoint, wheeldelta Delta )
 }
 
 // ============================================================
+          
+double scigraphics::mouse::mouseZoomWheel::deltaDumpFactor() const 
+{ 
+  return 0.001; 
+}
+
+// ------------------------------------------------------------
+
+scigraphics::mouse::mouseZoomWheel::mouseZoomWheel( plot &Plot ) : 
+  mouseWheelHandler(Plot) 
+{
+}
+
+// ------------------------------------------------------------
 
 void scigraphics::mouse::mouseZoomWheel::wheel( wpoint Point, wheeldelta Delta )
 {

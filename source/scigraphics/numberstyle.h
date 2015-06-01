@@ -33,7 +33,59 @@ namespace scigraphics
 {
 
   // ============================================================
+  
+  class numberStyle
+  {
+    public:
+      class numberTextFactory 
+      {
+        public:
+          virtual ~numberTextFactory();
+          virtual numberTextFactory* clone() const = 0;
+          virtual std::string numberText( const number Number ) const = 0;
+      };
+  
+      class sprintfNumberTextFactory : public numberTextFactory
+      {
+        private:
+          std::string Format;
 
+        public:
+          explicit sprintfNumberTextFactory( const std::string &Format );
+          sprintfNumberTextFactory* clone() const;
+          std::string numberText( const number Number ) const;
+      };
+
+    public:
+      enum style
+      {
+        Float,
+        Exponent,
+        Integer,
+        General
+      };
+
+    private:
+      numberTextFactory *NumberTextFactory;
+
+    public:
+      numberStyle();
+      explicit numberStyle( style Style = General );
+      explicit numberStyle( numberTextFactory *Factory );
+      numberStyle( const numberStyle &NumberStyle );
+      numberStyle& operator=( const numberStyle &NumberStyle );
+      ~numberStyle();
+
+      std::string numberText( const number Number ) const;
+
+      void setTextFactory( numberTextFactory *Factory );
+      void setStyle( style Style );
+      void setStyle( const std::string &Format );
+  };
+  
+  // ============================================================
+
+#if 0
   class numberStyle 
   {
     public:
@@ -47,11 +99,13 @@ namespace scigraphics
   {
     private:
       std::string Format;
+
     protected:
       const char* format() const { return Format.c_str(); };
       void fillBuffer( char *Buf, size_t Size, number Value )  const;
+
     public:
-      sprintfNumberStyle( const std::string &F ) : Format(F) {}
+      explicit sprintfNumberStyle( const std::string &Format );
       std::string numberText( const number Number ) const;
   };
   
@@ -60,8 +114,9 @@ namespace scigraphics
   class generalNumberStyle : public sprintfNumberStyle
   {
     public:
-      generalNumberStyle() : sprintfNumberStyle( "%g" ) {}
+      generalNumberStyle();
   };
+#endif
 
   // ======================================================
 

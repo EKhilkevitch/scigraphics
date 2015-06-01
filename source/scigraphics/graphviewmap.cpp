@@ -40,6 +40,33 @@
 #endif
 
 // ============================================================
+        
+scigraphics::map::graphView::graphView() : 
+  Visible(true) 
+{
+}
+
+// ------------------------------------------------------------
+
+scigraphics::map::graphView::~graphView() 
+{
+}
+
+// ------------------------------------------------------------
+        
+scigraphics::wcoord scigraphics::map::graphView::legendExampleWidth() const  
+{ 
+  return 80; 
+}
+
+// ------------------------------------------------------------
+
+scigraphics::wcoord scigraphics::map::graphView::legendExampleHeight() const 
+{ 
+  return 200; 
+}
+
+// ============================================================
 
 double scigraphics::map::graphViewRectangle::pointColorStrategy::relativePointValue( const map::data::point_t &Point, const scale &Scale )
 {
@@ -238,7 +265,7 @@ void scigraphics::map::graphViewRectangle::drawRainbowMarkers( painter &Painter,
 
   wcoord RainbowRectangleWidth = rainbowRectangleWidth();
 
-  generalNumberStyle NumberStyle;
+  numberStyle NumberStyle( numberStyle::General );
   lineStyle LineStyle( color::Black );
   textStyle TextStyle( 13 );
 
@@ -253,6 +280,13 @@ void scigraphics::map::graphViewRectangle::drawRainbowMarkers( painter &Painter,
     Painter.drawLineW( wpoint(X0,Y), wpoint(X1,Y), LineStyle );
     Painter.drawTextW( NumberStyle.numberText(Marks[i]), wpoint( X1 + 4, Y ), painter::HLeft|painter::VCenter, TextStyle );
   }
+}
+
+// ------------------------------------------------------------
+        
+scigraphics::wcoord scigraphics::map::graphViewRectangle::rainbowRectangleWidth() const 
+{ 
+  return legendExampleWidth()/3; 
 }
 
 // ============================================================

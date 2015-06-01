@@ -26,8 +26,6 @@
 #include <string>
 #include <vector>
 
-#include "scigraphics/interval.h"
-  
 // ============================================================
 
 namespace scigraphics
@@ -62,13 +60,13 @@ namespace scigraphics
         static color fromRGB( unsigned R, unsigned G, unsigned B, unsigned T = 0 );
         static color fromHSV( unsigned H, unsigned S, unsigned V, unsigned T = 0 );
 
-        color( rgb Value = Black ) : RGB(Value) {}
-        color( const color &C ) : RGB( C.RGB ) {}
+        color( rgb Value = Black );
+        color( const color &Color );
         color( int R, int G, int B, int T = 0x00 );
         ~color() {};
 
-        color& operator=( rgb Value ) { RGB = Value; return *this; } 
-        color& operator=( const color &C ) { RGB = C.RGB; return *this; }
+        color& operator=( rgb Value );
+        color& operator=( const color &Color );
 
         unsigned valueRgb()  const { return RGB; }
         unsigned int red()   const { return ( valueRgb() >> 16 ) & 0xFF; }
@@ -91,9 +89,8 @@ namespace scigraphics
 
     };
 
-    inline bool operator==( color C1, color C2 ) { return C1.valueRgb() == C2.valueRgb(); }
-    inline bool operator!=( color C1, color C2 ) { return ! ( C1 == C2 ); }
-
+    bool operator==( color C1, color C2 );
+    bool operator!=( color C1, color C2 );
 
 // ============================================================
 
@@ -104,10 +101,10 @@ namespace scigraphics
         size_t CurrentIndex;
 
       public:
-        colorSequence() { reset(); }
+        colorSequence();
 
         void clear();
-        void append( color Color ) { Sequence.push_back(Color); }
+        void append( color Color );
 
         size_t size() const { return Sequence.size(); }
         bool empty() const { return Sequence.empty(); }

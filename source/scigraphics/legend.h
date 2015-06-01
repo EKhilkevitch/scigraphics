@@ -54,12 +54,13 @@ namespace scigraphics
       { 
         private:
           wcoord Width, Height; 
-        public:
-          legendSize() : Width(0), Height(0) {}
-          legendSize( wcoord W, wcoord H ) : Width(W), Height(H) {}
 
-          void updateWidth( wcoord W )  { Width = std::max( W, Width ); }
-          void updateHeight( wcoord H ) { Height += H; }
+        public:
+          legendSize();
+          legendSize( wcoord Width, wcoord Height );
+
+          void updateWidth( wcoord Width );
+          void updateHeight( wcoord Height );
           void addToWidth( wcoord W )   { Width += W; }
           void addToHeight( wcoord H )  { Height += H; }
 
@@ -77,8 +78,8 @@ namespace scigraphics
       void setRectangleFromLegendSize( painter &Painter, const legendSize &LegendSize );
 
       static wcoord interTextVerticalDistance( const textStyle &Style );
-      static wcoord textHorizontalIndent() { return 5; }
-      static unsigned minFontSize() { return 5; }
+      static wcoord textHorizontalIndent();
+      static unsigned minFontSize();
 
       wcoord drawGraphLegend( painter &Painter, wcoord y, const graph &Graph, const textStyle &Style );
       void drawAllLegends( painter &Painter, const graphCollection &Graphics, const textStyle &Style );

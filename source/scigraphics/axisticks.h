@@ -24,6 +24,8 @@
 #include "scigraphics/numbers.h"
 #include "scigraphics/linestyle.h"
 
+#include <vector>
+
 namespace scigraphics
 {
 
@@ -47,8 +49,8 @@ namespace scigraphics
       virtual void drawOneTick( painter &Painter, const scale &Scale, number Value ) = 0;
 
     public:
-      axisTicks() : TickStyle(DefaultAxisTickStyle), Length(8) {} 
-      virtual ~axisTicks() {};
+      axisTicks();
+      virtual ~axisTicks();
 
       const lineStyle& getTickStyle() const { return TickStyle; }
       wcoord getTickLength() const { return Length; }

@@ -234,6 +234,13 @@ scigraphics::interval<scigraphics::number> scigraphics::plotLimits::autoScaleInt
 
 // ------------------------------------------------------------
 
+void scigraphics::plotLimits::setInterval( const axisSet *AxisSet, interval<number> Interval ) 
+{ 
+  ForcedIntervals[AxisSet] = Interval; 
+}
+
+// ------------------------------------------------------------
+
 scigraphics::interval<scigraphics::number> scigraphics::plotLimits::getInterval( const axisSet *AxisSet ) const
 {
   assert( AxisSet != NULL );

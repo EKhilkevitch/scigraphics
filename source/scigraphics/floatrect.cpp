@@ -27,6 +27,21 @@
 #include "scigraphics/brushstyle.h"
 
 // ============================================================
+      
+scigraphics::floatRectangle::floatRectangle( const wrectangle &Rect ) : 
+  Rectangle(Rect), 
+  Visible(true) 
+{
+}
+
+// ------------------------------------------------------------
+      
+void scigraphics::floatRectangle::setRectangle( const wpoint &A, const wpoint &B ) 
+{ 
+  setRectangle( wrectangle(A,B) ); 
+}
+
+// ------------------------------------------------------------
      
 unsigned scigraphics::floatRectangle::textHeight( painter &Painter, const std::string &Text, const textStyle &Style )
 { 
@@ -39,6 +54,34 @@ void scigraphics::floatRectangle::drawBackground( painter &Painter ) const
 {      
   brushStyle BackgroundBrush( color::White );
   Painter.drawRectangleW( Rectangle, BackgroundBrush, getBorderStyle() );
+}
+      
+// ------------------------------------------------------------
+
+void scigraphics::floatRectangle::move( const wcoord DX, const wcoord DY ) 
+{ 
+  Rectangle.moveXY( DX, DY ); 
+}
+
+// ------------------------------------------------------------
+
+void scigraphics::floatRectangle::moveX( const wcoord DX ) 
+{ 
+  move(DX,0); 
+}
+
+// ------------------------------------------------------------
+
+void scigraphics::floatRectangle::moveY( const wcoord DY ) 
+{ 
+  move(0,DY); 
+}
+
+// ------------------------------------------------------------
+
+bool scigraphics::floatRectangle::containPoint( wpoint Point ) const 
+{ 
+  return Rectangle.contain(Point); 
 }
 
 // ============================================================

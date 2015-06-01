@@ -95,9 +95,16 @@ std::string scigraphics::axisSet::getAxisTitle() const
       
 // ------------------------------------------------------------
 
-void scigraphics::axisSet::setNumberStyle( numberStyle *Style ) 
+void scigraphics::axisSet::setNumberStyle( const numberStyle &Style ) 
 { 
   AxisLabels->setNumberStyle(Style); 
+}
+
+// ------------------------------------------------------------
+      
+const scigraphics::numberStyle& scigraphics::axisSet::getNumberStyle()
+{
+  return AxisLabels->getNumberStyle();
 }
 
 // ------------------------------------------------------------
@@ -288,6 +295,20 @@ scigraphics::pairScales scigraphics::axisSetCollection::getBottomLeftPairScales(
 const scigraphics::axisSet& scigraphics::axisSetCollection::at( axisPosition Position ) const
 {
   return ( const_cast<axisSetCollection*>(this) )->at(Position);
+}
+
+// ------------------------------------------------------------
+      
+scigraphics::axisSet& scigraphics::axisSetCollection::operator[]( axisPosition Position ) 
+{ 
+  return at(Position); 
+}
+
+// ------------------------------------------------------------
+
+const scigraphics::axisSet& scigraphics::axisSetCollection::operator[]( axisPosition Position ) const 
+{ 
+  return at(Position); 
 }
 
 // ------------------------------------------------------------

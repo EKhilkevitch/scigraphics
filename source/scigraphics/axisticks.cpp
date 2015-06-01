@@ -25,13 +25,26 @@
 #include "scigraphics/scale.h"
 #include "scigraphics/painter.h"
 
-#include <cstdio>
 #include <iostream>
 #include <cmath>
 
 // ============================================================
 
 const scigraphics::lineStyle scigraphics::axisTicks::DefaultAxisTickStyle( 3 );
+      
+// ------------------------------------------------------------
+
+scigraphics::axisTicks::axisTicks() : 
+  TickStyle(DefaultAxisTickStyle), 
+  Length(8) 
+{
+} 
+
+// ------------------------------------------------------------
+
+scigraphics::axisTicks::~axisTicks() 
+{
+}
 
 // ------------------------------------------------------------
 

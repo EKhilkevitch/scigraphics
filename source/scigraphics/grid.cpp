@@ -33,6 +33,19 @@ const scigraphics::lineStyle scigraphics::grid::DefaultGridLineStyle = lineStyle
 
 // ------------------------------------------------------------
 
+scigraphics::grid::grid() : 
+  LineStyle(DefaultGridLineStyle) 
+{
+}
+
+// ------------------------------------------------------------
+
+scigraphics::grid::~grid() 
+{
+}
+
+// ------------------------------------------------------------
+
 void scigraphics::grid::draw( painter &Painter, const scale &Scale, const std::vector<number> &Ticks )
 {
   drawMajorGrids( Painter, Scale, Ticks );

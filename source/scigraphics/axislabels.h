@@ -25,6 +25,9 @@
 
 #include "scigraphics/numbers.h"
 #include "scigraphics/textstyle.h"
+#include "scigraphics/numberstyle.h"
+
+#include <vector>
 
 // ============================================================
 
@@ -33,7 +36,6 @@ namespace scigraphics
 
 // ============================================================
 
-  class numberStyle;
   class painter;
   class scale;
 
@@ -46,7 +48,7 @@ namespace scigraphics
 
     private:
       textStyle TextStyle;
-      numberStyle *NumberStyle;
+      numberStyle NumberStyle;
 
     private:
       axisLabels( const axisLabels& );
@@ -62,8 +64,8 @@ namespace scigraphics
       const textStyle& getTextStyle() const { return TextStyle; }
       void setTextStyle( const textStyle &S ) { TextStyle = S; }
 
-      const numberStyle& getNumberStyle() const { return *NumberStyle; }
-      void setNumberStyle( numberStyle *Style );
+      const numberStyle& getNumberStyle() const { return NumberStyle; }
+      void setNumberStyle( const numberStyle &S ) { NumberStyle = S; }
 
       virtual void draw( painter &Painter, const scale &Scale, const std::vector<number> &Marks ); 
   };
@@ -72,20 +74,24 @@ namespace scigraphics
   {
     private:
       fcoord BaseY;
+
     protected:
       void drawOneLabel( painter &Painter, const scale &Scale, number Value );
+
     public:
-      axisLabelsX( fcoord Y ) : BaseY(Y) {}
+      axisLabelsX( fcoord Y );
   };
   
   class axisLabelsY : public axisLabels
   {
     private:
       fcoord BaseX;
+
     protected:
       void drawOneLabel( painter &Painter, const scale &Scale, number Value );
+
     public:
-      axisLabelsY( fcoord X ) : BaseX(X) {}
+      axisLabelsY( fcoord X );
   };
 
 // ============================================================

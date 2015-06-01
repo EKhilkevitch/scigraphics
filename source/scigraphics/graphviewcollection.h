@@ -48,8 +48,8 @@ namespace scigraphics
         viewsList::iterator viewEnd()   { return Views.end(); }
         
       public:
-        graphViewCollection() {}
-        virtual ~graphViewCollection() {}
+        graphViewCollection();
+        virtual ~graphViewCollection();
 
         void setDefaultColor( const color &Color );
         void setColor( const color &Color );

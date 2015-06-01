@@ -46,8 +46,8 @@ namespace scigraphics
       lineStyle LineStyle;
       
     public:
-      axis() : LineStyle(DefaultAxisLineStyle) {} 
-      virtual ~axis() {};
+      axis();
+      virtual ~axis();
 
       const lineStyle& getLineStyle() const { return LineStyle; }
       void setLineStyle( const lineStyle &S ) { LineStyle = S; }
@@ -59,8 +59,9 @@ namespace scigraphics
   {
     private:
       fcoord BaseY;
+
     public:
-      axisX( fcoord Y ) : BaseY(Y) {}
+      explicit axisX( fcoord Y );
       void draw( painter &Painter );
   };
 
@@ -68,8 +69,9 @@ namespace scigraphics
   {
     private:
       fcoord BaseX;
+
     public:
-      axisY( fcoord X ) : BaseX(X) {}
+      explicit axisY( fcoord X );
       void draw( painter &Painter );
   };
 

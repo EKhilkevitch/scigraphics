@@ -21,7 +21,6 @@
 
 #pragma once
 
-#include <algorithm>
 #include <ostream>
 
 // ============================================================
@@ -33,24 +32,22 @@ namespace scigraphics
 
   template <class T> class interval
   {
-    protected:
+    private:
       T Min, Max;
 
-      static inline T rabs( T Number ) { return Number < static_cast<T>(0) ? -Number : +Number;  }
+    private:
+      static T abs( T Number );
+      static T min( T Number1, T Number2 );
+      static T max( T Number1, T Number2 );
 
     public:
-      interval() : 
-        Min( 0 ), 
-        Max( 0 ) {}
-
-      interval( T MinVal, T MaxVal ) : 
-        Min(std::min(MinVal,MaxVal)),
-        Max(std::max(MinVal,MaxVal)) {}
+      interval();
+      interval( T MinVal, T MaxVal );
 
       inline T min() const       { return Min; }
       inline T max() const       { return Max; }
-      inline T maxAbs() const    { return std::max( rabs(Min), rabs(Max) ); }
-      inline T minAbs() const    { return std::min( rabs(Min), rabs(Max) ); }
+      inline T maxAbs() const    { return max( abs(Min), abs(Max) ); }
+      inline T minAbs() const    { return min( abs(Min), abs(Max) ); }
       inline T distance() const  { return Max - Min; }
 
       bool isSingular() const { return ( Min >= Max ); }
@@ -81,6 +78,43 @@ namespace scigraphics
   template <class T> std::ostream& operator<<( std::ostream &Stream, interval<T> Interval );
   
   // ============================================================
+      
+  template <class T> T interval<T>::abs( T Number ) 
+  { 
+    return Number < static_cast<T>(0) ? -Number : +Number;  
+  }
+  
+  // ------------------------------------------------------------
+  
+  template <class T> T interval<T>::min( T Number1, T Number2 )
+  {
+    return Number1 < Number2 ? Number1 : Number2;
+  }
+  
+  // ------------------------------------------------------------
+  
+  template <class T> T interval<T>::max( T Number1, T Number2 )
+  {
+    return Number1 > Number2 ? Number1 : Number2;
+  }
+  
+  // ------------------------------------------------------------
+      
+  template <class T> interval<T>::interval() : 
+    Min( 0 ), 
+    Max( 0 ) 
+  {
+  }
+  
+  // ------------------------------------------------------------
+
+  template <class T> interval<T>::interval( T MinVal, T MaxVal ) : 
+    Min( min(MinVal,MaxVal) ),
+    Max( max(MinVal,MaxVal) ) 
+  {
+  }
+  
+  // ------------------------------------------------------------
   
   template <class T> T interval<T>::toInterval( T Value ) const 
   { 
@@ -133,16 +167,16 @@ namespace scigraphics
 
   template <class T> void interval<T>::setMinMax( T XMin, T XMax )
   {
-    Min = std::min(XMin,XMax);
-    Max = std::max(XMin,XMax);
+    Min = min(XMin,XMax);
+    Max = max(XMin,XMax);
   }
 
   // ------------------------------------------------------------
   
   template <class T> void interval<T>::updateInterval( T Number ) 
   { 
-    Min = std::min(Min,Number); 
-    Max = std::max(Max,Number); 
+    Min = min(Min,Number); 
+    Max = max(Max,Number); 
   }
   
   // ------------------------------------------------------------

@@ -13,6 +13,9 @@ set( graphics_source_files
         color.cpp
         numberstyle.cpp
         linestyle.cpp
+        pointstyle.cpp
+        brushstyle.cpp
+        textstyle.cpp
         drawer.cpp
         painter.cpp
         axis.cpp
@@ -28,6 +31,7 @@ set( graphics_source_files
         axisset.cpp
         grid.cpp
         mouse.cpp
+        mousecallback.cpp
         zoomrect.cpp
         floatrect.cpp
         legend.cpp

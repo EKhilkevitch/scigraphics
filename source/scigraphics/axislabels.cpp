@@ -23,11 +23,10 @@
 
 #include "scigraphics/axislabels.h"
 #include "scigraphics/painter.h"
-#include "scigraphics/numberstyle.h"
 #include "scigraphics/scale.h"
 
-#include <cstdio>
 #include <stdexcept>
+#include <string>
 #include <iostream>
 
 // ============================================================
@@ -38,7 +37,7 @@ const scigraphics::textStyle scigraphics::axisLabels::DefaultAxisTextStyle( 10 )
 
 scigraphics::axisLabels::axisLabels() :
   TextStyle(DefaultAxisTextStyle), 
-  NumberStyle(new generalNumberStyle()) 
+  NumberStyle(numberStyle::General) 
 {
 }
 
@@ -46,21 +45,6 @@ scigraphics::axisLabels::axisLabels() :
 
 scigraphics::axisLabels::~axisLabels()
 {
-  delete NumberStyle;
-}
-
-// ------------------------------------------------------------
-
-void scigraphics::axisLabels::setNumberStyle( numberStyle *Style )
-{
-  if ( Style == NULL )
-    throw std::invalid_argument("Style must be not NULL");
-
-  if ( Style != NumberStyle )
-  {
-    delete NumberStyle;
-    NumberStyle = Style;
-  }
 }
 
 // ------------------------------------------------------------
@@ -69,6 +53,13 @@ void scigraphics::axisLabels::draw( painter &Painter, const scale &Scale, const 
 {
   for ( std::vector<number>::const_iterator m = Marks.begin(); m != Marks.end(); ++m )
     drawOneLabel( Painter, Scale, *m );
+}
+
+// ============================================================
+
+scigraphics::axisLabelsX::axisLabelsX( fcoord Y ) : 
+  BaseY(Y) 
+{
 }
 
 // ------------------------------------------------------------
@@ -82,6 +73,13 @@ void scigraphics::axisLabelsX::drawOneLabel( painter &Painter, const scale &Scal
 
 //  std::cout << "axisTicksX: draw " << Text << " crd " << Coord << " clr " << getTextStyle().getColor().name() << std::endl;
   Painter.drawTextF( Text, fpoint(X,BaseY), Flags, getTextStyle(), 0, Shift );
+}
+
+// ============================================================
+      
+scigraphics::axisLabelsY::axisLabelsY( fcoord X ) : 
+  BaseX(X) 
+{
 }
 
 // ------------------------------------------------------------

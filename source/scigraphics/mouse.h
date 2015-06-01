@@ -86,7 +86,8 @@ namespace scigraphics
           unsigned AllowedOperations;
 
         public:
-          allowing( unsigned A = Everything ) : AllowedOperations(A) {}
+          explicit allowing( unsigned AllowedOperations = Everything );
+
           unsigned value() const { return AllowedOperations; }
 
           void set( unsigned Op )               { AllowedOperations = Op;     }
@@ -119,7 +120,7 @@ namespace scigraphics
           fpoint wpoint2fpoint( wpoint Point ) const;
 
         public:
-          mouseHandler( plot &P ) : Plot(P) {}
+          explicit mouseHandler( plot &Plot );
           virtual ~mouseHandler() {}
 
           virtual unsigned requestedAllowing() const { return allowing::Everything; };
@@ -139,7 +140,7 @@ namespace scigraphics
           wpoint lastPoint() const { return LastPoint; }
 
         public:
-          mouseActionHandler( plot &P, wpoint Point );
+          mouseActionHandler( plot &Plot, wpoint Point );
           virtual ~mouseActionHandler() {}
 
           virtual void moved( wpoint ) {}
@@ -149,14 +150,14 @@ namespace scigraphics
       class noneAction : public mouseActionHandler
       {
         public:
-          noneAction( plot &Plot, wpoint Point = wpoint::zero() ) : mouseActionHandler(Plot,Point) {}
+          explicit noneAction( plot &Plot, wpoint Point = wpoint::zero() );
           unsigned requestedAllowing() const { return allowing::Everything; }
       };
 
       class moveAction : public mouseActionHandler
       {
         public:
-          moveAction( plot &P, wpoint Point ) : mouseActionHandler(P,Point) {}
+          moveAction( plot &Plot, wpoint Point );
           void moved( wpoint Point );
           unsigned requestedAllowing() const { return allowing::Move; }
       };
@@ -168,7 +169,7 @@ namespace scigraphics
           void applyZooms( wpoint Point );
           bool needToApplyChanges( wpoint Point );
         public:
-          zoomAction( plot &P, wpoint Point );
+          zoomAction( plot &Plot, wpoint Point );
           void moved( wpoint Point );
           void released( wpoint Point );
           unsigned requestedAllowing() const { return allowing::Zoom; }
@@ -179,7 +180,7 @@ namespace scigraphics
         private:
           void reset();
         public:
-          resetAction( plot &P, wpoint Point ) : mouseActionHandler(P,Point) {}
+          resetAction( plot &Plot, wpoint Point );
           void released( wpoint Point );
           unsigned requestedAllowing() const { return allowing::Reset; }
       };
@@ -189,7 +190,7 @@ namespace scigraphics
         private:
           floatRectangle *Float;
         public:
-          moveFloatAction( plot &P, wpoint Point );
+          moveFloatAction( plot &Plot, wpoint Point );
           void moved( wpoint Point );
           unsigned requestedAllowing() const { return allowing::MoveFloat; }
       };
@@ -203,7 +204,7 @@ namespace scigraphics
           void initSelection();
 
         public:
-          selectAction( plot &P, wpoint Point );
+          selectAction( plot &Plot, wpoint Point );
           void moved( wpoint Point );
           void released( wpoint Point );
       };
@@ -214,7 +215,7 @@ namespace scigraphics
           selectionStrip* createSelection();
 
         public:
-          selectHorizontalAction( plot &P, wpoint Point ) : selectAction(P,Point) { initSelection(); } 
+          selectHorizontalAction( plot &Plot, wpoint Point );
           unsigned requestedAllowing() const { return allowing::SelectH; }
       };
 
@@ -224,7 +225,7 @@ namespace scigraphics
           selectionStrip* createSelection();
 
         public:
-          selectVerticalAction( plot &P, wpoint Point ) : selectAction(P,Point) { initSelection(); } 
+          selectVerticalAction( plot &Plot, wpoint Point );
           unsigned requestedAllowing() const { return allowing::SelectV; }
       };
 
@@ -236,7 +237,7 @@ namespace scigraphics
           selectionStrip* getSelection( wpoint Point );
 
         public:
-          moveSelectionAction( plot &P, wpoint Point );
+          moveSelectionAction( plot &Plot, wpoint Point );
           void moved( wpoint Point );
           unsigned requestedAllowing() const { return allowing::MoveSelect; }
       };
@@ -244,7 +245,7 @@ namespace scigraphics
       class resetSelectionAction : public mouseActionHandler
       {
         public:
-          resetSelectionAction( plot &P, wpoint Point ) : mouseActionHandler(P,Point) {}
+          resetSelectionAction( plot &Plot, wpoint Point );
           void released( wpoint );
           unsigned requestedAllowing() const { return allowing::ResetSelect; }
       };
@@ -252,24 +253,24 @@ namespace scigraphics
       class mouseWheelHandler : public mouseHandler
       {
         protected:
-          virtual double deltaDumpFactor() const { return 0.25; }
+          virtual double deltaDumpFactor() const;
 
         public:
-          mouseWheelHandler( plot &P ) : mouseHandler(P) {}
+          explicit mouseWheelHandler( plot &Plot );
           virtual void wheel( wpoint, wheeldelta ) {};
       };
 
       class mouseNoneWheel : public mouseWheelHandler 
       {
         public:
-          mouseNoneWheel( plot &P ) : mouseWheelHandler(P) {}
+          explicit mouseNoneWheel( plot &Plot );
           unsigned requestedAllowing() const { return allowing::Everything; }
       };
 
       class mouseHorizontalWheel : public mouseWheelHandler
       {
         public:
-          mouseHorizontalWheel( plot &P ) : mouseWheelHandler(P) {}
+          explicit mouseHorizontalWheel( plot &Plot );
           void wheel( wpoint, wheeldelta Delta );
           unsigned requestedAllowing() const { return allowing::WheelH; }
       };
@@ -277,7 +278,7 @@ namespace scigraphics
       class mouseVerticalWheel : public mouseWheelHandler
       {
         public:
-          mouseVerticalWheel( plot &P ) : mouseWheelHandler(P) {}
+          explicit mouseVerticalWheel( plot &Plot );
           void wheel( wpoint, wheeldelta Delta );
           unsigned requestedAllowing() const { return allowing::WheelV; }
       };
@@ -285,9 +286,10 @@ namespace scigraphics
       class mouseZoomWheel : public mouseWheelHandler
       {
         protected:
-          virtual double deltaDumpFactor() const { return 0.001; }
+          virtual double deltaDumpFactor() const;
+
         public:
-          mouseZoomWheel( plot &P ) : mouseWheelHandler(P) {}
+          explicit  mouseZoomWheel( plot &Plot );
           void wheel( wpoint, wheeldelta Delta );
           unsigned requestedAllowing() const { return allowing::Zoom; }
       };
@@ -321,8 +323,8 @@ namespace scigraphics
       void replot();
 
     public:
-      mouse( plot &P ); 
-      virtual ~mouse();
+      explicit mouse( plot &Plot ); 
+      ~mouse();
 
       void mousePressed( wpoint Point, unsigned Buttons ); 
       void mouseMoved( wpoint Point ); 

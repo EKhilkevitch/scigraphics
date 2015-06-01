@@ -44,7 +44,8 @@ namespace scigraphics
   class plotLimits
   {
     public:
-      static const number AutoScaleMin, AutoScaleMax;
+      static const number AutoScaleMin;
+      static const number AutoScaleMax;
 
       class limits
       {
@@ -105,9 +106,9 @@ namespace scigraphics
 
     public:
       plotLimits();
-      virtual ~plotLimits() {}
+      ~plotLimits() {}
 
-      void setInterval( const axisSet *AxisSet, interval<number> I ) { ForcedIntervals[AxisSet] = I; }
+      void setInterval( const axisSet *AxisSet, interval<number> Interval );
       interval<number> getInterval( const axisSet *AxisSet ) const;
       
       void setStretchFactor( double S )  { StretchFactorX = StretchFactorY = S; }

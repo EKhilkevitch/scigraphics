@@ -52,7 +52,7 @@ namespace scigraphics
       void drawBackground( painter &Painter ) const;
 
     public:
-      floatRectangle( const wrectangle &Rect = wrectangle() ) : Rectangle(Rect), Visible(true) {}
+      explicit floatRectangle( const wrectangle &Rectangle = wrectangle() );
       virtual ~floatRectangle() {}
 
       const lineStyle& getBorderStyle() const { return BorderStyle; }
@@ -60,12 +60,12 @@ namespace scigraphics
 
       const wrectangle& getRectangle() const { return Rectangle; }
       void setRectangle( const wrectangle &Rect ) { Rectangle = Rect; }
-      void setRectangle( const wpoint &A, const wpoint &B ) { setRectangle( wrectangle(A,B) ); }
+      void setRectangle( const wpoint &A, const wpoint &B );
 
-      virtual void move( const wcoord DX, const wcoord DY ) {  Rectangle.moveXY( DX, DY ); }
-      void moveX( const wcoord DX ) { move(DX,0); }
-      void moveY( const wcoord DY ) { move(0,DY); }
-      bool containPoint( wpoint Point ) const { return Rectangle.contain(Point); }
+      virtual void move( const wcoord DX, const wcoord DY );
+      void moveX( const wcoord DX );
+      void moveY( const wcoord DY );
+      bool containPoint( wpoint Point ) const;
       
       void setVisible( bool V ) { Visible = V; }
       bool isVisible() const { return Visible; }

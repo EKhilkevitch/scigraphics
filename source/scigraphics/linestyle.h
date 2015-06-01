@@ -52,9 +52,9 @@ namespace scigraphics
     
     public:
       lineStyle(); 
-      lineStyle( style Stype );
-      lineStyle( unsigned Width );
-      lineStyle( color Color );
+      explicit lineStyle( style Style );
+      explicit lineStyle( unsigned Width );
+      explicit lineStyle( color Color );
       lineStyle( unsigned Width, color Color );
 
       unsigned width() const { return Style == None ? 0 : Width; }

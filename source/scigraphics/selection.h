@@ -24,6 +24,7 @@
 #include "scigraphics/selectionstyle.h"
 #include "scigraphics/plotelement.h"
 #include "scigraphics/geometry.h"
+#include "scigraphics/interval.h"
 
 namespace scigraphics 
 {

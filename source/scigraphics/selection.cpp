@@ -63,8 +63,8 @@ void scigraphics::selection::draw( painter &Painter, const pairScales& Scales ) 
 {
   frectangle Rectangle = getRectangleF(Scales);
 
-  brushStyle BrushStyle = SelectionStyle.getBrushColor();
-  lineStyle  LineStyle  = SelectionStyle.getLineColor();
+  brushStyle BrushStyle( SelectionStyle.getBrushColor() );
+  lineStyle  LineStyle( SelectionStyle.getLineColor() );
   
   Painter.drawRectangleF( Rectangle, BrushStyle, LineStyle );
 }

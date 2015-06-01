@@ -107,7 +107,7 @@ int main( int argc, char *argv[] )
   Plot.setAxisTitle( scigraphics::axisSetCollection::Top, "This is axis X top" );
   Plot.setAxisTitle( scigraphics::axisSetCollection::Left, "This is axis Y left" );
   Plot.setAxisTitle( scigraphics::axisSetCollection::Right, "This is axis Y right" );
-  Plot.setAxisNumberStyle( scigraphics::axisSetCollection::Right, new scigraphics::sprintfNumberStyle("%e") );
+  Plot.setAxisNumberStyle( scigraphics::axisSetCollection::Right, scigraphics::numberStyle(scigraphics::numberStyle::Exponent) );
 
   scigraphics::qt4settingsGroupSuperBox::axisPositionsList AxisPositions = scigraphics::qt4settingsGroupSuperBox::defaultAxisPositions();
   AxisPositions << scigraphics::axisSetCollection::Top;

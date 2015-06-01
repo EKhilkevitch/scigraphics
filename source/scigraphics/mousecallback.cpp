@@ -21,52 +21,57 @@
 
 // ============================================================
 
-#include "scigraphics/axis.h"
-#include "scigraphics/painter.h"
+#include "scigraphics/mousecallback.h"
+
+#include <cassert>
 
 // ============================================================
 
-const scigraphics::lineStyle scigraphics::axis::DefaultAxisLineStyle( 3, color::Black );
+scigraphics::mouseCallBack::mouseCallBack( plot &P ) : 
+  Plot(P) 
+{
+}
 
 // ------------------------------------------------------------
 
-scigraphics::axis::axis() : 
-  LineStyle(DefaultAxisLineStyle)
+scigraphics::mouseCallBack::~mouseCallBack() 
+{
+}
+
+// ============================================================
+
+scigraphics::mouseCallBackContainer::mouseCallBackContainer( plot &Plot ) : 
+  CallBack( new mouseCallBack(Plot) ) 
 {
 }
 
 // ------------------------------------------------------------
       
-scigraphics::axis::~axis() 
-{
-}
-
-// ============================================================
-      
-scigraphics::axisX::axisX( fcoord Y ) : 
-  BaseY(Y) 
-{
+scigraphics::mouseCallBackContainer::~mouseCallBackContainer() 
+{ 
+  delete CallBack; 
 }
 
 // ------------------------------------------------------------
-
-void scigraphics::axisX::draw( painter &Painter )
-{
-  Painter.drawLineF( fpoint(0,BaseY), fpoint(1,BaseY), getLineStyle() );
-}
-
-// ============================================================
       
-scigraphics::axisY::axisY( fcoord X ) : 
-  BaseX(X) 
-{
+void scigraphics::mouseCallBackContainer::set( mouseCallBack *NewCallBack ) 
+{ 
+  if ( NewCallBack == NULL )
+    return;
+
+  if ( NewCallBack != CallBack )
+  {
+    delete CallBack; 
+    CallBack = NewCallBack; 
+  }
 }
 
 // ------------------------------------------------------------
-
-void scigraphics::axisY::draw( painter &Painter )
-{
-  Painter.drawLineF( fpoint(BaseX,0), fpoint(BaseX,1), getLineStyle() );
+      
+scigraphics::mouseCallBack& scigraphics::mouseCallBackContainer::get() 
+{ 
+  assert( CallBack != NULL );
+  return *CallBack; 
 }
 
 // ============================================================

@@ -137,8 +137,8 @@ namespace scigraphics
 
       virtual void replot();
 
-      template < class G > G* createGraph( const std::string &Legend = std::string() ) { return Graphics.create<G>(Legend); }
-      template < class G > G* createGraph( const std::string &Legend, const color &Color ) { return Graphics.create<G>(Legend,Color); }
+      template < class G > G* createGraph( const std::string &Legend = std::string() );
+      template < class G > G* createGraph( const std::string &Legend, const color &Color );
       graphSV* createGraphSV( const std::string &Legend = std::string(), const color &Color = color::White );
       graphAV* createGraphAV( const std::string &Legend = std::string(), const color &Color = color::White );
       graphMV* createGraphMV( const std::string &Legend = std::string() );
@@ -157,7 +157,7 @@ namespace scigraphics
       graphCollection::const_iterator beginGraph() const { return Graphics.begin(); }
       graphCollection::const_iterator endGraph()   const { return Graphics.end(); }
 
-      template <class S> S* createSelection() { return Selections.create<S>(); }
+      template <class S> S* createSelection();
       void deleteSelection( selection *Selection );
       void clearSelections();
       selectionCollection::iterator beginSelection() { return Selections.begin(); }
@@ -179,19 +179,19 @@ namespace scigraphics
       void setScaleInterval( axisSetCollection::axisPosition Position, interval<number> Limits );
       interval<number> scaleInterval( axisSetCollection::axisPosition Position ) const;
       
-      void setScaleIntervalX( interval<number> L )     { setScaleInterval(axisSetCollection::Bottom,L); }
-      void setScaleIntervalX( number Min, number Max ) { setScaleIntervalX(interval<number>(Min,Max)); }
-      interval<number> scaleIntervalX() const          { return scaleInterval(axisSetCollection::Bottom); }
+      void setScaleIntervalX( interval<number> Interval );
+      void setScaleIntervalX( number Min, number Max );
+      interval<number> scaleIntervalX() const;
 
-      void setScaleIntervalY( interval<number> L )     { setScaleInterval(axisSetCollection::Left,L); }
-      void setScaleIntervalY( number Min, number Max ) { setScaleIntervalY(interval<number>(Min,Max)); }
-      interval<number> scaleIntervalY() const          { return scaleInterval(axisSetCollection::Left); }
+      void setScaleIntervalY( interval<number> Interval );
+      void setScaleIntervalY( number Min, number Max );
+      interval<number> scaleIntervalY() const;
       
       void updateScaleLimits();
 
       interval<number> visibleInterval( axisSetCollection::axisPosition Position ) const;
-      interval<number> visibleIntervalX() const { return visibleInterval(axisSetCollection::Bottom); }
-      interval<number> visibleIntervalY() const { return visibleInterval(axisSetCollection::Left); }
+      interval<number> visibleIntervalX() const;
+      interval<number> visibleIntervalY() const;
       
       void addScalesShift( double Shift, axisSet::direction Direction );
       void mulScalesZoom( double Zoom, axisSet::direction Direction );
@@ -202,14 +202,14 @@ namespace scigraphics
       void setStretchFactors( double SX, double SY );
 
       void setScaleLock( axisSetCollection::axisPosition Position, bool Lock );
-      void setScaleLockX( bool Lock )   { setScaleLock( axisSetCollection::Bottom, Lock ); }
-      void setScaleLockY( bool Lock )   { setScaleLock( axisSetCollection::Left,   Lock ); }
+      void setScaleLockX( bool Lock );
+      void setScaleLockY( bool Lock );
 
       void setAxisTitle( axisSetCollection::axisPosition Position, const std::string &Title );
       std::string getAxisTitle( axisSetCollection::axisPosition Position ) const;
       void setBottomLeftAxisTitles( const std::string &TitleX, const std::string &TitleY );
 
-      void setAxisNumberStyle( axisSetCollection::axisPosition Position, numberStyle *Style );
+      void setAxisNumberStyle( axisSetCollection::axisPosition Position, const numberStyle &Style );
 
       void setDisallowedMouseOperations( unsigned Operation );
       void setAllowedMouseOperations( unsigned Operation );
@@ -221,6 +221,27 @@ namespace scigraphics
       void setVisibleCursorPositionViewer( bool Visible );
   };
 
+  // ============================================================
+      
+  template < class G > G* plot::createGraph( const std::string &Legend ) 
+  { 
+    return Graphics.create<G>(Legend); 
+  }
+  
+  // ------------------------------------------------------------
+  
+  template < class G > G* plot::createGraph( const std::string &Legend, const color &Color ) 
+  { 
+    return Graphics.create<G>(Legend,Color); 
+  }
+  
+  // ------------------------------------------------------------
+      
+  template <class S> S* plot::createSelection() 
+  { 
+    return Selections.create<S>(); 
+  }
+  
   // ============================================================
 
 }

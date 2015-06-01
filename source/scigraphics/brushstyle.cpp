@@ -19,42 +19,17 @@
  */
 
 
-#pragma once
-
 // ============================================================
 
-#include "scigraphics/color.h"
-
-#include <string>
+#include "scigraphics/brushstyle.h"
 
 // ============================================================
-
-namespace scigraphics
+      
+scigraphics::brushStyle::brushStyle( color C, style S ) : 
+  Style(S), 
+  Color(C) 
 {
-
-// ============================================================
-
-  class textStyle 
-  {
-    private:
-      std::string Font;
-      unsigned FontSize;
-      color Color;
-
-    public:
-      explicit textStyle( unsigned FontSize = 12 );
-
-      const color& getColor() const { return Color; }
-      void setColor( color C ) { Color = C; }
-
-      unsigned getFontSize() const { return FontSize; }
-      void setFontSize( unsigned S ) { FontSize = S; }
-
-      void setFontName( const std::string &F ) { Font = F; }
-      const std::string& getFontName() const { return Font; }
-  };
-  
-// ======================================================
-
 }
+      
+// ============================================================
 

@@ -48,8 +48,7 @@ namespace scigraphics
       color Color;
 
     public:
-
-      pointStyle( const color& C = color::Black ) : Shape(Square), Width(4), Color(C) {}
+      explicit pointStyle( const color& Color = color::Black );
 
       shape getShape() const { return Shape; } 
       void setShape( shape S ) { Shape = S; }

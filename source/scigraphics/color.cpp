@@ -27,6 +27,7 @@
 #endif
 
 #include "scigraphics/color.h"
+#include "scigraphics/interval.h"
 
 #include <algorithm>
 #include <limits>
@@ -34,6 +35,20 @@
 #include <cstdio>
 
 // ============================================================
+        
+scigraphics::color::color( rgb Value ) : 
+  RGB(Value) 
+{
+}
+
+// ------------------------------------------------------------
+
+scigraphics::color::color( const color &Color ) : 
+  RGB( Color.RGB ) 
+{
+}
+
+// ------------------------------------------------------------
 
 scigraphics::color::color( int R, int G, int B, int T )
 {
@@ -42,6 +57,22 @@ scigraphics::color::color( int R, int G, int B, int T )
         ( Lims.toInterval(R) << 16 ) | 
         ( Lims.toInterval(G) << 8  ) | 
         ( Lims.toInterval(B) << 0  );
+}
+        
+// ------------------------------------------------------------
+
+scigraphics::color& scigraphics::color::operator=( rgb Value ) 
+{ 
+  RGB = Value; 
+  return *this; 
+} 
+
+// ------------------------------------------------------------
+
+scigraphics::color& scigraphics::color::operator=( const color &Color ) 
+{ 
+  RGB = Color.RGB; 
+  return *this; 
 }
 
 // ------------------------------------------------------------
@@ -176,7 +207,35 @@ scigraphics::color scigraphics::color::lighter( double Value ) const
   return darker( -Value ); 
 }
 
+// ------------------------------------------------------------
+    
+bool scigraphics::operator==( color C1, color C2 ) 
+{ 
+  return C1.valueRgb() == C2.valueRgb(); 
+}
+
+// ------------------------------------------------------------
+
+bool scigraphics::operator!=( color C1, color C2 ) 
+{ 
+  return ! ( C1 == C2 ); 
+}
+
 // ============================================================
+
+scigraphics::colorSequence::colorSequence() 
+{
+  reset();
+}
+
+// ------------------------------------------------------------
+
+void scigraphics::colorSequence::append( color Color ) 
+{ 
+  Sequence.push_back(Color); 
+}
+
+// ------------------------------------------------------------
 
 scigraphics::color scigraphics::colorSequence::current() const
 {

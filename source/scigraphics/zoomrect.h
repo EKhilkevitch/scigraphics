@@ -21,7 +21,6 @@
 
 #pragma once
 
-#include "scigraphics/numbers.h"
 #include "scigraphics/geometry.h"
 
 namespace scigraphics
@@ -38,9 +37,10 @@ namespace scigraphics
     private:
       wpoint InitPoint, CursorPoint;
       bool Visible;
+
     public:
       zoomRectangle();
-      virtual ~zoomRectangle() {}
+      ~zoomRectangle() {}
 
       void show( wpoint Point );
       void pull( wpoint Point );

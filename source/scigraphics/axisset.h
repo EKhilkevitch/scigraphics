@@ -26,9 +26,7 @@
 #include "scigraphics/container_ptr.h"
 #include "scigraphics/plotlimits.h"
 
-#include <vector>
-#include <algorithm>
-#include <functional>
+#include <string>
 
 // ============================================================
 
@@ -84,12 +82,13 @@ namespace scigraphics
       const scale* getScale() const { return Scale; }
       void replaceScale( scale *S );
 
-      void setNumberLimits( numberLimits L );
+      void setNumberLimits( numberLimits Limits );
 
       void setAxisTitle( const std::string &Title );
       std::string getAxisTitle() const;
 
-      void setNumberStyle( numberStyle *Style );
+      void setNumberStyle( const numberStyle &Style );
+      const numberStyle& getNumberStyle();
 
       virtual wcoord requiredIndent( bool Used ) const = 0;
 
@@ -110,7 +109,7 @@ namespace scigraphics
   class axisSetX : public axisSet
   {
     public:
-      axisSetX( fcoord BaseY );
+      explicit axisSetX( fcoord BaseY );
       direction getDirection() const { return DirectionX; }
       wcoord requiredIndent( bool Used ) const;
   };
@@ -118,7 +117,7 @@ namespace scigraphics
   class axisSetY : public axisSet
   {
     public:
-      axisSetY( fcoord BaseX );
+      explicit axisSetY( fcoord BaseX );
       direction getDirection() const { return DirectionY; }
       wcoord requiredIndent( bool Used ) const;
   };
@@ -155,8 +154,8 @@ namespace scigraphics
       axisSet& at( axisPosition Position );
       const axisSet& at( axisPosition Position ) const;
 
-      axisSet& operator[]( axisPosition Position ) { return at(Position); }
-      const axisSet& operator[]( axisPosition Position ) const { return at(Position); }
+      axisSet& operator[]( axisPosition Position );
+      const axisSet& operator[]( axisPosition Position ) const;
 
       pairScales getBottomLeftPairScales();
 

@@ -29,6 +29,18 @@
 #include <cassert>
 
 // ============================================================
+        
+scigraphics::sequence::graphViewCollection::graphViewCollection() 
+{
+}
+
+// ------------------------------------------------------------
+
+scigraphics::sequence::graphViewCollection::~graphViewCollection() 
+{
+}
+
+// ------------------------------------------------------------
 
 void scigraphics::sequence::graphViewCollection::erase( graphView *View ) 
 {  

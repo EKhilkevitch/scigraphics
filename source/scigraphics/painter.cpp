@@ -32,12 +32,20 @@
 #include <iostream>
 #include <cassert>
 #include <cmath>
+#include <cstdlib>
 
 #if _MSC_VER
 #  pragma warning( disable : 4244 ) 
 #endif
 
 // ============================================================
+      
+scigraphics::painter::painter( drawer *D ) : 
+  Drawer(D) 
+{
+}
+
+// ------------------------------------------------------------
       
 scigraphics::painter::~painter() 
 { 

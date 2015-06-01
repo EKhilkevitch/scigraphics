@@ -27,7 +27,6 @@
 
 #include "scigraphics/numbers.h"
 
-#include <algorithm>
 #include <ostream>
 
 // ============================================================
@@ -67,12 +66,14 @@ namespace scigraphics
     private:
       point<T> CornerLD, CornerRU;
 
-    protected:
+    private:
       static T abs( T Number );
+      static T min( T Number1, T Number2 );
+      static T max( T Number1, T Number2 );
 
     public:
       rectangle();
-      rectangle( const point<T>& Pt1, const point<T>& Pt2 );
+      rectangle( const point<T> &Point1, const point<T> &Point2 );
       
       point<T>  leftUp() const;
       point<T>  rightDown() const;
@@ -210,6 +211,20 @@ namespace scigraphics
   { 
     return Number >= static_cast<T>(0) ? +Number : -Number; 
   }
+      
+  // ------------------------------------------------------------
+  
+  template <class T> T rectangle<T>::min( T Number1, T Number2 )
+  {
+    return Number1 < Number2 ? Number1 : Number2;
+  }
+  
+  // ------------------------------------------------------------
+  
+  template <class T> T rectangle<T>::max( T Number1, T Number2 )
+  {
+    return Number1 > Number2 ? Number1 : Number2;
+  }
   
   // ------------------------------------------------------------
   
@@ -222,8 +237,8 @@ namespace scigraphics
   // ------------------------------------------------------------
 
   template <class T> rectangle<T>::rectangle( const point<T>& Point1, const point<T>& Point2 ) :
-         CornerLD( std::min( Point1.x(), Point2.x() ), std::min( Point1.y(), Point2.y() ) ), 
-         CornerRU( std::max( Point1.x(), Point2.x() ), std::max( Point1.y(), Point2.y() ) ) 
+         CornerLD( min( Point1.x(), Point2.x() ), min( Point1.y(), Point2.y() ) ), 
+         CornerRU( max( Point1.x(), Point2.x() ), max( Point1.y(), Point2.y() ) ) 
   {
   }
   
@@ -347,7 +362,6 @@ namespace scigraphics
   }
 
   // ------------------------------------------------------------
-
 
   template <class T> rectangle<T> indents<T>::apply( const rectangle<T> &R ) const 
   {

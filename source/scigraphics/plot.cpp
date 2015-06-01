@@ -595,6 +595,48 @@ void scigraphics::plot::setScaleInterval( axisSetCollection::axisPosition Positi
 }
 
 // ------------------------------------------------------------
+
+void scigraphics::plot::setScaleIntervalX( interval<number> Interval )     
+{ 
+  setScaleInterval( axisSetCollection::Bottom, Interval ); 
+}
+
+// ------------------------------------------------------------
+
+void scigraphics::plot::setScaleIntervalX( number Min, number Max ) 
+{ 
+  setScaleIntervalX( interval<number>(Min,Max) ); 
+}
+
+// ------------------------------------------------------------
+
+scigraphics::interval<scigraphics::number> scigraphics::plot::scaleIntervalX() const          
+{ 
+  return scaleInterval( axisSetCollection::Bottom ); 
+}
+
+// ------------------------------------------------------------
+
+void scigraphics::plot::setScaleIntervalY( interval<number> Interval )     
+{ 
+  setScaleInterval( axisSetCollection::Left, Interval ); 
+}
+
+// ------------------------------------------------------------
+
+void scigraphics::plot::setScaleIntervalY( number Min, number Max ) 
+{ 
+  setScaleIntervalY( interval<number>(Min,Max) ); 
+}
+
+// ------------------------------------------------------------
+
+scigraphics::interval<scigraphics::number> scigraphics::plot::scaleIntervalY() const          
+{ 
+  return scaleInterval( axisSetCollection::Left ); 
+}
+
+// ------------------------------------------------------------
       
 scigraphics::interval<scigraphics::number> scigraphics::plot::scaleInterval( axisSetCollection::axisPosition Position ) const
 {
@@ -611,10 +653,38 @@ scigraphics::interval<scigraphics::number> scigraphics::plot::visibleInterval( a
 }
 
 // ------------------------------------------------------------
+      
+scigraphics::interval<scigraphics::number> scigraphics::plot::visibleIntervalX() const 
+{ 
+  return visibleInterval(axisSetCollection::Bottom); 
+}
+
+// ------------------------------------------------------------
+
+scigraphics::interval<scigraphics::number> scigraphics::plot::visibleIntervalY() const 
+{ 
+  return visibleInterval(axisSetCollection::Left); 
+}
+
+// ------------------------------------------------------------
 
 void scigraphics::plot::setScaleLock( axisSetCollection::axisPosition Position, bool Lock )
 {
   Pimpl->AxisSets[Position].getScale()->setLock(Lock);
+}
+
+// ------------------------------------------------------------
+      
+void scigraphics::plot::setScaleLockX( bool Lock )   
+{ 
+  setScaleLock( axisSetCollection::Bottom, Lock ); 
+}
+
+// ------------------------------------------------------------
+
+void scigraphics::plot::setScaleLockY( bool Lock )   
+{ 
+  setScaleLock( axisSetCollection::Left,   Lock ); 
 }
 
 // ------------------------------------------------------------
@@ -641,7 +711,7 @@ void scigraphics::plot::setBottomLeftAxisTitles( const std::string &TitleX, cons
 
 // ------------------------------------------------------------
 
-void scigraphics::plot::setAxisNumberStyle( axisSetCollection::axisPosition Position, numberStyle *Style )
+void scigraphics::plot::setAxisNumberStyle( axisSetCollection::axisPosition Position, const numberStyle &Style )
 {
   Pimpl->AxisSets[Position].setNumberStyle(Style);
 }

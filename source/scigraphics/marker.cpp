@@ -29,6 +29,26 @@
 
 // ============================================================
       
+scigraphics::marker::marker() : 
+  NumberOfMarks( 4, 9 ) 
+{
+}
+
+// ------------------------------------------------------------
+      
+scigraphics::marker::~marker() 
+{
+}
+
+// ------------------------------------------------------------
+      
+void scigraphics::marker::setNumberOfMarks( int Min, int Max ) 
+{ 
+  NumberOfMarks.setMinMax(Min,Max); 
+}
+
+// ------------------------------------------------------------
+      
 scigraphics::number scigraphics::marker::baseOrder( number Value )
 { 
   return std::floor( std::log10( Value ) ); 

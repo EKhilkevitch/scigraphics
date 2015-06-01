@@ -21,8 +21,6 @@
 
 #pragma once
 
-#include <cassert>
-
 #include "scigraphics/mouse.h"
 
 namespace scigraphics
@@ -31,6 +29,8 @@ namespace scigraphics
 // ============================================================
 
   class plot;
+
+// ============================================================
 
   class mouseCallBack
   {
@@ -41,8 +41,8 @@ namespace scigraphics
       plot& getPlot() { return Plot; }
 
     public:
-      mouseCallBack( plot &P ) : Plot(P) {}
-      virtual ~mouseCallBack() {}
+      explicit mouseCallBack( plot &Plot );
+      virtual ~mouseCallBack();
 
       virtual void onPressed( mouse::mouseActionHandler* ) {}
       virtual void onMoved( mouse::mouseActionHandler* ) {}
@@ -57,14 +57,14 @@ namespace scigraphics
 
     private:
       mouseCallBackContainer( const mouseCallBackContainer& );
-      mouseCallBackContainer& operator=( mouseCallBackContainer ); 
+      mouseCallBackContainer& operator=( const mouseCallBackContainer& ); 
 
     public:
-      mouseCallBackContainer( plot &Plot ) : CallBack( new mouseCallBack(Plot) ) {}
-      ~mouseCallBackContainer() { delete CallBack; }
+      explicit mouseCallBackContainer( plot &Plot );
+      ~mouseCallBackContainer();
 
-      void set( mouseCallBack *C ) { assert( C != NULL ); if ( CallBack != C ) delete CallBack; CallBack = C; }
-      mouseCallBack& get() { return *CallBack; }
+      void set( mouseCallBack *CallBack );
+      mouseCallBack& get();
   };
 
 // ============================================================

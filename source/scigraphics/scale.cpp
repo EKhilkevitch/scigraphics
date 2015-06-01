@@ -26,7 +26,6 @@
 #include "scigraphics/marker.h"
 
 #include <cmath>
-#include <algorithm>
 #include <cassert>
 #include <iostream>
 #include <limits>
@@ -119,6 +118,13 @@ scigraphics::number scigraphics::scale::fractionToNumber( fcoord Coordinate ) co
   return Number;
 }
             
+// ------------------------------------------------------------
+
+scigraphics::interval<scigraphics::number> scigraphics::scale::getNumberInterval() const 
+{ 
+  return getNumberLimits().totalLimits(); 
+}
+
 // ------------------------------------------------------------
 
 scigraphics::interval<scigraphics::number> scigraphics::scale::getVisivleInterval() const
@@ -244,6 +250,13 @@ scigraphics::number scigraphics::scaleLogarithmPositive::partOfDistanceToNumber(
   return std::pow( 10, Part );
 }
 
+// ------------------------------------------------------------
+      
+scigraphics::interval<scigraphics::number> scigraphics::scaleLogarithmPositive::getNumberInterval() const 
+{ 
+  return getNumberLimits().positiveLimits(); 
+}
+
 // ============================================================
 
 scigraphics::scaleLogarithmNegative::scaleLogarithmNegative()
@@ -274,11 +287,32 @@ scigraphics::number scigraphics::scaleLogarithmNegative::partOfDistanceToNumber(
   return - std::pow( 10, Part );
 }
 
+// ------------------------------------------------------------
+      
+scigraphics::interval<scigraphics::number> scigraphics::scaleLogarithmNegative::getNumberInterval() const 
+{ 
+  return getNumberLimits().negativeLimits(); 
+}
+
 // ============================================================
       
 scigraphics::scaleSquare::scaleSquare() 
 { 
   setMarker( new markerLinear() ); 
+}
+
+// ------------------------------------------------------------
+
+scigraphics::number scigraphics::scaleSquare::sign( number Val )     
+{ 
+  return Val < 0 ? -1 : Val > 0 ? +1 : 0; 
+}
+
+// ------------------------------------------------------------
+
+scigraphics::number scigraphics::scaleSquare::signsqr( number Val )  
+{ 
+  return Val*Val*sign(Val); 
 }
 
 // ------------------------------------------------------------

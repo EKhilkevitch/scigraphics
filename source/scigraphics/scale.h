@@ -67,7 +67,7 @@ namespace scigraphics
       void setNumberLimits( const numberLimits &N ) { NumberLimits = N; }
       const numberLimits& getNumberLimits() const { return NumberLimits; }
       
-      virtual interval<number> getNumberInterval() const { return getNumberLimits().totalLimits(); }
+      virtual interval<number> getNumberInterval() const;
       interval<number> getVisivleInterval() const;
 
       fcoord numberToFraction( number Number ) const;
@@ -81,7 +81,7 @@ namespace scigraphics
 
       void reset();
 
-      void setLock( bool L );
+      void setLock( bool Locked );
       void lock()   { setLock(true);  }
       void unlocK() { setLock(false); }
       bool isLocked() const { return Locked; }
@@ -101,6 +101,7 @@ namespace scigraphics
     protected:
       double numberToPartOfDistance( number Number ) const;
       number partOfDistanceToNumber( double Part ) const;
+
     public:
       scaleLinear();
   };
@@ -116,9 +117,10 @@ namespace scigraphics
     protected:
       double numberToPartOfDistance( number Number ) const;
       number partOfDistanceToNumber( double Part ) const;
+
     public:
       scaleLogarithmPositive();
-      interval<number> getNumberInterval() const { return getNumberLimits().positiveLimits(); }
+      interval<number> getNumberInterval() const;
   };
   
   class scaleLogarithmNegative : public scaleLogarithm
@@ -126,16 +128,17 @@ namespace scigraphics
     protected:
       double numberToPartOfDistance( number Number ) const;
       number partOfDistanceToNumber( double Part ) const;
+
     public:
       scaleLogarithmNegative();
-      interval<number> getNumberInterval() const { return getNumberLimits().negativeLimits(); }
+      interval<number> getNumberInterval() const;
   };
 
   class scaleSquare : public scale
   {
     protected:
-      static number sign( number Val )     { return Val < 0 ? -1 : Val > 0 ? +1 : 0; }
-      static number signsqr( number Val )  { return Val*Val*sign(Val); }
+      static number sign( number Val );
+      static number signsqr( number Val );
       static number signsqrt( number Val );
       
       double numberToPartOfDistance( number Number ) const;

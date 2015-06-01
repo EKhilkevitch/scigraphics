@@ -57,6 +57,7 @@ namespace scigraphics
       indents<wcoord> Indents;
       wrectangle PlotRectangle;
 
+    private:
       painter( const painter& );
       painter& operator=( const painter& );
       
@@ -65,16 +66,16 @@ namespace scigraphics
       void updatePlotRectangle();
 
     public:
-      painter( drawer *D = NULL ) : Drawer(D) {}
-      virtual ~painter();
+      explicit painter( drawer *Drawer = NULL );
+      ~painter();
       
-      void setDrawer( drawer *D );
+      void setDrawer( drawer *Drawer );
       drawer* getDrawer() { return Drawer; }
       
       wcoord plotWidth()  const;
       wcoord plotHeight() const;
 
-      void setIndents( const indents<wcoord>& Ids );
+      void setIndents( const indents<wcoord>& Indents );
       const indents<wcoord> getIndents() const { return Indents; }
       
       const wrectangle& plotRectangle() const { return PlotRectangle; }
@@ -90,7 +91,7 @@ namespace scigraphics
       wpoint fpoint2wpoint( fpoint Pt ) const;
       fpoint wpoint2fpoint( wpoint Pt ) const;
 
-      bool canSeparatePointsF( fpoint Pt1, fpoint Pt2 ) const;
+      bool canSeparatePointsF( fpoint Point1, fpoint Ppoint2 ) const;
       bool canSepareteXcoordsF( fcoord X1, fcoord X2 ) const;
      
       void update();

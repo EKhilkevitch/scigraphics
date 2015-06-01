@@ -42,7 +42,6 @@ namespace scigraphics
 
 // ============================================================
 
-
   class drawer
   {
     protected:

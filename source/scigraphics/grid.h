@@ -24,6 +24,8 @@
 #include "scigraphics/numbers.h"
 #include "scigraphics/linestyle.h"
 
+#include <vector>
+
 namespace scigraphics
 {
 
@@ -47,8 +49,8 @@ namespace scigraphics
       virtual void drawMajorGridOneLine( painter &Painter, const scale &Scale, const number Value ) = 0;
 
     public:
-      grid() : LineStyle(DefaultGridLineStyle) {}
-      virtual ~grid() {}
+      grid();
+      virtual ~grid();
 
       const lineStyle& getLineStyle() const { return LineStyle; }
       void setLineStyle( const lineStyle &Style ) { LineStyle = Style; }

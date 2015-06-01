@@ -26,6 +26,8 @@
 #include "scigraphics/textstyle.h"
 #include "scigraphics/floatrect.h"
 
+#include <string>
+
 // ============================================================
 
 namespace scigraphics
@@ -40,8 +42,8 @@ namespace scigraphics
       textStyle TextStyle;
 
     protected:
-      unsigned textVerticalIndent() const { return std::max( getTextStyle().getFontSize()/3, 2U ); }
-      unsigned textHorizontalIndent() const { return 5; }
+      unsigned textVerticalIndent() const;
+      unsigned textHorizontalIndent() const;
   
       void drawText( painter &Painter, const std::string &Text );
       void updateRectangle( painter &Painter, const std::string &Text );
