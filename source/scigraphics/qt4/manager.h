@@ -23,7 +23,7 @@
 
 // ================================================================
 
-#include "scigraphics/axisset.h"
+#include "scigraphics/axisposition.h"
 
 #include <QObject>
 #include <QList>
@@ -76,18 +76,18 @@ namespace scigraphics
 
       qt4plot* createNextPlot();
       QSplitter* createVerticalPlotSplitter( const unsigned NumOfPlotsinSplitter );
-      void createSettings( const settingsMode SettingsMode, const QList<axisSetCollection::axisPosition> &Positions, qt4settingsComposer *Composer);
-      QWidget* createTabSettingsWidget( const QList<axisSetCollection::axisPosition> &Positions, qt4settingsComposer *Composer );
-      QWidget* createSharedSettingsWidget(const QList<axisSetCollection::axisPosition> &Positions, qt4settingsComposer *Composer );
+      void createSettings( const settingsMode SettingsMode, const QList<axisPosition> &Positions, qt4settingsComposer *Composer);
+      QWidget* createTabSettingsWidget( const QList<axisPosition> &Positions, qt4settingsComposer *Composer );
+      QWidget* createSharedSettingsWidget(const QList<axisPosition> &Positions, qt4settingsComposer *Composer );
       qt4settingsComposer* createComposer( qt4settingsComposer *Composer, int Index );
 
       QTabWidget* tabWidget() { return SettingsTab; }
       QList<qt4plot*>& plotList() { return Plots; }
 
     public:
-      qt4plotManager( unsigned NumOfPlots, unsigned NumOfRows = 1, QObject *Parent = NULL );
+      explicit qt4plotManager( unsigned NumOfPlots, unsigned NumOfRows = 1, QObject *Parent = NULL );
       qt4plotManager( unsigned NumOfPlots, unsigned NumOfRows, QObject *Parent, const settingsMode SettingsMode );
-      qt4plotManager( unsigned NumOfPlots, unsigned NumOfRows, QObject *Parent, const settingsMode SettingsMode, const QList<axisSetCollection::axisPosition> &Positions,
+      qt4plotManager( unsigned NumOfPlots, unsigned NumOfRows, QObject *Parent, const settingsMode SettingsMode, const QList<axisPosition> &Positions,
         qt4settingsComposer *Composer = NULL );
       ~qt4plotManager();
       

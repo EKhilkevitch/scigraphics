@@ -23,7 +23,9 @@
 
 // ================================================================
 
-#include "scigraphics/axisset.h"
+#include "scigraphics/axisposition.h"
+#include "scigraphics/interval.h"
+#include "scigraphics/numbers.h"
 #include "scigraphics/settings.h"
 
 #include <QGroupBox>
@@ -52,7 +54,7 @@ namespace scigraphics
     Q_OBJECT
 
     protected:
-      static QString axisPositionString( axisSetCollection::axisPosition Axis );
+      static QString axisPositionString( axisPosition Axis );
 
     public:
       qt4settingsGroupBox( const QString &Name = QString(), QWidget *Parent = NULL );
@@ -75,7 +77,7 @@ namespace scigraphics
     Q_OBJECT
 
     public:
-      typedef QList<axisSetCollection::axisPosition> axisPositionsList;
+      typedef QList<axisPosition> axisPositionsList;
       
       static axisPositionsList defaultAxisPositions();
 
@@ -86,12 +88,12 @@ namespace scigraphics
       void addToList( qt4settingsGroupBox *B );
 
       virtual int numOfRowsInLayout() { return 0; }
-      virtual qt4settingsGroupBox* createBoxForAxisPosition( scigraphics::axisSetCollection::axisPosition ) { return NULL; }
+      virtual qt4settingsGroupBox* createBoxForAxisPosition( scigraphics::axisPosition ) { return NULL; }
 
       void init( const axisPositionsList &AxisPositions = defaultAxisPositions() );
 
     public:
-      qt4settingsGroupSuperBox( const QString &Name = QString(), QWidget *Parent = NULL ) : qt4settingsGroupBox(Name,Parent) {}
+      explicit qt4settingsGroupSuperBox( const QString &Name = QString(), QWidget *Parent = NULL );
 
       void applySettings( qt4settings* Settings );
       void collectSettings( qt4plot* Plot );
@@ -110,7 +112,7 @@ namespace scigraphics
     Q_OBJECT
 
     private:
-      scigraphics::axisSetCollection::axisPosition AxisType;
+      scigraphics::axisPosition AxisType;
 
       QCheckBox *ManualScaleBox;
       qt4labeledLineEdit *MinScaleEdit, *MaxScaleEdit;
@@ -119,7 +121,7 @@ namespace scigraphics
       scigraphics::interval<scigraphics::number> getLimits() const;
 
     public:
-      qt4settingsScaleIntervals( const scigraphics::axisSetCollection::axisPosition Axis, QWidget *Parent = NULL );
+      explicit qt4settingsScaleIntervals( const scigraphics::axisPosition Axis, QWidget *Parent = NULL );
       
       void applySettings( qt4settings* Settings );
       void saveSettings( QSettings* ) const;
@@ -137,12 +139,11 @@ namespace scigraphics
 
     private:
       int numOfRowsInLayout() { return 2; }
-      qt4settingsGroupBox* createBoxForAxisPosition( scigraphics::axisSetCollection::axisPosition Pos ) { return new qt4settingsScaleIntervals(Pos,this); }
+      qt4settingsGroupBox* createBoxForAxisPosition( scigraphics::axisPosition Pos );
       static QString name() { return "Scale intervals"; }
 
     public:
-      qt4settingsScaleIntervalsAllAxis( QWidget *Parent = NULL, const axisPositionsList &Positions = defaultAxisPositions() ) : 
-        qt4settingsGroupSuperBox( name(), Parent ) { init(Positions); }
+      explicit qt4settingsScaleIntervalsAllAxis( QWidget *Parent, const axisPositionsList &Positions );
   };
 
   // ----------------------------------------------------------------
@@ -162,7 +163,7 @@ namespace scigraphics
       unsigned getGraphType() const;
 
     public:
-      qt4settingsGraphType( QWidget *Parent = NULL );
+      explicit qt4settingsGraphType( QWidget *Parent = NULL );
 
       void applySettings( qt4settings* Settings );
 
@@ -202,7 +203,7 @@ namespace scigraphics
     Q_OBJECT
 
     private:
-      axisSetCollection::axisPosition AxisType;
+      axisPosition AxisType;
 
       QRadioButton *LinearBtn, *LogarithmPositiveBtn, *LogarithmNegativeBtn, *SquareBtn;
 
@@ -210,7 +211,7 @@ namespace scigraphics
       settings::scaleType getScaleType() const;
 
     public:
-      qt4settingsScaleType( const scigraphics::axisSetCollection::axisPosition Axis, QWidget *Parent = NULL );
+      explicit qt4settingsScaleType( const scigraphics::axisPosition Axis, QWidget *Parent = NULL );
       
       void applySettings( qt4settings* Settings );
       
@@ -226,11 +227,11 @@ namespace scigraphics
 
     protected:
       int numOfRowsInLayout() { return 1; }
-      qt4settingsGroupBox* createBoxForAxisPosition( scigraphics::axisSetCollection::axisPosition Pos ) { return new qt4settingsScaleType(Pos,this); }
+      qt4settingsGroupBox* createBoxForAxisPosition( scigraphics::axisPosition Pos ) { return new qt4settingsScaleType(Pos,this); }
       static QString name() { return "Scale types"; }
 
     public:
-      qt4settingsScaleTypeAllAxis( QWidget *Parent = NULL, const axisPositionsList &Positions = defaultAxisPositions() ) : 
+      explicit qt4settingsScaleTypeAllAxis( QWidget *Parent = NULL, const axisPositionsList &Positions = defaultAxisPositions() ) : 
         qt4settingsGroupSuperBox( name(), Parent ) { init(Positions); }
   };
 

@@ -30,6 +30,29 @@
 #include <stdexcept>
 
 // ============================================================
+          
+scigraphics::plotElementsCollection::axisSetsPair::axisSetsPair() : 
+  AxisX(NULL), 
+  AxisY(NULL) 
+{
+}
+
+// ------------------------------------------------------------
+
+scigraphics::plotElementsCollection::axisSetsPair::axisSetsPair( const axisSet *X, const axisSet *Y ) : 
+  AxisX(X), 
+  AxisY(Y) 
+{
+}
+
+// ------------------------------------------------------------
+          
+bool scigraphics::plotElementsCollection::axisSetsPair::isZero() const 
+{ 
+  return AxisX == NULL || AxisY == NULL; 
+}
+
+// ------------------------------------------------------------
 
 const scigraphics::scale* scigraphics::plotElementsCollection::axisSetsPair::scaleX() const
 { 

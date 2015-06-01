@@ -42,7 +42,7 @@ scigraphics::qt4settings::qt4settings( QWidget *Parent, const QString &Name ) :
 
 // ----------------------------------------------------------------
 
-scigraphics::qt4settings::qt4settings( QWidget *Parent, const QList<axisSetCollection::axisPosition> &Positions ) : 
+scigraphics::qt4settings::qt4settings( QWidget *Parent, const QList<axisPosition> &Positions ) : 
   QWidget(Parent), 
   Settings( new settings() ),
   SettingsComposer(NULL)
@@ -52,7 +52,7 @@ scigraphics::qt4settings::qt4settings( QWidget *Parent, const QList<axisSetColle
       
 // ----------------------------------------------------------------
 
-scigraphics::qt4settings::qt4settings( QWidget *Parent, const QString &Name, const QList<axisSetCollection::axisPosition> &Positions, qt4settingsComposer *Composer ) : 
+scigraphics::qt4settings::qt4settings( QWidget *Parent, const QString &Name, const QList<axisPosition> &Positions, qt4settingsComposer *Composer ) : 
   QWidget(Parent), 
   Settings( new settings() ),
   SettingsComposer(NULL)

@@ -66,13 +66,13 @@ int main( int argc, char *argv[] )
   scigraphics::color Color = scigraphics::color::DarkGreen;
   Color.setTransparency( 0.8 );
   Abs->setColor( Color );
-  Plot.bindGraphToAxis( Abs, scigraphics::axisSetCollection::Bottom, scigraphics::axisSetCollection::Right );
+  Plot.bindGraphToAxis( Abs, scigraphics::AxisBottom, scigraphics::AxisRight );
   
   scigraphics::graphSV *Cos = Plot.createGraphSequenceVector( "Cos+1" );
   for ( double x = 0; x <= 3; x+= 0.1 )
     Cos->append( x, std::cos(x)+1 );
   Cos->setLineStyle( scigraphics::lineStyle::Dash );
-  Plot.bindGraphToAxis( Cos, scigraphics::axisSetCollection::Top, scigraphics::axisSetCollection::Right );
+  Plot.bindGraphToAxis( Cos, scigraphics::AxisTop, scigraphics::AxisRight );
 
   scigraphics::graphAV *Polygons = Plot.createGraphAV("Polygons");
   Polygons->append( 0, 0 );
@@ -103,15 +103,15 @@ int main( int argc, char *argv[] )
 
   Plot.setDisallowedMouseOperations( scigraphics::mouse::allowing::SelectH );
   
-  Plot.setAxisTitle( scigraphics::axisSetCollection::Bottom, "This is axis X bottom" " -> \xce\xbc" );
-  Plot.setAxisTitle( scigraphics::axisSetCollection::Top, "This is axis X top" );
-  Plot.setAxisTitle( scigraphics::axisSetCollection::Left, "This is axis Y left" );
-  Plot.setAxisTitle( scigraphics::axisSetCollection::Right, "This is axis Y right" );
-  Plot.setAxisNumberStyle( scigraphics::axisSetCollection::Right, scigraphics::numberStyle(scigraphics::numberStyle::Exponent) );
+  Plot.setAxisTitle( scigraphics::AxisBottom, "This is axis X bottom" " -> \xce\xbc" );
+  Plot.setAxisTitle( scigraphics::AxisTop, "This is axis X top" );
+  Plot.setAxisTitle( scigraphics::AxisLeft, "This is axis Y left" );
+  Plot.setAxisTitle( scigraphics::AxisRight, "This is axis Y right" );
+  Plot.setAxisNumberStyle( scigraphics::AxisRight, scigraphics::numberStyle(scigraphics::numberStyle::Exponent) );
 
   scigraphics::qt4settingsGroupSuperBox::axisPositionsList AxisPositions = scigraphics::qt4settingsGroupSuperBox::defaultAxisPositions();
-  AxisPositions << scigraphics::axisSetCollection::Top;
-  AxisPositions << scigraphics::axisSetCollection::Right;
+  AxisPositions << scigraphics::AxisTop;
+  AxisPositions << scigraphics::AxisRight;
 
   scigraphics::qt4settings Settings( NULL, "", AxisPositions, new scigraphics::qt4settingsComposerTabs() );
   Settings.addSettingWidget( new scigraphics::qt4settingsSelections() );

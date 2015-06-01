@@ -65,7 +65,7 @@ int main( int argc, char **argv )
   scigraphics::graphSV *Abs = Manager.plot(2)->createGraphSV( "Abs" );
   for ( double x = -1; x <= 1; x+= 0.1 )
     Abs->append( x, std::fabs(x) );
-  Manager.plot(2)->scaleWithPosition( scigraphics::axisSetCollection::Left )->lock();
+  Manager.plot(2)->scaleWithPosition( scigraphics::AxisLeft )->lock();
   
   scigraphics::graphSV *Exp = Manager.plot(3)->createGraphSV( "Exp" );
   for ( double x = -2; x <= 10; x+= 0.1 )

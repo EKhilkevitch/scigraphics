@@ -25,7 +25,7 @@
 
 #include "scigraphics/interval.h"
 #include "scigraphics/numbers.h"
-#include "scigraphics/axisset.h"
+#include "scigraphics/axisposition.h"
 
 // ============================================================
 
@@ -81,8 +81,8 @@ namespace scigraphics
       };
 
     private:
-      scaleType ScaleTypes[ axisSetCollection::PositionsCount ];
-      interval<number> ScaleLimits[ axisSetCollection::PositionsCount ];
+      scaleType ScaleTypes[ AxisPositionsCount ];
+      interval<number> ScaleLimits[ AxisPositionsCount ];
       selectionStripType SelectionStripType;
       interval<number> SelectionStripInterval;
       unsigned GraphType;
@@ -90,7 +90,7 @@ namespace scigraphics
 
     private:
       static scale* createScale( scaleType Type );
-      static bool equalScaleTypes( const scale *S1, const scale *S2 );
+      static bool equalScaleTypes( const scale *Scale1, const scale *Scale2 );
       static interval<number> correctLimits( interval<number> Limits );
       void applyGraphTypeToGraph( sequence::graph *Graph ) const;
 
@@ -103,13 +103,13 @@ namespace scigraphics
 
     public:
       settings();
-      virtual ~settings() {}
+      virtual ~settings();
 
       virtual void apply( plot *Plot ) const;
 
-      void setLimits( const interval<number> &Lims, axisSetCollection::axisPosition AxisPos );
+      void setLimits( const interval<number> &Lims, axisPosition AxisPos );
       void setGraphType( unsigned Type );
-      void setScaleType( scaleType Type, axisSetCollection::axisPosition AxisPos );
+      void setScaleType( scaleType Type, axisPosition AxisPos );
       void setVisibleFloatingRectangles( unsigned FloatRectangles );
       
       void setSelectionInterval( selectionStripType Type, interval<number> Interval );

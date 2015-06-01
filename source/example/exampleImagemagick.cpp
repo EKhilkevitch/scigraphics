@@ -59,12 +59,12 @@ int main()
   scigraphics::color Color = scigraphics::color::Green;
   Color.setTransparency( 0.3 );
   Abs->setColor( Color );
-  Plot.bindGraphToAxis( Abs, scigraphics::axisSetCollection::Bottom, scigraphics::axisSetCollection::Right );
+  Plot.bindGraphToAxis( Abs, scigraphics::AxisBottom, scigraphics::AxisRight );
   
   scigraphics::graphSV *Cos = Plot.createGraphSV( "Cos+1" );
   for ( double x = 0; x <= 3; x+= 0.1 )
     Cos->append( x, std::cos(x)+1 );
-  Plot.bindGraphToAxis( Cos, scigraphics::axisSetCollection::Top, scigraphics::axisSetCollection::Right );
+  Plot.bindGraphToAxis( Cos, scigraphics::AxisTop, scigraphics::AxisRight );
 
   scigraphics::graphAV *Polygons = Plot.createGraphAV("Polygons");
   Polygons->append( 0, 0 );
@@ -94,10 +94,10 @@ int main()
   }
 #endif
 
-  Plot.setAxisTitle( scigraphics::axisSetCollection::Bottom, "This is axis X bottom" " -> \xce\xbc" );
-  Plot.setAxisTitle( scigraphics::axisSetCollection::Top, "This is axis X top" );
-  Plot.setAxisTitle( scigraphics::axisSetCollection::Left, "This is axis Y left" );
-  Plot.setAxisTitle( scigraphics::axisSetCollection::Right, "This is axis Y right" );
+  Plot.setAxisTitle( scigraphics::AxisBottom, "This is axis X bottom" " -> \xce\xbc" );
+  Plot.setAxisTitle( scigraphics::AxisTop,    "This is axis X top" );
+  Plot.setAxisTitle( scigraphics::AxisLeft,   "This is axis Y left" );
+  Plot.setAxisTitle( scigraphics::AxisRight,  "This is axis Y right" );
 
   //Plot.display();
   Plot.write("TestIM.png");

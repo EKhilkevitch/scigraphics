@@ -25,6 +25,7 @@
 #include "scigraphics/scale.h"
 #include "scigraphics/selection.h"
 #include "scigraphics/graphsequence.h"
+#include "scigraphics/plotlimits.h"
 
 #include <cassert>
 #include <typeinfo>
@@ -41,11 +42,17 @@ scigraphics::settings::settings() :
   GraphType( Individual ),
   VisibleFloatingRectangles( Legend|CursorPosition )
 {
-  for ( unsigned i = 0; i < axisSetCollection::PositionsCount; i++ )
+  for ( size_t i = 0; i < AxisPositionsCount; i++ )
   {
     ScaleTypes[i] = Linear;
     ScaleLimits[i] = plotLimits::autoScaleInterval();
   }
+}
+
+// ------------------------------------------------------------
+      
+scigraphics::settings::~settings() 
+{
 }
 
 // ------------------------------------------------------------
@@ -137,9 +144,9 @@ void scigraphics::settings::applyScaleType( plot *Plot ) const
 {
   assert( Plot != NULL );
 
-  for ( unsigned i = 0; i < axisSetCollection::PositionsCount; i++ )
+  for ( size_t i = 0; i < AxisPositionsCount; i++ )
   {
-    axisSetCollection::axisPosition Position = static_cast<axisSetCollection::axisPosition>(i);
+    axisPosition Position = static_cast<axisPosition>(i);
     scale *Scale = createScale( ScaleTypes[i] );
     const scale *CurrScale = Plot->scaleWithPosition( Position );
 
@@ -159,9 +166,9 @@ void scigraphics::settings::applyLimits( plot *Plot ) const
 {
   assert( Plot != NULL );
 
-  for ( unsigned i = 0; i < axisSetCollection::PositionsCount; i++ )
+  for ( size_t i = 0; i < AxisPositionsCount; i++ )
   {
-    axisSetCollection::axisPosition Position = static_cast<axisSetCollection::axisPosition>(i);
+    axisPosition Position = static_cast<axisPosition>(i);
     Plot->setScaleInterval( Position, ScaleLimits[i] );
   }
 }
@@ -235,9 +242,9 @@ bool scigraphics::settings::equalScaleTypes( const scale *S1, const scale *S2 )
 
 // ------------------------------------------------------------
 
-void scigraphics::settings::setScaleType( scaleType Type, axisSetCollection::axisPosition AxisPos ) 
+void scigraphics::settings::setScaleType( scaleType Type, axisPosition AxisPos ) 
 {
-  if ( AxisPos >= axisSetCollection::PositionsCount )
+  if ( AxisPos >= AxisPositionsCount )
     throw std::invalid_argument( "Axis position is invalid" );
 
   ScaleTypes[ AxisPos ] = Type;
@@ -245,9 +252,9 @@ void scigraphics::settings::setScaleType( scaleType Type, axisSetCollection::axi
 
 // ------------------------------------------------------------
       
-void scigraphics::settings::setLimits( const interval<number> &Limits, axisSetCollection::axisPosition AxisPos ) 
+void scigraphics::settings::setLimits( const interval<number> &Limits, axisPosition AxisPos ) 
 { 
-  if ( AxisPos >= axisSetCollection::PositionsCount )
+  if ( AxisPos >= AxisPositionsCount )
     throw std::invalid_argument( "Axis position is invalid" );
 
   ScaleLimits[ AxisPos ] = Limits;

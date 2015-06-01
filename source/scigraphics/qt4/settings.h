@@ -23,7 +23,7 @@
 
 // ================================================================
 
-#include "scigraphics/axisset.h"
+#include "scigraphics/axisposition.h"
 
 #include <QWidget>
 #include <QList>
@@ -69,13 +69,13 @@ namespace scigraphics
 
       void setComposer( qt4settingsComposer *Composer );
 
-      void initSettings( const QString &Name, const QList<axisSetCollection::axisPosition> &Positions,
+      void initSettings( const QString &Name, const QList<axisPosition> &Positions,
         qt4settingsComposer *Composer );
 
     public:
       explicit qt4settings( QWidget *Parent = NULL, const QString &Name = QString() );
-      qt4settings( QWidget *Parent, const QList<axisSetCollection::axisPosition> &Positions );
-      qt4settings( QWidget *Parent, const QString &Name, const QList<axisSetCollection::axisPosition> &Positions, qt4settingsComposer *Composer = NULL );
+      qt4settings( QWidget *Parent, const QList<axisPosition> &Positions );
+      qt4settings( QWidget *Parent, const QString &Name, const QList<axisPosition> &Positions, qt4settingsComposer *Composer = NULL );
       qt4settings( QWidget *Parent, qt4settingsComposer *Composer );
       ~qt4settings();
 

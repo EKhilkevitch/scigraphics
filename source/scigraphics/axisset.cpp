@@ -31,9 +31,9 @@
 #include "scigraphics/axistitle.h"
 
 #include <stdexcept>
-#include <typeinfo>
 #include <algorithm>
 #include <limits>
+#include <vector>
 #include <cassert>
 
 // ============================================================
@@ -74,16 +74,16 @@ void scigraphics::axisSet::replaceScale( scale *S )
 
 // ------------------------------------------------------------
 
-void scigraphics::axisSet::setNumberLimits( numberLimits L ) 
+void scigraphics::axisSet::setNumberLimits( const numberLimits &Limits ) 
 { 
-  Scale->setNumberLimits(L); 
+  Scale->setNumberLimits(Limits); 
 }
 
 // ------------------------------------------------------------
 
-void scigraphics::axisSet::setAxisTitle( const std::string &T ) 
+void scigraphics::axisSet::setAxisTitle( const std::string &Title ) 
 { 
-  AxisTitle->setTitle(T); 
+  AxisTitle->setTitle(Title); 
 }
 
 // ------------------------------------------------------------
@@ -175,7 +175,9 @@ void scigraphics::axisSet::drawGrid( painter &Painter )
       
 scigraphics::wcoord scigraphics::axisSet::wcoordDimension( const painter &Painter ) const
 {
-  return ( getDirection() == axisSet::DirectionX ) ? Painter.width() : Painter.height();;
+  return ( getDirection() == AxisDirectionX ) ? 
+    Painter.width() : 
+    Painter.height();
 }
 
 // ------------------------------------------------------------
@@ -271,12 +273,11 @@ scigraphics::wcoord scigraphics::axisSetY::requiredIndent( bool Used ) const
 scigraphics::axisSetCollection::axisSetCollection() :
   KeepScales1x1(false)
 {
-  assert( PositionsCount == 4 );
-  AxisSets.resize( PositionsCount );
-  AxisSets.set( Left,   new axisSetY(0) );
-  AxisSets.set( Right,  new axisSetY(1) );
-  AxisSets.set( Top,    new axisSetX(1) );
-  AxisSets.set( Bottom, new axisSetX(0) );
+  AxisSets.resize( 4 );
+  AxisSets.set( AxisLeft,   new axisSetY(0) );
+  AxisSets.set( AxisRight,  new axisSetY(1) );
+  AxisSets.set( AxisTop,    new axisSetX(1) );
+  AxisSets.set( AxisBottom, new axisSetX(0) );
 }
 
 // ------------------------------------------------------------
@@ -299,7 +300,7 @@ scigraphics::axisSet& scigraphics::axisSetCollection::at( axisPosition Position 
       
 scigraphics::pairScales scigraphics::axisSetCollection::getBottomLeftPairScales()
 {
-  return pairScales( *(AxisSets[Bottom].getScale()), *(AxisSets[Left].getScale()) ); 
+  return pairScales( *(AxisSets[AxisBottom].getScale()), *(AxisSets[AxisLeft].getScale()) ); 
 }
 
 // ------------------------------------------------------------
@@ -338,8 +339,8 @@ void scigraphics::axisSetCollection::setAxisNumberLimits( plotLimits::limitsXY *
       
 void scigraphics::axisSetCollection::drawGrid( painter &Painter )
 {
-  at( Left ).drawGrid(Painter);
-  at( Bottom ).drawGrid(Painter);
+  at( AxisLeft ).drawGrid(Painter);
+  at( AxisBottom ).drawGrid(Painter);
 }
 
 // ------------------------------------------------------------
@@ -376,7 +377,7 @@ void scigraphics::axisSetCollection::drawAxisTitles( painter &Painter )
 
 // ------------------------------------------------------------
 
-void scigraphics::axisSetCollection::applyScalesChanging( double Value, axisSet::direction Direction, void (*Operation)( scale *Scale, double Value ) )
+void scigraphics::axisSetCollection::applyScalesChanging( double Value, axisDirection Direction, void (*Operation)( scale *Scale, double Value ) )
 {
   if ( Operation == NULL )
     throw std::invalid_argument( "Operation pointer must be not NULL" );
@@ -395,21 +396,21 @@ void scigraphics::axisSetCollection::applyScalesChanging( double Value, axisSet:
 
 // ------------------------------------------------------------
 
-void scigraphics::axisSetCollection::addScalesShift( double Shift, axisSet::direction Direction )
+void scigraphics::axisSetCollection::addScalesShift( double Shift, axisDirection Direction )
 {
   applyScalesChanging( Shift, Direction, scale::addScaleShift );
 }
 
 // ------------------------------------------------------------
 
-void scigraphics::axisSetCollection::mulScalesZoom( double Zoom, axisSet::direction Direction )
+void scigraphics::axisSetCollection::mulScalesZoom( double Zoom, axisDirection Direction )
 {
   applyScalesChanging( Zoom, Direction, scale::mulScaleZoom );
 }
 
 // ------------------------------------------------------------
 
-void scigraphics::axisSetCollection::resetScales( axisSet::direction Direction )
+void scigraphics::axisSetCollection::resetScales( axisDirection Direction )
 {
   applyScalesChanging( 0, Direction, scale::resetScale );
 }
@@ -418,8 +419,8 @@ void scigraphics::axisSetCollection::resetScales( axisSet::direction Direction )
 
 void scigraphics::axisSetCollection::resetAllScales()
 {
-  applyScalesChanging( 0, axisSet::DirectionX, scale::resetScale );
-  applyScalesChanging( 0, axisSet::DirectionY, scale::resetScale );
+  applyScalesChanging( 0, AxisDirectionX, scale::resetScale );
+  applyScalesChanging( 0, AxisDirectionY, scale::resetScale );
 }
 
 // ------------------------------------------------------------

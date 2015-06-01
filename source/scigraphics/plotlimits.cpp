@@ -121,14 +121,14 @@ scigraphics::interval<scigraphics::number> scigraphics::plotLimits::limits::appl
 
 bool scigraphics::plotLimits::limitsXY::isAxisSetX( const axisSet *Axis ) 
 { 
-  return Axis != NULL && Axis->getDirection() == axisSet::DirectionX;  
+  return Axis != NULL && Axis->getDirection() == AxisDirectionX;  
 }
 
 // ------------------------------------------------------------
 
 bool scigraphics::plotLimits::limitsXY::isAxisSetY( const axisSet *Axis ) 
 { 
-  return Axis != NULL && Axis->getDirection() == axisSet::DirectionY;  
+  return Axis != NULL && Axis->getDirection() == AxisDirectionY;  
 }
 
 // ------------------------------------------------------------

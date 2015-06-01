@@ -56,10 +56,10 @@ namespace scigraphics
           const axisSet *AxisX, *AxisY;
 
         public:
-          axisSetsPair() : AxisX(NULL), AxisY(NULL) {}
-          axisSetsPair( const axisSet *X, const axisSet *Y ) : AxisX(X), AxisY(Y) {}
+          axisSetsPair();
+          axisSetsPair( const axisSet *X, const axisSet *Y );
 
-          bool isZero() const { return AxisX == NULL || AxisY == NULL; }
+          bool isZero() const;
           pairScales createPairScales() const;
 
           const scale* scaleX() const; 

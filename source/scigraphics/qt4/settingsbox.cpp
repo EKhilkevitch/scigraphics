@@ -26,6 +26,7 @@
 #include "scigraphics/qt4/plot.h"
 #include "scigraphics/qt4/settings.h"
 #include "scigraphics/selection.h"
+#include "scigraphics/plotlimits.h"
 
 #include <QGridLayout>
 #include <QCheckBox>
@@ -50,21 +51,28 @@ void scigraphics::qt4settingsGroupBox::updateWidgets()
 
 // ----------------------------------------------------------------
     
-QString scigraphics::qt4settingsGroupBox::axisPositionString( axisSetCollection::axisPosition Axis )
+QString scigraphics::qt4settingsGroupBox::axisPositionString( axisPosition Axis )
 {
   switch ( Axis )
   {
-    case axisSetCollection::Left:      return "Y axis";
-    case axisSetCollection::Right:     return "Y axis (right)";
-    case axisSetCollection::Bottom:    return "X axis";
-    case axisSetCollection::Top:       return "X axis (top)";
-    default:                           return "Unknown axis";
+    case AxisLeft:      return "Y axis";
+    case AxisRight:     return "Y axis (right)";
+    case AxisBottom:    return "X axis";
+    case AxisTop:       return "X axis (top)";
+    default:            return "Unknown axis";
   }
 }
 
 // ================================================================
+      
+scigraphics::qt4settingsGroupSuperBox::qt4settingsGroupSuperBox( const QString &Name, QWidget *Parent ) : 
+  qt4settingsGroupBox(Name,Parent) 
+{
+}
+
+// ----------------------------------------------------------------
     
-void scigraphics::qt4settingsGroupSuperBox::init( const QList<axisSetCollection::axisPosition> &AxisPositions )
+void scigraphics::qt4settingsGroupSuperBox::init( const QList<axisPosition> &AxisPositions )
 {
   if ( numOfRowsInLayout() <= 0 )
     return;
@@ -72,7 +80,7 @@ void scigraphics::qt4settingsGroupSuperBox::init( const QList<axisSetCollection:
   QGridLayout *Layout = new QGridLayout();
 
   int CurrRow = 0, CurrCol = 0;
-  foreach ( axisSetCollection::axisPosition Position, AxisPositions )
+  foreach ( axisPosition Position, AxisPositions )
   {
     qt4settingsGroupBox *Box = createBoxForAxisPosition( Position );
     if ( Box == NULL )
@@ -93,11 +101,11 @@ void scigraphics::qt4settingsGroupSuperBox::init( const QList<axisSetCollection:
 
 // ----------------------------------------------------------------
     
-QList<scigraphics::axisSetCollection::axisPosition> scigraphics::qt4settingsGroupSuperBox::defaultAxisPositions()
+QList<scigraphics::axisPosition> scigraphics::qt4settingsGroupSuperBox::defaultAxisPositions()
 {
-  QList< axisSetCollection::axisPosition > Positions;
-  Positions << axisSetCollection::Bottom;
-  Positions << axisSetCollection::Left;
+  QList< axisPosition > Positions;
+  Positions << AxisBottom;
+  Positions << AxisLeft;
   return Positions;
 }
 
@@ -156,7 +164,7 @@ void scigraphics::qt4settingsGroupSuperBox::updateWidgets()
 
 // ================================================================
 
-scigraphics::qt4settingsScaleIntervals::qt4settingsScaleIntervals( const axisSetCollection::axisPosition Axis, QWidget *Parent ) 
+scigraphics::qt4settingsScaleIntervals::qt4settingsScaleIntervals( const axisPosition Axis, QWidget *Parent ) 
    : qt4settingsGroupBox( axisPositionString(Axis) + " scale", Parent ), AxisType(Axis)
 {
   ManualScaleBox = new QCheckBox("Manual",this);
@@ -239,6 +247,19 @@ void scigraphics::qt4settingsScaleIntervals::loadSettings( QSettings* Settings )
   MaxScaleEdit->setText( Settings->value( "MaxScaleEdit", "1"  ).toString() );
   Settings->endGroup();
   updateWidgets();
+}
+
+// ================================================================
+
+scigraphics::qt4settingsScaleIntervalsAllAxis::qt4settingsScaleIntervalsAllAxis( QWidget *Parent, const axisPositionsList &Positions ) : 
+  qt4settingsGroupSuperBox( name(), Parent ) 
+{ 
+  init(Positions); 
+}
+      
+scigraphics::qt4settingsGroupBox* scigraphics::qt4settingsScaleIntervalsAllAxis::createBoxForAxisPosition( scigraphics::axisPosition Pos ) 
+{ 
+  return new qt4settingsScaleIntervals(Pos,this); 
 }
 
 // ================================================================
@@ -399,7 +420,7 @@ void scigraphics::qt4settingsDecoration::loadSettings( QSettings* Settings )
 
 // ================================================================
 
-scigraphics::qt4settingsScaleType::qt4settingsScaleType( const scigraphics::axisSetCollection::axisPosition Axis, QWidget *Parent ) 
+scigraphics::qt4settingsScaleType::qt4settingsScaleType( const scigraphics::axisPosition Axis, QWidget *Parent ) 
    : qt4settingsGroupBox( axisPositionString(Axis) + " type", Parent ), AxisType(Axis) 
 {
 

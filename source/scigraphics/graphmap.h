@@ -73,12 +73,12 @@ namespace scigraphics
         graphView& getView() { return *View; }
         const graphView& getView() const { return *View; }
    
-        numberLimits limitsX() const { return getData().limitsX(); }
-        numberLimits limitsY( const interval<number> &LimitsX ) const { return getData().limitsY(LimitsX); }
-        numberLimits limitsZ() const { return getData().limitsZ(); }
+        numberLimits limitsX() const;
+        numberLimits limitsY( const interval<number> &LimitsX ) const;
+        numberLimits limitsZ() const;
 
-        void setForcedIntervalZ( interval<number> I ) { ForcedIntervalZ = I; }
-        void setForcedIntervalZ( number Min, number Max ) { setForcedIntervalZ( interval<number>(Min,Max) ); }
+        void setForcedIntervalZ( interval<number> Interval );
+        void setForcedIntervalZ( number MinZ, number MaxZ );
         
         wcoord legendExampleWidth()  const;
         wcoord legendExampleHeight() const;
@@ -100,9 +100,7 @@ namespace scigraphics
         const V& getCastedView() const { return dynamic_cast<const V&>( getView() ); }
 
       public:
-        graphSpecified( const std::string &Legend = std::string() ) : 
-          graph(Legend) 
-          { init(); }
+        graphSpecified( const std::string &Legend = std::string() );
 
         size_t size() const { return getData().size(); }
         size_t sizeX() const { return getCastedData().sizeX(); }
@@ -132,13 +130,19 @@ namespace scigraphics
     class graphVector : public graphSpecified< dataVector, graphViewRectangle >
     {
       public:
-        graphVector( const std::string &Legend = std::string() ) : 
-          graphSpecified< dataVector, graphViewRectangle >(Legend) {}
-
+        graphVector( const std::string &Legend = std::string() );
         graphViewRectangle& getView() { return getCastedView(); }
     };
 
-  // ============================================================
+    // ============================================================
+    
+    template < class D, class V > graphSpecified<D,V>::graphSpecified( const std::string &Legend ) : 
+      graph(Legend) 
+    {
+      init();
+    }
+    
+    // ============================================================
 
   }
 }

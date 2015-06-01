@@ -121,5 +121,47 @@ scigraphics::wcoord scigraphics::map::graph::legendExampleHeight() const
   return View->legendExampleHeight();
 }
 
+// ------------------------------------------------------------
+
+scigraphics::numberLimits scigraphics::map::graph::limitsX() const 
+{ 
+  return getData().limitsX(); 
+}
+
+// ------------------------------------------------------------
+        
+scigraphics::numberLimits scigraphics::map::graph::limitsY( const interval<number> &LimitsX ) const 
+{ 
+  return getData().limitsY(LimitsX); 
+}
+
+// ------------------------------------------------------------
+
+scigraphics::numberLimits scigraphics::map::graph::limitsZ() const 
+{ 
+  return getData().limitsZ(); 
+}
+
+// ------------------------------------------------------------
+
+void scigraphics::map::graph::setForcedIntervalZ( interval<number> Interval ) 
+{ 
+  ForcedIntervalZ = Interval; 
+}
+
+// ------------------------------------------------------------
+        
+void scigraphics::map::graph::setForcedIntervalZ( number Min, number Max ) 
+{ 
+  setForcedIntervalZ( interval<number>(Min,Max) ); 
+}
+
+// ============================================================
+
+scigraphics::map::graphVector::graphVector( const std::string &Legend  ) : 
+  graphSpecified< dataVector, graphViewRectangle >(Legend) 
+{
+}
+
 // ============================================================
 

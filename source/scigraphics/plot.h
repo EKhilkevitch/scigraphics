@@ -23,7 +23,8 @@
 
 // ============================================================
 
-#include "scigraphics/axisset.h"
+#include "scigraphics/axisposition.h"
+#include "scigraphics/interval.h"
 #include "scigraphics/color.h"
 #include "scigraphics/graphcollection.h"
 #include "scigraphics/selectioncollection.h"
@@ -64,6 +65,8 @@ namespace scigraphics
   class floatRectangle;
   class zoomRectangle;
   class mouseCallBack;
+
+  class numberStyle;
 
   // ============================================================
 
@@ -147,7 +150,7 @@ namespace scigraphics
       sequence::graphVector* createGraphSequenceVector( const std::string &Legend = std::string(), const color &Color = color::White );
 
       void appendGraphic( graph *Graph );
-      void bindGraphToAxis( const graph *Graph, axisSetCollection::axisPosition AxisX, axisSetCollection::axisPosition AxisY );
+      void bindGraphToAxis( const graph *Graph, axisPosition AxisX, axisPosition AxisY );
       void clearGraphics();
       void removeGraphic( graph *Graph );
       void releaseGraphic( graph *Graph );
@@ -172,12 +175,12 @@ namespace scigraphics
       color selectNextGraphColor( const color &Color = color::White );
       void resetGraphColor();
       
-      const scale* scaleWithPosition( axisSetCollection::axisPosition Position ) const;
-      scale* scaleWithPosition( axisSetCollection::axisPosition Position );
-      void replaceScaleWithPosition( axisSetCollection::axisPosition Position, scale *Scale );
+      const scale* scaleWithPosition( axisPosition Position ) const;
+      scale* scaleWithPosition( axisPosition Position );
+      void replaceScaleWithPosition( axisPosition Position, scale *Scale );
 
-      void setScaleInterval( axisSetCollection::axisPosition Position, interval<number> Limits );
-      interval<number> scaleInterval( axisSetCollection::axisPosition Position ) const;
+      void setScaleInterval( axisPosition Position, interval<number> Limits );
+      interval<number> scaleInterval( axisPosition Position ) const;
       
       void setScaleIntervalX( interval<number> Interval );
       void setScaleIntervalX( number Min, number Max );
@@ -189,27 +192,27 @@ namespace scigraphics
       
       void updateScaleLimits();
 
-      interval<number> visibleInterval( axisSetCollection::axisPosition Position ) const;
+      interval<number> visibleInterval( axisPosition Position ) const;
       interval<number> visibleIntervalX() const;
       interval<number> visibleIntervalY() const;
       
-      void addScalesShift( double Shift, axisSet::direction Direction );
-      void mulScalesZoom( double Zoom, axisSet::direction Direction );
-      void resetScales( axisSet::direction Direction );
+      void addScalesShift( double Shift, axisDirection Direction );
+      void mulScalesZoom( double Zoom, axisDirection Direction );
+      void resetScales( axisDirection Direction );
       void resetAllScales();
       void setScalesTo1x1( bool SetTo1x1 );
 
       void setStretchFactors( double SX, double SY );
 
-      void setScaleLock( axisSetCollection::axisPosition Position, bool Lock );
+      void setScaleLock( axisPosition Position, bool Lock );
       void setScaleLockX( bool Lock );
       void setScaleLockY( bool Lock );
 
-      void setAxisTitle( axisSetCollection::axisPosition Position, const std::string &Title );
-      std::string getAxisTitle( axisSetCollection::axisPosition Position ) const;
+      void setAxisTitle( axisPosition Position, const std::string &Title );
+      std::string getAxisTitle( axisPosition Position ) const;
       void setBottomLeftAxisTitles( const std::string &TitleX, const std::string &TitleY );
 
-      void setAxisNumberStyle( axisSetCollection::axisPosition Position, const numberStyle &Style );
+      void setAxisNumberStyle( axisPosition Position, const numberStyle &Style );
 
       void setDisallowedMouseOperations( unsigned Operation );
       void setAllowedMouseOperations( unsigned Operation );

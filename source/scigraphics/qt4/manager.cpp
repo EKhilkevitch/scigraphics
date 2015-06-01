@@ -57,7 +57,7 @@ scigraphics::qt4plotManager::qt4plotManager( unsigned NumOfPlots, unsigned NumOf
 // ----------------------------------------------------------------
 
 scigraphics::qt4plotManager::qt4plotManager( unsigned NumOfPlots, unsigned NumOfRows, QObject *Parent,
-      const settingsMode SettingsMode, const QList<axisSetCollection::axisPosition> &Positions,
+      const settingsMode SettingsMode, const QList<axisPosition> &Positions,
       qt4settingsComposer *Composer ) : 
   QObject(Parent)
 {

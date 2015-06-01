@@ -34,6 +34,7 @@
 #include "scigraphics/graph.h"
 #include "scigraphics/graphsequence.h"
 #include "scigraphics/graphmap.h"
+#include "scigraphics/axisset.h"
 
 #include <stdexcept>
 #include <iostream>
@@ -95,8 +96,8 @@ scigraphics::plotInternalData::~plotInternalData()
 
 void scigraphics::plotInternalData::prepareAxisSets( plot &Plot )
 {
-  Plot.Graphics.setDefaultAxisSets( &AxisSets[axisSetCollection::Bottom], &AxisSets[axisSetCollection::Left] );
-  Plot.Selections.setDefaultAxisSets( &AxisSets[axisSetCollection::Bottom], &AxisSets[axisSetCollection::Left] );
+  Plot.Graphics.setDefaultAxisSets( &AxisSets[AxisBottom], &AxisSets[AxisLeft] );
+  Plot.Selections.setDefaultAxisSets( &AxisSets[AxisBottom], &AxisSets[AxisLeft] );
 }
 
 // ------------------------------------------------------------
@@ -239,10 +240,10 @@ scigraphics::wcoord scigraphics::plot::axisSetIndent( const axisSet &AxisSet ) c
 void scigraphics::plot::updateIndents()
 {
   indents<wcoord> Indents;
-  Indents.setLeft(  axisSetIndent(Pimpl->AxisSets[axisSetCollection::Left])   );
-  Indents.setRight( axisSetIndent(Pimpl->AxisSets[axisSetCollection::Right])  );
-  Indents.setUp(    axisSetIndent(Pimpl->AxisSets[axisSetCollection::Top])    );
-  Indents.setDown(  axisSetIndent(Pimpl->AxisSets[axisSetCollection::Bottom]) );
+  Indents.setLeft(  axisSetIndent(Pimpl->AxisSets[AxisLeft])   );
+  Indents.setRight( axisSetIndent(Pimpl->AxisSets[AxisRight])  );
+  Indents.setUp(    axisSetIndent(Pimpl->AxisSets[AxisTop])    );
+  Indents.setDown(  axisSetIndent(Pimpl->AxisSets[AxisBottom]) );
 
   Pimpl->Painter.setIndents( Indents );
 }
@@ -472,7 +473,7 @@ void scigraphics::plot::appendGraphic( graph *Graph )
 
 // ------------------------------------------------------------
 
-void scigraphics::plot::bindGraphToAxis( const graph *Graph, axisSetCollection::axisPosition AxisPosX, axisSetCollection::axisPosition AxisPosY )
+void scigraphics::plot::bindGraphToAxis( const graph *Graph, axisPosition AxisPosX, axisPosition AxisPosY )
 {
   if ( Graph == NULL )
     throw std::invalid_argument("Zero graphic pointer is ibvalid");
@@ -481,7 +482,7 @@ void scigraphics::plot::bindGraphToAxis( const graph *Graph, axisSetCollection::
   const axisSet *AxisY = &Pimpl->AxisSets[AxisPosY];
 
   assert( AxisX != NULL && AxisY != NULL );
-  if ( AxisX->getDirection() != axisSet::DirectionX || AxisY->getDirection() != axisSet::DirectionY )
+  if ( AxisX->getDirection() != AxisDirectionX || AxisY->getDirection() != AxisDirectionY )
     throw std::invalid_argument("Invalid axis X or Y position");
 
   Graphics.bindGraphToAxisSet( Graph, AxisX, AxisY );
@@ -532,21 +533,21 @@ void scigraphics::plot::clearSelections()
 
 // ------------------------------------------------------------
       
-void scigraphics::plot::addScalesShift( double Shift, axisSet::direction Direction )
+void scigraphics::plot::addScalesShift( double Shift, axisDirection Direction )
 {
   Pimpl->AxisSets.addScalesShift(Shift,Direction);
 }
 
 // ------------------------------------------------------------
       
-void scigraphics::plot::mulScalesZoom( double Zoom, axisSet::direction Direction )
+void scigraphics::plot::mulScalesZoom( double Zoom, axisDirection Direction )
 {
   Pimpl->AxisSets.mulScalesZoom(Zoom,Direction);
 }
 
 // ------------------------------------------------------------
       
-void scigraphics::plot::resetScales( axisSet::direction Direction )
+void scigraphics::plot::resetScales( axisDirection Direction )
 {
   Pimpl->AxisSets.resetScales(Direction);
 }
@@ -567,28 +568,28 @@ void scigraphics::plot::setScalesTo1x1( bool SetTo1x1 )
 
 // ------------------------------------------------------------
       
-const scigraphics::scale* scigraphics::plot::scaleWithPosition( axisSetCollection::axisPosition Position ) const
+const scigraphics::scale* scigraphics::plot::scaleWithPosition( axisPosition Position ) const
 {
   return Pimpl->AxisSets[Position].getScale();
 }
 
 // ------------------------------------------------------------
 
-scigraphics::scale* scigraphics::plot::scaleWithPosition( axisSetCollection::axisPosition Position ) 
+scigraphics::scale* scigraphics::plot::scaleWithPosition( axisPosition Position ) 
 {
   return Pimpl->AxisSets[Position].getScale();
 }
 
 // ------------------------------------------------------------
 
-void scigraphics::plot::replaceScaleWithPosition( axisSetCollection::axisPosition Position, scale *Scale )
+void scigraphics::plot::replaceScaleWithPosition( axisPosition Position, scale *Scale )
 {
   Pimpl->AxisSets[Position].replaceScale(Scale);
 }
 
 // ------------------------------------------------------------
 
-void scigraphics::plot::setScaleInterval( axisSetCollection::axisPosition Position, interval<number> Limits )
+void scigraphics::plot::setScaleInterval( axisPosition Position, interval<number> Limits )
 {
   const axisSet *Set = &Pimpl->AxisSets[Position];
   Pimpl->PlotLimits.setInterval( Set, Limits );
@@ -598,7 +599,7 @@ void scigraphics::plot::setScaleInterval( axisSetCollection::axisPosition Positi
 
 void scigraphics::plot::setScaleIntervalX( interval<number> Interval )     
 { 
-  setScaleInterval( axisSetCollection::Bottom, Interval ); 
+  setScaleInterval( AxisBottom, Interval ); 
 }
 
 // ------------------------------------------------------------
@@ -612,14 +613,14 @@ void scigraphics::plot::setScaleIntervalX( number Min, number Max )
 
 scigraphics::interval<scigraphics::number> scigraphics::plot::scaleIntervalX() const          
 { 
-  return scaleInterval( axisSetCollection::Bottom ); 
+  return scaleInterval( AxisBottom ); 
 }
 
 // ------------------------------------------------------------
 
 void scigraphics::plot::setScaleIntervalY( interval<number> Interval )     
 { 
-  setScaleInterval( axisSetCollection::Left, Interval ); 
+  setScaleInterval( AxisLeft, Interval ); 
 }
 
 // ------------------------------------------------------------
@@ -633,12 +634,12 @@ void scigraphics::plot::setScaleIntervalY( number Min, number Max )
 
 scigraphics::interval<scigraphics::number> scigraphics::plot::scaleIntervalY() const          
 { 
-  return scaleInterval( axisSetCollection::Left ); 
+  return scaleInterval( AxisLeft ); 
 }
 
 // ------------------------------------------------------------
       
-scigraphics::interval<scigraphics::number> scigraphics::plot::scaleInterval( axisSetCollection::axisPosition Position ) const
+scigraphics::interval<scigraphics::number> scigraphics::plot::scaleInterval( axisPosition Position ) const
 {
   const axisSet *Set = &Pimpl->AxisSets[Position];
   return Pimpl->PlotLimits.getInterval(Set);
@@ -646,7 +647,7 @@ scigraphics::interval<scigraphics::number> scigraphics::plot::scaleInterval( axi
 
 // ------------------------------------------------------------
       
-scigraphics::interval<scigraphics::number> scigraphics::plot::visibleInterval( axisSetCollection::axisPosition Position ) const
+scigraphics::interval<scigraphics::number> scigraphics::plot::visibleInterval( axisPosition Position ) const
 {
   const axisSet *Set = &Pimpl->AxisSets[Position];
   return Set->getScale()->getVisivleInterval();
@@ -656,19 +657,19 @@ scigraphics::interval<scigraphics::number> scigraphics::plot::visibleInterval( a
       
 scigraphics::interval<scigraphics::number> scigraphics::plot::visibleIntervalX() const 
 { 
-  return visibleInterval(axisSetCollection::Bottom); 
+  return visibleInterval(AxisBottom); 
 }
 
 // ------------------------------------------------------------
 
 scigraphics::interval<scigraphics::number> scigraphics::plot::visibleIntervalY() const 
 { 
-  return visibleInterval(axisSetCollection::Left); 
+  return visibleInterval(AxisLeft); 
 }
 
 // ------------------------------------------------------------
 
-void scigraphics::plot::setScaleLock( axisSetCollection::axisPosition Position, bool Lock )
+void scigraphics::plot::setScaleLock( axisPosition Position, bool Lock )
 {
   Pimpl->AxisSets[Position].getScale()->setLock(Lock);
 }
@@ -677,26 +678,26 @@ void scigraphics::plot::setScaleLock( axisSetCollection::axisPosition Position, 
       
 void scigraphics::plot::setScaleLockX( bool Lock )   
 { 
-  setScaleLock( axisSetCollection::Bottom, Lock ); 
+  setScaleLock( AxisBottom, Lock ); 
 }
 
 // ------------------------------------------------------------
 
 void scigraphics::plot::setScaleLockY( bool Lock )   
 { 
-  setScaleLock( axisSetCollection::Left,   Lock ); 
+  setScaleLock( AxisLeft, Lock ); 
 }
 
 // ------------------------------------------------------------
 
-void scigraphics::plot::setAxisTitle( axisSetCollection::axisPosition Position, const std::string &Title )
+void scigraphics::plot::setAxisTitle( axisPosition Position, const std::string &Title )
 {
   Pimpl->AxisSets[Position].setAxisTitle( Title );
 }
 
 // ------------------------------------------------------------
       
-std::string scigraphics::plot::getAxisTitle( axisSetCollection::axisPosition Position ) const
+std::string scigraphics::plot::getAxisTitle( axisPosition Position ) const
 {
   return Pimpl->AxisSets[Position].getAxisTitle();
 }
@@ -705,13 +706,13 @@ std::string scigraphics::plot::getAxisTitle( axisSetCollection::axisPosition Pos
       
 void scigraphics::plot::setBottomLeftAxisTitles( const std::string &TitleX, const std::string &TitleY )
 {
-  setAxisTitle( axisSetCollection::Bottom, TitleX );
-  setAxisTitle( axisSetCollection::Left,   TitleY );
+  setAxisTitle( AxisBottom, TitleX );
+  setAxisTitle( AxisLeft,   TitleY );
 }
 
 // ------------------------------------------------------------
 
-void scigraphics::plot::setAxisNumberStyle( axisSetCollection::axisPosition Position, const numberStyle &Style )
+void scigraphics::plot::setAxisNumberStyle( axisPosition Position, const numberStyle &Style )
 {
   Pimpl->AxisSets[Position].setNumberStyle(Style);
 }

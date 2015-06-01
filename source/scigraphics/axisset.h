@@ -25,6 +25,7 @@
 
 #include "scigraphics/container_ptr.h"
 #include "scigraphics/plotlimits.h"
+#include "scigraphics/axisposition.h"
 
 #include <string>
 
@@ -50,11 +51,6 @@ namespace scigraphics
   class axisSet
   {
     public:
-      enum direction
-      {
-        DirectionX,
-        DirectionY
-      };
 
     private:
       bool Visible;
@@ -72,7 +68,7 @@ namespace scigraphics
       axisSet& operator=( const axisSet& );
 
     public:
-      axisSet( axis *A, axisTicks *T, axisLabels *L, axisTitle *H, grid *G, scale *S );
+      axisSet( axis *Axis, axisTicks *Ticks, axisLabels *Labels, axisTitle *Title, grid *Grid, scale *Scale );
       virtual ~axisSet();
 
       void setVisible( bool V ) { Visible = V; }
@@ -80,9 +76,9 @@ namespace scigraphics
 
       scale* getScale() { return Scale; }
       const scale* getScale() const { return Scale; }
-      void replaceScale( scale *S );
+      void replaceScale( scale *Scale );
 
-      void setNumberLimits( numberLimits Limits );
+      void setNumberLimits( const numberLimits &Limits );
 
       void setAxisTitle( const std::string &Title );
       std::string getAxisTitle() const;
@@ -98,7 +94,7 @@ namespace scigraphics
       void drawAxisTitle( painter &Painter );
       void drawGrid( painter &Painter );
 
-      virtual direction getDirection() const = 0;
+      virtual axisDirection getDirection() const = 0;
 
       wcoord wcoordDimension( const painter &Painter ) const;
       double wpointsPerNumber( const painter &Painter ) const;
@@ -110,7 +106,7 @@ namespace scigraphics
   {
     public:
       explicit axisSetX( fcoord BaseY );
-      direction getDirection() const { return DirectionX; }
+      axisDirection getDirection() const { return AxisDirectionX; }
       wcoord requiredIndent( bool Used ) const;
   };
   
@@ -118,7 +114,7 @@ namespace scigraphics
   {
     public:
       explicit axisSetY( fcoord BaseX );
-      direction getDirection() const { return DirectionY; }
+      axisDirection getDirection() const { return AxisDirectionY; }
       wcoord requiredIndent( bool Used ) const;
   };
   
@@ -126,21 +122,12 @@ namespace scigraphics
   
   class axisSetCollection 
   {
-    public:
-      enum axisPosition
-      {
-        Left,
-        Right,
-        Top,
-        Bottom,
-        PositionsCount
-      };
-      
     private:
       typedef container_ptr< axisSet > container;
       typedef container::iterator axis_iterator;
       typedef container::const_iterator axis_const_iterator;
 
+    private:
       container AxisSets;
       bool KeepScales1x1;
 
@@ -149,7 +136,7 @@ namespace scigraphics
 
     public:
       axisSetCollection();
-      virtual ~axisSetCollection();
+      ~axisSetCollection();
 
       axisSet& at( axisPosition Position );
       const axisSet& at( axisPosition Position ) const;
@@ -167,10 +154,10 @@ namespace scigraphics
       void drawAxisLabels( painter &Painter );
       void drawAxisTitles( painter &Painter );
 
-      void applyScalesChanging( double Value, axisSet::direction Direction, void (*Operation)( scale *Scale, double Value ) );
-      void addScalesShift( double Shift, axisSet::direction Direction );
-      void mulScalesZoom( double Zoom, axisSet::direction Direction );
-      void resetScales( axisSet::direction Direction );
+      void applyScalesChanging( double Value, axisDirection Direction, void (*Operation)( scale *Scale, double Value ) );
+      void addScalesShift( double Shift, axisDirection Direction );
+      void mulScalesZoom( double Zoom, axisDirection Direction );
+      void resetScales( axisDirection Direction );
       void resetAllScales();
 
       void setScalesTo1x1( const painter &Painter );
