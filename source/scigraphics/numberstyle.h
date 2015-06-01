@@ -70,7 +70,7 @@ namespace scigraphics
 
     public:
       numberStyle();
-      explicit numberStyle( style Style = General );
+      explicit numberStyle( style Style );
       explicit numberStyle( numberTextFactory *Factory );
       numberStyle( const numberStyle &NumberStyle );
       numberStyle& operator=( const numberStyle &NumberStyle );
@@ -84,41 +84,6 @@ namespace scigraphics
   };
   
   // ============================================================
-
-#if 0
-  class numberStyle 
-  {
-    public:
-      virtual std::string numberText( const number Number ) const = 0;
-      virtual ~numberStyle() {}
-  };
-  
-  // ------------------------------------------------------
-
-  class sprintfNumberStyle : public numberStyle
-  {
-    private:
-      std::string Format;
-
-    protected:
-      const char* format() const { return Format.c_str(); };
-      void fillBuffer( char *Buf, size_t Size, number Value )  const;
-
-    public:
-      explicit sprintfNumberStyle( const std::string &Format );
-      std::string numberText( const number Number ) const;
-  };
-  
-  // ------------------------------------------------------
-
-  class generalNumberStyle : public sprintfNumberStyle
-  {
-    public:
-      generalNumberStyle();
-  };
-#endif
-
-  // ======================================================
 
 }
 
