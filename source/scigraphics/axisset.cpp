@@ -213,14 +213,20 @@ scigraphics::wcoord scigraphics::axisSetX::requiredIndent( bool Used ) const
 {
   wcoord Indent = 7;
 
-  if ( ! isVisible() || !Used )
+  if ( ! isVisible() )
     return Indent;
-
-  Indent += 8;
-
-  Indent += AxisLabels->getTextStyle().getFontSize() + 5;
+  
   if ( ! AxisTitle->title().empty() )
-    Indent += AxisTitle->getTextStyle().getFontSize() + 5;
+    Used = true;
+
+  if ( Used )
+  {
+    Indent += 8;
+    Indent += AxisLabels->getTextStyle().getFontSize() + 5;
+    if ( ! AxisTitle->title().empty() )
+      Indent += AxisTitle->getTextStyle().getFontSize() + 5;
+  }
+
   return Indent;
 }
 
@@ -243,14 +249,20 @@ scigraphics::wcoord scigraphics::axisSetY::requiredIndent( bool Used ) const
 {
   wcoord Indent = 7;
   
-  if ( ! isVisible() || !Used )
+  if ( ! isVisible() )
     return Indent;
-
-  Indent += 8;
-
-  Indent += AxisLabels->getTextStyle().getFontSize() * 4 + 5;
+  
   if ( ! AxisTitle->title().empty() )
-    Indent += AxisTitle->getTextStyle().getFontSize() + 5;
+    Used = true;
+
+  if ( Used )
+  {
+    Indent += 8;
+    Indent += AxisLabels->getTextStyle().getFontSize() * 4 + 5;
+    if ( ! AxisTitle->title().empty() )
+      Indent += AxisTitle->getTextStyle().getFontSize() + 5;
+  }
+
   return Indent;
 }
 

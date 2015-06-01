@@ -57,8 +57,9 @@ scigraphics::numberStyle::sprintfNumberTextFactory* scigraphics::numberStyle::sp
 std::string scigraphics::numberStyle::sprintfNumberTextFactory::numberText( const number Number ) const
 {
 #if _WIN32 && _MSC_VER
-int (__cdecl *snprintf)( char *buffer, size_t count, const char *format, ... ) = _snprintf;
+  int (__cdecl *snprintf)( char *buffer, size_t count, const char *format, ... ) = _snprintf;
 #endif
+
   char Buffer[ 128 ];
   Buffer[0] = Buffer[ sizeof(Buffer)-1 ] = '\0';
   snprintf( Buffer, sizeof(Buffer)-1, Format.c_str(), Number );
@@ -181,44 +182,5 @@ void scigraphics::numberStyle::setStyle( const std::string &Format )
   setTextFactory( new sprintfNumberTextFactory( Format ) );
 }
 
-// ------------------------------------------------------
-
-#if 0
-scigraphics::sprintfNumberStyle::sprintfNumberStyle( const std::string &F ) : 
-  Format(F) 
-{
-}
-
-// ------------------------------------------------------
-
-void scigraphics::sprintfNumberStyle::fillBuffer( char *Buf, size_t Size, number Value )  const
-{ 
-#if _WIN32 && _MSC_VER
-  int (__cdecl *snprintf)( char *buffer, size_t count, const char *format, ... ) = _snprintf;
-#endif
-
-  assert( Buf != NULL );
-  assert( Size > 0 );
-  Buf[Size-1] = '\0'; 
-  snprintf( Buf, Size-1, format(), Value );
-}
-  
-// ------------------------------------------------------
-      
-std::string scigraphics::sprintfNumberStyle::numberText( const number Number ) const
-{
-  char Buf[64];
-  fillBuffer( Buf, sizeof(Buf), Number );
-  return std::string(Buf); 
-}
-
 // ============================================================
-
-scigraphics::generalNumberStyle::generalNumberStyle() : 
-  sprintfNumberStyle( "%g" ) 
-{
-}
-
-// ============================================================
-#endif
 

@@ -27,8 +27,28 @@
 // ============================================================
 
 const scigraphics::textStyle scigraphics::axisTitle::DefaultAxisTextStyle( 12 );
+      
+// ============================================================
+
+scigraphics::axisTitle::axisTitle() : 
+  TextStyle( DefaultAxisTextStyle ) 
+{
+} 
+
+// ------------------------------------------------------------
+
+scigraphics::axisTitle::~axisTitle()
+{
+}
 
 // ============================================================
+      
+scigraphics::axisTitleX::axisTitleX( fcoord Y ) : 
+  BaseY(Y) 
+{
+}
+
+// ------------------------------------------------------------
 
 void scigraphics::axisTitleX::draw( painter &Painter ) const 
 {
@@ -42,6 +62,13 @@ void scigraphics::axisTitleX::draw( painter &Painter ) const
 }
 
 // ============================================================
+      
+scigraphics::axisTitleY::axisTitleY( fcoord X ) : 
+  BaseX(X) 
+{
+}
+
+// ------------------------------------------------------------
 
 void scigraphics::axisTitleY::draw( painter &Painter ) const 
 {

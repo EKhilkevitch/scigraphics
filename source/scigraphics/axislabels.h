@@ -79,7 +79,7 @@ namespace scigraphics
       void drawOneLabel( painter &Painter, const scale &Scale, number Value );
 
     public:
-      axisLabelsX( fcoord Y );
+      explicit axisLabelsX( fcoord Y );
   };
   
   class axisLabelsY : public axisLabels
@@ -91,7 +91,7 @@ namespace scigraphics
       void drawOneLabel( painter &Painter, const scale &Scale, number Value );
 
     public:
-      axisLabelsY( fcoord X );
+      explicit axisLabelsY( fcoord X );
   };
 
 // ============================================================

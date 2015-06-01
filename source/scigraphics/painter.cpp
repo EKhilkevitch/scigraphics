@@ -126,7 +126,7 @@ scigraphics::wcoord scigraphics::painter::fcoord2wcoordX( fcoord X ) const
 
 scigraphics::wcoord scigraphics::painter::fcoord2wcoordY( fcoord Y ) const
 {
-  return ( 1.0 - Y ) * PlotRectangle.height() + Indents.up();
+  return ( static_cast<scigraphics::number>(1) - Y ) * PlotRectangle.height() + Indents.up();
 }
 
 // ------------------------------------------------------------
@@ -144,7 +144,7 @@ scigraphics::fcoord scigraphics::painter::wcoord2fcoordX( wcoord X ) const
 {
   if ( PlotRectangle.width() <= 0 || PlotRectangle.height() <= 0 )
     return 0;
-  return (double)( X - Indents.left() )/PlotRectangle.width();
+  return static_cast<fcoord>( X - Indents.left() )/PlotRectangle.width();
 }
 
 // ------------------------------------------------------------
@@ -153,7 +153,7 @@ scigraphics::fcoord scigraphics::painter::wcoord2fcoordY( wcoord Y ) const
 {
   if ( PlotRectangle.width() <= 0 || PlotRectangle.height() <= 0 )
     return 0;
-  return 1 - (double)( Y - Indents.up()   )/PlotRectangle.height();
+  return 1 - static_cast<fcoord>( Y - Indents.up() )/PlotRectangle.height();
 }
 
 // ------------------------------------------------------------
@@ -184,7 +184,7 @@ bool scigraphics::painter::canSeparatePointsF( fpoint Pt1, fpoint Pt2 ) const
 
 bool scigraphics::painter::canSepareteXcoordsF( fcoord X1, fcoord X2 ) const
 {
-  double ApproxStepX = 1.0 / (double)PlotRectangle.width();
+  double ApproxStepX = 1.0 / static_cast<double>( PlotRectangle.width() );
   if ( std::fabs(X1-X2) < ApproxStepX/3.0 )
     return true;
   return canSeparatePointsF( fpoint(X1,0), fpoint(X2,0) );

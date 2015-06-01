@@ -43,7 +43,7 @@ int main( int argc, char *argv[] )
 
   scigraphics::graphSV *Sin = Plot.createGraphSV( "Sinus" );
   const size_t GraphSize = 100000;
-  for ( unsigned i = 0; i < GraphSize; i++ )
+  for ( size_t i = 0; i < GraphSize; i++ )
   {
     double x = 2 * M_PI * i / GraphSize - M_PI;
     double y = std::sin( x );
@@ -51,12 +51,6 @@ int main( int argc, char *argv[] )
       x = scigraphics::invalidNumber();
     Sin->append( x, y );
   }
-
-#if 1
-  Plot.setAxisTitle( scigraphics::axisSetCollection::Bottom, "This is axis X bottom" );
-  Plot.setAxisTitle( scigraphics::axisSetCollection::Left, "This is axis Y left" );
-  Plot.setAxisTitle( scigraphics::axisSetCollection::Right, "This is axis Y right" );
-#endif
 
   Plot.move( 200, 200 );
   Plot.resize( 700, 800 );

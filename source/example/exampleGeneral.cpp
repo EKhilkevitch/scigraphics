@@ -90,9 +90,9 @@ int main( int argc, char *argv[] )
   Map->setIntervalX( 2, 3 );
   Map->setIntervalY( 2, 3 );
   Map->setForcedIntervalZ( 0.5, 0.9 );
-  for ( unsigned ix = 0; ix < Map->sizeX(); ix++ )
+  for ( size_t ix = 0; ix < Map->sizeX(); ix++ )
   {
-    for ( unsigned iy = 0; iy < Map->sizeY(); iy++ ) 
+    for ( size_t iy = 0; iy < Map->sizeY(); iy++ ) 
     {
       double x = Map->coordinateX(ix);
       double y = Map->coordinateY(iy);

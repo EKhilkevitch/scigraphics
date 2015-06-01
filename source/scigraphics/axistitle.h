@@ -48,7 +48,8 @@ namespace scigraphics
       std::string Title;
 
     public:
-      axisTitle() : TextStyle( DefaultAxisTextStyle ) {} 
+      axisTitle();
+      virtual ~axisTitle();
 
       const std::string& title() const { return Title; }
       void setTitle( const std::string &S ) { Title = S; }
@@ -58,7 +59,6 @@ namespace scigraphics
 
       virtual void draw( painter &Painter ) const = 0;
 
-      virtual ~axisTitle() {}
   };
 
   class axisTitleX : public axisTitle
@@ -66,7 +66,7 @@ namespace scigraphics
     private:
       fcoord BaseY;
     public:
-      axisTitleX( fcoord Y ) : BaseY(Y) {}
+      explicit axisTitleX( fcoord Y );
       void draw( painter &Painter ) const;
   };
   
@@ -75,7 +75,7 @@ namespace scigraphics
     private:
       fcoord BaseX;
     public:
-      axisTitleY( fcoord X ) : BaseX(X) {}
+      explicit axisTitleY( fcoord X );
       void draw( painter &Painter ) const;
   };
 
