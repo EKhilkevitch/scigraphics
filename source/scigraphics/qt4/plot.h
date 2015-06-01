@@ -65,7 +65,7 @@ namespace scigraphics
       void emitPlotChangedByMouse();
       
     public:
-      qt4plot( QWidget* Parent = NULL, Qt::WindowFlags Flags = 0 );
+      explicit qt4plot( QWidget* Parent = NULL, Qt::WindowFlags Flags = 0 );
       virtual ~qt4plot();
 
       void resize( int Width, int Height );

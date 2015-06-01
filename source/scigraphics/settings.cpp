@@ -38,7 +38,7 @@
 // ============================================================
 
 scigraphics::settings::settings() : 
-  SelectionStripType( NoneStrip ),
+  SelectionStripType( UncontrollableStrip ),
   GraphType( Individual ),
   VisibleFloatingRectangles( Legend|CursorPosition )
 {
@@ -193,6 +193,9 @@ void scigraphics::settings::applySelectionIntervals( plot *Plot ) const
 
   switch ( SelectionStripType )
   {
+    case UncontrollableStrip:
+      break;
+
     case NoneStrip:
       if ( Selection != NULL )
         Plot->clearSelections();

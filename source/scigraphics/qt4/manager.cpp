@@ -134,12 +134,8 @@ void scigraphics::qt4plotManager::setPlotVisible( qt4plot *Plot, bool Visible )
     SplitterSizes.append( TotalSize / MainSplitter->count() );
 
   MainSplitter->setSizes( SplitterSizes );
-  PlotWidget->update();
   MainSplitter->refresh();
-
-  qDebug() << "plot";
-  foreach( int Sz, MainSplitter->sizes() )
-    qDebug() << Sz;
+  PlotWidget->update();
 }
 
 // ----------------------------------------------------------------

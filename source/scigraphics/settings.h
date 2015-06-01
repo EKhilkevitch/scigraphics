@@ -75,9 +75,10 @@ namespace scigraphics
 
       enum selectionStripType
       {
+        UncontrollableStrip,
         NoneStrip,
         VerticalStrip,
-        HorizontalStrip
+        HorizontalStrip,
       };
 
     private:

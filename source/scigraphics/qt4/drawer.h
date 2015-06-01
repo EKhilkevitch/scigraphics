@@ -94,7 +94,7 @@ namespace scigraphics
       wcoord height() const;
 
     public:
-      qt4drawer( QWidget *Parent );
+      explicit qt4drawer( QWidget *Parent );
       ~qt4drawer();
 
       QGraphicsScene* scene() { return Scene; }

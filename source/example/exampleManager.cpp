@@ -32,6 +32,7 @@
 #include "scigraphics/scale.h"
 #include "scigraphics/graphsequence.h"
 #include "scigraphics/graphmap.h"
+#include "scigraphics/selection.h"
 
 // ======================================================
 
@@ -47,7 +48,10 @@ int main( int argc, char **argv )
 
   scigraphics::qt4plotManager Manager( 8, 3, NULL, scigraphics::qt4plotManager::TabSettings );
   for ( size_t i = 0; i < Manager.numberOfSettings(); i++ )
-    Manager.settings(i)->addSettingWidget( new scigraphics::qt4settingsSelections(NULL) );
+  {
+    if ( i != 4 )
+      Manager.settings(i)->addSettingWidget( new scigraphics::qt4settingsSelections(NULL) );
+  }
 
   scigraphics::graphSV *Sqr = Manager.plot(0)->createGraphSV( "x^2" );
   
@@ -92,6 +96,8 @@ int main( int argc, char **argv )
     for ( double Phi = 0; Phi <= 2*M_PI; Phi += 0.05 )
       Graph->appendPolar( Phi, i+1 );
   }
+ 
+  Manager.plot(4)->createSelection<scigraphics::selectionHorizontal>()->setInterval( -1, 0.5 );
 
   scigraphics::graphAV *Polygons = Manager.plot(6)->createGraphAV("Polygons");
   Polygons->append( 0, 0 );

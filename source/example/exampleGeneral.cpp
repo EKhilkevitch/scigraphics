@@ -108,7 +108,7 @@ int main( int argc, char *argv[] )
   Plot.setAxisTitle( scigraphics::AxisLeft, "This is axis Y left" );
   Plot.setAxisTitle( scigraphics::AxisRight, "This is axis Y right" );
   Plot.setAxisNumberStyle( scigraphics::AxisRight, scigraphics::numberStyle(scigraphics::numberStyle::Exponent) );
-
+  
   scigraphics::qt4settingsGroupSuperBox::axisPositionsList AxisPositions = scigraphics::qt4settingsGroupSuperBox::defaultAxisPositions();
   AxisPositions << scigraphics::AxisTop;
   AxisPositions << scigraphics::AxisRight;
