@@ -46,7 +46,7 @@ int main( int argc, char **argv )
   QApplication app(argc,argv);
 
   scigraphics::qt4plotManager Manager( 8, 3, NULL, scigraphics::qt4plotManager::TabSettings );
-  for ( unsigned i = 0; i < Manager.numberOfSettings(); i++ )
+  for ( size_t i = 0; i < Manager.numberOfSettings(); i++ )
     Manager.settings(i)->addSettingWidget( new scigraphics::qt4settingsSelections(NULL) );
 
   scigraphics::graphSV *Sqr = Manager.plot(0)->createGraphSV( "x^2" );
@@ -86,7 +86,7 @@ int main( int argc, char **argv )
   for ( double Phi = 0; Phi <= 10*M_PI; Phi += 0.05 )
     SpiralNg->appendPolar( Phi, -2 * sqrt( Phi ) );
 
-  for ( unsigned i = 0; i < 20; i++ )
+  for ( size_t i = 0; i < 20; i++ )
   {
     scigraphics::graphSV *Graph = Manager.plot(5)->createGraphSV( ( "Circle " + QString::number(i) ).toStdString() );
     for ( double Phi = 0; Phi <= 2*M_PI; Phi += 0.05 )

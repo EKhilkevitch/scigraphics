@@ -70,12 +70,12 @@ namespace scigraphics
       QWidget *SettingsWidget;
 
     protected:
-      void createPlots( const QList<unsigned> &PlotsInRows );
-      void createPlots( const unsigned NumOfPlots, const unsigned NumOfRows );
+      void createPlots( const QList<size_t> &PlotsInRows );
+      void createPlots( size_t NumOfPlots, size_t NumOfRows );
       void setDefaultName();
 
       qt4plot* createNextPlot();
-      QSplitter* createVerticalPlotSplitter( const unsigned NumOfPlotsinSplitter );
+      QSplitter* createVerticalPlotSplitter( size_t NumOfPlotsinSplitter );
       void createSettings( const settingsMode SettingsMode, const QList<axisPosition> &Positions, qt4settingsComposer *Composer);
       QWidget* createTabSettingsWidget( const QList<axisPosition> &Positions, qt4settingsComposer *Composer );
       QWidget* createSharedSettingsWidget(const QList<axisPosition> &Positions, qt4settingsComposer *Composer );
@@ -85,9 +85,9 @@ namespace scigraphics
       QList<qt4plot*>& plotList() { return Plots; }
 
     public:
-      explicit qt4plotManager( unsigned NumOfPlots, unsigned NumOfRows = 1, QObject *Parent = NULL );
-      qt4plotManager( unsigned NumOfPlots, unsigned NumOfRows, QObject *Parent, const settingsMode SettingsMode );
-      qt4plotManager( unsigned NumOfPlots, unsigned NumOfRows, QObject *Parent, const settingsMode SettingsMode, const QList<axisPosition> &Positions,
+      explicit qt4plotManager( size_t NumOfPlots, size_t NumOfRows = 1, QObject *Parent = NULL );
+      qt4plotManager( size_t NumOfPlots, size_t NumOfRows, QObject *Parent, const settingsMode SettingsMode );
+      qt4plotManager( size_t NumOfPlots, size_t NumOfRows, QObject *Parent, const settingsMode SettingsMode, const QList<axisPosition> &Positions,
         qt4settingsComposer *Composer = NULL );
       ~qt4plotManager();
       
@@ -102,6 +102,8 @@ namespace scigraphics
 
       const QString& name() const;
       void setName( const QString &Name );
+
+      void setPlotVisible( size_t Index, bool Visible );
      
       void setSettingsName( size_t Index, const QString &Name );
       void updateTabNames();
