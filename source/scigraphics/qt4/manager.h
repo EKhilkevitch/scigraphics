@@ -104,6 +104,7 @@ namespace scigraphics
       void setName( const QString &Name );
 
       void setPlotVisible( size_t Index, bool Visible );
+      void setPlotVisible( qt4plot *Plot, bool Visible );
      
       void setSettingsName( size_t Index, const QString &Name );
       void updateTabNames();

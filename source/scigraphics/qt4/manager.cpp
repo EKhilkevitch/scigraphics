@@ -119,20 +119,34 @@ void scigraphics::qt4plotManager::setName( const QString &N )
 
 // ----------------------------------------------------------------
       
-void scigraphics::qt4plotManager::setPlotVisible( size_t Index, bool Visible )
+void scigraphics::qt4plotManager::setPlotVisible( qt4plot *Plot, bool Visible )
 {
-  plot( Index )->setVisible( Visible );
+  QList<int> OldSplitterSizes = MainSplitter->sizes();
+  int TotalSize = 0;
+  foreach( int Size, OldSplitterSizes )
+    TotalSize += Size;
+
+  Q_ASSERT( Plot != NULL );
+  Plot->setVisible( Visible );
 
   QList<int> SplitterSizes;
   for ( int i = 0; i < MainSplitter->count(); i++ )
-  {
-    if ( MainSplitter->widget(i)->isVisible() )
-      SplitterSizes.append( 0 );
-    else
-      SplitterSizes.append( 1 );
-  }
+    SplitterSizes.append( TotalSize / MainSplitter->count() );
 
   MainSplitter->setSizes( SplitterSizes );
+  PlotWidget->update();
+  MainSplitter->refresh();
+
+  qDebug() << "plot";
+  foreach( int Sz, MainSplitter->sizes() )
+    qDebug() << Sz;
+}
+
+// ----------------------------------------------------------------
+
+void scigraphics::qt4plotManager::setPlotVisible( size_t Index, bool Visible )
+{
+  setPlotVisible( plot(Index), Visible );
 }
 
 // ----------------------------------------------------------------
