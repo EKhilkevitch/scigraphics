@@ -71,6 +71,7 @@ namespace scigraphics
     public:
       numberStyle();
       explicit numberStyle( style Style );
+      explicit numberStyle( const std::string &Format );
       explicit numberStyle( numberTextFactory *Factory );
       numberStyle( const numberStyle &NumberStyle );
       numberStyle& operator=( const numberStyle &NumberStyle );

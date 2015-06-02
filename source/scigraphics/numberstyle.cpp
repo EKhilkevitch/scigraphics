@@ -83,6 +83,14 @@ scigraphics::numberStyle::numberStyle( style Style ) :
 }
 
 // ------------------------------------------------------
+
+scigraphics::numberStyle::numberStyle( const std::string &Format ) :
+  NumberTextFactory( NULL )
+{
+  setStyle( Format );
+}
+
+// ------------------------------------------------------
       
 scigraphics::numberStyle::numberStyle( numberTextFactory *Factory ) :
   NumberTextFactory( Factory )
