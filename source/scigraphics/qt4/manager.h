@@ -69,7 +69,7 @@ namespace scigraphics
       QWidget *PlotWidget;
       QWidget *SettingsWidget;
 
-    protected:
+    private:
       void createPlots( const QList<size_t> &PlotsInRows );
       void createPlots( size_t NumOfPlots, size_t NumOfRows );
       void setDefaultName();
@@ -83,6 +83,8 @@ namespace scigraphics
 
       QTabWidget* tabWidget() { return SettingsTab; }
       QList<qt4plot*>& plotList() { return Plots; }
+
+      static void refreshSplitterAfterChanging( QSplitter *Splitter );
 
     public:
       explicit qt4plotManager( size_t NumOfPlots, size_t NumOfRows = 1, QObject *Parent = NULL );

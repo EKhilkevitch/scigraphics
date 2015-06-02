@@ -121,21 +121,40 @@ void scigraphics::qt4plotManager::setName( const QString &N )
       
 void scigraphics::qt4plotManager::setPlotVisible( qt4plot *Plot, bool Visible )
 {
-  QList<int> OldSplitterSizes = MainSplitter->sizes();
-  int TotalSize = 0;
-  foreach( int Size, OldSplitterSizes )
-    TotalSize += Size;
-
   Q_ASSERT( Plot != NULL );
   Plot->setVisible( Visible );
 
-  QList<int> SplitterSizes;
-  for ( int i = 0; i < MainSplitter->count(); i++ )
-    SplitterSizes.append( TotalSize / MainSplitter->count() );
-
-  MainSplitter->setSizes( SplitterSizes );
-  MainSplitter->refresh();
+  refreshSplitterAfterChanging( MainSplitter );
   PlotWidget->update();
+}
+
+// ----------------------------------------------------------------
+      
+void scigraphics::qt4plotManager::refreshSplitterAfterChanging( QSplitter *Splitter )
+{
+  Q_ASSERT( Splitter != NULL );
+
+  QList<int> SplitterSizes = Splitter->sizes();
+  
+  int TotalSize = 0;
+  foreach( int Size, SplitterSizes )
+    TotalSize += Size;
+
+  const int CountOfSplitterWidgets = Splitter->count();
+
+  SplitterSizes.clear();
+  for ( int i = 0; i < CountOfSplitterWidgets; i++ )
+    SplitterSizes.append( TotalSize / CountOfSplitterWidgets );
+
+  Splitter->setSizes( SplitterSizes );
+  Splitter->refresh();
+
+  for ( int i = 0; i < CountOfSplitterWidgets; i++ )
+  {
+    QSplitter *SubSplitter = dynamic_cast<QSplitter*>( Splitter->widget(i) );
+    if ( SubSplitter != NULL )
+      refreshSplitterAfterChanging( SubSplitter );
+  }
 }
 
 // ----------------------------------------------------------------
