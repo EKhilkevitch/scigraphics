@@ -31,7 +31,6 @@
 #include <ostream>
 #include <algorithm>
 #include <utility>
-#include <functional>
 #include <limits>
 
 namespace scigraphics

@@ -19,33 +19,18 @@
  */
 
 
-#pragma once
-
-#include "scigraphics/color.h"
-
-namespace scigraphics
-{
-
 // ============================================================
 
-  class selectionStyle
-  {
-    private:
-      color BrushColor;
-      color LineColor;
+#include "scigraphics/selectionstyle.h"
 
-    public:
-      explicit selectionStyle( color BrushColor = color::Yellow, color LineColor = color::Magenta );
-
-      const color& getBrushColor() const { return BrushColor; }
-      void setBrushColor( color Color ) { BrushColor = Color; }
-
-      const color& getLineColor() const { return LineColor; }
-      void setLineColor( color Color ) { LineColor = Color; }
-  };
-  
-
-// ======================================================
-
+// ============================================================
+      
+scigraphics::selectionStyle::selectionStyle( color BC, color LC ) :
+  BrushColor(BC), 
+  LineColor(LC) 
+{ 
+  BrushColor.setTransparency( 0.5 );
 }
+
+// ============================================================
 

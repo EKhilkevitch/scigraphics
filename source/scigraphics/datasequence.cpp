@@ -47,6 +47,26 @@ namespace
 
 // ============================================================
 
+scigraphics::sequence::data::~data()
+{
+}
+
+// ------------------------------------------------------------
+
+const scigraphics::sequence::data::point_t scigraphics::sequence::data::first() const 
+{ 
+  return  empty() ? point_t() : at(0); 
+}
+
+// ------------------------------------------------------------
+
+const scigraphics::sequence::data::point_t scigraphics::sequence::data::last()  const 
+{ 
+  return  empty() ? point_t() : at(size()-1); 
+}
+
+// ------------------------------------------------------------
+
 const scigraphics::numberLimits scigraphics::sequence::data::limitsX() const
 {
   numberLimits Result;
@@ -339,6 +359,27 @@ void scigraphics::sequence::dataVector::append( const point_t &Point )
   LimitsCache.update( Point, *this );
   updateOrderedByX();
 }
+        
+// ------------------------------------------------------------
+
+void scigraphics::sequence::dataVector::append( number X, number Y ) 
+{ 
+  append( point_t(X,Y) );  
+}
+
+// ------------------------------------------------------------
+
+void scigraphics::sequence::dataVector::append( number X, number Y, number ErrY ) 
+{ 
+  append( point_t(X,Y,0,ErrY) ); 
+}
+
+// ------------------------------------------------------------
+
+void scigraphics::sequence::dataVector::append( number X, number Y, number ErrX, number ErrY ) 
+{ 
+  append( point_t(X,Y,ErrX,ErrY) ); 
+}
 
 // ------------------------------------------------------------
 
@@ -420,6 +461,13 @@ void scigraphics::sequence::dataUniformVector::append( number Y, number ErrY )
   Values.push_back( Y );
   Errors.push_back( ErrY );
   LimitsCache.update( last(), *this );
+}
+
+// ------------------------------------------------------------
+        
+void scigraphics::sequence::dataUniformVector::append( number Y ) 
+{ 
+  append( Y, 0 ); 
 }
 
 // ------------------------------------------------------------

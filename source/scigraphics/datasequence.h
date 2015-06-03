@@ -39,10 +39,10 @@ namespace scigraphics
       private:
         number X, Y;
         number ErrX, ErrY;
+
       public:
-        point() : X(0), Y(0), ErrX(0), ErrY(0) {}
-        point( number x, number y, number ex = 0, number ey = 0 ) : 
-           X(x), Y(y), ErrX(ex), ErrY(ey) {}
+        inline point();
+        inline point( number x, number y, number ex = 0, number ey = 0 );
 
         number x() const { return X; }
         number y() const { return Y; }
@@ -52,7 +52,7 @@ namespace scigraphics
         bool isValid() const { return isValidNumbers( x(), y() ); }
         bool isValidError() const { return isValidNumbers( errX(), errY() ); }
         
-        static inline point invalidPoint() { return point( invalidNumber(), invalidNumber() );  }
+        static inline point invalidPoint();
     };
   
     // ------------------------------------------------------------
@@ -65,7 +65,7 @@ namespace scigraphics
         typedef data_iterator< data > iterator;
 
       public:
-        virtual ~data() {}
+        virtual ~data();
 
         virtual int_t size() const = 0;
         bool empty() const { return size() == 0; }
@@ -73,8 +73,8 @@ namespace scigraphics
         virtual const point_t at( int_t Index ) const = 0;
         const point_t operator[]( int_t Index ) const { return at(Index); }
 
-        const point_t first() const { return  empty() ? point_t() : at(0); }
-        const point_t last()  const { return  empty() ? point_t() : at(size()-1); }
+        const point_t first() const;
+        const point_t last()  const;
 
         iterator begin() const { return iterator( *this, 0 ); }
         iterator end() const { return iterator( *this, size() ); }
@@ -148,9 +148,9 @@ namespace scigraphics
         const point_t at( int_t Index ) const { return Points.at( static_cast<size_t>(Index) ); }
 
         void append( const point_t &Point );
-        void append( number X, number Y ) { append( point_t(X,Y) );  }
-        void append( number X, number Y, number ErrY ) { append( point_t(X,Y,0,ErrY) ); }
-        void append( number X, number Y, number ErrX, number ErrY ) { append( point_t(X,Y,ErrX,ErrY) ); }
+        void append( number X, number Y );
+        void append( number X, number Y, number ErrY );
+        void append( number X, number Y, number ErrX, number ErrY );
 
         void clear();
         
@@ -179,7 +179,7 @@ namespace scigraphics
         number valueY( int_t Index ) const { return Values.at( static_cast<size_t>(Index) ); }
         number errorY( int_t Index ) const { return Errors.at( static_cast<size_t>(Index) ); }
 
-        void append( number Y ) { append( Y, 0 ); }
+        void append( number Y );
         void append( number Y, number ErrY );
 
         void setStepX( number StepX );
@@ -198,7 +198,34 @@ namespace scigraphics
     std::ostream& operator<<( std::ostream& Stream, const point& Point );
     std::ostream& operator<<( std::ostream& Stream, const data& Data );
 
-  // ============================================================
+    // ============================================================
+  
+    point::point() : 
+      X(0), 
+      Y(0), 
+      ErrX(0), 
+      ErrY(0)
+    {
+    }
+
+    // ------------------------------------------------------------
+    
+    point::point( number x, number y, number ex, number ey ) : 
+      X(x), 
+      Y(y), 
+      ErrX(ex), 
+      ErrY(ey) 
+    {
+    }
+    
+    // ------------------------------------------------------------
+        
+    point point::invalidPoint() 
+    { 
+      return point( invalidNumber(), invalidNumber() );  
+    }
+    
+    // ============================================================
 
   }
 }

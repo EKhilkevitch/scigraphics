@@ -30,11 +30,27 @@
 
 // ============================================================
 
+scigraphics::map::data::data( interval<number> IX, interval<number> IY ) : 
+  IntervalX(IX), 
+  IntervalY(IY) 
+{
+}
+
+// ------------------------------------------------------------
+
+scigraphics::map::data::~data() 
+{
+}
+
+// ------------------------------------------------------------
+
 scigraphics::numberLimits scigraphics::map::data::limitsForInterval( interval<number> Interval )
 {
   numberLimits Limits;
+
   if ( ! numberLimits::isValidInterval(Interval) )
     return Limits;
+
   Limits.updateLimits( Interval.min() );
   if ( Interval.min() * Interval.max() <= 0 )
   {
@@ -42,6 +58,7 @@ scigraphics::numberLimits scigraphics::map::data::limitsForInterval( interval<nu
     Limits.updateLimits( Interval.max() * 1e-7 );
   }
   Limits.updateLimits( Interval.max() );
+
   return Limits;
 }
 
@@ -70,6 +87,13 @@ const scigraphics::numberLimits scigraphics::map::data::limitsZ() const
 }
 
 // ============================================================
+           
+scigraphics::map::dataVector::limitsZCache::limitsZCache() :
+  IsValid( false )
+{
+}
+
+// ------------------------------------------------------------
 
 scigraphics::map::dataVector::dataVector( size_t SX, interval<number> IX, size_t SY, interval<number> IY ) :
   map::data( IX, IY ),
@@ -129,25 +153,53 @@ const scigraphics::map::dataVector::point_t scigraphics::map::dataVector::at( in
 }
 
 // ------------------------------------------------------------
+        
+scigraphics::number scigraphics::map::dataVector::coordinateX( int_t IndexX ) const 
+{ 
+  return intervalX().min() + deltaX()*IndexX; 
+}
+
+// ------------------------------------------------------------
+
+scigraphics::number scigraphics::map::dataVector::coordinateY( int_t IndexY ) const 
+{ 
+  return intervalY().min() + deltaY()*IndexY; 
+}
+
+// ------------------------------------------------------------
+
+scigraphics::map::dataVector::int_t scigraphics::map::dataVector::nearestIndexX( number X ) const 
+{ 
+  return static_cast<int_t>( ( X - intervalX().min() )/deltaX() ); 
+}
+
+// ------------------------------------------------------------
+
+scigraphics::map::dataVector::int_t scigraphics::map::dataVector::nearestIndexY( number Y ) const 
+{ 
+  return static_cast<int_t>( ( Y - intervalY().min() )/deltaY() ); 
+}
+
+// ------------------------------------------------------------
       
 void scigraphics::map::dataVector::set( int IndexX, int IndexY, number Z, number ErrZ )
 {
   size_t Index = index( IndexX, IndexY );
   Values.at(Index) = value( Z, ErrZ );
-  LimitsZCache.isValid = false;
+  LimitsZCache.IsValid = false;
 }
 
 // ------------------------------------------------------------
 
 const scigraphics::numberLimits scigraphics::map::dataVector::limitsZ() const 
 {
-  if ( ! LimitsZCache.isValid )
+  if ( ! LimitsZCache.IsValid )
   {
     LimitsZCache.LimitsZ = numberLimits();
     iterator Begin = begin(), End = end();
     for ( iterator i = Begin; i != End; ++i )
       LimitsZCache.LimitsZ.updateLimits( i->z() );
-    LimitsZCache.isValid = true;
+    LimitsZCache.IsValid = true;
   }
   return LimitsZCache.LimitsZ;
 }

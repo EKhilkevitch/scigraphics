@@ -14,6 +14,9 @@ if ( MSVC )
 endif()
 
 if ( ENABLE_EXAMPLES )
+
+  message( "Examples enabled" )
+
   project( examapleSimple )
   add_executable( exampleSimple ${gui_type} exampleSimple.cpp )
   target_link_libraries( exampleSimple ${QT_LIBRARIES} scigraphicsQt )

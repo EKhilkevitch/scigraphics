@@ -53,7 +53,7 @@ namespace scigraphics
       {
         point_t Point;
         int_t Index;
-        currentPoint() : Index( std::numeric_limits<int_t>::max() ) {}
+        currentPoint();
       } mutable CurrentPoint;
 
     public:
@@ -80,6 +80,13 @@ namespace scigraphics
   };
 
   // ============================================================
+  
+  template <class DT> data_iterator<DT>::currentPoint::currentPoint() :
+    Index( std::numeric_limits<int_t>::max() )
+  {
+  }
+  
+  // ------------------------------------------------------------
  
   template <class DT> data_iterator<DT>::data_iterator() :
     Data( NULL ),

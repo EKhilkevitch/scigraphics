@@ -30,7 +30,6 @@
 #include <limits>
 #include <cassert>
 #include <cmath>
-#include <typeinfo>
 #include <stdexcept>
 
 // ============================================================

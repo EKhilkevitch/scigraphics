@@ -43,9 +43,8 @@ namespace scigraphics
         number Z, ErrZ;
 
       public:
-        point() : X(0), DX(1), Y(0), DY(1), Z(0), ErrZ(0) {}
-        point( number x, number dx, number y, number dy, number z, number ez = 0 ) : 
-           X(x), DX(dx), Y(y), DY(dy), Z(z), ErrZ(ez) {}
+        inline point();
+        inline point( number x, number dx, number y, number dy, number z, number ez = 0 );
 
         number x0() const { return X; }
         number y0() const { return Y; }
@@ -74,10 +73,8 @@ namespace scigraphics
         static numberLimits limitsForInterval( interval<number> Interval );
 
       public:
-        data( interval<number> IX, interval<number> IY ) : 
-          IntervalX(IX), 
-          IntervalY(IY) {}
-        virtual ~data() {}
+        data( interval<number> IntervalX, interval<number> IntervalY );
+        virtual ~data();
 
         interval<number> intervalX() const { return IntervalX; }
         interval<number> intervalY() const { return IntervalY; }
@@ -108,9 +105,10 @@ namespace scigraphics
         {
           private:
             number Z, ErrZ;
+
           public:
-            value() : Z(invalidNumber()), ErrZ(invalidNumber()) {}
-            value( number z, number ez = 0 ) : Z(z), ErrZ(ez) {}
+            inline value();
+            inline value( number z, number ez = 0 );
             number z() const { return Z; }
             number errZ() const { return ErrZ; }
         };
@@ -122,14 +120,14 @@ namespace scigraphics
         mutable struct limitsZCache
         {
           numberLimits LimitsZ;
-          bool isValid;
+          bool IsValid;
 
-          limitsZCache() : isValid(false) {}
+          limitsZCache();
         } LimitsZCache;
 
       public:
         dataVector();
-        dataVector( size_t SX, interval<number> IX, size_t SY, interval<number> IY );
+        dataVector( size_t SizeX, interval<number> IntervalX, size_t SizeY, interval<number> IntervalY );
 
         int_t sizeX() const { return SizeX; }
         int_t sizeY() const { return SizeY; }
@@ -144,10 +142,10 @@ namespace scigraphics
         number deltaX() const { return intervalX().distance()/sizeX(); }
         number deltaY() const { return intervalY().distance()/sizeY(); }
 
-        number coordinateX( int_t IndexX ) const { return intervalX().min() + deltaX()*IndexX; }
-        number coordinateY( int_t IndexY ) const { return intervalY().min() + deltaY()*IndexY; }
-        int_t nearestIndexX( number X ) const { return static_cast<int_t>( ( X - intervalX().min() )/deltaX() ); }
-        int_t nearestIndexY( number Y ) const { return static_cast<int_t>( ( Y - intervalY().min() )/deltaY() ); }
+        number coordinateX( int_t IndexX ) const;
+        number coordinateY( int_t IndexY ) const;
+        int_t nearestIndexX( number X ) const;
+        int_t nearestIndexY( number Y ) const;
 
         void set( int_t IndexX, int_t IndexY, number Z, number ErrZ = 0 );
         const point_t at( int_t Index ) const;
@@ -161,8 +159,47 @@ namespace scigraphics
     std::ostream& operator<<( std::ostream& Stream, const point& Point );
     std::ostream& operator<<( std::ostream& Stream, const data& Data );
 
-  // ============================================================
+    // ============================================================
 
+    point::point() : 
+      X(0), 
+      DX(1), 
+      Y(0), 
+      DY(1), 
+      Z(0), 
+      ErrZ(0) 
+    {
+    }
+
+    // ------------------------------------------------------------
+        
+    point::point( number x, number dx, number y, number dy, number z, number ez ) : 
+      X(x), 
+      DX(dx), 
+      Y(y), 
+      DY(dy), 
+      Z(z), 
+      ErrZ(ez) 
+    {
+    }
+            
+    // ------------------------------------------------------------
+    
+    dataVector::value::value() : 
+      Z(invalidNumber()), 
+      ErrZ(invalidNumber()) 
+    {
+    }
+    
+    // ------------------------------------------------------------
+    
+    dataVector::value::value( number z, number ez ) : 
+      Z(z), 
+      ErrZ(ez) 
+    {
+    }
+
+    // ============================================================
   }
 }
 

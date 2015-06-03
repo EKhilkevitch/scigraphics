@@ -16,6 +16,7 @@ set( graphics_source_files
         pointstyle.cpp
         brushstyle.cpp
         textstyle.cpp
+        selectionstyle.cpp
         drawer.cpp
         painter.cpp
         axis.cpp
