@@ -56,8 +56,8 @@ namespace scigraphics
         bool Visible;
       
       public:
-        graphView() : Visible(true) {}
-        virtual ~graphView() {}
+        graphView();
+        virtual ~graphView();
 
         void setVisible( bool V ) { Visible = V; }
         bool isVisible() const { return Visible; }
@@ -93,7 +93,7 @@ namespace scigraphics
         style Style;
       
       public:
-        graphViewStyle( style S = style() ) : Style(S) {}
+        explicit graphViewStyle( const style &Style = style() );
 
         void setStyle( style S ) { Style = S; }
         const style& getStyle() const { return Style; }
@@ -111,7 +111,7 @@ namespace scigraphics
         void drawUnorderedByX( painter &Painter, const pairScales& Scales, sequence::data::iterator Begin, sequence::data::iterator End ) const;
         
       public:
-        graphViewGeneralLine( style Style );
+        explicit graphViewGeneralLine( const style &Style );
         void drawLegendExample( painter &Painter, const wrectangle &Rectangle ) const;
     };
     
@@ -122,7 +122,7 @@ namespace scigraphics
       protected:
         void drawLineBetweenPoints( painter &Painter, std::vector<wpoint> *Points ) const;
       public:
-        graphViewLine( style S ) : graphViewGeneralLine(S) {}
+        explicit graphViewLine( const style &Style );
     };
 
     // ------------------------------------------------------------
@@ -132,7 +132,7 @@ namespace scigraphics
       protected:
         void drawUnorderedByX( painter &Painter, const pairScales& Scales, sequence::data::iterator Begin, sequence::data::iterator End ) const;
       public:
-        graphViewPoints( style S ) : graphViewStyle<pointStyle,graphViewOrdered>(S) {}
+        explicit graphViewPoints( const style &Style );
 
         void drawLegendExample( painter &Painter, const wrectangle &Rectangle ) const;
     };
@@ -145,10 +145,10 @@ namespace scigraphics
         void drawUnorderedByX( painter &Painter, const pairScales& Scales, sequence::data::iterator Begin, sequence::data::iterator End ) const;
         void drawHorizontalErrorBar( painter &Painter, const pairScales& Scales, const npoint &Point, number ErrX ) const;
         void drawVerticalErrorBar( painter &Painter, const pairScales& Scales, const npoint &Point, number ErrY ) const;
-      public:
-        graphViewErrorBars( style S ) : graphViewStyle<errorBarStyle,graphViewOrdered>(S) {}
 
-        void drawLegendExample( painter &, const wrectangle & ) const {}
+      public:
+        explicit graphViewErrorBars( const style &Style );
+        void drawLegendExample( painter &, const wrectangle & ) const;
     };
 
     // ------------------------------------------------------------
@@ -157,8 +157,9 @@ namespace scigraphics
     {
       protected:
         void drawLineBetweenPoints( painter &Painter, std::vector<wpoint> *Points ) const;
+
       public:
-        graphViewLineHystogram( style S ) : graphViewGeneralLine(S) {}
+        explicit graphViewLineHystogram( const style &Style );
     };
 
     // ------------------------------------------------------------
@@ -173,11 +174,18 @@ namespace scigraphics
         void drawOrderedByX( painter &Painter, const pairScales& Scales, sequence::data::iterator Begin, sequence::data::iterator End ) const;
 
       public:
-        graphViewCoveredArea( style S ) : graphViewStyle<brushStyle,graphView>(S) {}
+        explicit graphViewCoveredArea( const style &Style );
        
         void draw( painter &Painter, const pairScales& Scales, const sequence::data &Data ) const;
         void drawLegendExample( painter &Painter, const wrectangle &Rectangle ) const;
     };
+    
+    // ============================================================
+        
+    template <class styleClass, class parentClass> graphViewStyle<styleClass,parentClass>::graphViewStyle( const style &S ) : 
+      Style(S) 
+    {
+    }
     
     // ============================================================
 

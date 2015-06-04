@@ -65,7 +65,7 @@ namespace scigraphics
     private:
       const pairScales &Scales;
     public:
-      checkIsLessThan( const pairScales &Scales );
+      explicit checkIsLessThan( const pairScales &Scales );
       bool operator()( const fcoord FValue, const sequence::data::point_t &Point ) const;
       bool operator()( const sequence::data::point_t &Point, const fcoord FValue ) const;
   };
@@ -158,7 +158,20 @@ namespace scigraphics
 
 
 // ============================================================
-      
+   
+scigraphics::sequence::graphView::graphView() : 
+  Visible(true) 
+{
+}
+
+// ------------------------------------------------------------
+
+scigraphics::sequence::graphView::~graphView() 
+{
+}
+
+// ------------------------------------------------------------
+
 void scigraphics::sequence::graphViewOrdered::draw( painter &Painter, const pairScales& Scales, const sequence::data &Data ) const 
 {
   if ( Data.isOrderedByX() ) 
@@ -193,7 +206,7 @@ void scigraphics::sequence::graphViewOrdered::drawOrderedByX( painter &Painter, 
 
 // ============================================================
         
-scigraphics::sequence::graphViewGeneralLine::graphViewGeneralLine( style Style ) : 
+scigraphics::sequence::graphViewGeneralLine::graphViewGeneralLine( const style &Style ) : 
   graphViewStyle<lineStyle,graphViewOrdered>(Style) 
 {
 }
@@ -257,11 +270,25 @@ void scigraphics::sequence::graphViewGeneralLine::drawLegendExample( painter &Pa
 }
 
 // ------------------------------------------------------------
+        
+scigraphics::sequence::graphViewLine::graphViewLine( const style &Style ) : 
+  graphViewGeneralLine(Style) 
+{
+}
+
+// ------------------------------------------------------------
 
 void scigraphics::sequence::graphViewLine::drawLineBetweenPoints( painter &Painter, std::vector<wpoint> *Points ) const
 {
   assert( Points != NULL );
   Painter.drawLineW( *Points );
+}
+
+// ------------------------------------------------------------
+
+scigraphics::sequence::graphViewPoints::graphViewPoints( const style &Style ) : 
+  graphViewStyle<pointStyle,graphViewOrdered>(Style) 
+{
 }
 
 // ------------------------------------------------------------
@@ -286,6 +313,13 @@ void scigraphics::sequence::graphViewPoints::drawLegendExample( painter &Painter
   wcoord VCenter = ( Rectangle.up() + Rectangle.down() )/2;
   wcoord HCenter = ( Rectangle.left() + Rectangle.right() )/2;
   Painter.drawPointW( wpoint(HCenter,VCenter), getStyle() );
+}
+
+// ------------------------------------------------------------
+        
+scigraphics::sequence::graphViewErrorBars::graphViewErrorBars( const style &Style ) : 
+  graphViewStyle<errorBarStyle,graphViewOrdered>(Style) 
+{
 }
 
 // ------------------------------------------------------------
@@ -328,6 +362,19 @@ void scigraphics::sequence::graphViewErrorBars::drawVerticalErrorBar( painter &P
 }
 
 // ------------------------------------------------------------
+        
+void scigraphics::sequence::graphViewErrorBars::drawLegendExample( painter &, const wrectangle & ) const 
+{
+}
+
+// ------------------------------------------------------------
+
+scigraphics::sequence::graphViewLineHystogram::graphViewLineHystogram( const style &Style ) : 
+  graphViewGeneralLine(Style) 
+{
+}
+
+// ------------------------------------------------------------
 
 void scigraphics::sequence::graphViewLineHystogram::drawLineBetweenPoints( painter &Painter, std::vector<wpoint> *Points ) const
 {
@@ -355,7 +402,14 @@ void scigraphics::sequence::graphViewLineHystogram::drawLineBetweenPoints( paint
 
   Painter.drawLineW( *Points );
 }
+
+// ------------------------------------------------------------
       
+scigraphics::sequence::graphViewCoveredArea::graphViewCoveredArea( const style &Style ) : 
+  graphViewStyle<brushStyle,graphView>(Style) 
+{
+}
+
 // ------------------------------------------------------------
       
 scigraphics::sequence::data::iterator scigraphics::sequence::graphViewCoveredArea::fillPolygonVector( sequence::data::iterator Begin, sequence::data::iterator End, const pairScales& Scales, 

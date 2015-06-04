@@ -17,6 +17,7 @@ set( graphics_source_files
         brushstyle.cpp
         textstyle.cpp
         selectionstyle.cpp
+        errorbarstyle.cpp
         drawer.cpp
         painter.cpp
         axis.cpp

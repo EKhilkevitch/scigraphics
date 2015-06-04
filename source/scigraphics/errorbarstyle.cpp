@@ -19,42 +19,26 @@
  */
 
 
-#pragma once
-
 // ============================================================
 
-#include "scigraphics/color.h"
+#include "scigraphics/errorbarstyle.h"
 #include "scigraphics/linestyle.h"
 
 // ============================================================
 
-namespace scigraphics
+scigraphics::errorBarStyle::errorBarStyle( color C ) : 
+  Color(C), 
+  HatWidth(8), 
+  LineWidth(1) 
 {
-
-  class lineStyle;
-
-  // ============================================================
-
-  class errorBarStyle
-  {
-    private:
-      color Color;
-      int HatWidth;
-      int LineWidth;
-
-    public:
-      explicit errorBarStyle( color Color = color::Black );
-
-      int hatWidth() const { return HatWidth; }
-      int lineWidth() const { return LineWidth; }
-
-      const color& getColor() const { return Color; }
-      void setColor( color C ) { Color = C; } 
-
-      lineStyle getLineStyle() const;
-  };
-  
-  // ======================================================
-
 }
+
+// ------------------------------------------------------------
+      
+scigraphics::lineStyle scigraphics::errorBarStyle::getLineStyle() const 
+{ 
+  return lineStyle( lineWidth(), getColor() ); 
+}
+      
+// ============================================================
 
