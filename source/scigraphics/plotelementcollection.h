@@ -46,6 +46,8 @@ namespace scigraphics
 
   class plotElementsCollection 
   {
+    friend class plotElement;
+
     public:
       typedef container_ptr< plotElement > plotElementList;
       
@@ -57,7 +59,7 @@ namespace scigraphics
 
         public:
           axisSetsPair();
-          axisSetsPair( const axisSet *X, const axisSet *Y );
+          axisSetsPair( const axisSet *AxisX, const axisSet *AxisY );
 
           bool isZero() const;
           pairScales createPairScales() const;
@@ -94,14 +96,14 @@ namespace scigraphics
       
     public:
       plotElementsCollection();
-      virtual ~plotElementsCollection();
+      virtual ~plotElementsCollection() = 0;
 
       size_t size() const { return PlotElementsList.size(); }
       bool  empty() const { return PlotElementsList.empty(); }
 
       void setDefaultAxisSets( const axisSet *X, const axisSet *Y );
 
-      virtual void draw( painter &Painter, bool isGridDrawn ) const;
+      void draw( painter &Painter, bool isGridDrawn ) const;
 
       const scale* graphScaleX( const plotElement *PlotElement ) const;
       const scale* graphScaleY( const plotElement *PlotElement ) const;
@@ -111,7 +113,7 @@ namespace scigraphics
 
       std::set< const axisSet* > setOfGraphAxisSet() const;
 
-      void bindGraphToAxisSet( const plotElement *PlotElement, const axisSet *X, const axisSet *Y );
+      void bindGraphToAxisSet( const plotElement *PlotElement, const axisSet *AxisX, const axisSet *AxisY );
   };
 
   // ============================================================
@@ -128,11 +130,11 @@ namespace scigraphics
       template <class R, class I> static R castIterator( const I& Iterator );
 
     public:
-      virtual void append( T *PlotElement );
-      virtual void remove( T *PlotElement );
-      virtual void release( T *PlotElement );
-      virtual bool exists( const T *PlotElement ) const;
-      virtual void clear();
+      void append( T *PlotElement );
+      void remove( T *PlotElement );
+      void release( T *PlotElement );
+      bool exists( const T *PlotElement ) const;
+      void clear();
       
       iterator begin() { return castIterator<iterator>(getPlotElementsList().begin()); }
       iterator end()   { return castIterator<iterator>(getPlotElementsList().end());   }

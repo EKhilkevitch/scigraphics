@@ -3,6 +3,8 @@ cmake_minimum_required( VERSION 2.6 )
 project( graphicsLib ) 
 
 set( graphics_source_files 
+        plotelement.cpp
+        plotelementcollection.cpp
         graph.cpp
         graphsequence.cpp
         graphmap.cpp
@@ -40,7 +42,6 @@ set( graphics_source_files
         cursorpoint.cpp
         selection.cpp
         selectioncollection.cpp
-        plotelementcollection.cpp
         settings.cpp
    )
 

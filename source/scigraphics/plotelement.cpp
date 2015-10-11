@@ -19,40 +19,44 @@
  */
 
 
-#pragma once
+// ============================================================
+
+#include "scigraphics/plotelement.h"
+#include "scigraphics/plotelementcollection.h"
 
 // ============================================================
 
-namespace scigraphics 
+scigraphics::plotElement::plotElement() :
+  Collection( NULL )
 {
-
-// ============================================================
-
-  class painter;
-  class pairScales;
-  class plotElementsCollection;
-
-// ============================================================
-
-  class plotElement
-  {
-    private:
-      plotElementsCollection *Collection;
-
-    public:
-      plotElement();
-      plotElement( const plotElement &PlotElement );
-      plotElement& operator=( const plotElement &PlotElement );
-      virtual ~plotElement();
-
-      virtual void draw( painter &Painter, const pairScales& Scales ) const = 0;
-      virtual bool isDrawOverGrid() const;
-      virtual bool isVisible() const;
-
-      void assignToCollection( plotElementsCollection *Collection );
-  };
-
-// ============================================================
-
 }
+
+// ------------------------------------------------------------
+
+scigraphics::plotElement::~plotElement() 
+{
+}
+
+// ------------------------------------------------------------
+
+bool scigraphics::plotElement::isDrawOverGrid() const 
+{ 
+  return true; 
+}
+
+// ------------------------------------------------------------
+
+bool scigraphics::plotElement::isVisible() const 
+{ 
+  return true; 
+}
+
+// ------------------------------------------------------------
+      
+void scigraphics::plotElement::assignToCollection( plotElementsCollection *Collection )
+{
+  this->Collection = Collection;
+}
+
+// ============================================================
 

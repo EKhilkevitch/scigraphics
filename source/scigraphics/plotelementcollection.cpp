@@ -142,6 +142,8 @@ scigraphics::plotElementsCollection::plotElementList::iterator scigraphics::plot
   AxisBindMap.erase( PlotElement );
   return PlotElementsList.erase( Iterator );
 }
+
+// ------------------------------------------------------------
       
 scigraphics::plotElementsCollection::plotElementList::iterator scigraphics::plotElementsCollection::releasePlotElementIterator( plotElementList::iterator Iterator )
 {

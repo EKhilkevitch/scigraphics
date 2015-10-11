@@ -23,6 +23,7 @@
 // ============================================================
 
 #include "scigraphics/plotelementcollection.h"
+#include "scigraphics/color.h"
 
 #include <string>
 
@@ -46,7 +47,6 @@ namespace scigraphics
   class graphCollection : public templatePlotElementsCollection<graph>
   {
     public:
-
       template < class G > G* create();
       template < class G > G* create( const color &Color );
       template < class G > G* create( const std::string &Legend );
