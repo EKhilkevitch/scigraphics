@@ -42,12 +42,12 @@ namespace scigraphics
   {
     class graphVector;
     class graphAreaVector;
-  };
+  }
 
   namespace map
   {
     class graphVector;
-  };
+  }
 
   typedef sequence::graphVector graphSV;
   typedef sequence::graphAreaVector graphAV;

@@ -34,7 +34,7 @@ namespace scigraphics
     AxisRight,
     AxisTop,
     AxisBottom,
-    AxisPositionsCount,
+    AxisPositionsCount
   };
       
   // ============================================================
@@ -42,7 +42,7 @@ namespace scigraphics
   enum axisDirection
   {
     AxisDirectionX,
-    AxisDirectionY,
+    AxisDirectionY
   };
   
   // ============================================================

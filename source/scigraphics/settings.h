@@ -78,7 +78,7 @@ namespace scigraphics
         UncontrollableStrip,
         NoneStrip,
         VerticalStrip,
-        HorizontalStrip,
+        HorizontalStrip
       };
 
     private:
@@ -124,5 +124,5 @@ namespace scigraphics
 
 // ============================================================
 
-};
+}
 
