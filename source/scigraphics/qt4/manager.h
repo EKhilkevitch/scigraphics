@@ -80,11 +80,13 @@ namespace scigraphics
       QWidget* createTabSettingsWidget( const QList<axisPosition> &Positions, qt4settingsComposer *Composer );
       QWidget* createSharedSettingsWidget(const QList<axisPosition> &Positions, qt4settingsComposer *Composer );
       qt4settingsComposer* createComposer( qt4settingsComposer *Composer, int Index );
+      
+      static void refreshSplitterAfterChanging( QSplitter *Splitter );
 
+    protected:
       QTabWidget* tabWidget() { return SettingsTab; }
       QList<qt4plot*>& plotList() { return Plots; }
 
-      static void refreshSplitterAfterChanging( QSplitter *Splitter );
 
     public:
       explicit qt4plotManager( size_t NumOfPlots, size_t NumOfRows = 1, QObject *Parent = NULL );
