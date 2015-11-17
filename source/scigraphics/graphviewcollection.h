@@ -66,6 +66,7 @@ namespace scigraphics
         template < class view > const view* getView() const;
 
         template < class view > void setViewVisible( bool Show );
+        template < class view > bool isViewVisible() const;
         void setAllViewsVisible( bool Show );
 
         template < class view > bool isViewExist();
@@ -142,6 +143,16 @@ namespace scigraphics
       graphView *View = getView<view>();
       if ( View != NULL )
         View->setVisible( Show );
+    }
+    
+    // ------------------------------------------------------------
+        
+    template < class view > bool graphViewCollection::isViewVisible() const
+    {
+      const graphView *View = getView<view>();
+      if ( View != NULL )
+        return View->isVisible();
+      return false;
     }
     
     // ------------------------------------------------------------
