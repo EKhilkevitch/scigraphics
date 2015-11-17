@@ -67,10 +67,11 @@ namespace scigraphics
       
       void updateInterval( T Number );
 
+      static bool isEquals( const interval<T> &Lims1, const interval<T> &Lims2, T Difference = 0 );
   };
 
   // ============================================================
-  
+ 
   template <class T> bool operator==( const interval<T> &Lims1, const interval<T> &Lims2 );
   template <class T> bool operator!=( const interval<T> &Lims1, const interval<T> &Lims2 );
   template <class T> interval<T> operator+( const interval<T> &Limits, const T Value );
@@ -177,6 +178,15 @@ namespace scigraphics
   { 
     Min = min(Min,Number); 
     Max = max(Max,Number); 
+  }
+  
+  // ------------------------------------------------------------
+      
+  template <class T> bool interval<T>::isEquals( const interval<T> &Lims1, const interval<T> &Lims2, T Difference )
+  {
+    return 
+      abs( Lims1.min() - Lims2.min() ) <= Difference &&
+      abs( Lims1.max() - Lims2.max() ) <= Difference;
   }
   
   // ------------------------------------------------------------
