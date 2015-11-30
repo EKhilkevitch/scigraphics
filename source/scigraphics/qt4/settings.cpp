@@ -83,6 +83,8 @@ scigraphics::qt4settings::~qt4settings()
 void scigraphics::qt4settings::initSettings( const QString &Name, const qt4settingsGroupSuperBox::axisPositionsList &Positions,
     qt4settingsComposer *Composer )
 {
+  NeedToEmitSelectionChangedAfterApplying = false;
+
   setName(Name);
   setComposer( Composer );
 
