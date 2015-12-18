@@ -3,21 +3,21 @@ cmake_minimum_required( VERSION 2.6 )
 project( graphicsLib ) 
 
 set( graphics_source_files 
-        plotelement.cpp
-        plotelementcollection.cpp
-        graph.cpp
-        graphsequence.cpp
-        graphmap.cpp
-        numlimits.cpp
-        datasequence.cpp
-        datamap.cpp
-        plot.cpp
         color.cpp
+        numlimits.cpp
         numberstyle.cpp
         linestyle.cpp
         pointstyle.cpp
         brushstyle.cpp
         textstyle.cpp
+        plotelement.cpp
+        plotelementcollection.cpp
+        graph.cpp
+        graphsequence.cpp
+        graphmap.cpp
+        datasequence.cpp
+        datamap.cpp
+        plot.cpp
         selectionstyle.cpp
         errorbarstyle.cpp
         drawer.cpp

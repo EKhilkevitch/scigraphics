@@ -81,7 +81,7 @@ void scigraphics::color::setTransparency( double Part )
 { 
   if ( Part < 0 ) return setTransparency(0); 
   else if ( Part > 1 ) return setTransparency(1);
-  else RGB = ( RGB & 0x00FFFFFF ) | ( (unsigned char)( Part * 0xFF ) << 24 );
+  else RGB = ( RGB & 0x00FFFFFF ) | ( static_cast<unsigned char>( Part * 0xFF ) << 24 );
 }
 
 // ------------------------------------------------------------
@@ -118,7 +118,7 @@ scigraphics::color scigraphics::color::fromHSV( unsigned H, unsigned S, unsigned
   double a = ( V - Vmin ) * ( H % 60 )/60.0;
   double Vinc = Vmin + a;
   double Vdec = V - a;
-  double Veff = (double)V;
+  double Veff = static_cast<double>(V);
 
   Veff *= 0xFF/100.0;
   Vmin *= 0xFF/100.0;
@@ -161,13 +161,13 @@ unsigned scigraphics::color::hue() const
   if ( Min == Max )
     return 0;
   else if ( Max == red() && green() >= blue() )
-    return 60.0 * ( (double)green() - blue() )/( Max - Min ) + 0;
+    return 60.0 * ( static_cast<double>(green()) - blue() )/( Max - Min ) + 0;
   else if ( Max == red() && green() < blue() )
-    return 60.0 * ( (double)green() - blue() )/( Max - Min ) + 360;
+    return 60.0 * ( static_cast<double>(green()) - blue() )/( Max - Min ) + 360;
   else if ( Max == green() )
-    return 60.0 * ( (double)blue() - red() )/( Max - Min ) + 120;
+    return 60.0 * ( static_cast<double>(blue()) - red() )/( Max - Min ) + 120;
   else if ( Max == blue() )
-    return 60.0 * ( (double)red() - green() )/( Max - Min ) + 240;
+    return 60.0 * ( static_cast<double>(red()) - green() )/( Max - Min ) + 240;
   else 
     std::abort();
   return 0;
@@ -182,21 +182,21 @@ unsigned scigraphics::color::saturation() const
 
   if ( Max == 0 )
     return 0;
-  return 100 * ( 1 - (double)Min/Max );
+  return 100.0 * ( 1.0 - static_cast<double>(Min)/Max );
 }
 
 // ------------------------------------------------------------
 
 unsigned scigraphics::color::value() const
 {
-  return 100.0 * (double)maxRGB()/0xFF;
+  return 100.0 * static_cast<double>( maxRGB() )/0xFF;
 }
 
 // ------------------------------------------------------------
 
 scigraphics::color scigraphics::color::darker( double Value ) const
 {
-  Value *= 100;
+  Value *= 100.0;
   return color( red()-Value, green()-Value, blue()-Value, transparency() ); 
 }
 
@@ -219,6 +219,14 @@ bool scigraphics::operator==( color C1, color C2 )
 bool scigraphics::operator!=( color C1, color C2 ) 
 { 
   return ! ( C1 == C2 ); 
+}
+
+// ------------------------------------------------------------
+    
+std::ostream& scigraphics::operator<<( std::ostream &Stream, color Color )
+{
+  Stream << Color.name();
+  return Stream;
 }
 
 // ============================================================

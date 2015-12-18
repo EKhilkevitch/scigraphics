@@ -87,6 +87,7 @@ namespace scigraphics
       void replot();
       void setCrossCursor( bool Set );
       void updatePlotSettings( scigraphics::qt4settings *Settings );
+      void updatePlotSettings();
 
     signals:
       void selectionChangingFinished();
@@ -94,7 +95,7 @@ namespace scigraphics
       void dropped( QString );
       void positionObtained( double X, double Y );
       void plotChangedByMouse();
-
+      void settingsUpdateRequired();
   };
   
   // ============================================================

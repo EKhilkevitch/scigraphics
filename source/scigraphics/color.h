@@ -25,6 +25,7 @@
 
 #include <string>
 #include <vector>
+#include <ostream>
 
 // ============================================================
 
@@ -91,6 +92,8 @@ namespace scigraphics
 
     bool operator==( color C1, color C2 );
     bool operator!=( color C1, color C2 );
+
+    std::ostream& operator<<( std::ostream &Stream, color Color );
 
 // ============================================================
 

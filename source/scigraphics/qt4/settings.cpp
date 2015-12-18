@@ -156,6 +156,7 @@ void scigraphics::qt4settings::connectToPlot( qt4plot *Plot )
     return;
   
   connect( Plot, SIGNAL(selectionChanged()), SLOT(updatePlotState()) );
+  connect( Plot, SIGNAL(settingsUpdateRequired()), SLOT(updatePlotSettings()) );
   connect( this, SIGNAL(settingsChanged(scigraphics::qt4settings*)), Plot, SLOT(updatePlotSettings(scigraphics::qt4settings*)) );
 
   updatePlotSettings();

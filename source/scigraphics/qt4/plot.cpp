@@ -267,6 +267,13 @@ void scigraphics::qt4plot::updatePlotSettings( qt4settings *Settings )
 
 // ----------------------------------------------------------------
 
+void scigraphics::qt4plot::updatePlotSettings()
+{
+  emit settingsUpdateRequired();
+}
+
+// ----------------------------------------------------------------
+
 void scigraphics::qt4plot::emitPositionObtained( const QMouseEvent *Event )
 {
   assert( Event != NULL );

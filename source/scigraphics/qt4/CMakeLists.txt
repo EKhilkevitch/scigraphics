@@ -14,6 +14,7 @@ set ( graphics_qt_source_files
         settingscomposer.cpp
         settings.cpp
         manager.cpp
+        debugprint.cpp
     )
 
 set( moc_headers 
