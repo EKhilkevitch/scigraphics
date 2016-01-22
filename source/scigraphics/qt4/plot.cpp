@@ -137,6 +137,13 @@ scigraphics::wpoint scigraphics::qt4plot::plotMousePoisition( const QWheelEvent 
 
 // ----------------------------------------------------------------
 
+int scigraphics::qt4plot::sceneShift() const 
+{ 
+  return 10; 
+}
+
+// ----------------------------------------------------------------
+
 void scigraphics::qt4plot::printTestCornerRectangles()
 {
   int W = getDrawerQt()->width();
@@ -165,6 +172,20 @@ void scigraphics::qt4plot::resize( int Width, int Height )
 void scigraphics::qt4plot::enableDrop( bool Enable )
 { 
   getDrawerQt()->view()->enableDrop(Enable); 
+}
+
+// ----------------------------------------------------------------
+      
+void scigraphics::qt4plot::emitSelectionChanged() 
+{ 
+  emit selectionChanged(); 
+}
+
+// ----------------------------------------------------------------
+
+void scigraphics::qt4plot::emitSelectionChangingFinished() 
+{ 
+  emit selectionChangingFinished(); 
 }
 
 // ----------------------------------------------------------------

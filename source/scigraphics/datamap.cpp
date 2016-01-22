@@ -123,7 +123,7 @@ void scigraphics::map::dataVector::resize( size_t SX, size_t SY )
     for ( size_t iy = 0; iy < std::min<size_t>( SY, sizeY() ); iy++ )
     {
       size_t Idx = ix + iy * SX;
-      NewValues.at( Idx ) = Values.at( index( ix, iy ) );
+      NewValues.at( Idx ) = Values.at( index( static_cast<int_t>(ix), static_cast<int_t>(iy) ) );
     }
   }
 
@@ -137,7 +137,7 @@ void scigraphics::map::dataVector::resize( size_t SX, size_t SY )
 scigraphics::map::dataVector::int_t scigraphics::map::dataVector::size() const
 {
   assert( sizeX()*sizeY() == Values.size() );
-  return Values.size();
+  return static_cast<int_t>( Values.size() );
 }
 
 // ------------------------------------------------------------

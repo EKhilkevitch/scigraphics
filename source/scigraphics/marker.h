@@ -38,7 +38,7 @@ namespace scigraphics
   class marker
   {
     private:
-      interval<int> NumberOfMarks;
+      interval<size_t> NumberOfMarks;
       
     protected:
       static number baseOrder( number Value );
@@ -51,8 +51,8 @@ namespace scigraphics
       marker();
       virtual ~marker();
 
-      void setNumberOfMarks( int Min, int Max );
-      interval<int> numberOfMarks() const { return NumberOfMarks; }
+      void setNumberOfMarks( size_t Min, size_t Max );
+      interval<size_t> numberOfMarks() const;
 
       virtual std::vector<number> marks( const interval<number> Interval ) const = 0;
   };

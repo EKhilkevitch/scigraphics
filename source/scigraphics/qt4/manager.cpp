@@ -86,7 +86,7 @@ size_t scigraphics::qt4plotManager::numberOfPlots() const
 scigraphics::qt4plot* scigraphics::qt4plotManager::plot( size_t Index ) 
 { 
   Q_ASSERT( Index < static_cast<size_t>(Plots.size()) );
-  return Plots[Index]; 
+  return Plots[ static_cast<int>(Index) ]; 
 }
 
 // ----------------------------------------------------------------
@@ -100,7 +100,7 @@ size_t scigraphics::qt4plotManager::numberOfSettings() const
       
 scigraphics::qt4settings* scigraphics::qt4plotManager::settings( size_t Index ) 
 { 
-  return Settings[Index]; 
+  return Settings[ static_cast<int>(Index) ]; 
 }
 
 // ----------------------------------------------------------------
@@ -192,8 +192,8 @@ void scigraphics::qt4plotManager::createPlots( size_t NumOfPlots, size_t NumOfRo
   size_t PlotsInList = 0;
   while ( PlotsInList < NumOfPlots )
   {
-    int NumOfPlotsInRow = NumOfPlots / NumOfRows + ( NumOfPlots % NumOfRows == 0 ? 0 : 1 );
-    NumOfPlotsInRow = qMin<int>( NumOfPlotsInRow, NumOfPlots - PlotsInList );
+    int NumOfPlotsInRow = static_cast<int>( NumOfPlots / NumOfRows + ( NumOfPlots % NumOfRows == 0 ? 0 : 1 ) );
+    NumOfPlotsInRow = qMin<int>( NumOfPlotsInRow, static_cast<int>( NumOfPlots - PlotsInList ) );
     Q_ASSERT( NumOfPlotsInRow > 0 );
     PlotsInRows.append( NumOfPlotsInRow );
     PlotsInList += NumOfPlotsInRow;
@@ -315,7 +315,7 @@ void scigraphics::qt4plotManager::setSettingsName( size_t Index, const QString &
     return;
   } 
 
-  Settings[Index]->setName(Name);
+  Settings[ static_cast<int>(Index) ]->setName( Name );
   updateTabNames();
 }
 

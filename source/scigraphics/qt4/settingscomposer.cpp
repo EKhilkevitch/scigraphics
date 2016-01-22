@@ -57,8 +57,8 @@ void scigraphics::qt4settingsComposer::delFromCollection( qt4settingsGroupBox *W
 
 scigraphics::qt4settingsGroupBox* scigraphics::qt4settingsComposer::getFromCollection( size_t Index )
 {
-  Q_ASSERT( (int)Index < WidgetCollection.size() );
-  qt4settingsGroupBox *Widget = WidgetCollection[Index];
+  Q_ASSERT( static_cast<int>(Index) < WidgetCollection.size() );
+  qt4settingsGroupBox *Widget = WidgetCollection[ static_cast<int>(Index) ];
   Q_ASSERT( Widget != NULL );
   return Widget;
 }
@@ -105,7 +105,7 @@ size_t scigraphics::qt4settingsComposer::numberOfSettingsWidget() const
     
 void scigraphics::qt4settingsComposer::clearWidgets()
 {
-  for ( int i = numberOfSettingsWidget() - 1; i >= 0; i-- )
+  for ( int i = static_cast<int>(numberOfSettingsWidget()) - 1; i >= 0; i-- )
   {
     qt4settingsGroupBox *Widget = getSettingWidget(i);
     Q_ASSERT( Widget != NULL );

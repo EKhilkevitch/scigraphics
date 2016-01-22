@@ -183,7 +183,7 @@ void scigraphics::qt4drawer::drawPolyline( const std::vector<wpoint> &Points )
     return;
 
   QVector<QLine> Lines;
-  Lines.reserve( Points.size()-1 );
+  Lines.reserve( static_cast<int>(Points.size()) - 1 );
 
   for ( size_t i = 1; i < Points.size(); i++ )
   {

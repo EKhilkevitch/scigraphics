@@ -129,8 +129,8 @@ namespace scigraphics
         dataVector();
         dataVector( size_t SizeX, interval<number> IntervalX, size_t SizeY, interval<number> IntervalY );
 
-        int_t sizeX() const { return SizeX; }
-        int_t sizeY() const { return SizeY; }
+        int_t sizeX() const { return static_cast<int_t>(SizeX); }
+        int_t sizeY() const { return static_cast<int_t>(SizeY); }
         int_t size() const;
 
         void resize( size_t SX, size_t SY );

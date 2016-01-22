@@ -42,9 +42,16 @@ scigraphics::marker::~marker()
 
 // ------------------------------------------------------------
       
-void scigraphics::marker::setNumberOfMarks( int Min, int Max ) 
+void scigraphics::marker::setNumberOfMarks( size_t Min, size_t Max ) 
 { 
-  NumberOfMarks.setMinMax(Min,Max); 
+  NumberOfMarks.setMinMax( Min, Max ); 
+}
+
+// ------------------------------------------------------------
+
+scigraphics::interval<size_t> scigraphics::marker::numberOfMarks() const 
+{ 
+  return NumberOfMarks; 
 }
 
 // ------------------------------------------------------------
@@ -89,7 +96,7 @@ std::vector<scigraphics::number> scigraphics::markerLinear::marksWithStep( const
   number MaxValue = Interval.max() + 2*Step;
   number Epsilon  = epsilonForInterval(Interval);
 
-  for ( unsigned i = 0; true; i++ )  
+  for ( size_t i = 0; true; i++ )  
   {
     number Number = MinValue + i * Step;
     
@@ -101,7 +108,7 @@ std::vector<scigraphics::number> scigraphics::markerLinear::marksWithStep( const
     if ( -Epsilon < Number && Number < Epsilon )
       Number = 0;
 
-    if ( inInterval(Number,Interval) )
+    if ( inInterval( Number, Interval ) )
        Result.push_back( Number );
   }
 
@@ -165,7 +172,7 @@ std::vector<scigraphics::number> scigraphics::markerLogarithm::marksInPositiveIn
 
   const number UnitStep[] = { 1, 0 };
 
-  for ( unsigned i = 0; Steps[i][0] != 0; i++ )
+  for ( size_t i = 0; Steps[i][0] != 0; i++ )
   {
     Result = marksWithSteps( Interval, Steps[i], 10 );
     if ( vectorInMarkLimits(Result) )
@@ -193,7 +200,7 @@ std::vector<scigraphics::number> scigraphics::markerLogarithm::marksWithSteps( c
 
   for ( number Order  = std::pow( 10, baseOrder( Interval.min() ) - 2.0 ); Order <= Interval.max(); Order *= OrderStep )
   {
-    for ( unsigned i = 0; Steps[i] != 0; i++ )
+    for ( size_t i = 0; Steps[i] != 0; i++ )
     {
       number Number = Order * Steps[i];
       if ( inInterval(Number,Interval) )

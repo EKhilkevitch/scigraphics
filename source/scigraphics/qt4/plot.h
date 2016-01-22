@@ -50,7 +50,7 @@ namespace scigraphics
       void resizeEvent( QResizeEvent* );
 
     private:
-      int sceneShift() const { return 10; }
+      int sceneShift() const;
       void printTestCornerRectangles();
 
       static unsigned plotMouseModifiers( Qt::KeyboardModifiers Modifiers );
@@ -71,8 +71,8 @@ namespace scigraphics
       void resize( int Width, int Height );
       void enableDrop( bool Enable );
 
-      void emitSelectionChanged() { emit selectionChanged(); }
-      void emitSelectionChangingFinished() { emit selectionChangingFinished(); }
+      void emitSelectionChanged();
+      void emitSelectionChangingFinished();
      
     protected slots:
       void resizePlot();

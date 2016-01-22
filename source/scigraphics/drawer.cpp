@@ -79,7 +79,7 @@ void scigraphics::drawer::eraseRectangle( const wrectangle& Rectangle )
       
 scigraphics::wcoord scigraphics::drawer::textWidth( const std::string &Text, const textStyle &Style )       
 { 
-  return Text.length() * Style.getFontSize(); 
+  return static_cast<wcoord>( Text.length() * Style.getFontSize() ); 
 }
 
 // ------------------------------------------------------------
