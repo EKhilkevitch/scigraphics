@@ -37,6 +37,26 @@ scigraphics::selection::selection( const selectionStyle &S ) :
 }
 
 // ------------------------------------------------------------
+      
+scigraphics::selection::~selection() 
+{
+}
+
+// ------------------------------------------------------------
+
+void scigraphics::selection::setSelectionStyle( const selectionStyle &S ) 
+{ 
+  SelectionStyle = S; 
+}
+
+// ------------------------------------------------------------
+
+const scigraphics::selectionStyle& scigraphics::selection::getSelectionStyle() const 
+{
+  return SelectionStyle; 
+}
+
+// ------------------------------------------------------------
 
 scigraphics::fpoint scigraphics::selection::firstCornerF( const pairScales& Scales ) const
 {

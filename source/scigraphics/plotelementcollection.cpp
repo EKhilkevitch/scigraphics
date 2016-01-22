@@ -177,6 +177,20 @@ void scigraphics::plotElementsCollection::setDefaultAxisSets( const axisSet *X, 
 }
 
 // ------------------------------------------------------------
+      
+size_t scigraphics::plotElementsCollection::size() const 
+{ 
+  return PlotElementsList.size(); 
+}
+
+// ------------------------------------------------------------
+
+bool  scigraphics::plotElementsCollection::empty() const 
+{ 
+  return PlotElementsList.empty(); 
+}
+
+// ------------------------------------------------------------
 
 void scigraphics::plotElementsCollection::draw( painter &Painter, bool isGridDrawn ) const
 {

@@ -98,8 +98,8 @@ namespace scigraphics
       plotElementsCollection();
       virtual ~plotElementsCollection() = 0;
 
-      size_t size() const { return PlotElementsList.size(); }
-      bool  empty() const { return PlotElementsList.empty(); }
+      size_t size() const;
+      bool empty() const;
 
       void setDefaultAxisSets( const axisSet *X, const axisSet *Y );
 

@@ -35,6 +35,7 @@
 #include "scigraphics/graphsequence.h"
 #include "scigraphics/graphmap.h"
 #include "scigraphics/axisset.h"
+#include "scigraphics/interval.h"
 
 #include <stdexcept>
 #include <iostream>

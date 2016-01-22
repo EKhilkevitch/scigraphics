@@ -24,7 +24,6 @@
 // ============================================================
 
 #include "scigraphics/axisposition.h"
-#include "scigraphics/interval.h"
 #include "scigraphics/color.h"
 #include "scigraphics/graphcollection.h"
 #include "scigraphics/selectioncollection.h"
@@ -49,15 +48,14 @@ namespace scigraphics
     class graphVector;
   }
 
+  template <class T> class interval;
+
   typedef sequence::graphVector graphSV;
   typedef sequence::graphAreaVector graphAV;
   typedef map::graphVector graphMV;
 
-  // ============================================================
- 
   struct plotInternalData;
 
-  class color;
   class mouse;
   class painter;
   class drawer;

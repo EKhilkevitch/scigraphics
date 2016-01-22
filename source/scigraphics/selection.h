@@ -51,10 +51,10 @@ namespace scigraphics
 
     public:
       explicit selection( const selectionStyle &SelectionStyle = selectionStyle() );
-      virtual ~selection() {}
+      virtual ~selection();
 
-      void setSelectionStyle( const selectionStyle &S ) { SelectionStyle = S; }
-      const selectionStyle& getSelectionStyle() const { return SelectionStyle; }
+      void setSelectionStyle( const selectionStyle &Style );
+      const selectionStyle& getSelectionStyle() const;
       
       virtual void draw( painter &Painter, const pairScales& Scales ) const;
 
