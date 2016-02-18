@@ -22,9 +22,7 @@
 #pragma once
 
 #include <iterator>
-#include <algorithm>
 #include <vector>
-#include <cassert>
 
 // ============================================================
 

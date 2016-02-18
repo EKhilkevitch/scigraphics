@@ -332,17 +332,17 @@ namespace scigraphics
       void mouseDoubleClicked( wpoint Point ); 
       void mouseWheel( wpoint Point, wheeldelta Delta, unsigned Buttons );
 
-      mouseActionHandler* actionHandler() { return ActionHandler; }
+      mouseActionHandler* actionHandler();
 
-      void setAllowedOperations( unsigned Op )    { AllowedOperations.allowOperation(Op); }
-      void setDisallowedOperations( unsigned Op ) { AllowedOperations.disallowOperation(Op); }
-      void setOperations( unsigned Op )           { AllowedOperations.set(Op); }
-      unsigned allowedOperations() const          { return AllowedOperations.value(); }
+      void setAllowedOperations( unsigned Operations );
+      void setDisallowedOperations( unsigned Operations );
+      void setOperations( unsigned Operations );
+      unsigned allowedOperations() const;
 
-      wpoint lastPosition() const { return LastPosition; }
+      wpoint lastPosition() const;
 
-      void setReplotOnMouseActions( bool R ) { ReplotOnMouseActions = R; }
-      bool replotOnMouseActions() const { return ReplotOnMouseActions; }
+      void setReplotOnMouseActions( bool IsReplot );
+      bool replotOnMouseActions() const;
   };
 
 // ============================================================

@@ -79,8 +79,8 @@ namespace scigraphics
       qt4settings( QWidget *Parent, qt4settingsComposer *Composer );
       ~qt4settings();
 
-      const QString& name() const { return SettingsName; }
-      void setName( const QString &Name ) { SettingsName = Name; }
+      const QString& name() const;
+      void setName( const QString &Name );
 
       void saveSettings( const QString &FileName ) const;
       void loadSettings( const QString &FileName );
@@ -97,7 +97,7 @@ namespace scigraphics
       void connectToPlot( qt4plot *Plot );
       void disconnectFromPlot( qt4plot *Plot );
 
-      settings* plotSettings() { return Settings; }
+      settings* plotSettings();
 
       void apply( qt4plot *Plot );
 
@@ -114,7 +114,8 @@ namespace scigraphics
   
   template <class widgetType> widgetType* qt4settings::getSettingWidget()
   {
-    for ( size_t i = 0; i < numberOfSettingsWidget(); i++ )
+    size_t NumberOfSettingsWidget = numberOfSettingsWidget();
+    for ( size_t i = 0; i < NumberOfSettingsWidget; i++ )
     {
       widgetType* Widget = dynamic_cast<widgetType*>( getSettingWidget(i) );
       if ( Widget != NULL )

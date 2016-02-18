@@ -21,10 +21,7 @@
 
 #pragma once
 
-#include "scigraphics/numlimits.h"
-
-#include <iostream>
-#include <algorithm>
+#include <iterator>
 #include <limits>
 
 namespace scigraphics 

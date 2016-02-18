@@ -79,6 +79,27 @@ scigraphics::qt4settings::~qt4settings()
 }
 
 // ----------------------------------------------------------------
+      
+const QString& scigraphics::qt4settings::name() const 
+{ 
+  return SettingsName; 
+}
+
+// ----------------------------------------------------------------
+
+void scigraphics::qt4settings::setName( const QString &Name ) 
+{ 
+  SettingsName = Name; 
+}
+
+// ----------------------------------------------------------------
+
+scigraphics::settings* scigraphics::qt4settings::plotSettings() 
+{ 
+  return Settings; 
+}
+
+// ----------------------------------------------------------------
 
 void scigraphics::qt4settings::initSettings( const QString &Name, const qt4settingsGroupSuperBox::axisPositionsList &Positions,
     qt4settingsComposer *Composer )

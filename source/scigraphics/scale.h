@@ -64,8 +64,8 @@ namespace scigraphics
       scale();
       virtual ~scale();
 
-      void setNumberLimits( const numberLimits &N ) { NumberLimits = N; }
-      const numberLimits& getNumberLimits() const { return NumberLimits; }
+      void setNumberLimits( const numberLimits &NumberLimits );
+      const numberLimits& getNumberLimits() const;
       
       virtual interval<number> getNumberInterval() const;
       interval<number> getVisivleInterval() const;
@@ -82,9 +82,9 @@ namespace scigraphics
       void reset();
 
       void setLock( bool Locked );
-      void lock()   { setLock(true);  }
-      void unlocK() { setLock(false); }
-      bool isLocked() const { return Locked; }
+      void lock();
+      void unlocK();
+      bool isLocked() const;
 
       void setNumberOfMarks( unsigned Min, unsigned Max );
       std::vector<number> marks() const;

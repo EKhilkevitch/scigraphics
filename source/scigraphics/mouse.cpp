@@ -603,6 +603,62 @@ void scigraphics::mouse::mouseWheel( wpoint Point, wheeldelta Delta, unsigned Bu
 
 // ------------------------------------------------------------
 
+scigraphics::mouse::mouseActionHandler* scigraphics::mouse::actionHandler() 
+{ 
+  return ActionHandler; 
+}
+
+// ------------------------------------------------------------
+
+void scigraphics::mouse::setAllowedOperations( unsigned Op )    
+{ 
+  AllowedOperations.allowOperation(Op); 
+}
+
+// ------------------------------------------------------------
+
+void scigraphics::mouse::setDisallowedOperations( unsigned Op ) 
+{ 
+  AllowedOperations.disallowOperation(Op); 
+}
+
+// ------------------------------------------------------------
+
+void scigraphics::mouse::setOperations( unsigned Op )           
+{ 
+  AllowedOperations.set(Op); 
+}
+
+// ------------------------------------------------------------
+
+unsigned scigraphics::mouse::allowedOperations() const          
+{ 
+  return AllowedOperations.value(); 
+}
+
+// ------------------------------------------------------------
+
+scigraphics::wpoint scigraphics::mouse::lastPosition() const 
+{ 
+  return LastPosition; 
+}
+
+// ------------------------------------------------------------
+
+void scigraphics::mouse::setReplotOnMouseActions( bool R ) 
+{ 
+  ReplotOnMouseActions = R; 
+}
+
+// ------------------------------------------------------------
+
+bool scigraphics::mouse::replotOnMouseActions() const 
+{ 
+  return ReplotOnMouseActions; 
+}
+
+// ------------------------------------------------------------
+
 void scigraphics::mouse::updateLastPosition( wpoint Point )
 {
   LastPosition = Point;

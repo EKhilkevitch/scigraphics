@@ -93,6 +93,27 @@ void scigraphics::scale::setLock( bool L )
 }
 
 // ------------------------------------------------------------
+      
+void scigraphics::scale::lock()   
+{ 
+  setLock(true);  
+}
+
+// ------------------------------------------------------------
+
+void scigraphics::scale::unlocK() 
+{ 
+  setLock(false); 
+}
+
+// ------------------------------------------------------------
+
+bool scigraphics::scale::isLocked() const 
+{ 
+  return Locked; 
+}
+
+// ------------------------------------------------------------
 
 scigraphics::fcoord scigraphics::scale::numberToFraction( number Number ) const 
 {
@@ -118,6 +139,20 @@ scigraphics::number scigraphics::scale::fractionToNumber( fcoord Coordinate ) co
   return Number;
 }
             
+// ------------------------------------------------------------
+
+void scigraphics::scale::setNumberLimits( const numberLimits &N ) 
+{ 
+  NumberLimits = N; 
+}
+
+// ------------------------------------------------------------
+
+const scigraphics::numberLimits& scigraphics::scale::getNumberLimits() const 
+{ 
+  return NumberLimits; 
+}
+
 // ------------------------------------------------------------
 
 scigraphics::interval<scigraphics::number> scigraphics::scale::getNumberInterval() const 
