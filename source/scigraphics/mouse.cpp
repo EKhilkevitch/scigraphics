@@ -30,6 +30,7 @@
 #include "scigraphics/selection.h"
 
 #include <typeinfo>
+#include <algorithm>
 #include <cmath>
 #include <cassert>
 
