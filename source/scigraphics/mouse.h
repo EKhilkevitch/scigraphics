@@ -121,10 +121,10 @@ namespace scigraphics
 
         public:
           explicit mouseHandler( plot &Plot );
-          virtual ~mouseHandler() {}
+          virtual ~mouseHandler();
 
-          virtual unsigned requestedAllowing() const { return allowing::Everything; };
-          bool isAllowed( const allowing &Allowing ) const { return Allowing.isAllowed( requestedAllowing() ); }
+          virtual unsigned requestedAllowing() const;
+          bool isAllowed( const allowing &Allowing ) const;
       };
 
       class mouseActionHandler : public mouseHandler
@@ -134,17 +134,17 @@ namespace scigraphics
           wpoint LastPoint;
 
         protected:
-          void setLastPositions( wpoint Pt ) { LastPoint = Pt; }
+          void setLastPositions( wpoint Pt );
 
-          wpoint initPoint() const { return InitPoint; }
-          wpoint lastPoint() const { return LastPoint; }
+          wpoint initPoint() const;
+          wpoint lastPoint() const;
 
         public:
           mouseActionHandler( plot &Plot, wpoint Point );
-          virtual ~mouseActionHandler() {}
+          virtual ~mouseActionHandler();
 
-          virtual void moved( wpoint ) {}
-          virtual void released( wpoint ) {}
+          virtual void moved( wpoint );
+          virtual void released( wpoint );
       };
 
       class noneAction : public mouseActionHandler
@@ -189,6 +189,7 @@ namespace scigraphics
       {
         private:
           floatRectangle *Float;
+
         public:
           moveFloatAction( plot &Plot, wpoint Point );
           void moved( wpoint Point );

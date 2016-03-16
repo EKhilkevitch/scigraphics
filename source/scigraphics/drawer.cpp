@@ -35,8 +35,10 @@ unsigned scigraphics::drawer::numOfLinesInString( const std::string &String )
 {
   unsigned Count = 0;
   for ( std::string::const_iterator c = String.begin(); c != String.end(); ++c ) 
+  {
     if ( *c == '\n' )
       Count++;
+  }
   return Count + 1;
 }
 
@@ -77,6 +79,12 @@ void scigraphics::drawer::eraseRectangle( const wrectangle& Rectangle )
 
 // ------------------------------------------------------------
       
+void scigraphics::drawer::flush() 
+{
+}
+
+// ------------------------------------------------------------
+      
 scigraphics::wcoord scigraphics::drawer::textWidth( const std::string &Text, const textStyle &Style )       
 { 
   return static_cast<wcoord>( Text.length() * Style.getFontSize() ); 
@@ -87,6 +95,12 @@ scigraphics::wcoord scigraphics::drawer::textWidth( const std::string &Text, con
 scigraphics::wcoord scigraphics::drawer::textHeight( const std::string &Text, const textStyle &Style )
 { 
   return Style.getFontSize() * numOfLinesInString(Text); 
+}
+
+// ------------------------------------------------------------
+      
+scigraphics::drawer::~drawer() 
+{
 }
 
 // ============================================================

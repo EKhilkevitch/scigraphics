@@ -64,12 +64,12 @@ namespace scigraphics
       virtual void drawPolygon( const std::vector<wpoint> &Points ) = 0;
       virtual void drawText( const std::string &Text, const wrectangle& Rectangle, double RotAngle = 0 ) = 0;
       virtual void eraseRectangle( const wrectangle& Rectangle );
-      virtual void flush() {}
+      virtual void flush();
 
       virtual wcoord textWidth( const std::string &Text, const textStyle &Style );
       virtual wcoord textHeight( const std::string &Text, const textStyle &Style );
       
-      virtual ~drawer() {}
+      virtual ~drawer();
   };
 
 // ============================================================
