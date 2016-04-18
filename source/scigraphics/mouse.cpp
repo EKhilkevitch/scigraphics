@@ -49,6 +49,12 @@ scigraphics::mouse::mouseHandler::mouseHandler( plot &P ) :
 }
 
 // ------------------------------------------------------------
+          
+scigraphics::mouse::mouseHandler::~mouseHandler() 
+{
+}
+
+// ------------------------------------------------------------
 
 scigraphics::fpoint scigraphics::mouse::mouseHandler::wpoint2fpoint( wpoint Point ) const
 {
@@ -105,6 +111,20 @@ void scigraphics::mouse::mouseHandler::resetScales()
   Plot.resetScales( AxisDirectionY );
 }
 
+// ------------------------------------------------------------
+          
+unsigned scigraphics::mouse::mouseHandler::requestedAllowing() const 
+{ 
+  return allowing::Everything; 
+}
+
+// ------------------------------------------------------------
+
+bool scigraphics::mouse::mouseHandler::isAllowed( const allowing &Allowing ) const 
+{ 
+  return Allowing.isAllowed( requestedAllowing() ); 
+}
+
 // ============================================================
 
 scigraphics::mouse::mouseActionHandler::mouseActionHandler( plot &P, wpoint Point ) : 
@@ -114,10 +134,49 @@ scigraphics::mouse::mouseActionHandler::mouseActionHandler( plot &P, wpoint Poin
 {
 }
 
+// ------------------------------------------------------------
+          
+scigraphics::mouse::mouseActionHandler::~mouseActionHandler() 
+{
+}
+
+// ------------------------------------------------------------
+
+void scigraphics::mouse::mouseActionHandler::moved( wpoint ) 
+{
+}
+
+// ------------------------------------------------------------
+
+void scigraphics::mouse::mouseActionHandler::released( wpoint ) 
+{
+}
+
+// ------------------------------------------------------------
+
+void scigraphics::mouse::mouseActionHandler::setLastPositions( wpoint Pt ) 
+{ 
+  LastPoint = Pt; 
+}
+
+// ------------------------------------------------------------
+
+scigraphics::wpoint scigraphics::mouse::mouseActionHandler::initPoint() const 
+{ 
+  return InitPoint; 
+}
+
+// ------------------------------------------------------------
+
+scigraphics::wpoint scigraphics::mouse::mouseActionHandler::lastPoint() const 
+{ 
+  return LastPoint; 
+}
+
 // ============================================================
 
 scigraphics::mouse::noneAction::noneAction( plot &Plot, wpoint Point ) : 
-  mouseActionHandler(Plot,Point) 
+  mouseActionHandler( Plot, Point )
 {
 }
 
@@ -405,7 +464,7 @@ scigraphics::mouse::mouseHorizontalWheel::mouseHorizontalWheel( plot &Plot ) :
 
 void scigraphics::mouse::mouseHorizontalWheel::wheel( wpoint, wheeldelta Delta )
 {
-  addShiftX( - (double)( Delta * deltaDumpFactor() )/plotWidth() );
+  addShiftX( - static_cast<double>( Delta * deltaDumpFactor() )/plotWidth() );
 }
 
 // ============================================================
@@ -419,7 +478,7 @@ scigraphics::mouse::mouseVerticalWheel::mouseVerticalWheel( plot &Plot ) :
 
 void scigraphics::mouse::mouseVerticalWheel::wheel( wpoint, wheeldelta Delta )
 {
-  addShiftY( + (double)( Delta * deltaDumpFactor() )/plotHeight() );
+  addShiftY( + static_cast<double>( Delta * deltaDumpFactor() )/plotHeight() );
 }
 
 // ============================================================
@@ -442,7 +501,7 @@ void scigraphics::mouse::mouseZoomWheel::wheel( wpoint Point, wheeldelta Delta )
 {
   fpoint FPoint = Plot.getPainter().wpoint2fpoint( Point );
   
-  double Zoom = Delta * deltaDumpFactor();
+  double Zoom = - Delta * deltaDumpFactor();
   
   addShiftX( - FPoint.x() * Zoom );
   addShiftY( - FPoint.y() * Zoom );
@@ -587,7 +646,7 @@ void scigraphics::mouse::mouseReleased( wpoint Point )
 
 void scigraphics::mouse::mouseDoubleClicked( wpoint Point ) 
 { 
-  mousePressed(Point,Middle); 
+  mousePressed( Point, Middle ); 
   replot();
 }
 
@@ -597,7 +656,7 @@ void scigraphics::mouse::mouseWheel( wpoint Point, wheeldelta Delta, unsigned Bu
 {
   replaceWheelHandler( Buttons );
   assert( WheelHandler != NULL );
-  WheelHandler->wheel(Point,Delta);  
+  WheelHandler->wheel( Point, Delta );
   Plot.getMouseCallBack().onWheel( WheelHandler );
   replot();
 }
