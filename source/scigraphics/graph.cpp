@@ -34,9 +34,78 @@ scigraphics::graph::graph() :
 
 // ------------------------------------------------------------
       
+scigraphics::graph::~graph()  
+{
+}
+
+// ------------------------------------------------------------
+
+std::string scigraphics::graph::legend() const 
+{ 
+  return Legend; 
+}
+
+// ------------------------------------------------------------
+
+void scigraphics::graph::setLegend( const std::string &L ) 
+{ 
+  Legend = L; 
+}
+
+// ------------------------------------------------------------
+      
 bool scigraphics::graph::showLegend() const 
 { 
   return ShowLegend && isVisible(); 
+}
+      
+// ------------------------------------------------------------
+
+void scigraphics::graph::setShowLegend( bool Show ) 
+{ 
+  ShowLegend = Show; 
+}
+
+// ------------------------------------------------------------
+
+scigraphics::wcoord scigraphics::graph::legendExampleWidth() const  
+{ 
+  return 0; 
+}
+
+// ------------------------------------------------------------
+
+scigraphics::wcoord scigraphics::graph::legendExampleHeight() const 
+{ 
+  return 0; 
+}
+      
+// ------------------------------------------------------------
+
+void scigraphics::graph::setDrawOverGrid( bool D ) 
+{ 
+  DrawOverGrid = D; 
+}
+
+// ------------------------------------------------------------
+
+bool scigraphics::graph::isDrawOverGrid() const 
+{ 
+  return DrawOverGrid; 
+}
+
+// ------------------------------------------------------------
+
+void scigraphics::graph::setVisible( bool V ) 
+{ 
+  Visible = V; 
+}
+
+// ------------------------------------------------------------
+
+bool scigraphics::graph::isVisible() const 
+{ 
+  return Visible; 
 }
 
 // ============================================================

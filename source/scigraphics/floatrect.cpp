@@ -36,6 +36,40 @@ scigraphics::floatRectangle::floatRectangle( const wrectangle &Rect ) :
 
 // ------------------------------------------------------------
       
+scigraphics::floatRectangle::~floatRectangle() 
+{
+}
+
+// ------------------------------------------------------------
+
+const scigraphics::lineStyle& scigraphics::floatRectangle::getBorderStyle() const 
+{ 
+  return BorderStyle; 
+}
+
+// ------------------------------------------------------------
+
+void scigraphics::floatRectangle::setBorderStyle( const lineStyle &S ) 
+{ 
+  BorderStyle = S; 
+}
+
+// ------------------------------------------------------------
+
+const scigraphics::wrectangle& scigraphics::floatRectangle::getRectangle() const 
+{ 
+  return Rectangle; 
+}
+
+// ------------------------------------------------------------
+
+void scigraphics::floatRectangle::setRectangle( const wrectangle &Rect ) 
+{ 
+  Rectangle = Rect; 
+}
+
+// ------------------------------------------------------------
+      
 void scigraphics::floatRectangle::setRectangle( const wpoint &A, const wpoint &B ) 
 { 
   setRectangle( wrectangle(A,B) ); 
@@ -82,6 +116,20 @@ void scigraphics::floatRectangle::moveY( const wcoord DY )
 bool scigraphics::floatRectangle::containPoint( wpoint Point ) const 
 { 
   return Rectangle.contain(Point); 
+}
+      
+// ------------------------------------------------------------
+
+void scigraphics::floatRectangle::setVisible( bool V ) 
+{ 
+  Visible = V; 
+}
+
+// ------------------------------------------------------------
+
+bool scigraphics::floatRectangle::isVisible() const 
+{ 
+  return Visible; 
 }
 
 // ============================================================

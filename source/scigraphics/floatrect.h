@@ -53,13 +53,13 @@ namespace scigraphics
 
     public:
       explicit floatRectangle( const wrectangle &Rectangle = wrectangle() );
-      virtual ~floatRectangle() {}
+      virtual ~floatRectangle();
 
-      const lineStyle& getBorderStyle() const { return BorderStyle; }
-      void setBorderStyle( const lineStyle &S ) { BorderStyle = S; }
+      const lineStyle& getBorderStyle() const;
+      void setBorderStyle( const lineStyle &Style );
 
-      const wrectangle& getRectangle() const { return Rectangle; }
-      void setRectangle( const wrectangle &Rect ) { Rectangle = Rect; }
+      const wrectangle& getRectangle() const;
+      void setRectangle( const wrectangle &Rectangle );
       void setRectangle( const wpoint &A, const wpoint &B );
 
       virtual void move( const wcoord DX, const wcoord DY );
@@ -67,8 +67,8 @@ namespace scigraphics
       void moveY( const wcoord DY );
       bool containPoint( wpoint Point ) const;
       
-      void setVisible( bool V ) { Visible = V; }
-      bool isVisible() const { return Visible; }
+      void setVisible( bool Visible );
+      bool isVisible() const;
   };
 
 

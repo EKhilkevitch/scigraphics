@@ -52,26 +52,26 @@ namespace scigraphics
 
     public:
       graph();
-      virtual ~graph()  {}
+      virtual ~graph() = 0;
 
       virtual numberLimits limitsX() const = 0;
       virtual numberLimits limitsY( const interval<number> &LimitsX ) const = 0;
 
-      virtual std::string legend() const { return Legend; }
-      virtual void setLegend( const std::string &L ) { Legend = L; }
+      virtual std::string legend() const;
+      virtual void setLegend( const std::string &Legend );
       virtual bool showLegend() const;
-      virtual void setShowLegend( bool S ) { ShowLegend = S; }
-      virtual wcoord legendExampleWidth() const  { return 0; }
-      virtual wcoord legendExampleHeight() const { return 0; }
+      virtual void setShowLegend( bool ShowLegend );
+      virtual wcoord legendExampleWidth() const;
+      virtual wcoord legendExampleHeight() const;
 
       virtual void draw( painter &Painter, const pairScales& Scales ) const = 0;
       virtual void drawLegendExample( painter &Painter, const wrectangle &Rectangle ) const = 0;
 
-      virtual void setDrawOverGrid( bool D ) { DrawOverGrid = D; }
-      virtual bool isDrawOverGrid() const { return DrawOverGrid; }
+      virtual void setDrawOverGrid( bool Draw );
+      virtual bool isDrawOverGrid() const;
 
-      virtual void setVisible( bool V ) { Visible = V; }
-      virtual bool isVisible() const { return Visible; }
+      virtual void setVisible( bool Visible );
+      virtual bool isVisible() const;
   };
 
 // ============================================================

@@ -59,14 +59,14 @@ namespace scigraphics
         void draw( painter &Painter, const pairScales& Scales ) const;
         void drawLegendExample( painter &Painter, const wrectangle &Rectangle ) const;
 
-        graphViewCollection& getViews() { return *Views; }
-        const graphViewCollection& getViews() const { return *Views; }
+        graphViewCollection& getViews();
+        const graphViewCollection& getViews() const;
 
-        data& getData() { return *Data; }
-        const data& getData() const { return *Data; }
+        data& getData();
+        const data& getData() const;
    
-        numberLimits limitsX() const { return getData().limitsX(); }
-        numberLimits limitsY( const interval<number> &LimitsX ) const { return getData().limitsY(LimitsX); }
+        numberLimits limitsX() const;
+        numberLimits limitsY( const interval<number> &LimitsX ) const;
         
         wcoord legendExampleWidth()  const; 
         wcoord legendExampleHeight() const;
@@ -121,12 +121,12 @@ namespace scigraphics
         explicit graphVector( const color &Color = color() );
         explicit graphVector( const std::string &Legend, const color &Color );
 
-        dataVector& getDataVector() { return getCastedData(); }
-        ordinarGraphViewCollection& getViews() { return getCastedViews(); }
+        dataVector& getDataVector();
+        ordinarGraphViewCollection& getViews();
 
-        void append( number X, number Y )                           { getCastedData().append(X,Y); }
-        void append( number X, number Y, number ErrY )              { getCastedData().append(X,Y,ErrY); }
-        void append( number X, number Y, number ErrX, number ErrY ) { getCastedData().append(X,Y,ErrX,ErrY); }
+        void append( number X, number Y );
+        void append( number X, number Y, number ErrY );
+        void append( number X, number Y, number ErrX, number ErrY );
         void appendInvalid();
         void appendPolar( number Phi, number R );
     };
@@ -139,16 +139,16 @@ namespace scigraphics
         explicit graphUniformVector( const color &Color = color() );
         explicit graphUniformVector( const std::string &Legend, const color &Color );
 
-        dataUniformVector& getDataVector() { return getCastedData(); }
-        const dataUniformVector& getDataVector() const { return getCastedData(); }
+        dataUniformVector& getDataVector();
+        const dataUniformVector& getDataVector() const;
 
-        ordinarGraphViewCollection& getViews() { return getCastedViews(); }
+        ordinarGraphViewCollection& getViews();
 
-        void setStepX( number Step ) { getDataVector().setStepX( Step ); } 
-        number stepX() const { return getDataVector().stepX(); }
+        void setStepX( number Step );
+        number stepX() const;
         
-        void append( number Y )              { getCastedData().append(Y); }
-        void append( number Y, number ErrY ) { getCastedData().append(Y,ErrY); }
+        void append( number Y );
+        void append( number Y, number ErrY );
     };
 
     // ------------------------------------------------------------
@@ -159,13 +159,13 @@ namespace scigraphics
         explicit graphAreaVector( const color &Color = color() );
         explicit graphAreaVector( const std::string &Legend, const color &Color );
         
-        dataVector& getDataVector() { return getCastedData(); }
-        coveredAreaGraphViewCollection& getViewsColveredArea() { return getCastedViews(); }
+        dataVector& getDataVector();
+        coveredAreaGraphViewCollection& getViewsColveredArea();
         
-        void append( number X, number Y )                           { getCastedData().append(X,Y); }
-        void append( number X, number Y, number ErrY )              { getCastedData().append(X,Y,ErrY); }
-        void append( number X, number Y, number ErrX, number ErrY ) { getCastedData().append(X,Y,ErrX,ErrY); }
-        void appendInvalid()                                        { append( invalidNumber(), invalidNumber() ); }
+        void append( number X, number Y );
+        void append( number X, number Y, number ErrY );
+        void append( number X, number Y, number ErrX, number ErrY );
+        void appendInvalid();
     };
 
     // ============================================================

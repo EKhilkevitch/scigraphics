@@ -46,6 +46,48 @@ void scigraphics::sequence::graph::drawLegendExample( painter &Painter, const wr
       
 // ------------------------------------------------------------
 
+scigraphics::sequence::graphViewCollection& scigraphics::sequence::graph::getViews() 
+{ 
+  return *Views; 
+}
+
+// ------------------------------------------------------------
+
+const scigraphics::sequence::graphViewCollection& scigraphics::sequence::graph::getViews() const 
+{ 
+  return *Views; 
+}
+
+// ------------------------------------------------------------
+
+scigraphics::sequence::data& scigraphics::sequence::graph::getData() 
+{ 
+  return *Data; 
+}
+
+// ------------------------------------------------------------
+
+const scigraphics::sequence::data& scigraphics::sequence::graph::getData() const 
+{ 
+  return *Data; 
+}
+
+// ------------------------------------------------------------
+
+scigraphics::numberLimits scigraphics::sequence::graph::limitsX() const 
+{ 
+  return getData().limitsX(); 
+}
+
+// ------------------------------------------------------------
+
+scigraphics::numberLimits scigraphics::sequence::graph::limitsY( const interval<number> &LimitsX ) const 
+{ 
+  return getData().limitsY(LimitsX); 
+}
+
+// ------------------------------------------------------------
+
 scigraphics::wcoord scigraphics::sequence::graph::legendExampleWidth()  const
 {
   assert( Views != NULL );
@@ -114,6 +156,41 @@ scigraphics::sequence::graphVector::graphVector( const std::string &Legend, cons
 }
 
 // ------------------------------------------------------------
+
+scigraphics::sequence::dataVector& scigraphics::sequence::graphVector::getDataVector() 
+{ 
+  return getCastedData(); 
+}
+
+// ------------------------------------------------------------
+
+scigraphics::sequence::ordinarGraphViewCollection& scigraphics::sequence::graphVector::getViews() 
+{ 
+  return getCastedViews(); 
+}
+
+// ------------------------------------------------------------
+
+void scigraphics::sequence::graphVector::append( number X, number Y )                           
+{ 
+  getCastedData().append(X,Y); 
+}
+
+// ------------------------------------------------------------
+
+void scigraphics::sequence::graphVector::append( number X, number Y, number ErrY )              
+{ 
+  getCastedData().append(X,Y,ErrY); 
+}
+
+// ------------------------------------------------------------
+
+void scigraphics::sequence::graphVector::append( number X, number Y, number ErrX, number ErrY ) 
+{ 
+  getCastedData().append(X,Y,ErrX,ErrY); 
+}
+
+// ------------------------------------------------------------
         
 void scigraphics::sequence::graphVector::appendInvalid()                                        
 { 
@@ -129,7 +206,7 @@ void scigraphics::sequence::graphVector::appendPolar( number Phi, number R )
   append( X, Y ); 
 } 
 
-// ------------------------------------------------------------
+// ============================================================
 
 scigraphics::sequence::graphUniformVector::graphUniformVector( const color &Color ) : 
   graphSpecified< dataUniformVector, ordinarGraphViewCollection >( Color ) 
@@ -144,6 +221,55 @@ scigraphics::sequence::graphUniformVector::graphUniformVector( const std::string
 }
 
 // ------------------------------------------------------------
+        
+scigraphics::sequence::dataUniformVector& scigraphics::sequence::graphUniformVector::getDataVector() 
+{ 
+  return getCastedData(); 
+}
+
+// ------------------------------------------------------------
+
+const scigraphics::sequence::dataUniformVector& scigraphics::sequence::graphUniformVector::getDataVector() const 
+{ 
+  return getCastedData(); 
+}
+
+// ------------------------------------------------------------
+
+scigraphics::sequence::ordinarGraphViewCollection& scigraphics::sequence::graphUniformVector::getViews() 
+{ 
+  return getCastedViews(); 
+}
+
+// ------------------------------------------------------------
+
+void scigraphics::sequence::graphUniformVector::setStepX( number Step ) 
+{ 
+  getDataVector().setStepX( Step ); 
+}
+
+// ------------------------------------------------------------
+
+scigraphics::number scigraphics::sequence::graphUniformVector::stepX() const 
+{ 
+  return getDataVector().stepX(); 
+}
+
+// ------------------------------------------------------------
+        
+void scigraphics::sequence::graphUniformVector::append( number Y )              
+{ 
+  getCastedData().append(Y); 
+}
+
+// ------------------------------------------------------------
+
+void scigraphics::sequence::graphUniformVector::append( number Y, number ErrY ) 
+{ 
+  getCastedData().append(Y,ErrY); 
+}
+
+// ============================================================
 
 scigraphics::sequence::graphAreaVector::graphAreaVector( const color &Color ) : 
           graphSpecified< dataVector, coveredAreaGraphViewCollection >(Color) 
@@ -155,6 +281,48 @@ scigraphics::sequence::graphAreaVector::graphAreaVector( const color &Color ) :
 scigraphics::sequence::graphAreaVector::graphAreaVector( const std::string &Legend, const color &Color ) : 
           graphSpecified< dataVector, coveredAreaGraphViewCollection >( Legend, Color ) 
 {
+}
+
+// ------------------------------------------------------------
+
+scigraphics::sequence::dataVector& scigraphics::sequence::graphAreaVector::getDataVector() 
+{ 
+  return getCastedData(); 
+}
+
+// ------------------------------------------------------------
+
+scigraphics::sequence::coveredAreaGraphViewCollection& scigraphics::sequence::graphAreaVector::getViewsColveredArea() 
+{ 
+  return getCastedViews(); 
+}
+
+// ------------------------------------------------------------
+
+void scigraphics::sequence::graphAreaVector::append( number X, number Y )                           
+{ 
+  getCastedData().append(X,Y); 
+}
+
+// ------------------------------------------------------------
+
+void scigraphics::sequence::graphAreaVector::append( number X, number Y, number ErrY )              
+{ 
+  getCastedData().append(X,Y,ErrY); 
+}
+
+// ------------------------------------------------------------
+
+void scigraphics::sequence::graphAreaVector::append( number X, number Y, number ErrX, number ErrY ) 
+{ 
+  getCastedData().append(X,Y,ErrX,ErrY); 
+}
+
+// ------------------------------------------------------------
+
+void scigraphics::sequence::graphAreaVector::appendInvalid()                                        
+{ 
+  append( invalidNumber(), invalidNumber() ); 
 }
 
 // ============================================================
