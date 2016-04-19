@@ -51,8 +51,8 @@ namespace scigraphics
         graphView();
         virtual ~graphView();
 
-        void setVisible( bool V ) { Visible = V; }
-        bool isVisible() const { return Visible; }
+        void setVisible( bool V );
+        bool isVisible() const;
 
         virtual void draw( painter &Painter, const pairScales& Scales, const data &Data, const scale &ScaleZ ) const = 0;
         virtual void drawLegendExample( painter &Painter, const wrectangle &Rectangle, const scale &ScaleZ ) const = 0;
@@ -76,7 +76,7 @@ namespace scigraphics
             virtual color relativeValueColor( double RelativeValue ) const = 0;
             virtual color invalidValueColor() const;
             virtual color pointColor( const data::point_t &Point, const scale &Scale ) const;
-            virtual ~pointColorStrategy() {}
+            virtual ~pointColorStrategy();
         };
 
         class grayscalePointColorStrategy : public pointColorStrategy

@@ -53,6 +53,20 @@ scigraphics::map::graphView::~graphView()
 }
 
 // ------------------------------------------------------------
+
+void scigraphics::map::graphView::setVisible( bool V ) 
+{ 
+  Visible = V; 
+}
+
+// ------------------------------------------------------------
+
+bool scigraphics::map::graphView::isVisible() const 
+{ 
+  return Visible; 
+}
+
+// ------------------------------------------------------------
         
 scigraphics::wcoord scigraphics::map::graphView::legendExampleWidth() const  
 { 
@@ -105,6 +119,12 @@ scigraphics::color scigraphics::map::graphViewRectangle::pointColorStrategy::poi
 
   double RelativeValue = relativePointValue(Point,Scale);
   return relativeValueColor( RelativeValue );
+}
+
+// ------------------------------------------------------------
+
+scigraphics::map::graphViewRectangle::pointColorStrategy::~pointColorStrategy() 
+{
 }
 
 // ------------------------------------------------------------

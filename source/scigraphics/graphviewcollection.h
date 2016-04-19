@@ -55,7 +55,7 @@ namespace scigraphics
         void setColor( const color &Color );
         color getColor() const;
 
-        void clearViews() { Views.clear(); };
+        void clearViews();
         void addView( graphView *View, bool Show = true );
         template < class view > void addView( typename view::style Style, bool Show = true );
 

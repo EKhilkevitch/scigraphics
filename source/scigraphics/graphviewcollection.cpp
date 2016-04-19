@@ -57,6 +57,13 @@ void scigraphics::sequence::graphViewCollection::setAllViewsVisible( bool Show )
 }
 
 // ------------------------------------------------------------
+
+void scigraphics::sequence::graphViewCollection::clearViews() 
+{ 
+  Views.clear(); 
+}
+
+// ------------------------------------------------------------
       
 void scigraphics::sequence::graphViewCollection::addView( graphView *View, bool Show ) 
 { 
@@ -92,7 +99,7 @@ scigraphics::color scigraphics::sequence::graphViewCollection::getColor() const
 { 
   return DefaultColor; 
 }
-
+        
 // ------------------------------------------------------------
 
 void scigraphics::sequence::graphViewCollection::setDefaultColor( const color &Color ) 
