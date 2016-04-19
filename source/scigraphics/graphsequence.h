@@ -77,40 +77,40 @@ namespace scigraphics
     template < class D, class V > class graphSpecified : public graph
     {
       protected:
-        virtual data* createData() { return new D(); }
-        virtual graphViewCollection* createViewCollection() { return new V(); }
+        virtual data* createData();
+        virtual graphViewCollection* createViewCollection();
 
         void init( const color &Color );
         
       protected:
-        D& getCastedData()  { return dynamic_cast<D&>( getData() ); }
-        const D& getCastedData() const { return dynamic_cast<const D&>( getData() ); }
+        D& getCastedData();
+        const D& getCastedData() const;
 
-        V& getCastedViews() { return dynamic_cast<V&>( getViews() ); }
-        const V& getCastedViews() const { return dynamic_cast<const V&>( getViews() ); }
+        V& getCastedViews();
+        const V& getCastedViews() const;
 
       public:
         explicit graphSpecified( const color &Color );
         explicit graphSpecified( const std::string &Legend, const color &Color );
 
-        size_t size() const { return getData().size(); }
-        bool empty() const  { return getData().empty(); }
+        size_t size() const;
+        bool empty() const;
 
-        data::point_t at( data::int_t Index ) const { return getData().at(Index); }
-        data::point_t operator[]( data::int_t Index ) const { return at(Index); }
-        void clear()   { getCastedData().clear(); }
+        data::point_t at( data::int_t Index ) const;
+        data::point_t operator[]( data::int_t Index ) const;
+        void clear();
         
-        color getColor() const { return getViews().getColor(); }
-        void setColor( const color &Color ) { getViews().setColor(Color); }
+        color getColor() const;
+        void setColor( const color &Color );
         
-        void setLineWidth( unsigned Width ) { getCastedViews().setLineWidth(Width); }
-        void setPointSize( unsigned Size )  { getCastedViews().setPointSize(Size);  }
-        void setLineStyle( lineStyle::style LineStyle ) { getCastedViews().setLineStyle(LineStyle); }
+        void setLineWidth( unsigned Width );
+        void setPointSize( unsigned Size );
+        void setLineStyle( lineStyle::style LineStyle );
         
-        void setVisibleLines( bool Show )        { getCastedViews().template setViewVisible<graphViewLine>(Show); }
-        void setVisiblePoints( bool Show )       { getCastedViews().template setViewVisible<graphViewPoints>(Show); }
-        void setVisibleErrorBars( bool Show )    { getCastedViews().template setViewVisible<graphViewErrorBars>(Show); }
-        void setVisibleLineHystogram( bool Show) { getCastedViews().template setViewVisible<graphViewLineHystogram>(Show); }
+        void setVisibleLines( bool Show );
+        void setVisiblePoints( bool Show );
+        void setVisibleErrorBars( bool Show );
+        void setVisibleLineHystogram( bool Show);
     };
   
     // ------------------------------------------------------------
@@ -179,6 +179,20 @@ namespace scigraphics
       Views->setColor( Color );
       setViews( Views );
     }
+        
+    // ------------------------------------------------------------
+    
+    template < class D, class V > data* graphSpecified<D,V>::createData() 
+    { 
+      return new D(); 
+    }
+    
+    // ------------------------------------------------------------
+    
+    template < class D, class V > graphViewCollection* graphSpecified<D,V>::createViewCollection() 
+    { 
+      return new V(); 
+    }
     
     // ------------------------------------------------------------
         
@@ -193,6 +207,132 @@ namespace scigraphics
       graph(Legend) 
     { 
       init(Color); 
+    }
+
+    // ------------------------------------------------------------
+    
+    template < class D, class V > D& graphSpecified<D,V>::getCastedData()  
+    { 
+      return dynamic_cast<D&>( getData() ); 
+    }
+    
+    // ------------------------------------------------------------
+    
+    template < class D, class V > const D& graphSpecified<D,V>::getCastedData() const 
+    { 
+      return dynamic_cast<const D&>( getData() ); 
+    }
+
+    // ------------------------------------------------------------
+    
+    template < class D, class V > V& graphSpecified<D,V>::getCastedViews() 
+    { 
+      return dynamic_cast<V&>( getViews() ); 
+    }
+    
+    // ------------------------------------------------------------
+    
+    template < class D, class V > const V& graphSpecified<D,V>::getCastedViews() const 
+    { 
+      return dynamic_cast<const V&>( getViews() ); 
+    }
+    
+    // ------------------------------------------------------------
+
+    template < class D, class V > size_t graphSpecified<D,V>::size() const 
+    { 
+      return getData().size(); 
+    }
+    
+    // ------------------------------------------------------------
+
+    template < class D, class V > bool graphSpecified<D,V>::empty() const  
+    { 
+      return getData().empty(); 
+    }
+    
+    // ------------------------------------------------------------
+
+    template < class D, class V > data::point_t graphSpecified<D,V>::at( data::int_t Index ) const 
+    { 
+      return getData().at(Index); 
+    }
+    
+    // ------------------------------------------------------------
+
+    template < class D, class V > data::point_t graphSpecified<D,V>::operator[]( data::int_t Index ) const 
+    { 
+      return at(Index); 
+    }
+    
+    // ------------------------------------------------------------
+
+    template < class D, class V > void graphSpecified<D,V>::clear()   
+    { 
+      getCastedData().clear(); 
+    }
+    
+    // ------------------------------------------------------------
+    
+    template < class D, class V > color graphSpecified<D,V>::getColor() const 
+    { 
+      return getViews().getColor(); 
+    }
+    
+    // ------------------------------------------------------------
+
+    template < class D, class V > void graphSpecified<D,V>::setColor( const color &Color ) 
+    { 
+      getViews().setColor(Color); 
+    }
+    
+    // ------------------------------------------------------------
+    
+    template < class D, class V > void graphSpecified<D,V>::setLineWidth( unsigned Width ) 
+    { 
+      getCastedViews().setLineWidth(Width); 
+    }
+    
+    // ------------------------------------------------------------
+
+    template < class D, class V > void graphSpecified<D,V>::setPointSize( unsigned Size )  
+    { 
+      getCastedViews().setPointSize(Size);  
+    }
+    
+    // ------------------------------------------------------------
+
+    template < class D, class V > void graphSpecified<D,V>::setLineStyle( lineStyle::style LineStyle ) 
+    { 
+      getCastedViews().setLineStyle(LineStyle); 
+    }
+        
+    // ------------------------------------------------------------
+    
+    template < class D, class V > void graphSpecified<D,V>::setVisibleLines( bool Show )        
+    { 
+      getCastedViews().template setViewVisible<graphViewLine>(Show); 
+    }
+    
+    // ------------------------------------------------------------
+    
+    template < class D, class V > void graphSpecified<D,V>::setVisiblePoints( bool Show )       
+    { 
+      getCastedViews().template setViewVisible<graphViewPoints>(Show); 
+    }
+    
+    // ------------------------------------------------------------
+    
+    template < class D, class V > void graphSpecified<D,V>::setVisibleErrorBars( bool Show )    
+    { 
+      getCastedViews().template setViewVisible<graphViewErrorBars>(Show); 
+    }
+    
+    // ------------------------------------------------------------
+    
+    template < class D, class V > void graphSpecified<D,V>::setVisibleLineHystogram( bool Show) 
+    { 
+      getCastedViews().template setViewVisible<graphViewLineHystogram>(Show); 
     }
     
     // ============================================================
