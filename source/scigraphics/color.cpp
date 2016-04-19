@@ -245,6 +245,20 @@ void scigraphics::colorSequence::append( color Color )
 
 // ------------------------------------------------------------
 
+size_t scigraphics::colorSequence::size() const 
+{ 
+  return Sequence.size(); 
+}
+
+// ------------------------------------------------------------
+
+bool scigraphics::colorSequence::empty() const 
+{ 
+  return Sequence.empty(); 
+}
+
+// ------------------------------------------------------------
+
 scigraphics::color scigraphics::colorSequence::current() const
 {
   if ( Sequence.empty() )

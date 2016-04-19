@@ -109,8 +109,8 @@ namespace scigraphics
         void clear();
         void append( color Color );
 
-        size_t size() const { return Sequence.size(); }
-        bool empty() const { return Sequence.empty(); }
+        size_t size() const;
+        bool empty() const;
 
         color current() const;
         color next();
