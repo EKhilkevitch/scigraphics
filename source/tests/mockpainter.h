@@ -28,6 +28,7 @@
 #include "scigraphics/textstyle.h"
 
 #include <vector>
+#include <ostream>
 
 // =========================================================
 
@@ -43,9 +44,10 @@ namespace scigraphics
       {
         enum type
         {
+          None,
           DrawLine,
           DrawRectangle
-        } Type;
+        } Type = None;
         color Color;
         std::vector<wpoint> Points;
       };
@@ -77,8 +79,14 @@ namespace scigraphics
     
       wcoord width() const  { return Width; }
       wcoord height() const { return Height; }
-  };
 
+      const std::vector<action>& actions() const { return Actions; }
+  };
+  
+  // =========================================================
+  
+  std::ostream& operator<<( std::ostream &Stream, mockDrawer::action::type Type );
+  
   // =========================================================
 
 }

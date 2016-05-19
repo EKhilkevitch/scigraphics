@@ -171,6 +171,34 @@ scigraphics::sequence::graphView::~graphView()
 }
 
 // ------------------------------------------------------------
+        
+void scigraphics::sequence::graphView::setVisible( bool V ) 
+{ 
+  Visible = V; 
+}
+
+// ------------------------------------------------------------
+
+bool scigraphics::sequence::graphView::isVisible() const 
+{ 
+  return Visible; 
+}
+
+// ------------------------------------------------------------
+        
+scigraphics::wcoord scigraphics::sequence::graphView::legendExampleWidth() const  
+{ 
+  return 35; 
+}
+
+// ------------------------------------------------------------
+
+scigraphics::wcoord scigraphics::sequence::graphView::legendExampleHeight() const 
+{ 
+  return 5;  
+}
+
+// ============================================================
 
 void scigraphics::sequence::graphViewOrdered::draw( painter &Painter, const pairScales& Scales, const sequence::data &Data ) const 
 {
@@ -221,15 +249,16 @@ void scigraphics::sequence::graphViewGeneralLine::drawUnorderedByX( painter &Pai
   if ( Begin == End )
     return;
 
-  Painter.setLineStyle( getStyle() );
+  const size_t MaxPolylineSize = 2*std::min<size_t>( ( End - Begin ), std::max( Painter.width(), Painter.height() ) );
   
   std::vector< wpoint > Polyline;
-  Polyline.reserve( static_cast<size_t>(End - Begin)*2 );
+  Polyline.reserve( MaxPolylineSize );
 
   pointsWithSameXCoord PointsWithSameXCoord;
 
   sequence::data::iterator Point = Begin;
 
+  Painter.setLineStyle( getStyle() );
   while ( true )
   {
     if ( Point != End && Point->isValid() )
@@ -239,7 +268,15 @@ void scigraphics::sequence::graphViewGeneralLine::drawUnorderedByX( painter &Pai
       {
         PointsWithSameXCoord.addToPolyline( &Polyline );
         PointsWithSameXCoord.clear();
-      } 
+        if ( Polyline.size() >= MaxPolylineSize )
+        {
+          wpoint LastPoint = Polyline.back();
+          drawLineBetweenPoints( Painter, &Polyline );
+          Polyline.clear();
+          Polyline.reserve( MaxPolylineSize );
+          Polyline.push_back( LastPoint );
+        }
+      }
       PointsWithSameXCoord.append( Painter, CurrFPoint );
     } else {
       PointsWithSameXCoord.addToPolyline( &Polyline );

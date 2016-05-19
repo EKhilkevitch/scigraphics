@@ -22,14 +22,15 @@
 // ============================================================
 
 #include "scigraphics/numlimits.h"
+
 #include <cassert>
 #include <stdexcept>
 
 // ============================================================
 
-bool scigraphics::numberLimits::isValidInterval( interval<number> I )
+bool scigraphics::numberLimits::isValidInterval( interval<number> Interval )
 {
-  return isValidNumbers( I.min(), I.max() );
+  return isValidNumbers( Interval.min(), Interval.max() );
 }
 
 // ------------------------------------------------------------

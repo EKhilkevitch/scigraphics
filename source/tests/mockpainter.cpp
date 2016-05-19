@@ -55,3 +55,22 @@ void scigraphics::mockDrawer::drawText( const std::string &Text, const wrectangl
 }
 
 // =========================================================
+
+std::ostream& scigraphics::operator<<( std::ostream &Stream, mockDrawer::action::type Type )
+{
+
+#define CASE_RET( Value ) \
+  case mockDrawer::action::Value: return Stream << #Value;
+
+  switch ( Type )
+  {
+    CASE_RET( None );
+    CASE_RET( DrawLine );
+    CASE_RET( DrawRectangle );
+    default:
+      return Stream << "UNKNOWN";
+  }
+}
+
+// =========================================================
+

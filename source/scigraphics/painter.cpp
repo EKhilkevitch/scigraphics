@@ -30,6 +30,7 @@
 #include "scigraphics/errorbarstyle.h"
 
 #include <iostream>
+#include <limits>
 #include <cassert>
 #include <cmath>
 #include <cstdlib>
@@ -37,6 +38,18 @@
 #if _MSC_VER
 #  pragma warning( disable : 4244 ) 
 #endif
+
+// ============================================================
+
+namespace
+{
+  template <class intT, class realT > inline intT round( realT Number )
+  {
+    Number += static_cast<realT>(0.5) - std::numeric_limits<realT>::epsilon();
+    Number = std::floor( Number );
+    return static_cast<intT>( Number );
+  }
+}
 
 // ============================================================
       

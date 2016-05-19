@@ -5,6 +5,7 @@ project( selfTest )
 set ( tests_source_files
         gtest_geometry.cpp
         gtest_graphcollection.cpp
+        gtest_graphviewsequence.cpp
         gtest_graph.cpp
         gtest_graphdata.cpp
         gtest_legend.cpp

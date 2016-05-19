@@ -24,7 +24,7 @@
 #include "scigraphics/datasequence.h"
 
 #include <limits>
-#include <cmath>
+#include <utility>
 #include <cassert>
 #include <stdexcept>
 
@@ -353,7 +353,7 @@ scigraphics::sequence::dataVector::dataVector() :
 void scigraphics::sequence::dataVector::append( const point_t &Point )
 { 
   appendPoint( Point );
-  if ( Points.size() >= (size_t)std::numeric_limits<int>::max() - 2 )
+  if ( Points.size() >= static_cast<size_t>(std::numeric_limits<int>::max()) - 2 )
     throw std::runtime_error( "Data size is too big" );
 
   LimitsCache.update( Point, *this );

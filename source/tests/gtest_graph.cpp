@@ -12,7 +12,6 @@
 #include "scigraphics/graphsequence.h"
 #include "scigraphics/graphviewcollection.h"
 
-namespace scigraphics {};
 using namespace scigraphics;
 
 // =========================================================

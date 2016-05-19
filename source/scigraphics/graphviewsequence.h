@@ -59,18 +59,20 @@ namespace scigraphics
         graphView();
         virtual ~graphView();
 
-        void setVisible( bool V ) { Visible = V; }
-        bool isVisible() const { return Visible; }
+        void setVisible( bool Visible );
+        bool isVisible() const;
 
         virtual void draw( painter &Painter, const pairScales& Scales, const sequence::data &Data ) const = 0;
         virtual void drawLegendExample( painter &Painter, const wrectangle &Rectangle ) const = 0;
 
         virtual color getColor() const = 0;
-        virtual void setColor( const color &C ) = 0;
+        virtual void setColor( const color &Color ) = 0;
         
-        virtual wcoord legendExampleWidth() const  { return 35; }
-        virtual wcoord legendExampleHeight() const { return 5;  }
+        virtual wcoord legendExampleWidth() const;
+        virtual wcoord legendExampleHeight() const;
     };
+    
+    // ============================================================
 
     class graphViewOrdered : public graphView
     {
