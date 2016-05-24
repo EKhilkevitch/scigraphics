@@ -53,13 +53,68 @@ void labelInput::createWidgets( const QString& LabelText )
 void labelInput::resizeEvent( QResizeEvent* )
 {
 
-  int InputWidth = (int)( InputPart * (double)width() );
+  int InputWidth = static_cast<int>( InputPart * static_cast<double>(width()) );
   int LabelWidth = width() - InputWidth - Skip;
   Label->setGeometry( 0, 0, LabelWidth, height() );
   InputWgt->setGeometry( width()-InputWidth, 0, InputWidth, height() );
 
   Label->repaint();
   Label->update();
+}
+
+// ------------------------------------------------------
+
+void labelInput::enterEvent( QEvent *) 
+{ 
+  emit focusEntered(); 
+}
+
+// ------------------------------------------------------
+
+double labelInput::defaultInputPart() const 
+{ 
+  return 0.33; 
+}
+
+// ------------------------------------------------------
+
+int labelInput::defaultSkip() const 
+{ 
+  return 5; 
+}
+
+// ------------------------------------------------------
+
+labelInput::labelInput( const QString& , QWidget *Parent, Qt::WindowFlags Flags ) : 
+  QWidget(Parent,Flags) 
+{
+}
+
+// ------------------------------------------------------
+
+labelInput::~labelInput() 
+{
+}
+    
+// ------------------------------------------------------
+
+void labelInput::setReadOnly( const bool ) 
+{
+};
+
+// ------------------------------------------------------
+
+void labelInput::setInputPart( const double P ) 
+{ 
+  InputPart = P; 
+  resizeEvent(NULL); 
+}
+
+// ------------------------------------------------------
+    
+void labelInput::setEnabled( int E ) 
+{ 
+  QWidget::setEnabled( E != 0 ); 
 }
 
 // ======================================================

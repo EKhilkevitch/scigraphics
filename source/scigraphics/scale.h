@@ -56,7 +56,7 @@ namespace scigraphics
       virtual double numberToPartOfDistance( number Number ) const = 0;
       virtual number partOfDistanceToNumber( double Part ) const = 0;
       
-      void setMarker( marker *M );
+      void setMarker( marker *Marker );
       const marker* getMarker() const { return Marker; }
       marker* getMarker() { return Marker; }
 

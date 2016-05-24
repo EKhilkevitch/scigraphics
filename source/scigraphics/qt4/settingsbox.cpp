@@ -63,6 +63,30 @@ QString scigraphics::qt4settingsGroupBox::axisPositionString( axisPosition Axis 
   }
 }
 
+// ----------------------------------------------------------------
+      
+void scigraphics::qt4settingsGroupBox::applySettings( qt4settings* ) 
+{
+}
+
+// ----------------------------------------------------------------
+
+void scigraphics::qt4settingsGroupBox::collectSettings( qt4plot* ) 
+{
+}
+
+// ----------------------------------------------------------------
+
+void scigraphics::qt4settingsGroupBox::saveSettings( QSettings* ) const 
+{
+}
+
+// ----------------------------------------------------------------
+
+void scigraphics::qt4settingsGroupBox::loadSettings( QSettings* ) 
+{
+}
+
 // ================================================================
       
 scigraphics::qt4settingsGroupSuperBox::qt4settingsGroupSuperBox( const QString &Name, QWidget *Parent ) : 

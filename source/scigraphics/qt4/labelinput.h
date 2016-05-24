@@ -54,30 +54,30 @@ class labelInput : public QWidget
   protected:
     virtual void resizeEvent( QResizeEvent *Event );
     virtual void createWidgets( const QString& LabelText );
-    virtual void enterEvent( QEvent *) { emit focusEntered(); }
+    virtual void enterEvent( QEvent *Event );
 
-    virtual double defaultInputPart() const { return 0.33; }
-    virtual int defaultSkip() const { return 5; }
+    virtual double defaultInputPart() const;
+    virtual int defaultSkip() const;
 
     virtual QWidget* createInput() = 0;
 
     QWidget* inputWgt() const { return InputWgt; }
 
   public:
-    labelInput( const QString& , QWidget *Parent = NULL, Qt::WindowFlags Flags = 0 ) : QWidget(Parent,Flags) {}
-    ~labelInput() {}
+    labelInput( const QString& , QWidget *Parent = NULL, Qt::WindowFlags Flags = 0 );
+    ~labelInput();
 
     QString label() const { return Label->text(); }
     
-    virtual void setReadOnly( const bool ) {};
-    void setInputPart( const double P ) { InputPart = P; resizeEvent(NULL); }
+    virtual void setReadOnly( const bool );
+    void setInputPart( const double P );
 
   signals:
     void focusEntered();
     void changed();
 
   public slots:
-    void setEnabled( int E ) { QWidget::setEnabled( E != 0 ); }
+    void setEnabled( int E );
 };
 
 // ======================================================

@@ -58,10 +58,10 @@ namespace scigraphics
 
     public:
       qt4settingsGroupBox( const QString &Name = QString(), QWidget *Parent = NULL );
-      virtual void applySettings( qt4settings* ) {}
-      virtual void collectSettings( qt4plot* ) {}
-      virtual void saveSettings( QSettings* ) const {}
-      virtual void loadSettings( QSettings* ) {}
+      virtual void applySettings( qt4settings* );
+      virtual void collectSettings( qt4plot* );
+      virtual void saveSettings( QSettings* ) const;
+      virtual void loadSettings( QSettings* );
 
     signals:
       void settingsUpdated();

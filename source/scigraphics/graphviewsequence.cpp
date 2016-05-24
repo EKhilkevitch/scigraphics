@@ -26,10 +26,8 @@
 #include "scigraphics/scale.h"
 
 #include <iostream>
-#include <cmath>
-#include <limits>
+#include <algorithm>
 #include <cassert>
-#include <cstddef>
 
 // ============================================================
 
@@ -249,7 +247,7 @@ void scigraphics::sequence::graphViewGeneralLine::drawUnorderedByX( painter &Pai
   if ( Begin == End )
     return;
 
-  const size_t MaxPolylineSize = 2*std::min<size_t>( ( End - Begin ), std::max( Painter.width(), Painter.height() ) );
+  const size_t MaxPolylineSize = 2*std::min<size_t>( ( End - Begin ), std::max( Painter.width(), Painter.height() ) ) + 128;
   
   std::vector< wpoint > Polyline;
   Polyline.reserve( MaxPolylineSize );
