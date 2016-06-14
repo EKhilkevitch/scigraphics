@@ -143,7 +143,7 @@ namespace scigraphics
       static QString name() { return "Scale intervals"; }
 
     public:
-      explicit qt4settingsScaleIntervalsAllAxis( QWidget *Parent, const axisPositionsList &Positions );
+      qt4settingsScaleIntervalsAllAxis( QWidget *Parent, const axisPositionsList &Positions );
   };
 
   // ----------------------------------------------------------------

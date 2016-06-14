@@ -67,6 +67,11 @@ namespace scigraphics
       
       void updateInterval( T Number );
 
+      interval<T>& operator+=( const T Value );
+      interval<T>& operator-=( const T Value );
+      interval<T>& operator*=( const T Value );
+      interval<T>& operator/=( const T Value );
+
       static bool isEquals( const interval<T> &Lims1, const interval<T> &Lims2, T Difference = 0 );
   };
 
@@ -74,8 +79,10 @@ namespace scigraphics
  
   template <class T> bool operator==( const interval<T> &Lims1, const interval<T> &Lims2 );
   template <class T> bool operator!=( const interval<T> &Lims1, const interval<T> &Lims2 );
-  template <class T> interval<T> operator+( const interval<T> &Limits, const T Value );
-  template <class T> interval<T> operator-( const interval<T> &Limits, const T Value );
+  template <class T> interval<T> operator+( interval<T> Limits, const T Value );
+  template <class T> interval<T> operator-( interval<T> Limits, const T Value );
+  template <class T> interval<T> operator*( interval<T> Limits, const T Value );
+  template <class T> interval<T> operator/( interval<T> Limits, const T Value );
   template <class T> std::ostream& operator<<( std::ostream &Stream, interval<T> Interval );
   
   // ============================================================
@@ -182,6 +189,45 @@ namespace scigraphics
   
   // ------------------------------------------------------------
       
+  template <class T> interval<T>& interval<T>::operator+=( const T Value )
+  {
+    Min += Value;
+    Max += Value;
+    return *this;
+  }
+  
+  // ------------------------------------------------------------
+  
+  template <class T> interval<T>& interval<T>::operator-=( const T Value )
+  {
+    *this += -Value;
+    return *this;
+  }
+  
+  // ------------------------------------------------------------
+  
+  template <class T> interval<T>& interval<T>::operator*=( const T Value )
+  {
+    Min *= Value;
+    Max *= Value;
+    if ( Value < static_cast<T>(0) )
+      std::swap( Min, Max );
+    return *this;
+  }
+  
+  // ------------------------------------------------------------
+
+  template <class T> interval<T>& interval<T>::operator/=( const T Value )
+  {
+    Min /= Value;
+    Max /= Value;
+    if ( Value < static_cast<T>(0) )
+      std::swap( Min, Max );
+    return *this;
+  }
+  
+  // ------------------------------------------------------------
+      
   template <class T> bool interval<T>::isEquals( const interval<T> &Lims1, const interval<T> &Lims2, T Difference )
   {
     return 
@@ -205,16 +251,34 @@ namespace scigraphics
   
   // ------------------------------------------------------------
 
-  template <class T> interval<T> operator+( const interval<T> &Limits, const T Value )
+  template <class T> interval<T> operator+( interval<T> Limits, const T Value )
   {
-    return interval<T>( Limits.min() + Value, Limits.max() + Value );
+    Limits += Value;
+    return Limits;
   }
 
   // ------------------------------------------------------------
 
-  template <class T> interval<T> operator-( const interval<T> &Limits, const T Value )
+  template <class T> interval<T> operator-( interval<T> Limits, const T Value )
   {
-    return Limits + (-Value);
+    Limits -= Value;
+    return Limits;
+  }
+
+  // ------------------------------------------------------------
+
+  template <class T> interval<T> operator*( interval<T> Limits, const T Value )
+  {
+    Limits *= Value;
+    return Limits;
+  }
+
+  // ------------------------------------------------------------
+
+  template <class T> interval<T> operator/( interval<T> Limits, const T Value )
+  {
+    Limits /= Value;
+    return Limits;
   }
 
   // ------------------------------------------------------------

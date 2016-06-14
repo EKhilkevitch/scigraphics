@@ -91,7 +91,7 @@ namespace scigraphics
 
       public:
         explicit graphSpecified( const color &Color );
-        explicit graphSpecified( const std::string &Legend, const color &Color );
+        graphSpecified( const std::string &Legend, const color &Color );
 
         size_t size() const;
         bool empty() const;
@@ -119,7 +119,7 @@ namespace scigraphics
     {
       public:
         explicit graphVector( const color &Color = color() );
-        explicit graphVector( const std::string &Legend, const color &Color );
+        graphVector( const std::string &Legend, const color &Color );
 
         dataVector& getDataVector();
         ordinarGraphViewCollection& getViews();
@@ -137,7 +137,7 @@ namespace scigraphics
     {
       public:
         explicit graphUniformVector( const color &Color = color() );
-        explicit graphUniformVector( const std::string &Legend, const color &Color );
+        graphUniformVector( const std::string &Legend, const color &Color );
 
         dataUniformVector& getDataVector();
         const dataUniformVector& getDataVector() const;
@@ -157,7 +157,7 @@ namespace scigraphics
     {
       public:
         explicit graphAreaVector( const color &Color = color() );
-        explicit graphAreaVector( const std::string &Legend, const color &Color );
+        graphAreaVector( const std::string &Legend, const color &Color );
         
         dataVector& getDataVector();
         coveredAreaGraphViewCollection& getViewsColveredArea();
