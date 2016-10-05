@@ -113,9 +113,21 @@ int main( int argc, char *argv[] )
   AxisPositions << scigraphics::AxisTop;
   AxisPositions << scigraphics::AxisRight;
 
+
+
   scigraphics::qt4settings Settings( NULL, "", AxisPositions, new scigraphics::qt4settingsComposerTabs() );
   Settings.addSettingWidget( new scigraphics::qt4settingsSelections() );
   Settings.addSettingWidget( new scigraphics::qt4settingsDecoration() );
+  
+  scigraphics::qt4settingsScaleTypeAllAxis *ScaleWidget = Settings.getSettingWidget<scigraphics::qt4settingsScaleTypeAllAxis>();
+  foreach( scigraphics::axisPosition Position, ScaleWidget->axisPositionsWithBoxes() )
+  {
+    scigraphics::qt4settingsScaleType *Box = dynamic_cast<scigraphics::qt4settingsScaleType*>( ScaleWidget->boxForAxisPosition( Position ) );
+    Box->showLogarithmNegativeControl(true);
+    Box->showSquareControl(true);
+  }
+  ScaleWidget->setNumberOfRowsInLayout(1);
+
   //Settings.getSettingWidget<scigraphics::qt4settingsGraphType>()->showErrorBarsControl( false );
   //Settings.replaceLayout( new QVBoxLayout() );
   Settings.connectToPlot(&Plot);

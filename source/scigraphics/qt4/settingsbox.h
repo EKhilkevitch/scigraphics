@@ -30,6 +30,7 @@
 
 #include <QGroupBox>
 #include <QList>
+#include <QMap>
 
 class QSettings;
 class QCheckBox;
@@ -82,21 +83,29 @@ namespace scigraphics
       static axisPositionsList defaultAxisPositions();
 
     private:
-      QList< qt4settingsGroupBox* > Boxes; 
+      QMap< scigraphics::axisPosition, qt4settingsGroupBox* > Boxes; 
+      unsigned NumberOfRowsInLayout;
+
+    private:
+      void addToList( scigraphics::axisPosition Position, qt4settingsGroupBox *GroupBox );
+      void updateLayout();
+
+      virtual qt4settingsGroupBox* createBoxForAxisPosition( scigraphics::axisPosition Position ) = 0;
 
     protected:
-      void addToList( qt4settingsGroupBox *B );
-
-      virtual int numOfRowsInLayout() { return 0; }
-      virtual qt4settingsGroupBox* createBoxForAxisPosition( scigraphics::axisPosition ) { return NULL; }
-
       void init( const axisPositionsList &AxisPositions = defaultAxisPositions() );
 
     public:
-      explicit qt4settingsGroupSuperBox( const QString &Name = QString(), QWidget *Parent = NULL );
+      explicit qt4settingsGroupSuperBox( unsigned NumberOfRowsInLayout = 1, const QString &Name = QString(), QWidget *Parent = NULL );
 
       void applySettings( qt4settings* Settings );
       void collectSettings( qt4plot* Plot );
+
+      qt4settingsGroupBox* boxForAxisPosition( scigraphics::axisPosition Position );
+      QList<axisPosition> axisPositionsWithBoxes() const;
+
+      unsigned numberOfRowsInLayout() const;
+      void setNumberOfRowsInLayout( unsigned Number );
 
       void saveSettings( QSettings* Settings ) const;
       void loadSettings( QSettings* Settings );
@@ -138,9 +147,8 @@ namespace scigraphics
     Q_OBJECT
 
     private:
-      int numOfRowsInLayout() { return 2; }
       qt4settingsGroupBox* createBoxForAxisPosition( scigraphics::axisPosition Pos );
-      static QString name() { return "Scale intervals"; }
+      static QString name();
 
     public:
       qt4settingsScaleIntervalsAllAxis( QWidget *Parent, const axisPositionsList &Positions );
@@ -167,8 +175,8 @@ namespace scigraphics
 
       void applySettings( qt4settings* Settings );
 
-      void showLineHystogramControl( bool S );
-      void showErrorBarsControl( bool S );
+      void showLineHystogramControl( bool Show );
+      void showErrorBarsControl( bool Show );
       
       void saveSettings( QSettings* Settings ) const;
       void loadSettings( QSettings* Settings );
@@ -205,7 +213,10 @@ namespace scigraphics
     private:
       axisPosition AxisType;
 
-      QRadioButton *LinearBtn, *LogarithmPositiveBtn, *LogarithmNegativeBtn, *SquareBtn;
+      QRadioButton *LinearBtn, 
+                   *LogarithmPositiveBtn, 
+                   *LogarithmNegativeBtn, 
+                   *SquareBtn;
 
     protected:
       settings::scaleType getScaleType() const;
@@ -214,6 +225,9 @@ namespace scigraphics
       explicit qt4settingsScaleType( const scigraphics::axisPosition Axis, QWidget *Parent = NULL );
       
       void applySettings( qt4settings* Settings );
+      
+      void showLogarithmNegativeControl( bool Show );
+      void showSquareControl( bool Show );
       
       void saveSettings( QSettings* Settings ) const;
       void loadSettings( QSettings* Settings );
@@ -226,13 +240,11 @@ namespace scigraphics
     Q_OBJECT
 
     protected:
-      int numOfRowsInLayout() { return 1; }
-      qt4settingsGroupBox* createBoxForAxisPosition( scigraphics::axisPosition Pos ) { return new qt4settingsScaleType(Pos,this); }
-      static QString name() { return "Scale types"; }
+      static QString name();
+      qt4settingsGroupBox* createBoxForAxisPosition( scigraphics::axisPosition Pos );
 
     public:
-      explicit qt4settingsScaleTypeAllAxis( QWidget *Parent = NULL, const axisPositionsList &Positions = defaultAxisPositions() ) : 
-        qt4settingsGroupSuperBox( name(), Parent ) { init(Positions); }
+      explicit qt4settingsScaleTypeAllAxis( QWidget *Parent = NULL, const axisPositionsList &Positions = defaultAxisPositions() );
   };
 
   // ----------------------------------------------------------------

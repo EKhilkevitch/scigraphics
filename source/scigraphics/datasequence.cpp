@@ -511,10 +511,12 @@ std::ostream& operator<<( std::ostream& Stream, const scigraphics::sequence::dat
 {
   std::streamsize Width = Stream.width();
 
+  scigraphics::sequence::data::iterator Begin = Data.begin(), End = Data.end();
+
   Stream.width( 12 );
   Stream << "Size ";
   Stream << Data.size() << std::endl;
-  for ( scigraphics::sequence::data::iterator i = Data.begin(); i != Data.end(); ++i )
+  for ( scigraphics::sequence::data::iterator i = Begin; i != End; ++i )
     Stream << (*i) << std::endl;
   Stream.width( Width );
 

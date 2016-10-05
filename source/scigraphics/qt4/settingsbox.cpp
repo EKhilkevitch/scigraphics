@@ -89,38 +89,56 @@ void scigraphics::qt4settingsGroupBox::loadSettings( QSettings* )
 
 // ================================================================
       
-scigraphics::qt4settingsGroupSuperBox::qt4settingsGroupSuperBox( const QString &Name, QWidget *Parent ) : 
-  qt4settingsGroupBox(Name,Parent) 
+scigraphics::qt4settingsGroupSuperBox::qt4settingsGroupSuperBox( unsigned Number, const QString &Name, QWidget *Parent ) : 
+  qt4settingsGroupBox(Name,Parent),
+  NumberOfRowsInLayout( Number )
 {
+  NumberOfRowsInLayout = qMax<unsigned>( NumberOfRowsInLayout, 1 );
 }
 
 // ----------------------------------------------------------------
     
 void scigraphics::qt4settingsGroupSuperBox::init( const QList<axisPosition> &AxisPositions )
 {
-  if ( numOfRowsInLayout() <= 0 )
+  if ( NumberOfRowsInLayout <= 0 )
     return;
+
+  setLayout( new QGridLayout() );
 
   QGridLayout *Layout = new QGridLayout();
 
-  int CurrRow = 0, CurrCol = 0;
   foreach ( axisPosition Position, AxisPositions )
   {
     qt4settingsGroupBox *Box = createBoxForAxisPosition( Position );
-    if ( Box == NULL )
-      continue;
+    if ( Box != NULL )
+      addToList( Position, Box );
+  }
 
-    addToList( Box );
+  updateLayout();
+}
+
+// ----------------------------------------------------------------
+
+void scigraphics::qt4settingsGroupSuperBox::updateLayout()
+{
+  QGridLayout *Layout = dynamic_cast< QGridLayout* >( layout() );
+  Q_ASSERT( Layout != NULL );
+
+  foreach ( qt4settingsGroupBox *Box, Boxes )
+    Layout->removeWidget( Box );
+  
+  int CurrRow = 0;
+  int CurrCol = 0;
+  foreach ( qt4settingsGroupBox *Box, Boxes )
+  {
     Layout->addWidget( Box, CurrRow, CurrCol );
     CurrRow += 1;
-    if ( CurrRow >= numOfRowsInLayout() )
+    if ( CurrRow >= numberOfRowsInLayout() )
     {
       CurrCol += 1;
       CurrRow  = 0;
     }
   }
-
-  setLayout( Layout );
 }
 
 // ----------------------------------------------------------------
@@ -135,10 +153,19 @@ QList<scigraphics::axisPosition> scigraphics::qt4settingsGroupSuperBox::defaultA
 
 // ----------------------------------------------------------------
 
-void scigraphics::qt4settingsGroupSuperBox::addToList( qt4settingsGroupBox *B ) 
+void scigraphics::qt4settingsGroupSuperBox::addToList( axisPosition Position, qt4settingsGroupBox *Box ) 
 { 
-  connect( B, SIGNAL(settingsUpdated()), SIGNAL(settingsUpdated()) );
-  Boxes.append(B); 
+  connect( Box, SIGNAL(settingsUpdated()), SIGNAL(settingsUpdated()) );
+
+  delete Boxes.take( Position );
+  Boxes.insert( Position, Box ); 
+}
+
+// ----------------------------------------------------------------
+
+scigraphics::qt4settingsGroupBox* scigraphics::qt4settingsGroupSuperBox::createBoxForAxisPosition( scigraphics::axisPosition ) 
+{ 
+  return NULL; 
 }
 
 // ----------------------------------------------------------------
@@ -155,6 +182,35 @@ void scigraphics::qt4settingsGroupSuperBox::collectSettings( qt4plot* Plot )
 {
   foreach ( qt4settingsGroupBox *Box, Boxes )
     Box->collectSettings( Plot );
+}
+
+// ----------------------------------------------------------------
+
+scigraphics::qt4settingsGroupBox* scigraphics::qt4settingsGroupSuperBox::boxForAxisPosition( scigraphics::axisPosition Position )
+{
+  return Boxes.value( Position, NULL );
+}
+
+// ----------------------------------------------------------------
+      
+QList<scigraphics::axisPosition> scigraphics::qt4settingsGroupSuperBox::axisPositionsWithBoxes() const
+{
+  return Boxes.keys();
+}
+
+// ----------------------------------------------------------------
+      
+unsigned scigraphics::qt4settingsGroupSuperBox::numberOfRowsInLayout() const
+{
+  return NumberOfRowsInLayout;
+}
+
+// ----------------------------------------------------------------
+
+void scigraphics::qt4settingsGroupSuperBox::setNumberOfRowsInLayout( unsigned Number )
+{
+  NumberOfRowsInLayout = qMax<unsigned>( 1, Number );
+  updateLayout();
 }
 
 // ----------------------------------------------------------------
@@ -276,14 +332,23 @@ void scigraphics::qt4settingsScaleIntervals::loadSettings( QSettings* Settings )
 // ================================================================
 
 scigraphics::qt4settingsScaleIntervalsAllAxis::qt4settingsScaleIntervalsAllAxis( QWidget *Parent, const axisPositionsList &Positions ) : 
-  qt4settingsGroupSuperBox( name(), Parent ) 
+  qt4settingsGroupSuperBox( 2, name(), Parent ) 
 { 
   init(Positions); 
 }
+
+// ----------------------------------------------------------------
+
+QString scigraphics::qt4settingsScaleIntervalsAllAxis::name() 
+{ 
+  return "Scale intervals"; 
+}
+
+// ----------------------------------------------------------------
       
 scigraphics::qt4settingsGroupBox* scigraphics::qt4settingsScaleIntervalsAllAxis::createBoxForAxisPosition( scigraphics::axisPosition Pos ) 
 { 
-  return new qt4settingsScaleIntervals(Pos,this); 
+  return new qt4settingsScaleIntervals( Pos, this ); 
 }
 
 // ================================================================
@@ -334,18 +399,18 @@ unsigned scigraphics::qt4settingsGraphType::getGraphType() const
 
 // ----------------------------------------------------------------
     
-void scigraphics::qt4settingsGraphType::showLineHystogramControl( bool S ) 
+void scigraphics::qt4settingsGraphType::showLineHystogramControl( bool Show ) 
 { 
   Q_ASSERT( ShowLineHystogramBtn != NULL );
-  ShowLineHystogramBtn->setVisible(S); 
+  ShowLineHystogramBtn->setVisible( Show ); 
 }
 
 // ----------------------------------------------------------------
 
-void scigraphics::qt4settingsGraphType::showErrorBarsControl( bool S ) 
+void scigraphics::qt4settingsGraphType::showErrorBarsControl( bool Show ) 
 { 
   Q_ASSERT( ErrorBarsChk != NULL );
-  ErrorBarsChk->setVisible(S); 
+  ErrorBarsChk->setVisible( Show ); 
 }
 
 // ----------------------------------------------------------------
@@ -484,6 +549,22 @@ scigraphics::settings::scaleType scigraphics::qt4settingsScaleType::getScaleType
 }
 
 // ----------------------------------------------------------------
+
+void scigraphics::qt4settingsScaleType::showLogarithmNegativeControl( bool Show )
+{
+  Q_ASSERT( LogarithmNegativeBtn != NULL );
+  LogarithmNegativeBtn->setVisible( Show ); 
+}
+
+// ----------------------------------------------------------------
+
+void scigraphics::qt4settingsScaleType::showSquareControl( bool Show )
+{
+  Q_ASSERT( SquareBtn != NULL );
+  SquareBtn->setVisible( Show );
+}
+
+// ----------------------------------------------------------------
     
 void scigraphics::qt4settingsScaleType::applySettings( qt4settings* Settings ) 
 { 
@@ -512,6 +593,33 @@ void scigraphics::qt4settingsScaleType::loadSettings( QSettings* Settings )
   LogarithmNegativeBtn->setChecked( Settings->value( "LogarithmNegativeBtn", false ).toBool() );
   SquareBtn->setChecked( Settings->value( "SquareBtn", false ).toBool() );
   Settings->endGroup();
+}
+
+// ================================================================
+
+scigraphics::qt4settingsGroupBox* scigraphics::qt4settingsScaleTypeAllAxis::createBoxForAxisPosition( scigraphics::axisPosition Pos ) 
+{ 
+  qt4settingsScaleType *ScaleBox = new qt4settingsScaleType( Pos, this ); 
+
+  ScaleBox->showLogarithmNegativeControl(false);
+  ScaleBox->showSquareControl(false);
+
+  return ScaleBox;
+}
+
+// ----------------------------------------------------------------
+
+QString scigraphics::qt4settingsScaleTypeAllAxis::name() 
+{ 
+  return "Scale types"; 
+}
+
+// ----------------------------------------------------------------
+      
+scigraphics::qt4settingsScaleTypeAllAxis::qt4settingsScaleTypeAllAxis( QWidget *Parent, const axisPositionsList &Positions ) : 
+  qt4settingsGroupSuperBox( 2, name(), Parent ) 
+{ 
+  init(Positions); 
 }
 
 // ================================================================
