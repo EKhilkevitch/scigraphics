@@ -154,6 +154,10 @@ void scigraphics::sequence::ordinarGraphViewCollection::setLineStyle( lineStyle:
   lineStyle Style = getViewStyle<graphViewLine>();
   Style.setStyle( LineStyle );
   setViewStyle<graphViewLine>( Style );
+  
+  Style = getViewStyle<graphViewLineHystogram>();
+  Style.setStyle( LineStyle );
+  setViewStyle<graphViewLineHystogram>( Style );
 }
 
 // ------------------------------------------------------------
@@ -163,6 +167,10 @@ void scigraphics::sequence::ordinarGraphViewCollection::setLineWidth( unsigned W
   lineStyle Style = getViewStyle<graphViewLine>();
   Style.setWidth( Width );
   setViewStyle<graphViewLine>( Style );
+
+  Style = getViewStyle<graphViewLineHystogram>();
+  Style.setWidth( Width );
+  setViewStyle<graphViewLineHystogram>( Style );
 }
 
 // ------------------------------------------------------------
