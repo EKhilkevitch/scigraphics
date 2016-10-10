@@ -553,7 +553,8 @@ scigraphics::settings::scaleType scigraphics::qt4settingsScaleType::getScaleType
 void scigraphics::qt4settingsScaleType::showLogarithmNegativeControl( bool Show )
 {
   Q_ASSERT( LogarithmNegativeBtn != NULL );
-  LogarithmNegativeBtn->setVisible( Show ); 
+  LogarithmNegativeBtn->setVisible( Show );
+  LogarithmPositiveBtn->setText( Show ? "Logarithm (positive)" : "Logarithm" );
 }
 
 // ----------------------------------------------------------------
@@ -705,6 +706,18 @@ void scigraphics::qt4settingsSelections::applySettings( qt4settings* Settings )
   Settings->needToEmitSelectionChangedAfterApplying( NeedToEmitSelectionChanged );
   
   Settings->plotSettings()->setSelectionInterval( StripType, Min, Max );
+}
+
+// ----------------------------------------------
+      
+void scigraphics::qt4settingsSelections::saveSettings( QSettings* ) const 
+{
+}
+
+// ----------------------------------------------
+
+void scigraphics::qt4settingsSelections::loadSettings( QSettings* ) 
+{
 }
 
 // ================================================================

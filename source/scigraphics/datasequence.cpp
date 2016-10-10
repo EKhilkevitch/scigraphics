@@ -25,8 +25,10 @@
 
 #include <limits>
 #include <utility>
-#include <cassert>
 #include <stdexcept>
+#include <cassert>
+#include <cmath>
+#include <iostream>
 
 // ============================================================
 
@@ -115,6 +117,25 @@ const scigraphics::numberLimits scigraphics::sequence::data::limitsY( const inte
     Result.updateLimits( p->y() + p->errY() );
     Result.updateLimits( p->y() - p->errY() );
   }
+
+  const number MaxLogDifference = std::log10( std::numeric_limits<number>::max() ) / 2;
+  const number DefaultLogDifference = static_cast<number>( 1e24 );
+
+  if ( numberLimits::isValidInterval( Result.positiveLimits() ) )
+  {
+    number OrderPosDiff = std::log10(Result.positiveLimits().max()) - std::log10(Result.positiveLimits().min());
+    if ( OrderPosDiff > MaxLogDifference )
+      Result.setPositiveInterval( interval<number>( Result.positiveLimits().max(), Result.positiveLimits().max() / DefaultLogDifference ) );
+  }
+
+  if ( numberLimits::isValidInterval( Result.negativeLimits() ) )
+  {
+    number OrderNegDiff = std::log10(-Result.negativeLimits().min()) - std::log10(-Result.negativeLimits().max());
+    if ( OrderNegDiff > MaxLogDifference )
+      Result.setNegativeInterval( interval<number>( Result.negativeLimits().min(), Result.negativeLimits().min() / DefaultLogDifference ) );
+  }
+
+  //std::cerr << "data::limitsY: " << Result << ", order diff are " << OrderPosDiff << " " << OrderNegDiff << " -> " << interval<number>( Result.negativeLimits().min(), Result.negativeLimits().min() / MaxLogDifference ) << std::endl;
 
   return Result;
 }

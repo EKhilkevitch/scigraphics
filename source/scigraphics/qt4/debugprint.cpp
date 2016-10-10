@@ -5,6 +5,7 @@
 #include "scigraphics/color.h"
 #include "scigraphics/interval.h"
 #include "scigraphics/numlimits.h"
+#include "scigraphics/datasequence.h"
 
 #include <QDebug>
 #include <QString>
@@ -52,6 +53,14 @@ QDebug operator<<( QDebug Out, const scigraphics::numberLimits &Limits )
 QDebug operator<<( QDebug Out, const scigraphics::interval<scigraphics::number> &Interval )
 {
   Out.nospace() << toQtStringByStdStream( Interval );
+  return Out.space();
+}
+
+// ------------------------------------------------------------
+
+QDebug operator<<( QDebug Out, const scigraphics::sequence::point &Point )
+{
+  Out.nospace() << toQtStringByStdStream( Point );
   return Out.space();
 }
 

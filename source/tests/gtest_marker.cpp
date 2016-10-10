@@ -1,11 +1,10 @@
 
 // =========================================================
 
-#include "marker.h"
-
 #include <gtest/gtest.h>
 
-namespace scigraphics {};
+#include "marker.h"
+
 using namespace scigraphics;
 
 // =========================================================
@@ -49,12 +48,12 @@ TEST( test_markerLinear, marks )
 
 // ---------------------------------------------------------
 
-TEST( test_markerLogPositive, marks )
+TEST( test_markerLogPositive, marks_1 )
 {
   markerLogarithmPositive Marker;
   
   std::vector<number> Marks1 = Marker.marks( interval<number>(0.01,100) );
-  ASSERT_EQ( (size_t)5,  Marks1.size() );
+  ASSERT_EQ( 5,  Marks1.size() );
   ASSERT_NEAR( 0.01,  Marks1[0], 1e-5 );
   ASSERT_NEAR( 0.10,  Marks1[1], 1e-5 );
   ASSERT_NEAR( 1.0,   Marks1[2], 1e-5 );
@@ -62,14 +61,14 @@ TEST( test_markerLogPositive, marks )
   ASSERT_NEAR( 100,   Marks1[4], 1e-5 );
   
   std::vector<number> Marks2 = Marker.marks( interval<number>(10,100) );
-  ASSERT_EQ( (size_t)4,  Marks2.size() );
+  ASSERT_EQ( 4,  Marks2.size() );
   ASSERT_NEAR( 10,   Marks2[0], 1e-5 );
   ASSERT_NEAR( 20,   Marks2[1], 1e-5 );
   ASSERT_NEAR( 50,   Marks2[2], 1e-5 );
   ASSERT_NEAR( 100,  Marks2[3], 1e-5 );
   
   std::vector<number> Marks3 = Marker.marks( interval<number>(2e-10,10) );
-  ASSERT_EQ( (size_t)5,  Marks3.size() );
+  ASSERT_EQ( 5,  Marks3.size() );
   ASSERT_NEAR( 1e-8,   Marks3[0], 1e-10 );
   ASSERT_NEAR( 1e-6,   Marks3[1], 1e-8 );
   ASSERT_NEAR( 1e-4,   Marks3[2], 1e-6 );
