@@ -164,22 +164,22 @@ void scigraphics::sequence::ordinarGraphViewCollection::setLineStyle( lineStyle:
 
 void scigraphics::sequence::ordinarGraphViewCollection::setLineWidth( unsigned Width )
 {
-  lineStyle Style = getViewStyle<graphViewLine>();
-  Style.setWidth( Width );
-  setViewStyle<graphViewLine>( Style );
+  graphViewGeneralLine *View = getView<graphViewLine>();
+  if ( View != NULL )
+    View->setLineWidth( Width );
 
-  Style = getViewStyle<graphViewLineHystogram>();
-  Style.setWidth( Width );
-  setViewStyle<graphViewLineHystogram>( Style );
+  View = getView<graphViewLineHystogram>();
+  if ( View != NULL )
+    View->setLineWidth( Width );
 }
 
 // ------------------------------------------------------------
 
 void scigraphics::sequence::ordinarGraphViewCollection::setPointSize( unsigned Size )
 {
-  pointStyle Style = getViewStyle<graphViewPoints>();
-  Style.setWidth( Size );
-  setViewStyle<graphViewPoints>( Style );
+  graphViewPoints *View = getView<graphViewPoints>();
+  if ( View != NULL )
+    View->setPointSize( Size );
 }
 
 // ============================================================

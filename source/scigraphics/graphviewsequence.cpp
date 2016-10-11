@@ -305,6 +305,15 @@ void scigraphics::sequence::graphViewGeneralLine::drawLegendExample( painter &Pa
 }
 
 // ------------------------------------------------------------
+
+void scigraphics::sequence::graphViewGeneralLine::setLineWidth( unsigned Width )
+{
+  lineStyle Style = getStyle();
+  Style.setWidth( Width );
+  setStyle( Style );
+}
+
+// ============================================================
         
 scigraphics::sequence::graphViewLine::graphViewLine( const style &Style ) : 
   graphViewGeneralLine(Style) 
@@ -319,7 +328,7 @@ void scigraphics::sequence::graphViewLine::drawLineBetweenPoints( painter &Paint
   Painter.drawLineW( *Points );
 }
 
-// ------------------------------------------------------------
+// ============================================================
 
 scigraphics::sequence::graphViewPoints::graphViewPoints( const style &Style ) : 
   graphViewStyle<pointStyle,graphViewOrdered>(Style) 
@@ -351,6 +360,15 @@ void scigraphics::sequence::graphViewPoints::drawLegendExample( painter &Painter
 }
 
 // ------------------------------------------------------------
+
+void scigraphics::sequence::graphViewPoints::setPointSize( unsigned Size )
+{
+  pointStyle Style = getStyle();
+  Style.setWidth( Size );
+  setStyle( Style );
+}
+
+// ============================================================
         
 scigraphics::sequence::graphViewErrorBars::graphViewErrorBars( const style &Style ) : 
   graphViewStyle<errorBarStyle,graphViewOrdered>(Style) 
