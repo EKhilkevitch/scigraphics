@@ -109,8 +109,12 @@ QBrush scigraphics::qt4drawer::brushQt( const brushStyle &Style )
 // ----------------------------------------------------------------
 
 QFont scigraphics::qt4drawer::fontQt( const textStyle &Style ) 
-{ 
-  QString FontName = Style.getFontName().empty() ? "Times" : Style.getFontName().c_str();
+{
+  const char *DefaultFontName = "Times";
+
+  QString FontName = QString::fromStdString( Style.getFontName() ); 
+  if ( FontName.isEmpty() )
+    FontName = DefaultFontName;
   return QFont( FontName, Style.getFontSize() ); 
 }
 
@@ -119,7 +123,7 @@ QFont scigraphics::qt4drawer::fontQt( const textStyle &Style )
 QPolygon scigraphics::qt4drawer::polygonQt( const std::vector<wpoint> &Points )
 {
   QPolygon Polygon;
-  for ( unsigned i = 0; i < Points.size(); i++ )
+  for ( size_t i = 0; i < Points.size(); i++ )
     Polygon.append( pointQt( Points[i] ) );
   return Polygon;
 }

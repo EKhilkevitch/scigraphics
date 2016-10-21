@@ -30,17 +30,19 @@
 #include <Magick++.h>
 typedef Magick::Quantum Quantum;
 
+#include <list>
+#include <vector>
 #include <cassert>
 
 // ================================================================
 
-Magick::Color scigraphics::imdrawer::colorIm( const color& Color )
+Magick::Color scigraphics::imdrawer::colorIm( color Color )
 {
   Magick::Color ImColor; 
-  ImColor.redQuantum( (double)Color.red()/0xFF * MaxRGB );
-  ImColor.greenQuantum( (double)Color.green()/0xFF * MaxRGB );
-  ImColor.blueQuantum( (double)Color.blue()/0xFF * MaxRGB );
-  ImColor.alphaQuantum( (double)Color.transparency()/0xFF * MaxRGB );
+  ImColor.redQuantum( static_cast<double>(Color.red())/0xFF * MaxRGB );
+  ImColor.greenQuantum( static_cast<double>(Color.green())/0xFF * MaxRGB );
+  ImColor.blueQuantum( static_cast<double>(Color.blue())/0xFF * MaxRGB );
+  ImColor.alphaQuantum( static_cast<double>(Color.transparency())/0xFF * MaxRGB );
   return ImColor;
 }
 
@@ -56,26 +58,28 @@ Magick::Coordinate scigraphics::imdrawer::coordinateIm( const wpoint &Point )
 std::list< Magick::Coordinate > scigraphics::imdrawer::polygonIm( const std::vector<wpoint> &Points )
 {
   std::list< Magick::Coordinate > Polygon;
-  for ( unsigned i = 0; i < Points.size(); i++ )
+  for ( size_t i = 0; i < Points.size(); i++ )
     Polygon.push_back( coordinateIm( Points[i] ) );
   return Polygon;
 }
 
 // ----------------------------------------------------------------
 
-void scigraphics::imdrawer::setLineStyle( const lineStyle &Style )
+void scigraphics::imdrawer::applyCurrentLineStyle()
 {
-  if ( Image == NULL )
+  if ( LastStyleUsed == LastLineStyle )
     return;
 
-//  Image->fillColor( colorIm( scigraphics::color::Transparency ) );
-  Image->strokeColor( colorIm( Style.getColor() ) );
+  LastStyleUsed = LastLineStyle;
+
+  Image->fillColor( colorIm( scigraphics::color::Transparency ) );
+  Image->strokeColor( colorIm( LineStyle->getColor() ) );
   Image->strokeWidth( 0 );
-  Image->lineWidth( Style.width() );
+  Image->lineWidth( LineStyle->width() );
 
-  double DashPattern[] = { 3, 3, 0 };
+  const double DashPattern[] = { 3, 3, 0 };
 
-  switch ( Style.getStyle() )
+  switch ( LineStyle->getStyle() )
   {
     case lineStyle::Solid:
       Image->strokeDashArray( NULL );
@@ -87,18 +91,28 @@ void scigraphics::imdrawer::setLineStyle( const lineStyle &Style )
       Image->strokeDashArray( NULL );
       Image->lineWidth( 0 );
       break;
-  }  
+  }
 }
 
 // ----------------------------------------------------------------
 
-void scigraphics::imdrawer::setBrushStyle( const brushStyle &Style )
+void scigraphics::imdrawer::setLineStyle( const lineStyle &Style )
 {
-  if ( Image == NULL )
+  *LineStyle = Style;
+  LastStyleUsed = LastNoneStyle;
+}
+
+// ----------------------------------------------------------------
+
+void scigraphics::imdrawer::applyCurrentBrushStyle()
+{
+  if ( LastStyleUsed == LastBrushStyle )
     return;
 
-  color Color = Style.getColor();
-  switch ( Style.getStyle() )
+  LastStyleUsed = LastBrushStyle;
+
+  color Color = BrushStyle->getColor();
+  switch ( BrushStyle->getStyle() )
   {
     case brushStyle::Solid:
       break;
@@ -110,24 +124,48 @@ void scigraphics::imdrawer::setBrushStyle( const brushStyle &Style )
   }
   
   Image->fillColor( colorIm( Color ) );
-  Image->strokeWidth( 0 );
   Image->strokeColor( colorIm( Color ) );
+  Image->strokeWidth( 0 );
   //Image->strokeColor( Magick::Color(0, 0, 0, MaxRGB) );
+}
+
+// ----------------------------------------------------------------
+
+void scigraphics::imdrawer::setBrushStyle( const brushStyle &Style )
+{
+  *BrushStyle = Style;
+  LastStyleUsed = LastNoneStyle;
+}
+
+// ----------------------------------------------------------------
+
+void scigraphics::imdrawer::applyCurrentTextStyle()
+{
+  const char *DefaultFontName = "Times-Roman";
+  
+  if ( LastStyleUsed == LastTextStyle )
+    return;
+
+  LastStyleUsed = LastTextStyle;
+
+  std::string FontName = TextStyle->getFontName();
+  if ( FontName.empty() )
+    FontName = DefaultFontName;
+
+  Image->strokeColor( Magick::Color(0, 0, 0, MaxRGB) );
+  Image->fillColor( colorIm( TextStyle->getColor() ) );
+  Image->font( FontName ); 
+  Image->fontPointsize( TextStyle->getFontSize() );
+  Image->lineWidth(1);
+  Image->strokeDashArray( NULL );
 }
 
 // ----------------------------------------------------------------
 
 void scigraphics::imdrawer::setTextStyle( const textStyle &Style )
 {
-  if ( Image == NULL )
-    return;
-  
-  Image->strokeColor( Magick::Color(0, 0, 0, MaxRGB) );
-  Image->fillColor( colorIm( Style.getColor() ) );
-  Image->font( Style.getFontName().empty() ? "Times-Roman" : Style.getFontName() ); //Style.getFontName() );
-  Image->fontPointsize( Style.getFontSize() );
-  Image->lineWidth(1);
-  Image->strokeDashArray( NULL );
+  *TextStyle = Style;
+  LastStyleUsed = LastNoneStyle;
 }
 
 // ----------------------------------------------------------------
@@ -136,7 +174,7 @@ void scigraphics::imdrawer::drawLine( const wpoint &A, const wpoint &B )
 {
   if ( Image == NULL )
     return;
-
+  applyCurrentLineStyle();
   Image->draw( Magick::DrawableLine( A.x(), A.y(), B.x(), B.y() ) );
 }
 
@@ -147,7 +185,13 @@ void scigraphics::imdrawer::drawRectangle( const wrectangle& Rectangle )
   if ( Image == NULL )
     return;
 
-  Image->draw( Magick::DrawableRectangle( Rectangle.left(), Rectangle.up(), Rectangle.right(), Rectangle.down() ) );
+  Magick::DrawableRectangle MagickRectange( Rectangle.left(), Rectangle.up(), Rectangle.right(), Rectangle.down() );
+
+  applyCurrentBrushStyle();
+  Image->draw( MagickRectange );
+
+  applyCurrentLineStyle();
+  Image->draw( MagickRectange );
 }
     
 // ----------------------------------------------------------------
@@ -162,6 +206,7 @@ void scigraphics::imdrawer::drawPolygon( const std::vector<wpoint> &Points )
   
   std::list< Magick::Coordinate > Polygon = polygonIm( Points );
 
+  applyCurrentLineStyle();
   Image->strokeColor( Magick::Color(0, 0, 0, MaxRGB) );
   Image->draw( Magick::DrawablePolygon( Polygon ) );
 }
@@ -172,7 +217,9 @@ void scigraphics::imdrawer::drawText( const std::string &Text, const wrectangle&
 {
   if ( Image == NULL )
     return;
- 
+
+  applyCurrentTextStyle();
+
   std::list<Magick::Drawable> DrawList;
   DrawList.push_back( Magick::DrawableTranslation( Rectangle.center().x(), Rectangle.center().y() ) );
   DrawList.push_back( Magick::DrawableRotation( RotAngle ) );
@@ -191,6 +238,7 @@ scigraphics::wcoord scigraphics::imdrawer::textWidth( const std::string &Text, c
     return drawer::textWidth( Text, Style );
   
   setTextStyle( Style );
+  applyCurrentTextStyle();
 
   Magick::TypeMetric Metric;
   Image->fontTypeMetrics( Text, &Metric );
@@ -205,6 +253,7 @@ scigraphics::wcoord scigraphics::imdrawer::textHeight( const std::string &Text, 
     return drawer::textHeight( Text, Style );
   
   setTextStyle( Style );
+  applyCurrentTextStyle();
 
   Magick::TypeMetric Metric;
   Image->fontTypeMetrics( Text, &Metric );
@@ -231,6 +280,21 @@ scigraphics::imdrawer::imdrawer( size_t SizeX, size_t SizeY ) :
   Image( NULL )  
 {
   Image = new Magick::Image( Magick::Geometry(SizeX,SizeY), Magick::Color("white") );
+
+  LineStyle = new lineStyle();
+  BrushStyle = new brushStyle();
+  TextStyle = new textStyle();
+  LastStyleUsed = LastNoneStyle;
+}
+
+// ----------------------------------------------------------------
+
+scigraphics::imdrawer::~imdrawer()
+{
+  delete TextStyle;
+  delete LineStyle;
+  delete BrushStyle;
+  delete Image;
 }
 
 // ----------------------------------------------------------------

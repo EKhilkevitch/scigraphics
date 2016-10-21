@@ -24,8 +24,8 @@
 
 #include "scigraphics/drawer.h"
 
-#include <list>
 #include <vector>
+#include <list>
 
 // ================================================================
 
@@ -48,13 +48,33 @@ namespace scigraphics
     private:
       Magick::Image *Image;
 
-    public:
-      static Magick::Color colorIm( const color &Color );
+      lineStyle *LineStyle;
+      brushStyle *BrushStyle;
+      textStyle *TextStyle;
+
+      enum 
+      {
+        LastNoneStyle,
+        LastLineStyle,
+        LastBrushStyle,
+        LastTextStyle,
+      } LastStyleUsed;
+
+    private:
+      imdrawer( const imdrawer& );
+      imdrawer& operator=( const imdrawer& );
+
+      static Magick::Color colorIm( color Color );
       static Magick::Coordinate coordinateIm( const wpoint &Point );
       static std::list< Magick::Coordinate > polygonIm( const std::vector<wpoint> &Points );
 
+      void applyCurrentLineStyle();
+      void applyCurrentBrushStyle();
+      void applyCurrentTextStyle();
+
     public:
       imdrawer( size_t SizeX, size_t SizeY );
+      ~imdrawer();
       
       void setLineStyle( const lineStyle &Style );
       void setBrushStyle( const brushStyle &Style );
