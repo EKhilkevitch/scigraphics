@@ -206,8 +206,7 @@ void scigraphics::imdrawer::drawPolygon( const std::vector<wpoint> &Points )
   
   std::list< Magick::Coordinate > Polygon = polygonIm( Points );
 
-  applyCurrentLineStyle();
-  Image->strokeColor( Magick::Color(0, 0, 0, MaxRGB) );
+  applyCurrentBrushStyle();
   Image->draw( Magick::DrawablePolygon( Polygon ) );
 }
 
