@@ -221,10 +221,10 @@ void scigraphics::sequence::graphViewOrdered::drawOrderedByX( painter &Painter, 
     return;
 
   checkIsLessThan Checker(Scales);
-  sequence::data::iterator BeginVisbile = Checker(0,*Begin)   ? Begin : std::lower_bound( Begin,        End, (fcoord)0, Checker );
+  sequence::data::iterator BeginVisbile = Checker(0,*Begin)   ? Begin : std::lower_bound( Begin,        End, static_cast<fcoord>(0), Checker );
   if ( BeginVisbile != Begin )
     --BeginVisbile;
-  sequence::data::iterator EndVisible   = Checker(*(End-1),1) ? End   : std::upper_bound( BeginVisbile, End, (fcoord)1, Checker );
+  sequence::data::iterator EndVisible   = Checker(*(End-1),1) ? End   : std::upper_bound( BeginVisbile, End, static_cast<fcoord>(1), Checker );
   if ( EndVisible != End )
     ++EndVisible;
   drawUnorderedByX( Painter, Scales, BeginVisbile, EndVisible );

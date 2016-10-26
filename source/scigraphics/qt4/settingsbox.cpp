@@ -127,8 +127,8 @@ void scigraphics::qt4settingsGroupSuperBox::updateLayout()
   foreach ( qt4settingsGroupBox *Box, Boxes )
     Layout->removeWidget( Box );
   
-  int CurrRow = 0;
-  int CurrCol = 0;
+  unsigned CurrRow = 0;
+  unsigned CurrCol = 0;
   foreach ( qt4settingsGroupBox *Box, Boxes )
   {
     Layout->addWidget( Box, CurrRow, CurrCol );
