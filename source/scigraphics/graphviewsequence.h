@@ -115,6 +115,8 @@ namespace scigraphics
       public:
         explicit graphViewGeneralLine( const style &Style );
         void drawLegendExample( painter &Painter, const wrectangle &Rectangle ) const;
+
+        void setLineWidth( unsigned Width );
     };
     
     // ------------------------------------------------------------
@@ -137,6 +139,7 @@ namespace scigraphics
         explicit graphViewPoints( const style &Style );
 
         void drawLegendExample( painter &Painter, const wrectangle &Rectangle ) const;
+        void setPointSize( unsigned Size );
     };
 
     // ------------------------------------------------------------

@@ -37,7 +37,7 @@
 
 int main()
 {
-  scigraphics::implot Plot( 900, 700 );
+  scigraphics::implot Plot( 1900, 1700 );
 
   scigraphics::graphSV *Sqr = Plot.createGraphSV( "x^2" );
   
@@ -99,7 +99,7 @@ int main()
   Plot.setAxisTitle( scigraphics::AxisLeft,   "This is axis Y left" );
   Plot.setAxisTitle( scigraphics::AxisRight,  "This is axis Y right" );
 
-  //Plot.display();
+  Plot.display();
   Plot.write("TestIM.png");
   return 0;
 }

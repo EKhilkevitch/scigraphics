@@ -258,13 +258,13 @@ namespace scigraphics
       qt4labeledLineEdit *MinValueEdit, *MaxValueEdit;
 
     public:
-      qt4settingsSelections( QWidget *Parent = NULL );
+      explicit qt4settingsSelections( QWidget *Parent = NULL );
 
       void applySettings( qt4settings* Settings );
       void collectSettings( qt4plot* Plot );
       
-      void saveSettings( QSettings* ) const {}
-      void loadSettings( QSettings* ) {}
+      void saveSettings( QSettings* ) const;
+      void loadSettings( QSettings* );
       
     public slots:
       void updateWidgetsEnables();

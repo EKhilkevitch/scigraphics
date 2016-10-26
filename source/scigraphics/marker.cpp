@@ -23,9 +23,10 @@
 
 #include "scigraphics/marker.h"
 
-#include <cmath>
 #include <limits>
+#include <cmath>
 #include <cassert>
+#include <algorithm>
 
 // ============================================================
       
@@ -117,13 +118,21 @@ std::vector<scigraphics::number> scigraphics::markerLinear::marksWithStep( const
 
 // ------------------------------------------------------------
 
-std::vector<scigraphics::number> scigraphics::markerLinear::marksWithStepVector( const interval<number> Interval, const number Steps[] ) const
+std::vector<scigraphics::number> scigraphics::markerLinear::marksWithStepVector( interval<number> Interval, const number Steps[] ) const
 {
   assert( Steps != NULL );
-  
-  std::vector<number> Result;
 
-  for ( number Order = std::pow( 10, baseOrder(Interval.distance()) - 2 ); Order < Interval.distance() * 10; Order *= 10 )
+  std::vector<number> Result;
+  
+  if ( ! isValidNumbers( Interval.min(), Interval.max() ) )
+    Interval = interval<number>( -1, +1 );
+    
+  number BaseOrder = baseOrder( Interval.distance() );
+  number BeginOrder = std::pow( 10, BaseOrder - 2 );
+
+  assert( BeginOrder > 0 );
+
+  for ( number Order = BeginOrder; Order < Interval.distance() * 10; Order *= 10 )
   {
     for ( const number *Step = &Steps[0]; *Step != 0; ++Step )
     {
@@ -198,7 +207,13 @@ std::vector<scigraphics::number> scigraphics::markerLogarithm::marksWithSteps( c
   
   std::vector<scigraphics::number> Result;
 
-  for ( number Order  = std::pow( 10, baseOrder( Interval.min() ) - 2.0 ); Order <= Interval.max(); Order *= OrderStep )
+  number BaseOrder = std::max( baseOrder( Interval.min() ) - 2, baseOrder( std::numeric_limits<number>::min() ) * 0.7 );
+  number BeginOrderValue = std::pow( 10, BaseOrder );
+  number EndOrderValue = Interval.max();
+
+  assert( BeginOrderValue > 0 );
+
+  for ( number Order = BeginOrderValue; Order <= EndOrderValue; Order *= OrderStep )
   {
     for ( size_t i = 0; Steps[i] != 0; i++ )
     {
