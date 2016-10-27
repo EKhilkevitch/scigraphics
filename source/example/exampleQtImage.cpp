@@ -99,6 +99,7 @@ int main()
   Plot.setAxisTitle( scigraphics::AxisLeft,   "This is axis Y left" );
   Plot.setAxisTitle( scigraphics::AxisRight,  "This is axis Y right" );
 
+  Plot.display();
   Plot.write("TestQT.png");
   return 0;
 }

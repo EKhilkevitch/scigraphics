@@ -6,7 +6,9 @@
 
 #include <QString>
 #include <QSize>
+#include <QWidget>
 #include <QApplication>
+#include <QLabel>
 
 #include <cstring>
 
@@ -39,13 +41,14 @@ scigraphics::qt4plotOnImage::~qt4plotOnImage()
 
 void scigraphics::qt4plotOnImage::makeQApplicationIfNeed()
 {
+  Q_ASSERT( LocalApplication == NULL );
+  
   static char Dummy[32]; 
   static int argc;
-  char *argv[] = { Dummy, NULL }; 
-  Q_ASSERT( LocalApplication == NULL );
+  static char *argv[] = { NULL, NULL }; 
+
   if ( QApplication::instance() == NULL )
   {
-    argc = 1;
     std::strncpy( Dummy, "dummy", sizeof(Dummy)-1 );
     argv[0] = Dummy;
     argv[1] = NULL;
@@ -82,6 +85,20 @@ bool scigraphics::qt4plotOnImage::write( const char *FileName )
   if ( FileName == NULL )
     return false;
   return write( QString(FileName) );
+}
+
+// ----------------------------------------------------------------
+
+void scigraphics::qt4plotOnImage::display()
+{
+  replot();
+
+  const QPixmap &Pixmap = getDrawerQt()->pixmap();
+
+  QLabel *Label = new QLabel();
+  Label->setPixmap( Pixmap );
+  Label->show();
+  QApplication::instance()->exec();
 }
 
 // ================================================================

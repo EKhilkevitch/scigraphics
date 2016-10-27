@@ -61,9 +61,6 @@ namespace scigraphics
       qt4drawer( const qt4drawer& );
       qt4drawer& operator=( const qt4drawer& );
 
-    protected:
-      const QPixmap& pixmap() const;
-
     public:
       static QColor colorQt( const color& Color );
       static QPoint pointQt( const wpoint& Point );
@@ -96,6 +93,8 @@ namespace scigraphics
     public:
       explicit qt4drawer( QSize Sizes );
       ~qt4drawer();
+      
+      const QPixmap& pixmap() const;
   };
   
   // ================================================================

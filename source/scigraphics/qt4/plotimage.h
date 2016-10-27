@@ -39,6 +39,8 @@ namespace scigraphics
       bool write( const QString &FileName );
       bool write( const std::string &FileName );
       bool write( const char *FileName );
+
+      void display();
   };
   
   // ============================================================
