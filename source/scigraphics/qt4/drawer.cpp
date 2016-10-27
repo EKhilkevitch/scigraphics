@@ -35,6 +35,7 @@
 #include <QWidget>
 #include <QApplication>
 #include <QDesktopWidget>
+#include <QFile>
 
 // ================================================================
 
@@ -256,34 +257,51 @@ scigraphics::wcoord scigraphics::qt4drawer::textHeight( const std::string &Text,
 
 scigraphics::wcoord scigraphics::qt4drawer::width()  const 
 { 
-  return Scene == NULL ? 0 : Scene->width();
+  return PlotPixmap->width();
 }
 
 // ----------------------------------------------------------------
 
 scigraphics::wcoord scigraphics::qt4drawer::height() const 
 { 
-  return Scene == NULL ? 0 : Scene->height(); 
+  return PlotPixmap->height(); 
 }
 
 // ----------------------------------------------------------------
 
 void scigraphics::qt4drawer::flush()
 {
-  PixmapItem->setPixmap( *PlotPixmap ); 
-  View->update();
+}
+
+// ----------------------------------------------------------------
+      
+const QPixmap& scigraphics::qt4drawer::pixmap() const
+{
+  return *PlotPixmap;
 }
 
 // ----------------------------------------------------------------
 
-scigraphics::qt4drawer::qt4drawer( QWidget *Prnt ) : 
-  Parent(Prnt)
+scigraphics::qt4drawer::qt4drawer( QSize Size ) 
 {
-  QSize ScreenSize = QApplication::desktop()->screenGeometry().size();
-
-  PlotPixmap = new QPixmap( ScreenSize );
+  PlotPixmap = new QPixmap( Size );
   Painter = new QPainter( PlotPixmap );
+}
 
+// ----------------------------------------------------------------
+
+scigraphics::qt4drawer::~qt4drawer()
+{
+  delete Painter;
+  delete PlotPixmap;
+}
+
+// ================================================================
+
+scigraphics::qt4drawerOnWidget::qt4drawerOnWidget( QWidget *Widget ) :
+  qt4drawer( QApplication::desktop()->screenGeometry().size() ),
+  Parent(Widget)
+{
   Scene = new QGraphicsScene();
   PixmapItem = new QGraphicsPixmapItem( 0, Scene );
   PixmapItem->setOffset( 0, 0 );
@@ -291,19 +309,83 @@ scigraphics::qt4drawer::qt4drawer( QWidget *Prnt ) :
   View  = new qt4plotView( Parent );
   View->setScene( Scene );
   View->move( Parent->x(), Parent->y() );
-  View->resize( width(), height() );
+  View->resize( Scene->width(), Scene->height() );
   View->show();
 }
 
 // ----------------------------------------------------------------
 
-scigraphics::qt4drawer::~qt4drawer()
+scigraphics::qt4drawerOnWidget::~qt4drawerOnWidget()
 {
   delete View;
   delete PixmapItem;
   delete Scene;
-  delete Painter;
-  delete PlotPixmap;
+}
+
+// ----------------------------------------------------------------
+
+scigraphics::wcoord scigraphics::qt4drawerOnWidget::width()  const 
+{ 
+  return Scene->width();
+}
+
+// ----------------------------------------------------------------
+
+scigraphics::wcoord scigraphics::qt4drawerOnWidget::height() const 
+{ 
+  return Scene->height(); 
+}
+
+// ----------------------------------------------------------------
+
+void scigraphics::qt4drawerOnWidget::flush()
+{
+  PixmapItem->setPixmap( pixmap() ); 
+  View->update();
+}
+
+// ----------------------------------------------------------------
+      
+QGraphicsScene* scigraphics::qt4drawerOnWidget::scene() 
+{ 
+  return Scene; 
+}
+
+// ----------------------------------------------------------------
+
+scigraphics::qt4plotView* scigraphics::qt4drawerOnWidget::view() 
+{ 
+  return View; 
+}
+
+// ================================================================
+
+scigraphics::qt4drawerOnImage::qt4drawerOnImage( QSize Size ) :
+  qt4drawer( Size )
+{
+}
+
+// ----------------------------------------------------------------
+
+scigraphics::qt4drawerOnImage::~qt4drawerOnImage()
+{
+}
+
+// ----------------------------------------------------------------
+      
+bool scigraphics::qt4drawerOnImage::write( const QString &FileName, int Quality )
+{
+  QFile File( FileName );
+  
+  bool Ok = File.open( QIODevice::WriteOnly );
+  if ( !Ok )
+    return false;
+
+  Ok = pixmap().save( &File, NULL, Quality );
+  if ( !Ok )
+    return false;
+
+  return true;
 }
 
 // ================================================================

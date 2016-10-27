@@ -35,7 +35,7 @@ namespace scigraphics
   // ============================================================
   
   class qt4settings;
-  class qt4drawer;
+  class qt4drawerOnWidget;
   
   // ============================================================
   
@@ -46,7 +46,7 @@ namespace scigraphics
     friend class qt4mouseCallBack;
 
     protected:
-      qt4drawer* getDrawerQt();
+      qt4drawerOnWidget* getDrawerQt();
       void resizeEvent( QResizeEvent* );
 
     private:
@@ -99,6 +99,6 @@ namespace scigraphics
   };
   
   // ============================================================
-}
 
+}
 

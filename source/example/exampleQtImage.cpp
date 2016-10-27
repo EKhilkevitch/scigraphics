@@ -21,7 +21,7 @@
 
 // ======================================================
 
-#include "scigraphics/imagemagick/plot.h"
+#include "scigraphics/qt4/plotimage.h"
 #include "scigraphics/graphsequence.h"
 #include "scigraphics/graphmap.h"
 
@@ -37,7 +37,7 @@
 
 int main()
 {
-  scigraphics::implot Plot( 900, 700 );
+  scigraphics::qt4plotOnImage Plot( 900, 700 );
 
   scigraphics::graphSV *Sqr = Plot.createGraphSV( "x^2" );
   
@@ -99,8 +99,7 @@ int main()
   Plot.setAxisTitle( scigraphics::AxisLeft,   "This is axis Y left" );
   Plot.setAxisTitle( scigraphics::AxisRight,  "This is axis Y right" );
 
-  //Plot.display();
-  Plot.write("TestIM.png");
+  Plot.write("TestQT.png");
   return 0;
 }
 
