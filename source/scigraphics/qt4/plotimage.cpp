@@ -19,6 +19,8 @@ scigraphics::qt4plotOnImage::qt4plotOnImage( QSize Size ) :
 {
   makeQApplicationIfNeed();
   setDrawer( new qt4drawerOnImage(Size) );
+  
+  setVisibleCursorPositionViewer(false);
 }
 
 // ----------------------------------------------------------------
