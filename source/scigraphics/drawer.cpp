@@ -31,9 +31,9 @@
 
 // ============================================================
 
-unsigned scigraphics::drawer::numOfLinesInString( const std::string &String )
+size_t scigraphics::drawer::numOfLinesInString( const std::string &String )
 {
-  unsigned Count = 0;
+  size_t Count = 0;
   for ( std::string::const_iterator c = String.begin(); c != String.end(); ++c ) 
   {
     if ( *c == '\n' )

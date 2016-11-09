@@ -38,7 +38,7 @@
 
 // ================================================================
 
-QColor scigraphics::qt4drawer::colorQt( const color& Color )         
+QColor scigraphics::qt4drawer::colorQt( color Color )         
 { 
   return QColor( Color.red(), Color.green(), Color.blue(), 0xFF - Color.transparency() ); 
 }
@@ -123,8 +123,8 @@ QFont scigraphics::qt4drawer::fontQt( const textStyle &Style )
 QPolygon scigraphics::qt4drawer::polygonQt( const std::vector<wpoint> &Points )
 {
   QPolygon Polygon;
-  for ( size_t i = 0; i < Points.size(); i++ )
-    Polygon.append( pointQt( Points[i] ) );
+  for ( std::vector<wpoint>::const_iterator i = Points.begin(); i != Points.end(); ++i )
+    Polygon.append( pointQt( *i ) );
   return Polygon;
 }
 

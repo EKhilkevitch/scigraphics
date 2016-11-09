@@ -388,8 +388,10 @@ void scigraphics::plot::drawZoomRectangle()
 scigraphics::floatRectangle* scigraphics::plot::getFloatRectangle( wpoint Point )
 {
   for ( std::list< floatRectangle* >::reverse_iterator f = Pimpl->FloatRectangles.rbegin(); f != Pimpl->FloatRectangles.rend(); ++f )
+  {
     if ( (*f)->containPoint( Point ) )
       return *f;
+  }
   return NULL;
 }
 

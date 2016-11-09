@@ -65,7 +65,7 @@ namespace scigraphics
       qt4drawer& operator=( const qt4drawer& );
 
     public:
-      static QColor colorQt( const color& Color );
+      static QColor colorQt( color Color );
       static QPoint pointQt( const wpoint& Point );
       static QRect  rectangleQt( const wrectangle& Rect );
       static QPen   penQt( const lineStyle& Style );
