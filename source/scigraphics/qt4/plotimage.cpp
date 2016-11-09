@@ -11,11 +11,38 @@
 #include <QLabel>
 
 #include <cstring>
+#include <cstdio>
+#include <cstdlib>
+
+// ================================================================
+
+namespace
+{
+  void silentMsgHandler( QtMsgType Type, const char *Message )
+  {
+    switch ( Type ) 
+    {
+      case QtDebugMsg:
+        break;
+
+      case QtWarningMsg:
+        break;
+
+      case QtCriticalMsg:
+        break;
+
+      case QtFatalMsg:
+        std::fprintf( stderr, "Fatal: %s\n", Message );
+        std::abort();
+    }
+  }
+}
 
 // ================================================================
 
 scigraphics::qt4plotOnImage::qt4plotOnImage( QSize Size ) :
-  LocalApplication(NULL)
+  LocalApplication(NULL),
+  StoredMsgHandler(NULL)
 {
   makeQApplicationIfNeed();
   setDrawer( new qt4drawerOnImage(Size) );
@@ -26,7 +53,8 @@ scigraphics::qt4plotOnImage::qt4plotOnImage( QSize Size ) :
 // ----------------------------------------------------------------
 
 scigraphics::qt4plotOnImage::qt4plotOnImage( size_t SizeX, size_t SizeY ) : 
-  LocalApplication(NULL)
+  LocalApplication(NULL),
+  StoredMsgHandler(NULL)
 {
   makeQApplicationIfNeed();
   setDrawer( new qt4drawerOnImage( QSize(SizeX,SizeY) ) );
@@ -36,7 +64,11 @@ scigraphics::qt4plotOnImage::qt4plotOnImage( size_t SizeX, size_t SizeY ) :
 
 scigraphics::qt4plotOnImage::~qt4plotOnImage()
 {
-  delete LocalApplication;
+  if ( LocalApplication != NULL )
+  {
+    qInstallMsgHandler( reinterpret_cast<QtMsgHandler>(StoredMsgHandler) );
+    delete LocalApplication;
+  }
 }
 
 // ----------------------------------------------------------------
@@ -51,6 +83,8 @@ void scigraphics::qt4plotOnImage::makeQApplicationIfNeed()
 
   if ( QApplication::instance() == NULL )
   {
+    StoredMsgHandler = reinterpret_cast<void*>( qInstallMsgHandler( silentMsgHandler ) );
+
     std::strncpy( Dummy, "dummy", sizeof(Dummy)-1 );
     argv[0] = Dummy;
     argv[1] = NULL;
