@@ -69,6 +69,7 @@ namespace scigraphics
       static QFont  fontQt( const textStyle &Style );
       static QBrush brushQt( const brushStyle &Style );
       static QPolygon polygonQt( const std::vector<wpoint> &Points );
+      static QString stringQt( const std::string &String );
      
     public:
       void setLineStyle( const lineStyle &Style );

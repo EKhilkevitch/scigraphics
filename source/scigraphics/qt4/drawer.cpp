@@ -130,6 +130,13 @@ QPolygon scigraphics::qt4drawer::polygonQt( const std::vector<wpoint> &Points )
 }
 
 // ----------------------------------------------------------------
+      
+QString scigraphics::qt4drawer::stringQt( const std::string &String )
+{
+  return QString::fromUtf8( String.c_str() );
+}
+
+// ----------------------------------------------------------------
 
 void scigraphics::qt4drawer::eraseAll()
 {
@@ -227,11 +234,13 @@ void scigraphics::qt4drawer::drawText( const std::string &Text, const wrectangle
   if ( Painter == NULL )
     return;
 
+  const QString QtText = stringQt(Text);
+
   Painter->save();
   Painter->rotate( Angle );
   QPoint Center = Painter->transform().inverted().map( QPoint(Rectangle.center().x(),Rectangle.center().y()) );
   QRect TextRectangle = QRect( QPoint( Center.x()-Rectangle.width()/2,Center.y()-Rectangle.height()/2) , QSize( Rectangle.width(), Rectangle.height() ) );
-  Painter->drawText( TextRectangle, Qt::AlignHCenter|Qt::AlignVCenter, QString::fromUtf8(Text.c_str()) );
+  Painter->drawText( TextRectangle, Qt::AlignHCenter|Qt::AlignVCenter, QtText );
   if ( DrawDebugRectangle )
     Painter->drawRect( TextRectangle );
   Painter->restore();
@@ -241,16 +250,18 @@ void scigraphics::qt4drawer::drawText( const std::string &Text, const wrectangle
 
 scigraphics::wcoord scigraphics::qt4drawer::textWidth( const std::string &Text, const textStyle &Style )
 {
+  const QString QtText = stringQt(Text);
   QFontMetrics Metrics( fontQt(Style) );
-  return Metrics.size( 0, Text.c_str() ).width();
+  return Metrics.size( 0, QtText ).width();
 }
 
 // ----------------------------------------------------------------
 
 scigraphics::wcoord scigraphics::qt4drawer::textHeight( const std::string &Text, const textStyle &Style )
 {
+  const QString QtText = stringQt(Text);
   QFontMetrics Metrics( fontQt(Style) );
-  return Metrics.size( 0, Text.c_str() ).height();
+  return Metrics.size( 0, QtText ).height();
 }
 
 // ----------------------------------------------------------------
