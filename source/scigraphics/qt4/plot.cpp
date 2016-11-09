@@ -41,7 +41,7 @@ scigraphics::qt4plot::qt4plot( QWidget* Parent, Qt::WindowFlags Flags ) :
 {
   setMouseCallBack( new qt4mouseCallBack(*this) );
 
-  qt4drawer *Drawer = new qt4drawer(this); 
+  qt4drawerOnWidget *Drawer = new qt4drawerOnWidget(this); 
   setDrawer( Drawer );
 
   qt4plotView *View = Drawer->view();
@@ -69,9 +69,9 @@ scigraphics::qt4plot::~qt4plot()
 
 // ----------------------------------------------------------------
     
-scigraphics::qt4drawer* scigraphics::qt4plot::getDrawerQt() 
+scigraphics::qt4drawerOnWidget* scigraphics::qt4plot::getDrawerQt() 
 { 
-  return dynamic_cast<qt4drawer*>( getDrawer() ); 
+  return dynamic_cast<qt4drawerOnWidget*>( getDrawer() ); 
 }
 
 // ----------------------------------------------------------------

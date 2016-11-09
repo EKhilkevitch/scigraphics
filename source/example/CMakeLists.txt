@@ -38,6 +38,10 @@ if ( ENABLE_EXAMPLES )
   add_executable( exampleMap ${gui_type} exampleMap.cpp )
   target_link_libraries( exampleMap ${QT_LIBRARIES} scigraphicsQt )
 
+  project( exampleQtImage )
+  add_executable( exampleQtImage ${gui_type} exampleQtImage.cpp )
+  target_link_libraries( exampleQtImage ${QT_LIBRARIES} scigraphicsQt )
+
   project( exampleImagemagick )
   if ( ImageMagick_FOUND AND IMAGEMAGICK_ENABLED )
     add_executable( exampleImagemagick exampleImagemagick.cpp )

@@ -37,6 +37,8 @@ class QPolygon;
 class QPen;
 class QFont;
 class QBrush;
+class QSize;
+class QString;
 
 // ================================================================
 
@@ -52,12 +54,7 @@ namespace scigraphics
   class qt4drawer : public scigraphics::drawer
   {
     private:
-      QWidget *const Parent;
-
-      qt4plotView *View;
-      QGraphicsScene *Scene;
       QPainter *Painter;
-      QGraphicsPixmapItem *PixmapItem;
       QPixmap *PlotPixmap;
 
     private:
@@ -94,12 +91,48 @@ namespace scigraphics
       wcoord height() const;
 
     public:
-      explicit qt4drawer( QWidget *Parent );
+      explicit qt4drawer( QSize Sizes );
       ~qt4drawer();
+      
+      const QPixmap& pixmap() const;
+  };
+  
+  // ================================================================
+  
+  class qt4drawerOnWidget : public qt4drawer
+  {
+    private:
+      QWidget *const Parent;
+      qt4plotView *View;
+      QGraphicsScene *Scene;
+      QGraphicsPixmapItem *PixmapItem;
 
-      QGraphicsScene* scene() { return Scene; }
-      qt4plotView* view() { return View; }
-      QPainter* painter() { return Painter; }
+    private:
+      qt4drawerOnWidget( const qt4drawerOnWidget& );
+      qt4drawerOnWidget& operator=( const qt4drawerOnWidget& );
+
+    public:
+      explicit qt4drawerOnWidget( QWidget *Parent );
+      ~qt4drawerOnWidget();
+      
+      wcoord width()  const;
+      wcoord height() const;
+      
+      void flush();
+      
+      QGraphicsScene* scene();
+      qt4plotView* view();
+  };
+  
+  // ================================================================
+
+  class qt4drawerOnImage : public qt4drawer
+  {
+    public:
+      explicit qt4drawerOnImage( QSize Size );
+      ~qt4drawerOnImage();
+
+      bool write( const QString &FileName, int Quality = 100 );
   };
   
   // ================================================================

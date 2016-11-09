@@ -9,6 +9,7 @@ set ( graphics_qt_source_files
         drawer.cpp
         mousecallback.cpp
         plot.cpp
+        plotimage.cpp
         labeledline.cpp
         settingsbox.cpp
         settingscomposer.cpp

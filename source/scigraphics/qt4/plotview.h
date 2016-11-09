@@ -53,8 +53,8 @@ namespace scigraphics
       virtual void dropEvent( QDropEvent *Event );
 
     public:
-      qt4plotView( QWidget* Parent = NULL );
-      qt4plotView( QGraphicsScene *Scene, QWidget *Parent = NULL );
+      explicit qt4plotView( QWidget* Parent = NULL );
+      explicit qt4plotView( QGraphicsScene *Scene, QWidget *Parent = NULL );
 
       void enableDrop( bool Enable );
 

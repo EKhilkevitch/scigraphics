@@ -49,9 +49,8 @@ void scigraphics::qt4plotView::dropEvent( QDropEvent *Event )
   if ( DragEnabled )
   {
     QString String;
-    String = "";
     QList<QUrl> List = Event->mimeData()->urls();
-    foreach ( QUrl Url, List )
+    foreach ( const QUrl &Url, List )
       String += Url.toString() + "\n";
     Event->acceptProposedAction();
     emit dropped( String );
