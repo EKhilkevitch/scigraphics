@@ -119,6 +119,7 @@ namespace scigraphics
     public slots:
       void replot();
       void show();
+      void updatePlotSettings();
 
     signals:
       void settingsChanged();
