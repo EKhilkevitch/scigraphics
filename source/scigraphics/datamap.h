@@ -26,7 +26,7 @@
 #include "scigraphics/dataiterator.h"
 
 #include <vector>
-#include <ostream>
+#include <iosfwd>
 
 namespace scigraphics 
 {

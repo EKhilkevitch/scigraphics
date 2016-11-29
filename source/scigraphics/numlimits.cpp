@@ -23,8 +23,9 @@
 
 #include "scigraphics/numlimits.h"
 
-#include <cassert>
 #include <stdexcept>
+#include <ostream>
+#include <cassert>
 
 // ============================================================
 

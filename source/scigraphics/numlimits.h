@@ -28,7 +28,7 @@
 #include "scigraphics/interval.h"
 #include "scigraphics/numbers.h"
 
-#include <ostream>
+#include <iosfwd>
 #include <algorithm>
 #include <utility>
 #include <limits>

@@ -25,6 +25,7 @@
 
 #include <limits>
 #include <utility>
+#include <ostream>
 #include <stdexcept>
 #include <cassert>
 #include <cmath>

@@ -22,7 +22,9 @@
 // ======================================================
 
 #include <QtGui>
+
 #include <cmath>
+#include <cstdlib>
 
 #include "scigraphics/plot.h"
 #include "scigraphics/numberstyle.h"
@@ -45,6 +47,11 @@
 int main( int argc, char *argv[] )
 {
   QApplication app(argc,argv);
+  QTranslator Translator;
+  bool IsLoad = Translator.load( ":/scigraphics/settingsbox_" + QLocale::system().name() );
+  if ( ! IsLoad )
+    std::abort();
+  app.installTranslator( &Translator );
 
   scigraphics::qt4plot Plot;
 

@@ -31,6 +31,7 @@
 
 #include <algorithm>
 #include <limits>
+#include <ostream>
 #include <cstdlib>
 #include <cstdio>
 

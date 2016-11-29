@@ -24,6 +24,7 @@
 #include "scigraphics/datamap.h"
 
 #include <limits>
+#include <ostream>
 #include <cmath>
 #include <cassert>
 #include <stdexcept>
