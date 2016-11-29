@@ -54,6 +54,7 @@ void scigraphics::qt4plotOnImage::makeQApplicationIfNeed()
     std::strncpy( Dummy, "dummy", sizeof(Dummy)-1 );
     argv[0] = Dummy;
     argv[1] = NULL;
+    argc = 1;
     LocalApplication = new QApplication(argc,argv);
   }
 }
