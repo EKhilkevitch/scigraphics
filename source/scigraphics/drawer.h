@@ -45,7 +45,7 @@ namespace scigraphics
   class drawer
   {
     protected:
-      static unsigned numOfLinesInString( const std::string &String );
+      static size_t numOfLinesInString( const std::string &String );
 
     public:
       virtual wcoord width() const  = 0;

@@ -58,8 +58,8 @@ Magick::Coordinate scigraphics::imdrawer::coordinateIm( const wpoint &Point )
 std::list< Magick::Coordinate > scigraphics::imdrawer::polygonIm( const std::vector<wpoint> &Points )
 {
   std::list< Magick::Coordinate > Polygon;
-  for ( size_t i = 0; i < Points.size(); i++ )
-    Polygon.push_back( coordinateIm( Points[i] ) );
+  for ( std::vector<wpoint>::const_iterator i = Points.begin(); i != Points.end(); ++i )
+    Polygon.push_back( coordinateIm( *i ) );
   return Polygon;
 }
 

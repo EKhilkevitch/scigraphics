@@ -380,5 +380,13 @@ void scigraphics::qt4plotManager::show()
   SettingsWidget->show();
 }
 
+// ----------------------------------------------------------------
+
+void scigraphics::qt4plotManager::updatePlotSettings()
+{
+  for ( int i = 0; i < Settings.size(); i++ )
+    Settings[i]->updatePlotSettings();
+}
+
 // ================================================================
 

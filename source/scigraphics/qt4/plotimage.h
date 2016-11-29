@@ -24,6 +24,7 @@ namespace scigraphics
   {
     private:
       QApplication *LocalApplication;
+      void *StoredMsgHandler;
 
     protected:
       qt4drawerOnImage* getDrawerQt();
