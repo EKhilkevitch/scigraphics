@@ -47,6 +47,7 @@
 int main( int argc, char *argv[] )
 {
   QApplication app(argc,argv);
+  Q_INIT_RESOURCE( translations );  
   QTranslator Translator;
   bool IsLoad = Translator.load( ":/scigraphics/settingsbox_" + QLocale::system().name() );
   if ( ! IsLoad )
