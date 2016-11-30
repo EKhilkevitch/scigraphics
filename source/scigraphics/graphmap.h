@@ -61,7 +61,7 @@ namespace scigraphics
         void updateScaleZInterval() const;
 
       public:
-        graph( const std::string &Legend );
+        explicit graph( const std::string &Legend );
         ~graph();
         
         void draw( painter &Painter, const pairScales& Scales ) const;
@@ -100,7 +100,7 @@ namespace scigraphics
         const V& getCastedView() const { return dynamic_cast<const V&>( getView() ); }
 
       public:
-        graphSpecified( const std::string &Legend = std::string() );
+        explicit graphSpecified( const std::string &Legend = std::string() );
 
         size_t size() const { return getData().size(); }
         size_t sizeX() const { return getCastedData().sizeX(); }
@@ -122,7 +122,7 @@ namespace scigraphics
         data::point_t firstPoint() const { return getData().firstPoint(); }
         data::point_t lastPoint() const  { return getData().lastPoint();  }
     
-        void set( size_t ix, size_t iy, number Val ) { getCastedData().set( ix, iy, Val ); }
+        void set( data::int_t ix, data::int_t iy, number Val ) { getCastedData().set( ix, iy, Val ); }
     };
     
     // ------------------------------------------------------------
@@ -130,7 +130,7 @@ namespace scigraphics
     class graphVector : public graphSpecified< dataVector, graphViewRectangle >
     {
       public:
-        graphVector( const std::string &Legend = std::string() );
+        explicit graphVector( const std::string &Legend = std::string() );
         graphViewRectangle& getView() { return getCastedView(); }
     };
 

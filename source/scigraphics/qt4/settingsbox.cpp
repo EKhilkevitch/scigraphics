@@ -245,7 +245,7 @@ void scigraphics::qt4settingsGroupSuperBox::updateWidgets()
 // ================================================================
 
 scigraphics::qt4settingsScaleIntervals::qt4settingsScaleIntervals( const axisPosition Axis, QWidget *Parent ) 
-   : qt4settingsGroupBox( axisPositionString(Axis) + " scale", Parent ), AxisType(Axis)
+   : qt4settingsGroupBox( axisPositionString(Axis) + tr(" - scale"), Parent ), AxisType(Axis)
 {
   ManualScaleBox = new QCheckBox(tr("Manual"),this);
   MinScaleEdit   = new qt4labeledLineEdit(tr("Min"),"",this);
@@ -341,7 +341,7 @@ scigraphics::qt4settingsScaleIntervalsAllAxis::qt4settingsScaleIntervalsAllAxis(
 
 QString scigraphics::qt4settingsScaleIntervalsAllAxis::name() 
 { 
-  return "Scale intervals"; 
+  return tr("Scale intervals");
 }
 
 // ----------------------------------------------------------------
@@ -510,7 +510,7 @@ void scigraphics::qt4settingsDecoration::loadSettings( QSettings* Settings )
 // ================================================================
 
 scigraphics::qt4settingsScaleType::qt4settingsScaleType( const scigraphics::axisPosition Axis, QWidget *Parent ) 
-   : qt4settingsGroupBox( axisPositionString(Axis) + " type", Parent ), AxisType(Axis) 
+   : qt4settingsGroupBox( axisPositionString(Axis) + tr(" - type"), Parent ), AxisType(Axis) 
 {
 
   LinearBtn  = new QRadioButton( tr("Linear"), this );
@@ -612,7 +612,7 @@ scigraphics::qt4settingsGroupBox* scigraphics::qt4settingsScaleTypeAllAxis::crea
 
 QString scigraphics::qt4settingsScaleTypeAllAxis::name() 
 { 
-  return "Scale types"; 
+  return tr("Scale types");
 }
 
 // ----------------------------------------------------------------
