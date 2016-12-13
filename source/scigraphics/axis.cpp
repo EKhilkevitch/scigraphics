@@ -41,6 +41,20 @@ scigraphics::axis::~axis()
 {
 }
 
+// ------------------------------------------------------------
+      
+const scigraphics::lineStyle& scigraphics::axis::getLineStyle() const 
+{ 
+  return LineStyle; 
+}
+
+// ------------------------------------------------------------
+
+void scigraphics::axis::setLineStyle( const lineStyle &S ) 
+{ 
+  LineStyle = S; 
+}
+
 // ============================================================
       
 scigraphics::axisX::axisX( fcoord Y ) : 
@@ -50,7 +64,7 @@ scigraphics::axisX::axisX( fcoord Y ) :
 
 // ------------------------------------------------------------
 
-void scigraphics::axisX::draw( painter &Painter )
+void scigraphics::axisX::draw( painter &Painter ) const
 {
   Painter.drawLineF( fpoint(0,BaseY), fpoint(1,BaseY), getLineStyle() );
 }
@@ -64,7 +78,7 @@ scigraphics::axisY::axisY( fcoord X ) :
 
 // ------------------------------------------------------------
 
-void scigraphics::axisY::draw( painter &Painter )
+void scigraphics::axisY::draw( painter &Painter ) const
 {
   Painter.drawLineF( fpoint(BaseX,0), fpoint(BaseX,1), getLineStyle() );
 }

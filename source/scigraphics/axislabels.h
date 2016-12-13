@@ -34,12 +34,12 @@
 namespace scigraphics
 {
 
-// ============================================================
+  // ============================================================
 
   class painter;
   class scale;
 
-// ============================================================
+  // ============================================================
 
   class axisLabels
   {
@@ -55,20 +55,22 @@ namespace scigraphics
       axisLabels& operator=( const axisLabels& );
       
     protected:
-      virtual void drawOneLabel( painter &Painter, const scale &Scale, number Value ) = 0;
+      virtual void drawOneLabel( painter &Painter, const scale &Scale, number Value ) const = 0;
 
     public:
       axisLabels(); 
       virtual ~axisLabels();
 
-      const textStyle& getTextStyle() const { return TextStyle; }
-      void setTextStyle( const textStyle &S ) { TextStyle = S; }
+      const textStyle& getTextStyle() const;
+      void setTextStyle( const textStyle &Style );
 
-      const numberStyle& getNumberStyle() const { return NumberStyle; }
-      void setNumberStyle( const numberStyle &S ) { NumberStyle = S; }
+      const numberStyle& getNumberStyle() const;
+      void setNumberStyle( const numberStyle &Style );
 
-      virtual void draw( painter &Painter, const scale &Scale, const std::vector<number> &Marks ); 
+      virtual void draw( painter &Painter, const scale &Scale, const std::vector<number> &Marks ) const; 
   };
+  
+  // ------------------------------------------------------------
 
   class axisLabelsX : public axisLabels
   {
@@ -76,11 +78,13 @@ namespace scigraphics
       fcoord BaseY;
 
     protected:
-      void drawOneLabel( painter &Painter, const scale &Scale, number Value );
+      void drawOneLabel( painter &Painter, const scale &Scale, number Value ) const;
 
     public:
       explicit axisLabelsX( fcoord Y );
   };
+  
+  // ------------------------------------------------------------
   
   class axisLabelsY : public axisLabels
   {
@@ -88,13 +92,13 @@ namespace scigraphics
       fcoord BaseX;
 
     protected:
-      void drawOneLabel( painter &Painter, const scale &Scale, number Value );
+      void drawOneLabel( painter &Painter, const scale &Scale, number Value ) const;
 
     public:
       explicit axisLabelsY( fcoord X );
   };
 
-// ============================================================
+  // ============================================================
 
 }
 

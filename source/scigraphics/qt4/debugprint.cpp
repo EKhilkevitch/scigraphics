@@ -4,6 +4,7 @@
 #include "scigraphics/qt4/debugprint.h"
 #include "scigraphics/color.h"
 #include "scigraphics/interval.h"
+#include "scigraphics/geometry.h"
 #include "scigraphics/numlimits.h"
 #include "scigraphics/datasequence.h"
 
@@ -61,6 +62,14 @@ QDebug operator<<( QDebug Out, const scigraphics::interval<scigraphics::number> 
 QDebug operator<<( QDebug Out, const scigraphics::sequence::point &Point )
 {
   Out.nospace() << toQtStringByStdStream( Point );
+  return Out.space();
+}
+
+// ------------------------------------------------------------
+
+QDebug operator<<( QDebug Out, const scigraphics::rectangle<scigraphics::wcoord> &Rectangle )
+{
+  Out.nospace() << toQtStringByStdStream( Rectangle );
   return Out.space();
 }
 

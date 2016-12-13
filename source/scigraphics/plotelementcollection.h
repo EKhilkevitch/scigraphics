@@ -111,7 +111,7 @@ namespace scigraphics
       const axisSet* graphAxisSetX( const plotElement *PlotElement ) const;
       const axisSet* graphAxisSetY( const plotElement *PlotElement ) const;
 
-      std::set< const axisSet* > setOfGraphAxisSet() const;
+      std::set< const axisSet* > setOfVisibleAxisSet() const;
 
       void bindGraphToAxisSet( const plotElement *PlotElement, const axisSet *AxisX, const axisSet *AxisY );
   };

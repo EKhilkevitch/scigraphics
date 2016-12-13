@@ -48,15 +48,36 @@ scigraphics::axisTicks::~axisTicks()
 
 // ------------------------------------------------------------
 
-void scigraphics::axisTicks::draw( painter &Painter, const scale &Scale, const std::vector<number> &Ticks )
+const scigraphics::lineStyle& scigraphics::axisTicks::getTickStyle() const 
+{ 
+  return TickStyle; 
+}
+
+// ------------------------------------------------------------
+
+scigraphics::wcoord scigraphics::axisTicks::getTickLength() const 
+{ 
+  return Length; 
+}
+
+// ------------------------------------------------------------
+
+void scigraphics::axisTicks::draw( painter &Painter, const scale &Scale, const std::vector<number> &Ticks ) const
 {
   for ( std::vector<number>::const_iterator t = Ticks.begin(); t != Ticks.end(); ++t )
     drawOneTick( Painter, Scale, *t );
 }
 
+// ============================================================
+      
+scigraphics::axisTicksX::axisTicksX( fcoord Y ) : 
+  BaseY(Y) 
+{
+}
+
 // ------------------------------------------------------------
 
-void scigraphics::axisTicksX::drawOneTick( painter &Painter, const scale &Scale, number Value )
+void scigraphics::axisTicksX::drawOneTick( painter &Painter, const scale &Scale, number Value ) const
 {
   double FLength = std::fabs( Painter.wcoord2fcoordY( getTickLength() ) - Painter.wcoord2fcoordY( 0 ) );
 
@@ -67,9 +88,16 @@ void scigraphics::axisTicksX::drawOneTick( painter &Painter, const scale &Scale,
   Painter.drawLineF( fpoint(X,Y0), fpoint(X,Y1), getTickStyle() );
 }
 
+// ============================================================
+
+scigraphics::axisTicksY::axisTicksY( fcoord X ) : 
+  BaseX(X) 
+{
+}
+
 // ------------------------------------------------------------
 
-void scigraphics::axisTicksY::drawOneTick( painter &Painter, const scale &Scale, number Value )
+void scigraphics::axisTicksY::drawOneTick( painter &Painter, const scale &Scale, number Value ) const
 {
   double FLength = std::fabs( Painter.wcoord2fcoordX( getTickLength() ) - Painter.wcoord2fcoordX( 0 ) );
 

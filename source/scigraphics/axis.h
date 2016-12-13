@@ -49,10 +49,10 @@ namespace scigraphics
       axis();
       virtual ~axis();
 
-      const lineStyle& getLineStyle() const { return LineStyle; }
-      void setLineStyle( const lineStyle &S ) { LineStyle = S; }
+      const lineStyle& getLineStyle() const;
+      void setLineStyle( const lineStyle &Style );
 
-      virtual void draw( painter &Painter ) = 0;
+      virtual void draw( painter &Painter ) const = 0;
   };
 
   class axisX : public axis
@@ -62,7 +62,7 @@ namespace scigraphics
 
     public:
       explicit axisX( fcoord Y );
-      void draw( painter &Painter );
+      void draw( painter &Painter ) const;
   };
 
   class axisY : public axis
@@ -72,7 +72,7 @@ namespace scigraphics
 
     public:
       explicit axisY( fcoord X );
-      void draw( painter &Painter );
+      void draw( painter &Painter ) const;
   };
 
   // ============================================================

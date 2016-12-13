@@ -29,12 +29,12 @@
 namespace scigraphics
 {
 
-// ============================================================
+  // ============================================================
 
   class painter;
   class scale;
 
-// ============================================================
+  // ============================================================
 
   class axisTicks
   {
@@ -46,39 +46,47 @@ namespace scigraphics
       wcoord Length;
       
     protected:
-      virtual void drawOneTick( painter &Painter, const scale &Scale, number Value ) = 0;
+      virtual void drawOneTick( painter &Painter, const scale &Scale, number Value ) const = 0;
 
     public:
       axisTicks();
       virtual ~axisTicks();
 
-      const lineStyle& getTickStyle() const { return TickStyle; }
-      wcoord getTickLength() const { return Length; }
+      const lineStyle& getTickStyle() const;
+      wcoord getTickLength() const;
 
-      virtual void draw( painter &Painter, const scale &Scale, const std::vector<number> &Marks ); 
+      virtual void draw( painter &Painter, const scale &Scale, const std::vector<number> &Marks ) const; 
   };
+  
+  // ------------------------------------------------------------
 
   class axisTicksX : public axisTicks
   {
     private:
       fcoord BaseY;
+
     protected:
-      void drawOneTick( painter &Painter, const scale &Scale, number Value );
+      void drawOneTick( painter &Painter, const scale &Scale, number Value ) const;
+
     public:
-      axisTicksX( fcoord Y ) : BaseY(Y) {}
+      explicit axisTicksX( fcoord Y );
   };
+
+  // ------------------------------------------------------------
   
   class axisTicksY : public axisTicks
   {
     private:
       fcoord BaseX;
+
     protected:
-      void drawOneTick( painter &Painter, const scale &Scale, number Value );
+      void drawOneTick( painter &Painter, const scale &Scale, number Value ) const;
+
     public:
-      axisTicksY( fcoord X ) : BaseX(X) {}
+      explicit axisTicksY( fcoord X );
   };
 
-// ============================================================
+  // ============================================================
 
 }
 

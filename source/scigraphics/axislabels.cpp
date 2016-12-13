@@ -49,7 +49,35 @@ scigraphics::axisLabels::~axisLabels()
 
 // ------------------------------------------------------------
 
-void scigraphics::axisLabels::draw( painter &Painter, const scale &Scale, const std::vector<number> &Marks )
+const scigraphics::textStyle& scigraphics::axisLabels::getTextStyle() const 
+{ 
+  return TextStyle; 
+}
+
+// ------------------------------------------------------------
+
+void scigraphics::axisLabels::setTextStyle( const textStyle &S ) 
+{ 
+  TextStyle = S; 
+}
+
+// ------------------------------------------------------------
+
+const scigraphics::numberStyle& scigraphics::axisLabels::getNumberStyle() const 
+{ 
+  return NumberStyle; 
+}
+
+// ------------------------------------------------------------
+
+void scigraphics::axisLabels::setNumberStyle( const numberStyle &S ) 
+{ 
+  NumberStyle = S; 
+}
+
+// ------------------------------------------------------------
+
+void scigraphics::axisLabels::draw( painter &Painter, const scale &Scale, const std::vector<number> &Marks ) const
 {
   for ( std::vector<number>::const_iterator m = Marks.begin(); m != Marks.end(); ++m )
     drawOneLabel( Painter, Scale, *m );
@@ -64,7 +92,7 @@ scigraphics::axisLabelsX::axisLabelsX( fcoord Y ) :
 
 // ------------------------------------------------------------
 
-void scigraphics::axisLabelsX::drawOneLabel( painter &Painter, const scale &Scale, number Value )
+void scigraphics::axisLabelsX::drawOneLabel( painter &Painter, const scale &Scale, number Value ) const
 {
   fcoord X = Scale.numberToFraction( Value );
   std::string Text = getNumberStyle().numberText( Value );
@@ -84,7 +112,7 @@ scigraphics::axisLabelsY::axisLabelsY( fcoord X ) :
 
 // ------------------------------------------------------------
 
-void scigraphics::axisLabelsY::drawOneLabel( painter &Painter, const scale &Scale, number Value )
+void scigraphics::axisLabelsY::drawOneLabel( painter &Painter, const scale &Scale, number Value ) const
 {
   fcoord Y = Scale.numberToFraction( Value );
   std::string Text = getNumberStyle().numberText( Value );
@@ -92,6 +120,7 @@ void scigraphics::axisLabelsY::drawOneLabel( painter &Painter, const scale &Scal
   int Shift = ( BaseX < 0.5 ? +1 : -1 ) * 6; 
 
   Painter.drawTextF( Text, fpoint(BaseX,Y), Flags, getTextStyle(), Shift, 0 );
+//  std::cout << "axisLabelsY::drawOneLabel: " << Text << " - " << BaseX << " " << Y << " " << Shift << std::endl;
 }
 
 // ============================================================

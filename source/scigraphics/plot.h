@@ -101,15 +101,17 @@ namespace scigraphics
       
       void replotFloatRectangles();
 
-      void preparePainter();
       void prepareForPainting();
+      
+      void preparePainter();
+      void updateIndents();
+      void updateScaleLimits();
 
     protected:
       void setDrawer( drawer *Drawer );
       drawer* getDrawer();
 
       wcoord axisSetIndent( const axisSet &Set ) const;
-      void updateIndents();
 
       mouseCallBack& getMouseCallBack();
       void setMouseCallBack( mouseCallBack *CallBack );
@@ -188,8 +190,6 @@ namespace scigraphics
       void setScaleIntervalY( number Min, number Max );
       interval<number> scaleIntervalY() const;
       
-      void updateScaleLimits();
-
       interval<number> visibleInterval( axisPosition Position ) const;
       interval<number> visibleIntervalX() const;
       interval<number> visibleIntervalY() const;

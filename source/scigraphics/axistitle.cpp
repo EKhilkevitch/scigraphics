@@ -41,6 +41,34 @@ scigraphics::axisTitle::~axisTitle()
 {
 }
 
+// ------------------------------------------------------------
+      
+const std::string& scigraphics::axisTitle::title() const 
+{ 
+  return Title; 
+}
+
+// ------------------------------------------------------------
+
+void scigraphics::axisTitle::setTitle( const std::string &S ) 
+{ 
+  Title = S; 
+}      
+
+// ------------------------------------------------------------
+
+const scigraphics::textStyle& scigraphics::axisTitle::getTextStyle() const 
+{ 
+  return TextStyle; 
+}
+
+// ------------------------------------------------------------
+
+void scigraphics::axisTitle::setTextStyle( const textStyle &S ) 
+{ 
+  TextStyle = S; 
+}
+
 // ============================================================
       
 scigraphics::axisTitleX::axisTitleX( fcoord Y ) : 

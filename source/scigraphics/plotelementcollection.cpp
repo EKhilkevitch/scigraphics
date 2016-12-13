@@ -266,18 +266,24 @@ const scigraphics::axisSet* scigraphics::plotElementsCollection::graphAxisSetY( 
 
 // ------------------------------------------------------------
 
-std::set< const scigraphics::axisSet* > scigraphics::plotElementsCollection::setOfGraphAxisSet() const
+std::set< const scigraphics::axisSet* > scigraphics::plotElementsCollection::setOfVisibleAxisSet() const
 {
   std::set< const axisSet* > Result;
 
   for ( axisBindMap::const_iterator Axis = AxisBindMap.begin(); Axis != AxisBindMap.end(); ++Axis )
   {
-    Result.insert( Axis->second.axisSetX() );
-    Result.insert( Axis->second.axisSetY() );
+    if ( Axis->first->isVisible() )
+    {
+      Result.insert( Axis->second.axisSetX() );
+      Result.insert( Axis->second.axisSetY() );
+    }
   }
 
-  Result.insert( DefaultAxisSets.axisSetX() );
-  Result.insert( DefaultAxisSets.axisSetY() );
+  if ( Result.empty() )
+  {
+    Result.insert( DefaultAxisSets.axisSetX() );
+    Result.insert( DefaultAxisSets.axisSetY() );
+  }
 
   return Result;
 }

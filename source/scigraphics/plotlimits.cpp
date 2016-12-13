@@ -338,7 +338,7 @@ scigraphics::plotLimits::limitsXY scigraphics::plotLimits::limitsForGraphics( co
       updateLimitsXYForGraphic( &Result, *g, Graphics );
   }
 
-  std::set< const axisSet* > Axis = Graphics.setOfGraphAxisSet();
+  std::set< const axisSet* > Axis = Graphics.setOfVisibleAxisSet();
   for ( std::set< const axisSet* >::const_iterator a = Axis.begin(); a != Axis.end(); ++a )
     correctLimitsXYForAxisSet( &Result, *a );
 

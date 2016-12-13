@@ -44,18 +44,17 @@ namespace scigraphics
 
     private:
       textStyle TextStyle;
-
       std::string Title;
 
     public:
       axisTitle();
       virtual ~axisTitle();
 
-      const std::string& title() const { return Title; }
-      void setTitle( const std::string &S ) { Title = S; }
+      const std::string& title() const;
+      void setTitle( const std::string &Title );
       
-      const textStyle& getTextStyle() const { return TextStyle; }
-      void setTextStyle( const textStyle &S ) { TextStyle = S; }
+      const textStyle& getTextStyle() const;
+      void setTextStyle( const textStyle &Style );
 
       virtual void draw( painter &Painter ) const = 0;
 

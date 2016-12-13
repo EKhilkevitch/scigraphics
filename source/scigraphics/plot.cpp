@@ -231,7 +231,7 @@ scigraphics::drawer* scigraphics::plot::getDrawer()
 
 scigraphics::wcoord scigraphics::plot::axisSetIndent( const axisSet &AxisSet ) const
 {
-  std::set< const axisSet* > UsedAxisSets = Graphics.setOfGraphAxisSet();
+  std::set< const axisSet* > UsedAxisSets = Graphics.setOfVisibleAxisSet();
   bool Used = UsedAxisSets.find(&AxisSet) != UsedAxisSets.end();
   return AxisSet.requiredIndent( Used );
 }
@@ -338,21 +338,27 @@ void scigraphics::plot::drawFloatRectangles()
 
 void scigraphics::plot::drawAxisTicks()
 {
-  Pimpl->AxisSets.drawAxisTicks(Pimpl->Painter);
+  std::set< const axisSet* > UsedAxisSets = Graphics.setOfVisibleAxisSet();
+  for ( std::set< const axisSet* >::const_iterator i = UsedAxisSets.begin(); i != UsedAxisSets.end(); ++i )
+    (*i)->drawAxisTicks( Pimpl->Painter );
 }
 
 // ------------------------------------------------------------
 
 void scigraphics::plot::drawAxisLabels()
 {
-  Pimpl->AxisSets.drawAxisLabels(Pimpl->Painter);
+  std::set< const axisSet* > UsedAxisSets = Graphics.setOfVisibleAxisSet();
+  for ( std::set< const axisSet* >::const_iterator i = UsedAxisSets.begin(); i != UsedAxisSets.end(); ++i )
+    (*i)->drawAxisLabels( Pimpl->Painter );
 }
 
 // ------------------------------------------------------------
 
 void scigraphics::plot::drawAxisTitles()
 {
-  Pimpl->AxisSets.drawAxisTitles(Pimpl->Painter);
+  std::set< const axisSet* > UsedAxisSets = Graphics.setOfVisibleAxisSet();
+  for ( std::set< const axisSet* >::const_iterator i = UsedAxisSets.begin(); i != UsedAxisSets.end(); ++i )
+    (*i)->drawAxisTitle( Pimpl->Painter );
 }
 
 // ------------------------------------------------------------

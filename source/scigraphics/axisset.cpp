@@ -63,6 +63,34 @@ scigraphics::axisSet::~axisSet()
 
 // ------------------------------------------------------------
 
+void scigraphics::axisSet::setVisible( bool V ) 
+{ 
+  Visible = V; 
+}
+
+// ------------------------------------------------------------
+
+bool scigraphics::axisSet::isVisible() const 
+{ 
+  return Visible; 
+}
+
+// ------------------------------------------------------------
+
+scigraphics::scale* scigraphics::axisSet::getScale() 
+{ 
+  return Scale; 
+}
+
+// ------------------------------------------------------------
+
+const scigraphics::scale* scigraphics::axisSet::getScale() const 
+{ 
+  return Scale; 
+}
+
+// ------------------------------------------------------------
+
 void scigraphics::axisSet::replaceScale( scale *S )
 {
   if ( S == NULL )
@@ -109,7 +137,7 @@ const scigraphics::numberStyle& scigraphics::axisSet::getNumberStyle()
 
 // ------------------------------------------------------------
       
-void scigraphics::axisSet::drawAxis( painter &Painter ) 
+void scigraphics::axisSet::drawAxis( painter &Painter ) const
 { 
   if ( ! isVisible() )
     return;
@@ -120,7 +148,7 @@ void scigraphics::axisSet::drawAxis( painter &Painter )
 
 // ------------------------------------------------------------
 
-void scigraphics::axisSet::drawAxisTicks( painter &Painter )
+void scigraphics::axisSet::drawAxisTicks( painter &Painter ) const
 {
   if ( ! isVisible() )
     return;
@@ -134,7 +162,7 @@ void scigraphics::axisSet::drawAxisTicks( painter &Painter )
       
 // ------------------------------------------------------------
 
-void scigraphics::axisSet::drawAxisLabels( painter &Painter )
+void scigraphics::axisSet::drawAxisLabels( painter &Painter ) const
 {
   if ( ! isVisible() )
     return;
@@ -148,7 +176,7 @@ void scigraphics::axisSet::drawAxisLabels( painter &Painter )
 
 // ------------------------------------------------------------
       
-void scigraphics::axisSet::drawAxisTitle( painter &Painter )
+void scigraphics::axisSet::drawAxisTitle( painter &Painter ) const
 {
   if ( ! isVisible() )
     return;
@@ -159,7 +187,7 @@ void scigraphics::axisSet::drawAxisTitle( painter &Painter )
 
 // ------------------------------------------------------------
 
-void scigraphics::axisSet::drawGrid( painter &Painter )
+void scigraphics::axisSet::drawGrid( painter &Painter ) const
 {
   if ( ! isVisible() )
     return;
@@ -278,6 +306,9 @@ scigraphics::axisSetCollection::axisSetCollection() :
   AxisSets.set( AxisRight,  new axisSetY(1) );
   AxisSets.set( AxisTop,    new axisSetX(1) );
   AxisSets.set( AxisBottom, new axisSetX(0) );
+
+//  AxisSets[ AxisRight ].setVisible(false);
+//  AxisSets[ AxisTop ].setVisible(false);
 }
 
 // ------------------------------------------------------------

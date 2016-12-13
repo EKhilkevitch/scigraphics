@@ -71,11 +71,11 @@ namespace scigraphics
       axisSet( axis *Axis, axisTicks *Ticks, axisLabels *Labels, axisTitle *Title, grid *Grid, scale *Scale );
       virtual ~axisSet();
 
-      void setVisible( bool V ) { Visible = V; }
-      bool isVisible() const { return Visible; }
+      void setVisible( bool Visible );
+      bool isVisible() const;
 
-      scale* getScale() { return Scale; }
-      const scale* getScale() const { return Scale; }
+      scale* getScale();
+      const scale* getScale() const;
       void replaceScale( scale *Scale );
 
       void setNumberLimits( const numberLimits &Limits );
@@ -88,11 +88,11 @@ namespace scigraphics
 
       virtual wcoord requiredIndent( bool Used ) const = 0;
 
-      void drawAxis( painter &Painter );
-      void drawAxisLabels( painter &Painter );
-      void drawAxisTicks( painter &Painter );
-      void drawAxisTitle( painter &Painter );
-      void drawGrid( painter &Painter );
+      void drawAxis( painter &Painter ) const;
+      void drawAxisLabels( painter &Painter ) const;
+      void drawAxisTicks( painter &Painter ) const;
+      void drawAxisTitle( painter &Painter ) const;
+      void drawGrid( painter &Painter ) const;
 
       virtual axisDirection getDirection() const = 0;
 
@@ -145,7 +145,6 @@ namespace scigraphics
       const axisSet& operator[]( axisPosition Position ) const;
 
       pairScales getBottomLeftPairScales();
-
       void setAxisNumberLimits( plotLimits::limitsXY *Limits );
 
       void drawGrid( painter &Painter );
