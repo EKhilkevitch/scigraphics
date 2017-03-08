@@ -23,7 +23,11 @@
 
 #include "exampleAnimation.h"
 #include "scigraphics/qt4/plot.h"
-#include <QtGui>
+
+#include <QApplication>
+#include <QThread>
+#include <QTime>
+#include <QDebug>
 
 // ======================================================
 

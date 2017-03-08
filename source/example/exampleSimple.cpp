@@ -21,11 +21,12 @@
 
 // ======================================================
 
-#include <QApplication>
-#include <cmath>
-
 #include "scigraphics/qt4/plot.h"
 #include "scigraphics/graphsequence.h"
+
+#include <cmath>
+
+#include <QApplication>
 
 // ======================================================
 

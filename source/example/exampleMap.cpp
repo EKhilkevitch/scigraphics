@@ -21,15 +21,16 @@
 
 // ======================================================
 
-#include <QApplication>
-#include <QtGui>
-#include <cmath>
 
 #include "scigraphics/plot.h"
 #include "scigraphics/graphmap.h"
 #include "scigraphics/qt4/plot.h"
 #include "scigraphics/qt4/settings.h"
 #include "scigraphics/qt4/settingsbox.h"
+
+#include <cmath>
+
+#include <QApplication>
 
 // ======================================================
 

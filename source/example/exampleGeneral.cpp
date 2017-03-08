@@ -21,11 +21,6 @@
 
 // ======================================================
 
-#include <QtGui>
-
-#include <cmath>
-#include <cstdlib>
-
 #include "scigraphics/plot.h"
 #include "scigraphics/numberstyle.h"
 #include "scigraphics/mouse.h"
@@ -35,6 +30,13 @@
 #include "scigraphics/qt4/settings.h"
 #include "scigraphics/qt4/settingsbox.h"
 #include "scigraphics/qt4/settingscomposer.h"
+
+#include <cmath>
+#include <cstdlib>
+
+#include <QApplication>
+#include <QTranslator>
+#include <QLocale>
 
 // ======================================================
 
