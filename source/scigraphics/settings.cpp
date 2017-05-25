@@ -30,6 +30,9 @@
 #include <cassert>
 #include <typeinfo>
 #include <stdexcept>
+#include <istream>
+#include <ostream>
+#include <sstream>
 
 #if _MSC_VER
 #  pragma warning( disable : 4800 )
@@ -37,15 +40,32 @@
 
 // ============================================================
 
+namespace
+{
+  scigraphics::interval<scigraphics::number> autoScaleIntervalAfterStream()
+  {
+    std::stringstream Stream;
+    Stream << scigraphics::plotLimits::autoScaleInterval();
+
+    scigraphics::interval<scigraphics::number> Result;
+    Stream >> Result;
+
+    return Result;
+  }
+}
+
+// ============================================================
+
 scigraphics::settings::settings() : 
   SelectionStripType( UncontrollableStrip ),
-  GraphType( Individual ),
-  VisibleFloatingRectangles( Legend|CursorPosition )
+  GraphTypeFlags( Individual ),
+  VisibleFloatingRectanglesFlags( Legend|CursorPosition )
 {
   for ( size_t i = 0; i < AxisPositionsCount; i++ )
   {
     ScaleTypes[i] = Linear;
-    ScaleLimits[i] = plotLimits::autoScaleInterval();
+    ScaleLimits[i].setMinMax( -1, 1 );
+    EnableScaleLimits[i] = false;
   }
 }
 
@@ -81,19 +101,34 @@ scigraphics::scale* scigraphics::settings::createScale( scaleType Type )
 
 // ------------------------------------------------------------
 
-scigraphics::selectionStrip* scigraphics::settings::firstSelectionStrip( plot *Plot )
+const scigraphics::selectionStrip* scigraphics::settings::firstSelectionStrip( const plot &Plot )
 {
-  if ( Plot == NULL )
-    return NULL;
-
-  for ( scigraphics::selectionCollection::iterator Sel = Plot->beginSelection(); Sel != Plot->endSelection(); ++Sel )
+  for ( scigraphics::selectionCollection::const_iterator Sel = Plot.beginSelection(); Sel != Plot.endSelection(); ++Sel )
   {
-    scigraphics::selectionStrip *Selection = dynamic_cast< scigraphics::selectionStrip* >( &*Sel );
+    const scigraphics::selectionStrip *Selection = dynamic_cast< const scigraphics::selectionStrip* >( &*Sel );
     if ( Selection != NULL )
       return Selection;
   }
 
   return NULL;
+}
+
+// ------------------------------------------------------------
+      
+std::string scigraphics::settings::serialize() const
+{
+  std::ostringstream Stream;
+  Stream << *this;
+  return Stream.str();
+}
+
+// ------------------------------------------------------------
+
+bool scigraphics::settings::deserialize( const std::string &String )
+{
+  std::istringstream Stream(String);
+  Stream >> *this;
+  return static_cast<bool>(Stream);
 }
 
 // ------------------------------------------------------------
@@ -129,13 +164,13 @@ void scigraphics::settings::applyGraphTypeToGraph( sequence::graph *Graph ) cons
   if ( Graph == NULL )
     return;
 
-  if ( GraphType == Individual )
+  if ( GraphTypeFlags == Individual )
     return;
 
-  Graph->getViews().setViewVisible<sequence::graphViewLine>( GraphType & Lines ); 
-  Graph->getViews().setViewVisible<sequence::graphViewPoints>( GraphType & Points ); 
-  Graph->getViews().setViewVisible<sequence::graphViewLineHystogram>( GraphType & LinesHystogram ); 
-  Graph->getViews().setViewVisible<sequence::graphViewErrorBars>( GraphType & ErrorBars ); 
+  Graph->getViews().setViewVisible<sequence::graphViewLine>( GraphTypeFlags & Lines ); 
+  Graph->getViews().setViewVisible<sequence::graphViewPoints>( GraphTypeFlags & Points ); 
+  Graph->getViews().setViewVisible<sequence::graphViewLineHystogram>( GraphTypeFlags & LinesHystogram ); 
+  Graph->getViews().setViewVisible<sequence::graphViewErrorBars>( GraphTypeFlags & ErrorBars ); 
 }
 
 // ------------------------------------------------------------
@@ -169,7 +204,10 @@ void scigraphics::settings::applyLimits( plot *Plot ) const
   for ( size_t i = 0; i < AxisPositionsCount; i++ )
   {
     axisPosition Position = static_cast<axisPosition>(i);
-    Plot->setScaleInterval( Position, ScaleLimits[i] );
+    interval<number> Limits = ScaleLimits[i];
+    if ( ! EnableScaleLimits[i] )
+      Limits = plotLimits::autoScaleInterval();
+    Plot->setScaleInterval( Position, Limits );
   }
 }
       
@@ -179,8 +217,8 @@ void scigraphics::settings::applyFloatingRectangles( plot *Plot ) const
 {
   assert( Plot != NULL );
 
-  Plot->setVisibleLegend( VisibleFloatingRectangles & Legend );
-  Plot->setVisibleCursorPositionViewer( VisibleFloatingRectangles & CursorPosition );
+  Plot->setVisibleLegend( VisibleFloatingRectanglesFlags & Legend );
+  Plot->setVisibleCursorPositionViewer( VisibleFloatingRectanglesFlags & CursorPosition );
 }
 
 // ------------------------------------------------------------
@@ -189,7 +227,7 @@ void scigraphics::settings::applySelectionIntervals( plot *Plot ) const
 {
   assert( Plot != NULL );
 
-  selectionStrip *Selection = firstSelectionStrip( Plot );
+  selectionStrip *Selection = const_cast<selectionStrip*>( firstSelectionStrip( *Plot ) );
 
   switch ( SelectionStripType )
   {
@@ -244,37 +282,94 @@ bool scigraphics::settings::equalScaleTypes( const scale *S1, const scale *S2 )
 }
 
 // ------------------------------------------------------------
-
-void scigraphics::settings::setScaleType( scaleType Type, axisPosition AxisPos ) 
+      
+void scigraphics::settings::throwIfAxisPosOutOfRange( axisPosition AxisPos )
 {
-  if ( AxisPos >= AxisPositionsCount )
+  if ( static_cast<size_t>(AxisPos) >= static_cast<size_t>(AxisPositionsCount) )
     throw std::invalid_argument( "Axis position is invalid" );
+}
 
+// ------------------------------------------------------------
+
+void scigraphics::settings::setAxisScaleType( scaleType Type, axisPosition AxisPos ) 
+{
+  throwIfAxisPosOutOfRange(AxisPos);
   ScaleTypes[ AxisPos ] = Type;
 }
 
 // ------------------------------------------------------------
-      
-void scigraphics::settings::setLimits( const interval<number> &Limits, axisPosition AxisPos ) 
-{ 
-  if ( AxisPos >= AxisPositionsCount )
-    throw std::invalid_argument( "Axis position is invalid" );
 
+scigraphics::settings::scaleType scigraphics::settings::axisScaleType( axisPosition AxisPos ) const
+{
+  throwIfAxisPosOutOfRange(AxisPos);
+  return ScaleTypes[ AxisPos ];
+}
+
+// ------------------------------------------------------------
+      
+void scigraphics::settings::setAxisScaleLimits( const interval<number> &Limits, axisPosition AxisPos ) 
+{ 
+  throwIfAxisPosOutOfRange(AxisPos);
   ScaleLimits[ AxisPos ] = Limits;
+}
+
+// ------------------------------------------------------------
+      
+void scigraphics::settings::setAxisScaleLimits( number Min, number Max, axisPosition AxisPos )
+{
+  setAxisScaleLimits( interval<number>(Min,Max), AxisPos );
+}
+
+// ------------------------------------------------------------
+
+scigraphics::interval<scigraphics::number> scigraphics::settings::axisScaleLimits( axisPosition AxisPos ) const 
+{
+  throwIfAxisPosOutOfRange(AxisPos);
+  return ScaleLimits[ AxisPos ];
+}
+
+// ------------------------------------------------------------
+
+void scigraphics::settings::setEnabledAxisScaleLimits( bool Enable, axisPosition AxisPos ) 
+{
+  throwIfAxisPosOutOfRange(AxisPos);
+  EnableScaleLimits[AxisPos] = Enable;
+}
+
+// ------------------------------------------------------------
+
+bool scigraphics::settings::enabledAxisScaleLimits( axisPosition AxisPos ) const
+{
+  throwIfAxisPosOutOfRange(AxisPos);
+  return EnableScaleLimits[AxisPos];
 }
 
 // ------------------------------------------------------------
 
 void scigraphics::settings::setGraphType( unsigned Type ) 
 { 
-  GraphType = Type; 
+  GraphTypeFlags = Type; 
+}
+
+// ------------------------------------------------------------
+
+unsigned scigraphics::settings::graphType() const
+{
+  return GraphTypeFlags;
 }
 
 // ------------------------------------------------------------
 
 void scigraphics::settings::setVisibleFloatingRectangles( unsigned FloatRectangles )
 {
-  VisibleFloatingRectangles = FloatRectangles;
+  VisibleFloatingRectanglesFlags = FloatRectangles;
+}
+
+// ------------------------------------------------------------
+
+unsigned scigraphics::settings::visibleFloatingRectangles() const
+{
+  return VisibleFloatingRectanglesFlags;
 }
 
 // ------------------------------------------------------------
@@ -290,6 +385,162 @@ void scigraphics::settings::setSelectionInterval( selectionStripType Type, inter
 void scigraphics::settings::setSelectionInterval( selectionStripType Type, number Min, number Max )
 {
   setSelectionInterval( Type, interval<number>( Min, Max ) );
+}
+
+// ============================================================
+
+std::ostream& scigraphics::operator<<( std::ostream &Stream, settings::scaleType  Type )
+{
+#define OUT_TYPE( Value ) \
+  case settings::Value: return Stream << #Value;
+  switch ( Type )
+  {
+    OUT_TYPE( Linear );
+    OUT_TYPE( LogarithmPositive );
+    OUT_TYPE( LogarithmNegative );
+    OUT_TYPE( Square );
+    default: return Stream << static_cast<int>(Type);
+  }
+#undef OUT_TYPE
+}
+
+// ------------------------------------------------------------
+
+std::istream& scigraphics::operator>>( std::istream &Stream, settings::scaleType &Type )
+{
+#define IN_TYPE( Value ) \
+  if ( String == #Value ) { Type = settings::Value; return Stream; }
+
+  std::string String;  
+  Stream >> String;
+
+  IN_TYPE( Linear );
+  IN_TYPE( LogarithmPositive );
+  IN_TYPE( LogarithmNegative );
+  IN_TYPE( Square );
+
+  Stream.setstate( std::istream::failbit );
+  return Stream;
+#undef IN_TYPE
+}
+
+// ------------------------------------------------------------
+
+std::ostream& scigraphics::operator<<( std::ostream &Stream, settings::selectionStripType  Type )
+{
+#define OUT_TYPE( Value ) \
+  case settings::Value: return Stream << #Value;
+  switch ( Type )
+  {
+    OUT_TYPE( UncontrollableStrip );
+    OUT_TYPE( NoneStrip );
+    OUT_TYPE( VerticalStrip );
+    OUT_TYPE( HorizontalStrip );
+    default: return Stream << static_cast<int>(Type);
+  }
+#undef OUT_TYPE
+
+}
+
+// ------------------------------------------------------------
+
+std::istream& scigraphics::operator>>( std::istream &Stream, settings::selectionStripType &Type )
+{
+#define IN_TYPE( Value ) \
+  if ( String == #Value ) { Type = settings::Value; return Stream; }
+
+  std::string String;  
+  Stream >> String;
+
+  IN_TYPE( UncontrollableStrip );
+  IN_TYPE( NoneStrip );
+  IN_TYPE( VerticalStrip );
+  IN_TYPE( HorizontalStrip );
+
+  Stream.setstate( std::istream::failbit );
+  return Stream;
+#undef IN_TYPE
+}
+
+// ------------------------------------------------------------
+
+std::ostream& scigraphics::operator<<( std::ostream &Stream, const settings &Settings )
+{
+  Stream << "{ ";
+  for ( size_t i = 0; i < static_cast<size_t>(AxisPositionsCount); i++ )
+  {
+    const axisPosition AxisPos = static_cast<axisPosition>(i);
+    Stream << Settings.axisScaleLimits( AxisPos ) << ' ';
+    Stream << Settings.axisScaleType( AxisPos ) << ' ';
+    Stream << Settings.enabledAxisScaleLimits( AxisPos ) << ' ';
+  }
+  Stream << Settings.graphType() << ' ';
+  Stream << Settings.visibleFloatingRectangles() << ' ';
+  Stream << Settings.selectionType() << ' ' << Settings.selectionInterval();
+  Stream << " }";
+  return Stream;
+}
+
+// ------------------------------------------------------------
+
+std::istream& scigraphics::operator>>( std::istream &Stream, settings &Settings )
+{
+#define RET_ERROR() \
+  do { Stream.setstate( std::istream::failbit ); return Stream; } while (false)
+
+  std::istream::sentry Sentry(Stream);
+  if ( ! Sentry )
+    return Stream;
+
+  const interval<number> AutoScaleInterval = autoScaleIntervalAfterStream();
+ 
+  char Char = '\0';
+  settings Result;
+
+  Stream >> std::ws;
+  if ( ! Stream.get(Char) || Char != '{' )
+    RET_ERROR();
+
+  for ( size_t i = 0; i < static_cast<size_t>(AxisPositionsCount); i++ )
+  {
+    const axisPosition AxisPos = static_cast<axisPosition>(i);
+
+    interval<number> Interval;
+    settings::scaleType ScaleType;
+    bool EnableScaleLimits;
+    Stream >> Interval >> ScaleType >> EnableScaleLimits;
+
+    if ( !Stream )
+      RET_ERROR();
+    if ( Interval == AutoScaleInterval )
+      Interval = plotLimits::autoScaleInterval();
+
+    Result.setAxisScaleLimits( Interval, AxisPos );
+    Result.setAxisScaleType( ScaleType, AxisPos );
+    Result.setEnabledAxisScaleLimits( EnableScaleLimits, AxisPos );
+  }
+
+  unsigned GraphType = 0;
+  Stream >> GraphType;
+  Result.setGraphType(GraphType);
+
+  unsigned VisibleFloatingRectangles = 0;
+  Stream >> VisibleFloatingRectangles;
+  Result.setVisibleFloatingRectangles(VisibleFloatingRectangles);
+
+  settings::selectionStripType SelectionType;
+  interval<number> SelectionInterval;
+  Stream >> SelectionType;
+  Stream >> SelectionInterval;
+  Result.setSelectionInterval( SelectionType, SelectionInterval );
+
+  Stream >> std::ws;
+  if ( ! Stream.get(Char) || Char != '}' )
+    RET_ERROR();
+
+  Settings = Result;
+  return Stream;
+#undef RET_ERROR
 }
 
 // ============================================================

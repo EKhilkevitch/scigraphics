@@ -13,6 +13,8 @@ if ( MSVC )
   link_libraries( ${QT_QTMAIN_LIBRARY} )
 endif()
 
+message( "Qt libraries are ${QT_LIBRARIES}" )
+
 if ( ENABLE_EXAMPLES )
 
   message( "Examples enabled" )

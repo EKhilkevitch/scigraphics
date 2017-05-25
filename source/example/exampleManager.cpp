@@ -123,8 +123,11 @@ int main( int argc, char **argv )
   Manager.plotWidget()->show();
   Manager.show();
   Manager.replot();
-  
-  return app.exec();
+
+  Manager.loadSettings( "manager.conf" ); 
+  int Result = app.exec();
+  Manager.saveSettings( "manager.conf" );
+  return Result;
 }
 
 // ======================================================

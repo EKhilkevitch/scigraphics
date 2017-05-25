@@ -1,16 +1,15 @@
 
 // =========================================================
 
-#include <cmath>
-
 #include <gtest/gtest.h>
+
+#include <cmath>
 
 #define private public
 #define protected public
 
 #include "scale.h"
 
-namespace scigraphics {};
 using namespace scigraphics;
 
 // =========================================================

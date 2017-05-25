@@ -1,11 +1,6 @@
 
 // =========================================================
 
-#include <algorithm>
-#include <cstring>
-#include <cmath>
-#include <typeinfo>
-
 #include <gtest/gtest.h>
 
 #include "scigraphics/plotlimits.h"
@@ -13,7 +8,6 @@
 #include "scigraphics/graphsequence.h"
 #include "scigraphics/graphcollection.h"
 
-namespace scigraphics {};
 using namespace scigraphics;
 
 // =========================================================

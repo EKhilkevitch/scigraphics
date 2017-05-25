@@ -58,19 +58,23 @@ namespace scigraphics
       qt4settingsComposer *SettingsComposer;
       bool NeedToEmitSelectionChangedAfterApplying;
 
-    protected:
-      void updateSettingsFromSubWidgets();
+    private:
+      void updateSettingsFromSubWidgets() const;
+      void updateSubWidgetsFromSettings();
       void applySettings( plot *Plot );
       void emitSettingsChanged();
-
-      // For qt4settingsSelections and selectionChanged() signal.
-      friend class qt4settingsSelections;
-      void needToEmitSelectionChangedAfterApplying( bool NeedToEmit );
 
       void setComposer( qt4settingsComposer *Composer );
 
       void initSettings( const QString &Name, const QList<axisPosition> &Positions,
         qt4settingsComposer *Composer );
+
+    private:
+      qt4settings( const qt4settings& );
+      qt4settings& operator=( const qt4settings& );
+
+    private slots:
+      void setEmitSelectionChangedAfterApplyingFlag( bool NeedToEmit );
 
     public:
       explicit qt4settings( QWidget *Parent = NULL, const QString &Name = QString() );
@@ -83,10 +87,11 @@ namespace scigraphics
       void setName( const QString &Name );
 
       void saveSettings( const QString &FileName ) const;
-      void loadSettings( const QString &FileName );
-
       void saveSettings( QSettings *Settings, const QString &Prefix = QString() ) const;
+      void loadSettings( const QString &FileName );
       void loadSettings( QSettings *Settings, const QString &Prefix = QString() );
+      QString serialize() const;
+      bool deserialize( const QString &String );
 
       void addSettingWidget( qt4settingsGroupBox *Box );
       void delSettingWidget( size_t Index );

@@ -26,7 +26,6 @@
 #include "scigraphics/numbers.h"
 #include "scigraphics/geometry.h"
 #include "scigraphics/plotelement.h"
-#include "scigraphics/interval.h"
 
 #include <string>
 
@@ -35,12 +34,13 @@
 namespace scigraphics 
 {
 
-// ============================================================
+  // ============================================================
 
   class painter;
   class numberLimits;
+  template <class T> class interval;
 
-// ============================================================
+  // ============================================================
 
   class graph : public plotElement
   {
@@ -74,7 +74,7 @@ namespace scigraphics
       virtual bool isVisible() const;
   };
 
-// ============================================================
+  // ============================================================
 
 }
 

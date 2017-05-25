@@ -1,20 +1,15 @@
 
 // =========================================================
 
-#include <algorithm>
-#include <cstring>
-#include <cmath>
-
 #include <gtest/gtest.h>
 
 #include "color.h"
 
-namespace scigraphics {};
 using namespace scigraphics;
 
 // =========================================================
 
-TEST( test_color, hsv )
+TEST( color, hsv )
 {
   color C( 200, 20, 50, 10 );
  
@@ -36,7 +31,7 @@ TEST( test_color, hsv )
 
 // ---------------------------------------------------------
 
-TEST( test_color, transparency )
+TEST( color, transparency )
 {
   color C = color::Magenta;
 

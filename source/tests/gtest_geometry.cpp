@@ -5,12 +5,11 @@
 
 #include "geometry.h"
 
-namespace scigraphics {};
 using namespace scigraphics;
 
 // =========================================================
 
-TEST( test_geometry, tpoint )
+TEST( geometry, tpoint )
 {
   point<number> Point( 1, 2 );
 
@@ -35,7 +34,7 @@ TEST( test_geometry, tpoint )
 
 // ---------------------------------------------------------
 
-TEST( test_geometry, trectangle )
+TEST( geometry, trectangle )
 {
   rectangle<number> Rect( point<number>(6,2), point<number>(1,8) );
 
@@ -65,7 +64,7 @@ TEST( test_geometry, trectangle )
 
 // ---------------------------------------------------------
 
-TEST( test_geometry, tindents )
+TEST( geometry, tindents )
 {
   indents<number> Indents( 0.5, 1.5, 2, 3 );
   rectangle<number> Rect( point<number>(6,2), point<number>(1,8) );

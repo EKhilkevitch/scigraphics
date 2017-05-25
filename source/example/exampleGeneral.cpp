@@ -141,6 +141,8 @@ int main( int argc, char *argv[] )
   //Settings.getSettingWidget<scigraphics::qt4settingsGraphType>()->showErrorBarsControl( false );
   //Settings.replaceLayout( new QVBoxLayout() );
   Settings.connectToPlot(&Plot);
+
+
   Settings.show();
 
   Plot.move( 200, 200 );
@@ -149,7 +151,10 @@ int main( int argc, char *argv[] )
   //Plot.resetScalesTo1x1(); 
   Plot.replot();
 
-  return app.exec();
+  Settings.loadSettings( "settings.conf" );
+  int RetValue = app.exec();
+  Settings.saveSettings( "settings.conf" );
+  return RetValue;
 }
 
 // ======================================================

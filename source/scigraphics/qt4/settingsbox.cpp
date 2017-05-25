@@ -23,15 +23,13 @@
 
 #include "scigraphics/qt4/settingsbox.h"
 #include "scigraphics/qt4/labeledline.h"
-#include "scigraphics/qt4/plot.h"
-#include "scigraphics/qt4/settings.h"
+#include "scigraphics/plot.h"
 #include "scigraphics/selection.h"
 #include "scigraphics/plotlimits.h"
 
 #include <QGridLayout>
 #include <QCheckBox>
 #include <QRadioButton>
-#include <QSettings>
 #include <QButtonGroup>
 #include <QDoubleValidator>
 
@@ -65,25 +63,19 @@ QString scigraphics::qt4settingsGroupBox::axisPositionString( axisPosition Axis 
 
 // ----------------------------------------------------------------
       
-void scigraphics::qt4settingsGroupBox::applySettings( qt4settings* ) 
+void scigraphics::qt4settingsGroupBox::applySettings( settings* ) const
 {
 }
 
 // ----------------------------------------------------------------
 
-void scigraphics::qt4settingsGroupBox::collectSettings( qt4plot* ) 
+void scigraphics::qt4settingsGroupBox::showSettings( const settings& )
 {
 }
 
 // ----------------------------------------------------------------
 
-void scigraphics::qt4settingsGroupBox::saveSettings( QSettings* ) const 
-{
-}
-
-// ----------------------------------------------------------------
-
-void scigraphics::qt4settingsGroupBox::loadSettings( QSettings* ) 
+void scigraphics::qt4settingsGroupBox::collectSettings( const plot& ) 
 {
 }
 
@@ -163,22 +155,30 @@ void scigraphics::qt4settingsGroupSuperBox::addToList( axisPosition Position, qt
 
 // ----------------------------------------------------------------
 
-scigraphics::qt4settingsGroupBox* scigraphics::qt4settingsGroupSuperBox::createBoxForAxisPosition( scigraphics::axisPosition ) 
+scigraphics::qt4settingsGroupBox* scigraphics::qt4settingsGroupSuperBox::createBoxForAxisPosition( axisPosition ) 
 { 
   return NULL; 
 }
 
 // ----------------------------------------------------------------
 
-void scigraphics::qt4settingsGroupSuperBox::applySettings( qt4settings* Settings ) 
+void scigraphics::qt4settingsGroupSuperBox::applySettings( settings *Settings ) const
 {
   foreach ( qt4settingsGroupBox *Box, Boxes )
     Box->applySettings( Settings );
 }
 
 // ----------------------------------------------------------------
+
+void scigraphics::qt4settingsGroupSuperBox::showSettings( const settings &Settings )
+{
+  foreach ( qt4settingsGroupBox *Box, Boxes )
+    Box->showSettings( Settings );
+}
+
+// ----------------------------------------------------------------
     
-void scigraphics::qt4settingsGroupSuperBox::collectSettings( qt4plot* Plot )
+void scigraphics::qt4settingsGroupSuperBox::collectSettings( const plot &Plot )
 {
   foreach ( qt4settingsGroupBox *Box, Boxes )
     Box->collectSettings( Plot );
@@ -186,7 +186,7 @@ void scigraphics::qt4settingsGroupSuperBox::collectSettings( qt4plot* Plot )
 
 // ----------------------------------------------------------------
 
-scigraphics::qt4settingsGroupBox* scigraphics::qt4settingsGroupSuperBox::boxForAxisPosition( scigraphics::axisPosition Position )
+scigraphics::qt4settingsGroupBox* scigraphics::qt4settingsGroupSuperBox::boxForAxisPosition( axisPosition Position )
 {
   return Boxes.value( Position, NULL );
 }
@@ -214,26 +214,6 @@ void scigraphics::qt4settingsGroupSuperBox::setNumberOfRowsInLayout( unsigned Nu
 }
 
 // ----------------------------------------------------------------
-
-void scigraphics::qt4settingsGroupSuperBox::saveSettings( QSettings* Settings ) const
-{
-  Q_ASSERT( Settings != NULL );
-
-  foreach ( qt4settingsGroupBox *Box, Boxes )
-    Box->saveSettings(Settings);
-}
-
-// ----------------------------------------------------------------
-
-void scigraphics::qt4settingsGroupSuperBox::loadSettings( QSettings* Settings )
-{
-  Q_ASSERT( Settings != NULL );
-
-  foreach ( qt4settingsGroupBox *Box, Boxes )
-    Box->loadSettings(Settings);
-}
-
-// ----------------------------------------------------------------
     
 void scigraphics::qt4settingsGroupSuperBox::updateWidgets() 
 { 
@@ -244,8 +224,9 @@ void scigraphics::qt4settingsGroupSuperBox::updateWidgets()
 
 // ================================================================
 
-scigraphics::qt4settingsScaleIntervals::qt4settingsScaleIntervals( const axisPosition Axis, QWidget *Parent ) 
-   : qt4settingsGroupBox( axisPositionString(Axis) + tr(" - scale"), Parent ), AxisType(Axis)
+scigraphics::qt4settingsScaleIntervals::qt4settingsScaleIntervals( const axisPosition Axis, QWidget *Parent ) : 
+  qt4settingsGroupBox( axisPositionString(Axis) + tr(" - scale"), Parent ), 
+  AxisType(Axis)
 {
   ManualScaleBox = new QCheckBox(tr("Manual"),this);
   MinScaleEdit   = new qt4labeledLineEdit(tr("Min"),"",this);
@@ -278,55 +259,45 @@ scigraphics::qt4settingsScaleIntervals::qt4settingsScaleIntervals( const axisPos
   connect( ManualScaleBox, SIGNAL(clicked()),         SLOT(updateWidgets()));
   connect( MinScaleEdit,   SIGNAL(editingFinished()), SLOT(updateWidgets()));
   connect( MaxScaleEdit,   SIGNAL(editingFinished()), SLOT(updateWidgets()));
+
+  updateWidgetsEnables();
 }
 
 // ----------------------------------------------------------------
 
-scigraphics::interval<scigraphics::number> scigraphics::qt4settingsScaleIntervals::getLimits() const
+void scigraphics::qt4settingsScaleIntervals::updateWidgetsEnables()
 {
-  if ( ! ManualScaleBox->isChecked() )
-    return scigraphics::interval<scigraphics::number>( scigraphics::plotLimits::AutoScaleMin, scigraphics::plotLimits::AutoScaleMax );
-  return scigraphics::interval<scigraphics::number>( MinScaleEdit->text().toDouble(), MaxScaleEdit->text().toDouble() );
+  MinScaleEdit->setEnabled( ManualScaleBox->isChecked() );
+  MaxScaleEdit->setEnabled( ManualScaleBox->isChecked() );
 }
 
 // ----------------------------------------------------------------
 
-void scigraphics::qt4settingsScaleIntervals::applySettings( qt4settings* Settings ) 
-{ 
-  Q_ASSERT( Settings != NULL );
-  Settings->plotSettings()->setLimits( getLimits(), AxisType ); 
+void scigraphics::qt4settingsScaleIntervals::applySettings( settings* Settings ) const
+{
+  Settings->setEnabledAxisScaleLimits( ManualScaleBox->isChecked(), AxisType );
+  Settings->setAxisScaleLimits( MinScaleEdit->text().toDouble(), MaxScaleEdit->text().toDouble(), AxisType ); 
+}
+
+// ----------------------------------------------------------------
+
+void scigraphics::qt4settingsScaleIntervals::showSettings( const settings &Settings )
+{
+  bool Enabled = Settings.enabledAxisScaleLimits( AxisType );
+  interval<number> Interval = Settings.axisScaleLimits( AxisType );
+
+  ManualScaleBox->setChecked( Enabled );
+  MinScaleEdit->setText( QString::number( Interval.min() ) );
+  MaxScaleEdit->setText( QString::number( Interval.max() ) );
+  updateWidgetsEnables();
 }
 
 // ----------------------------------------------------------------
 
 void scigraphics::qt4settingsScaleIntervals::updateWidgets() 
 {
-  MinScaleEdit->setEnabled( ManualScaleBox->isChecked() );
-  MaxScaleEdit->setEnabled( ManualScaleBox->isChecked() );
+  updateWidgetsEnables();
   emit settingsUpdated();
-}
-
-// ----------------------------------------------------------------
-
-void scigraphics::qt4settingsScaleIntervals::saveSettings( QSettings* Settings ) const
-{
-  Settings->beginGroup( "scaleSettings::" + title() );
-  Settings->setValue( "ManualScaleBox", ManualScaleBox->isChecked() );
-  Settings->setValue( "MinScaleEdit", MinScaleEdit->text() );
-  Settings->setValue( "MaxScaleEdit", MaxScaleEdit->text() );
-  Settings->endGroup();
-}
-
-// ----------------------------------------------------------------
-
-void scigraphics::qt4settingsScaleIntervals::loadSettings( QSettings* Settings )
-{
-  Settings->beginGroup( "scaleSettings::" + title() );
-  ManualScaleBox->setChecked( Settings->value( "ManualScaleBox", false ).toBool() );
-  MinScaleEdit->setText( Settings->value( "MinScaleEdit", "-1" ).toString() );
-  MaxScaleEdit->setText( Settings->value( "MaxScaleEdit", "1"  ).toString() );
-  Settings->endGroup();
-  updateWidgets();
 }
 
 // ================================================================
@@ -346,7 +317,7 @@ QString scigraphics::qt4settingsScaleIntervalsAllAxis::name()
 
 // ----------------------------------------------------------------
       
-scigraphics::qt4settingsGroupBox* scigraphics::qt4settingsScaleIntervalsAllAxis::createBoxForAxisPosition( scigraphics::axisPosition Pos ) 
+scigraphics::qt4settingsGroupBox* scigraphics::qt4settingsScaleIntervalsAllAxis::createBoxForAxisPosition( axisPosition Pos ) 
 { 
   return new qt4settingsScaleIntervals( Pos, this ); 
 }
@@ -389,12 +360,28 @@ scigraphics::qt4settingsGraphType::qt4settingsGraphType( QWidget *Parent ) :
 unsigned scigraphics::qt4settingsGraphType::getGraphType() const
 {
   unsigned Result = 0;
-  if ( ShowPointsBtn->isChecked() )             Result |= scigraphics::settings::Points;
-  if ( ShowLinesBtn->isChecked()  )             Result |= scigraphics::settings::Lines;
-  if ( ShowLinesAndPointsBtn->isChecked() )     Result |= scigraphics::settings::LinesAndPoints;
-  if ( ShowLineHystogramBtn->isChecked() )      Result |= scigraphics::settings::LinesHystogram;
-  if ( ErrorBarsChk->isChecked() )              Result |= scigraphics::settings::ErrorBars;
+  if ( ShowPointsBtn->isChecked() )             Result |= settings::Points;
+  if ( ShowLinesBtn->isChecked()  )             Result |= settings::Lines;
+  if ( ShowLinesAndPointsBtn->isChecked() )     Result |= settings::LinesAndPoints;
+  if ( ShowLineHystogramBtn->isChecked() )      Result |= settings::LinesHystogram;
+  if ( ErrorBarsChk->isChecked() )              Result |= settings::ErrorBars;
   return Result;
+}
+
+// ----------------------------------------------------------------
+      
+void scigraphics::qt4settingsGraphType::setGraphType( unsigned GraphType )
+{
+  ErrorBarsChk->setChecked( GraphType & settings::ErrorBars );
+
+  if ( GraphType == settings::LinesHystogram )
+    ShowLineHystogramBtn->setChecked( true );
+  else if ( GraphType == settings::LinesAndPoints )
+    ShowLinesAndPointsBtn->setChecked( true );
+  else if ( GraphType == settings::Points )
+    ShowPointsBtn->setChecked( true );
+  else 
+    ShowLinesBtn->setChecked( true );
 }
 
 // ----------------------------------------------------------------
@@ -415,35 +402,16 @@ void scigraphics::qt4settingsGraphType::showErrorBarsControl( bool Show )
 
 // ----------------------------------------------------------------
     
-void scigraphics::qt4settingsGraphType::applySettings( qt4settings* Settings ) 
+void scigraphics::qt4settingsGraphType::applySettings( settings* Settings ) const
 { 
-  Settings->plotSettings()->setGraphType( getGraphType() ); 
+  Settings->setGraphType( getGraphType() ); 
 }
 
 // ----------------------------------------------------------------
 
-void scigraphics::qt4settingsGraphType::saveSettings( QSettings* Settings ) const
+void scigraphics::qt4settingsGraphType::showSettings( const settings& Settings )
 {
-  Settings->beginGroup( "graphTypeSettings" );
-  Settings->setValue( "ShowPointsBtn", ShowPointsBtn->isChecked() );
-  Settings->setValue( "ShowLinesBtn", ShowLinesBtn->isChecked() );
-  Settings->setValue( "ShowLinesAndPointsBtn", ShowLinesAndPointsBtn->isChecked() );
-  Settings->setValue( "ShowLineHystogramBtn", ShowLineHystogramBtn->isChecked() );
-  Settings->setValue( "ErrorBarsChk", ErrorBarsChk->isChecked() );
-  Settings->endGroup();
-}
-
-// ----------------------------------------------------------------
-
-void scigraphics::qt4settingsGraphType::loadSettings( QSettings* Settings )
-{
-  Settings->beginGroup( "graphTypeSettings" );
-  ShowPointsBtn->setChecked( Settings->value( "ShowPointsBtn", false ).toBool() );
-  ShowLinesBtn->setChecked( Settings->value( "ShowLinesBtn", false ).toBool() );
-  ShowLinesAndPointsBtn->setChecked( Settings->value( "ShowLinesAndPointsBtn", true ).toBool() );
-  ShowLineHystogramBtn->setChecked( Settings->value( "ShowLineHystogramBtn", false ).toBool() );
-  ErrorBarsChk->setChecked( Settings->value( "ErrorBarsChk", false ).toBool() );
-  Settings->endGroup();
+  setGraphType( Settings.graphType() );
 }
 
 // ================================================================
@@ -473,46 +441,39 @@ scigraphics::qt4settingsDecoration::qt4settingsDecoration( QWidget *Parent ) :
 unsigned scigraphics::qt4settingsDecoration::getVisibleFloatingRectangles() const
 {
   unsigned Result = 0;
-  if ( ShowLegendChk->isChecked() )             Result |= scigraphics::settings::Legend;
-  if ( ShowCursorPositionChk->isChecked() )     Result |= scigraphics::settings::CursorPosition;
+  if ( ShowLegendChk->isChecked() )             Result |= settings::Legend;
+  if ( ShowCursorPositionChk->isChecked() )     Result |= settings::CursorPosition;
   return Result;
 }
 
 // ----------------------------------------------------------------
+      
+void scigraphics::qt4settingsDecoration::setVisibleFloatingRectangles( unsigned VisibleFloatingRectangles )
+{
+  ShowLegendChk->setChecked( VisibleFloatingRectangles & settings::Legend );
+  ShowCursorPositionChk->setChecked( VisibleFloatingRectangles & settings::CursorPosition );
+}
 
-void scigraphics::qt4settingsDecoration::applySettings( qt4settings* Settings ) 
+// ----------------------------------------------------------------
+
+void scigraphics::qt4settingsDecoration::applySettings( settings* Settings ) const 
 { 
-  Settings->plotSettings()->setVisibleFloatingRectangles( getVisibleFloatingRectangles() ); 
+  Settings->setVisibleFloatingRectangles( getVisibleFloatingRectangles() ); 
 }
 
 // ----------------------------------------------------------------
 
-void scigraphics::qt4settingsDecoration::saveSettings( QSettings* Settings ) const
-{
-  Q_ASSERT( Settings != NULL );
-  Settings->beginGroup( "decorationSettings" );
-  Settings->setValue( "ShowLegendChk", ShowLegendChk->isChecked() );
-  Settings->setValue( "ShowCursorPositionChk", ShowCursorPositionChk->isChecked() );
-  Settings->endGroup();
-}
-
-// ----------------------------------------------------------------
-
-void scigraphics::qt4settingsDecoration::loadSettings( QSettings* Settings )
-{
-  Q_ASSERT( Settings != NULL );
-  Settings->beginGroup( "decorationSettings" );
-  ShowLegendChk->setChecked( Settings->value( "ShowLegendChk", true ).toBool() );
-  ShowCursorPositionChk->setChecked( Settings->value( "ShowCursorPositionChk", true ).toBool() );
-  Settings->endGroup();
+void scigraphics::qt4settingsDecoration::showSettings( const settings &Settings ) 
+{ 
+  setVisibleFloatingRectangles( Settings.visibleFloatingRectangles() );
 }
 
 // ================================================================
 
-scigraphics::qt4settingsScaleType::qt4settingsScaleType( const scigraphics::axisPosition Axis, QWidget *Parent ) 
-   : qt4settingsGroupBox( axisPositionString(Axis) + tr(" - type"), Parent ), AxisType(Axis) 
+scigraphics::qt4settingsScaleType::qt4settingsScaleType( const axisPosition Axis, QWidget *Parent ) :
+  qt4settingsGroupBox( axisPositionString(Axis) + tr(" - type"), Parent ), 
+  AxisType(Axis) 
 {
-
   LinearBtn  = new QRadioButton( tr("Linear"), this );
   LinearBtn->setChecked(true);
   LogarithmPositiveBtn = new QRadioButton( tr("Logarithm (positive)"), this );
@@ -541,11 +502,35 @@ scigraphics::qt4settingsScaleType::qt4settingsScaleType( const scigraphics::axis
 
 scigraphics::settings::scaleType scigraphics::qt4settingsScaleType::getScaleType() const
 {
-  if ( LinearBtn->isChecked() )                 return scigraphics::settings::Linear;
-  if ( LogarithmPositiveBtn->isChecked() )      return scigraphics::settings::LogarithmPositive;
-  if ( LogarithmNegativeBtn->isChecked() )      return scigraphics::settings::LogarithmNegative;
-  if ( SquareBtn->isChecked() )                 return scigraphics::settings::Square;
+  if ( LinearBtn->isChecked() )                 return settings::Linear;
+  if ( LogarithmPositiveBtn->isChecked() )      return settings::LogarithmPositive;
+  if ( LogarithmNegativeBtn->isChecked() )      return settings::LogarithmNegative;
+  if ( SquareBtn->isChecked() )                 return settings::Square;
   return scigraphics::settings::Linear;
+}
+
+// ----------------------------------------------------------------
+      
+void scigraphics::qt4settingsScaleType::setScaleType( settings::scaleType ScaleType )
+{
+  switch ( ScaleType )
+  {
+    case settings::Square:
+      SquareBtn->setChecked( true );
+      break;
+
+    case settings::LogarithmNegative:
+      LogarithmNegativeBtn->setChecked( true );
+      break;
+
+    case settings::LogarithmPositive:
+      LogarithmPositiveBtn->setChecked( true );
+      break;
+
+    default:
+      LinearBtn->setChecked( true );
+      break;
+  }
 }
 
 // ----------------------------------------------------------------
@@ -567,33 +552,16 @@ void scigraphics::qt4settingsScaleType::showSquareControl( bool Show )
 
 // ----------------------------------------------------------------
     
-void scigraphics::qt4settingsScaleType::applySettings( qt4settings* Settings ) 
+void scigraphics::qt4settingsScaleType::applySettings( settings *Settings ) const
 { 
-  Settings->plotSettings()->setScaleType( getScaleType(), AxisType ); 
+  Settings->setAxisScaleType( getScaleType(), AxisType ); 
 }
 
 // ----------------------------------------------------------------
 
-void scigraphics::qt4settingsScaleType::saveSettings( QSettings* Settings ) const
-{
-  Settings->beginGroup( "scaleTypeSettings::" + title() );
-  Settings->setValue( "LinearBtn", LinearBtn->isChecked() );
-  Settings->setValue( "LogarithmPositiveBtn", LogarithmPositiveBtn->isChecked() );
-  Settings->setValue( "LogarithmNegativeBtn", LogarithmNegativeBtn->isChecked() );
-  Settings->setValue( "SquareBtn", SquareBtn->isChecked() );
-  Settings->endGroup();
-}
-
-// ----------------------------------------------------------------
-
-void scigraphics::qt4settingsScaleType::loadSettings( QSettings* Settings )
-{
-  Settings->beginGroup( "scaleTypeSettings::" + title() );
-  LinearBtn->setChecked( Settings->value( "LinearBtn", true ).toBool() );
-  LogarithmPositiveBtn->setChecked( Settings->value( "LogarithmPositiveBtn", false ).toBool() );
-  LogarithmNegativeBtn->setChecked( Settings->value( "LogarithmNegativeBtn", false ).toBool() );
-  SquareBtn->setChecked( Settings->value( "SquareBtn", false ).toBool() );
-  Settings->endGroup();
+void scigraphics::qt4settingsScaleType::showSettings( const settings &Settings ) 
+{ 
+  setScaleType( Settings.axisScaleType(AxisType) );
 }
 
 // ================================================================
@@ -674,9 +642,9 @@ void scigraphics::qt4settingsSelections::updateWidgets()
 
 // ----------------------------------------------
 
-void scigraphics::qt4settingsSelections::collectSettings( qt4plot *Plot )
+void scigraphics::qt4settingsSelections::collectSettings( const plot &Plot )
 {
-  selectionStrip *Selection = settings::firstSelectionStrip(Plot);
+  const selectionStrip *Selection = settings::firstSelectionStrip(Plot);
   
   if ( Selection == NULL )
   {
@@ -693,31 +661,33 @@ void scigraphics::qt4settingsSelections::collectSettings( qt4plot *Plot )
 
 // ----------------------------------------------
 
-void scigraphics::qt4settingsSelections::applySettings( qt4settings* Settings )
+void scigraphics::qt4settingsSelections::applySettings( settings *Settings ) const
 {
   double Min = MinValueEdit->text().toDouble();
   double Max = MaxValueEdit->text().toDouble(); 
   settings::selectionStripType StripType = EnableSelectionBox->isChecked() ? settings::VerticalStrip : settings::NoneStrip;
  
   bool NeedToEmitSelectionChanged = false;
-  NeedToEmitSelectionChanged = NeedToEmitSelectionChanged || Settings->plotSettings()->getSelectionStripType() != StripType;
-  NeedToEmitSelectionChanged = NeedToEmitSelectionChanged || Settings->plotSettings()->getSelectionStripInterval().min() != Min;
-  NeedToEmitSelectionChanged = NeedToEmitSelectionChanged || Settings->plotSettings()->getSelectionStripInterval().max() != Max;
-  Settings->needToEmitSelectionChangedAfterApplying( NeedToEmitSelectionChanged );
+  NeedToEmitSelectionChanged = NeedToEmitSelectionChanged || Settings->selectionType() != StripType;
+  NeedToEmitSelectionChanged = NeedToEmitSelectionChanged || Settings->selectionInterval().min() != Min;
+  NeedToEmitSelectionChanged = NeedToEmitSelectionChanged || Settings->selectionInterval().max() != Max;
   
-  Settings->plotSettings()->setSelectionInterval( StripType, Min, Max );
+  Settings->setSelectionInterval( StripType, Min, Max );
+
+  // emit for non-const object
+  const_cast<qt4settingsSelections*>(this)->needToSetEmitSelectionChangedAfterApplyingFlag( NeedToEmitSelectionChanged );
 }
 
 // ----------------------------------------------
-      
-void scigraphics::qt4settingsSelections::saveSettings( QSettings* ) const 
-{
-}
 
-// ----------------------------------------------
-
-void scigraphics::qt4settingsSelections::loadSettings( QSettings* ) 
+void scigraphics::qt4settingsSelections::showSettings( const settings &Settings )
 {
+  settings::selectionStripType Type = Settings.selectionType();
+  interval<number> Interval = Settings.selectionInterval();
+
+  EnableSelectionBox->setChecked( Type != settings::NoneStrip );
+  MinValueEdit->setText( QString::number( Interval.min() ) );
+  MaxValueEdit->setText( QString::number( Interval.max() ) );
 }
 
 // ================================================================

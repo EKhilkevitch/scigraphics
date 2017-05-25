@@ -27,6 +27,8 @@
 #include "scigraphics/numbers.h"
 #include "scigraphics/axisposition.h"
 
+#include <iosfwd>
+
 // ============================================================
 
 namespace scigraphics
@@ -56,7 +58,7 @@ namespace scigraphics
         Square
       };
 
-      enum graphType 
+      enum graphTypeFlags
       {
         Individual      = 0x00,
         Lines           = 0x01,
@@ -66,7 +68,7 @@ namespace scigraphics
         ErrorBars       = 0x10
       };
 
-      enum floatingRectangles
+      enum floatingRectanglesFlags
       {
         NoRectangles    = 0x00,
         Legend          = 0x01,
@@ -84,16 +86,19 @@ namespace scigraphics
     private:
       scaleType ScaleTypes[ AxisPositionsCount ];
       interval<number> ScaleLimits[ AxisPositionsCount ];
+      bool EnableScaleLimits[ AxisPositionsCount ];
+
       selectionStripType SelectionStripType;
       interval<number> SelectionStripInterval;
-      unsigned GraphType;
-      unsigned VisibleFloatingRectangles;
+      unsigned GraphTypeFlags;
+      unsigned VisibleFloatingRectanglesFlags;
 
     private:
       static scale* createScale( scaleType Type );
       static bool equalScaleTypes( const scale *Scale1, const scale *Scale2 );
       static interval<number> correctLimits( interval<number> Limits );
       void applyGraphTypeToGraph( sequence::graph *Graph ) const;
+      static void throwIfAxisPosOutOfRange( axisPosition AxisPos );
 
     protected:
       void applyLimits( plot *Plot ) const;
@@ -104,25 +109,48 @@ namespace scigraphics
 
     public:
       settings();
-      virtual ~settings();
+      ~settings();
 
-      virtual void apply( plot *Plot ) const;
+      void apply( plot *Plot ) const;
 
-      void setLimits( const interval<number> &Lims, axisPosition AxisPos );
+      void setAxisScaleLimits( const interval<number> &Lims, axisPosition AxisPos );
+      void setAxisScaleLimits( number Min, number Max, axisPosition AxisPos );
+      void setEnabledAxisScaleLimits( bool Enable, axisPosition AxisPos );
+      interval<number> axisScaleLimits( axisPosition AxisPos ) const;
+      bool enabledAxisScaleLimits( axisPosition AxisPos ) const;
+
+      void setAxisScaleType( scaleType Type, axisPosition AxisPos );
+      scaleType axisScaleType( axisPosition AxisPos ) const;
+
       void setGraphType( unsigned Type );
-      void setScaleType( scaleType Type, axisPosition AxisPos );
+      unsigned graphType() const;
+
       void setVisibleFloatingRectangles( unsigned FloatRectangles );
+      unsigned visibleFloatingRectangles() const;
       
       void setSelectionInterval( selectionStripType Type, interval<number> Interval );
       void setSelectionInterval( selectionStripType Type, number Min, number Max );
-      selectionStripType getSelectionStripType() const { return SelectionStripType; }
-      interval<number> getSelectionStripInterval() const { return SelectionStripInterval; }
-      
-      static selectionStrip* firstSelectionStrip( plot *Plot );
+      selectionStripType selectionType() const { return SelectionStripType; }
+      interval<number> selectionInterval() const { return SelectionStripInterval; }
 
+      std::string serialize() const;
+      bool deserialize( const std::string &String );
+      
+      static const selectionStrip* firstSelectionStrip( const plot &Plot );
   };
 
-// ============================================================
+  // ============================================================
+  
+  std::ostream& operator<<( std::ostream &Stream, settings::scaleType  Type );
+  std::istream& operator>>( std::istream &Stream, settings::scaleType &Type );
+  
+  std::ostream& operator<<( std::ostream &Stream, settings::selectionStripType  Type );
+  std::istream& operator>>( std::istream &Stream, settings::selectionStripType &Type );
+  
+  std::ostream& operator<<( std::ostream &Stream, const settings &Settings );
+  std::istream& operator>>( std::istream &Stream, settings &Settings );
+  
+  // ============================================================
 
 }
 

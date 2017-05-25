@@ -22,6 +22,7 @@
 #pragma once
 
 #include <ostream>
+#include <istream>
 
 // ============================================================
 
@@ -83,7 +84,9 @@ namespace scigraphics
   template <class T> interval<T> operator-( interval<T> Limits, const T Value );
   template <class T> interval<T> operator*( interval<T> Limits, const T Value );
   template <class T> interval<T> operator/( interval<T> Limits, const T Value );
-  template <class T> std::ostream& operator<<( std::ostream &Stream, interval<T> Interval );
+  
+  template <class T> std::ostream& operator<<( std::ostream &Stream, interval<T>  Interval );
+  template <class T> std::istream& operator>>( std::istream &Stream, interval<T> &Interval );
   
   // ============================================================
       
@@ -287,6 +290,47 @@ namespace scigraphics
   {
     Stream << "[ " << Interval.min() << " .. " << Interval.max() << " ]";
     return Stream;
+  }
+  
+  // ------------------------------------------------------------
+  
+  template <class T> std::istream& operator>>( std::istream &Stream, interval<T> &Interval )
+  {
+#define INTERVAL_RET_ERROR() \
+    do { Stream.setstate(std::istream::failbit); return Stream; } while (false)
+    std::istream::sentry Sentry(Stream);
+    if ( !Sentry )
+      return Stream;
+
+    char Char = '\0';
+
+    Stream >> std::ws;
+    if ( ! Stream.get(Char) || Char != '[' )
+      INTERVAL_RET_ERROR();
+
+    T Min = 0;
+    Stream >> Min;
+    if ( ! Stream )
+      INTERVAL_RET_ERROR();
+
+    Stream >> std::ws;
+    if ( ! Stream.get(Char) || Char != '.' )
+      INTERVAL_RET_ERROR();
+    if ( ! Stream.get(Char) || Char != '.' )
+      INTERVAL_RET_ERROR();
+
+    T Max = 0;
+    Stream >> Max;
+    if ( ! Stream )
+      INTERVAL_RET_ERROR();
+    
+    Stream >> std::ws;
+    if ( ! Stream.get(Char) || Char != ']' )
+      INTERVAL_RET_ERROR();
+
+    Interval.setMinMax( Min, Max );
+    return Stream;
+#undef INTERVAL_RET_ERROR
   }
 
   // ============================================================

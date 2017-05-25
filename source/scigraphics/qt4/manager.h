@@ -113,8 +113,13 @@ namespace scigraphics
       void setSettingsName( size_t Index, const QString &Name );
       void updateTabNames();
       
+      void saveSettings( const QString &FileName ) const;
       void saveSettings( QSettings* Settings ) const;
+      void loadSettings( const QString &FileName );
       void loadSettings( QSettings* Settings );
+
+      QString serialize() const;
+      bool deserialize( const QString &String );
       
     public slots:
       void replot();

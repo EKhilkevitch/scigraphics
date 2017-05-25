@@ -29,6 +29,7 @@
 
 #include <QStackedLayout>
 #include <QSettings>
+#include <QDebug>
 
 // ================================================================
 
@@ -130,9 +131,10 @@ void scigraphics::qt4settings::setComposer( qt4settingsComposer *Composer )
 
 // ----------------------------------------------------------------
 
-void scigraphics::qt4settings::needToEmitSelectionChangedAfterApplying( bool NeedToEmit ) 
-{ 
-  NeedToEmitSelectionChangedAfterApplying = NeedToEmitSelectionChangedAfterApplying || NeedToEmit; 
+void scigraphics::qt4settings::setEmitSelectionChangedAfterApplyingFlag( bool NeedToEmit )
+{
+  if ( NeedToEmit )
+    NeedToEmitSelectionChangedAfterApplying = true; 
 }
 
 // ----------------------------------------------------------------
@@ -143,6 +145,9 @@ void scigraphics::qt4settings::addSettingWidget( qt4settingsGroupBox *Widget )
 
   SettingsComposer->addWidget( Widget );
   connect( Widget, SIGNAL(settingsUpdated()), SLOT(updatePlotSettings()) );
+
+  if ( qt4settingsSelections *SelectionWidget = dynamic_cast<qt4settingsSelections*>(Widget) )
+    connect( SelectionWidget, SIGNAL(needToSetEmitSelectionChangedAfterApplyingFlag(bool)), SLOT(setEmitSelectionChangedAfterApplyingFlag(bool)) );
 }
 
 // ----------------------------------------------------------------
@@ -198,25 +203,15 @@ void scigraphics::qt4settings::disconnectFromPlot( qt4plot *Plot )
 
 void scigraphics::qt4settings::saveSettings( QSettings *Settings, const QString &Prefix ) const
 {
-  Q_ASSERT( Settings != NULL );
-  
-  Settings->beginGroup( "qt4settings::" + Prefix );
-  for ( size_t i = 0; i < SettingsComposer->numberOfSettingsWidget(); i++ )
-    SettingsComposer->getSettingWidget(i)->saveSettings(Settings);
-  Settings->endGroup();
+  Settings->setValue( "qt4settings::" + Prefix, serialize() );
 }
 
 // ----------------------------------------------------------------
 
 void scigraphics::qt4settings::loadSettings( QSettings *Settings, const QString &Prefix )
 {
-  Q_ASSERT( Settings != NULL );
-
-  Settings->beginGroup( "qt4settings::" + Prefix );
-  for ( size_t i = 0; i < SettingsComposer->numberOfSettingsWidget(); i++ )
-    SettingsComposer->getSettingWidget(i)->loadSettings(Settings);
-  Settings->endGroup();
-  updatePlotSettings();
+  QString Serialized = Settings->value( "qt4settings::" + Prefix ).toString();
+  deserialize( Serialized );
 }
 
 // ----------------------------------------------------------------
@@ -236,6 +231,28 @@ void scigraphics::qt4settings::loadSettings( const QString &FileName )
 }
 
 // ----------------------------------------------------------------
+      
+QString scigraphics::qt4settings::serialize() const
+{
+  updateSettingsFromSubWidgets();
+  std::string Serialized = Settings->serialize();
+  return QString::fromStdString( Serialized );
+}
+
+// ----------------------------------------------------------------
+
+bool scigraphics::qt4settings::deserialize( const QString &String )
+{
+  bool Ok = Settings->deserialize( String.toStdString() );
+  if ( Ok )
+  {
+    updateSubWidgetsFromSettings();
+    emit settingsChanged( this );
+  }
+  return Ok;
+}
+
+// ----------------------------------------------------------------
 
 void scigraphics::qt4settings::updatePlotState()
 {
@@ -244,7 +261,7 @@ void scigraphics::qt4settings::updatePlotState()
     return;
 
   for ( size_t i = 0; i < SettingsComposer->numberOfSettingsWidget(); i++ )
-    SettingsComposer->getSettingWidget(i)->collectSettings( Plot );
+    SettingsComposer->getSettingWidget(i)->collectSettings( *Plot );
 }
 
 // ----------------------------------------------------------------
@@ -275,10 +292,18 @@ void scigraphics::qt4settings::apply( qt4plot *Plot )
 
 // ----------------------------------------------------------------
     
-void scigraphics::qt4settings::updateSettingsFromSubWidgets()
+void scigraphics::qt4settings::updateSettingsFromSubWidgets() const
 {
   for ( size_t i = 0; i < SettingsComposer->numberOfSettingsWidget(); i++ )
-    SettingsComposer->getSettingWidget(i)->applySettings( this );
+    SettingsComposer->getSettingWidget(i)->applySettings( Settings );
+}
+
+// ----------------------------------------------------------------
+      
+void scigraphics::qt4settings::updateSubWidgetsFromSettings()
+{
+  for ( size_t i = 0; i < SettingsComposer->numberOfSettingsWidget(); i++ )
+    SettingsComposer->getSettingWidget(i)->showSettings( *Settings );
 }
 
 // ----------------------------------------------------------------

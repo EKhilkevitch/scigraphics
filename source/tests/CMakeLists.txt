@@ -4,6 +4,7 @@ project( selfTest )
 
 set ( tests_source_files
         gtest_geometry.cpp
+        gtest_interval.cpp
         gtest_graphcollection.cpp
         gtest_graphviewsequence.cpp
         gtest_graph.cpp
@@ -15,6 +16,7 @@ set ( tests_source_files
         gtest_plotlimits.cpp
         gtest_scale.cpp
         gtest_color.cpp
+        gtest_settings.cpp
         mockpainter.cpp
     )
 

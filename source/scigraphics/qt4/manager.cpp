@@ -31,6 +31,7 @@
 #include <QSettings>
 #include <QStackedLayout>
 #include <QTabWidget>
+#include <QTextStream>
 #include <QDebug>
 
 // ================================================================
@@ -335,33 +336,120 @@ void scigraphics::qt4plotManager::updateTabNames()
 
 void scigraphics::qt4plotManager::saveSettings( QSettings* Settings ) const
 {
+#if 0
   Settings->beginGroup( name() );
   for ( int i = 0; i < this->Settings.size(); i++ )
-    this->Settings[i]->saveSettings( Settings, QString::number(i) + "_" + this->Settings[i]->name() );
+    this->Settings[i]->saveSettings( Settings, QString::number(i) + '_' + this->Settings[i]->name() );
   
   QList<int> MainSplitterSizes = MainSplitter->sizes();
   Q_ASSERT( MainSplitterSizes.size() == MainSplitter->count() );
   for ( int i = 0; i < MainSplitterSizes.size(); i++ ) 
     Settings->setValue( "MainSplitterSizes"+QString::number(i), MainSplitterSizes[i] );
+
   Settings->endGroup();
+#endif
+  Settings->setValue( name(), serialize() );
+}
+
+// ----------------------------------------------------------------
+
+void scigraphics::qt4plotManager::saveSettings( const QString &FileName ) const
+{
+  QSettings Settings( FileName, QSettings::IniFormat );
+  saveSettings( &Settings );
 }
 
 // ----------------------------------------------------------------
 
 void scigraphics::qt4plotManager::loadSettings( QSettings* Settings )
 {
+#if 0
   Settings->beginGroup( name() );
   for ( int i = 0; i < this->Settings.size(); i++ )
-    this->Settings[i]->loadSettings( Settings, QString::number(i) + "_" + this->Settings[i]->name() );
+    this->Settings[i]->loadSettings( Settings, QString::number(i) + '_' + this->Settings[i]->name() );
+
   QList<int> MainSplitterSizes = MainSplitter->sizes();
   for ( int i = 0; i < MainSplitterSizes.size(); i++ )
     MainSplitterSizes[i] = Settings->value( "MainSplitterSizes" + QString::number(i), MainSplitter->height()/MainSplitter->count() ).toInt();
+
   int SizesSum = 0;
   for ( int i = 0; i < MainSplitterSizes.size(); i++ )
     SizesSum += MainSplitterSizes[i];
   if ( SizesSum > 0 )
     MainSplitter->setSizes( MainSplitterSizes );
+
   Settings->endGroup();
+#endif
+  QString String = Settings->value( name() ).toString();
+  deserialize( String );
+}
+
+// ----------------------------------------------------------------
+
+void scigraphics::qt4plotManager::loadSettings( const QString &FileName )
+{
+  QSettings Settings( FileName, QSettings::IniFormat );
+  loadSettings( &Settings );
+}
+
+// ----------------------------------------------------------------
+
+QString scigraphics::qt4plotManager::serialize() const
+{
+  QString Result;
+  QTextStream Stream( &Result, QIODevice::WriteOnly );
+  
+  const QList<int> MainSplitterSizes = MainSplitter->sizes();
+  Stream << MainSplitterSizes.size() << ' ';
+  foreach ( int Size, MainSplitterSizes )
+    Stream << Size << ' ';
+  foreach ( const qt4settings *Set, Settings )
+    Stream << Set->serialize() << ' ';
+
+  return Result;
+}
+
+// ----------------------------------------------------------------
+
+bool scigraphics::qt4plotManager::deserialize( const QString &String )
+{
+  QString CopyString = String;
+  QTextStream Stream( &CopyString, QIODevice::ReadOnly );
+
+  int SplitterSize = 0;
+  Stream >> SplitterSize;
+  
+  QList<int> MainSplitterSizes = MainSplitter->sizes();
+  for ( int i = 0; i < SplitterSize; i++ ) 
+  {
+    int Value;
+    Stream >> Value;
+    if ( Stream.status() != QTextStream::Ok )
+      return false;
+    if ( i < MainSplitterSizes.size() )
+      MainSplitterSizes[i] = Value;
+  }
+  int SizesSum = 0;
+  for ( int i = 0; i < MainSplitterSizes.size(); i++ )
+    SizesSum += MainSplitterSizes[i];
+  if ( SizesSum > 0 )
+    MainSplitter->setSizes( MainSplitterSizes );
+
+  foreach ( qt4settings *Set, Settings )
+  {
+    QString SettingsString;
+    while ( Stream.status() == QTextStream::Ok )
+    {
+      QChar Char;
+      Stream >> Char;
+      SettingsString += Char;
+      if ( Char == '}' )
+        break;
+    }
+    Set->deserialize( SettingsString );
+  }
+
+  return true;
 }
 
 // ----------------------------------------------------------------
