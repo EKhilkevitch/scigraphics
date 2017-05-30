@@ -336,18 +336,6 @@ void scigraphics::qt4plotManager::updateTabNames()
 
 void scigraphics::qt4plotManager::saveSettings( QSettings* Settings ) const
 {
-#if 0
-  Settings->beginGroup( name() );
-  for ( int i = 0; i < this->Settings.size(); i++ )
-    this->Settings[i]->saveSettings( Settings, QString::number(i) + '_' + this->Settings[i]->name() );
-  
-  QList<int> MainSplitterSizes = MainSplitter->sizes();
-  Q_ASSERT( MainSplitterSizes.size() == MainSplitter->count() );
-  for ( int i = 0; i < MainSplitterSizes.size(); i++ ) 
-    Settings->setValue( "MainSplitterSizes"+QString::number(i), MainSplitterSizes[i] );
-
-  Settings->endGroup();
-#endif
   Settings->setValue( name(), serialize() );
 }
 
@@ -363,23 +351,6 @@ void scigraphics::qt4plotManager::saveSettings( const QString &FileName ) const
 
 void scigraphics::qt4plotManager::loadSettings( QSettings* Settings )
 {
-#if 0
-  Settings->beginGroup( name() );
-  for ( int i = 0; i < this->Settings.size(); i++ )
-    this->Settings[i]->loadSettings( Settings, QString::number(i) + '_' + this->Settings[i]->name() );
-
-  QList<int> MainSplitterSizes = MainSplitter->sizes();
-  for ( int i = 0; i < MainSplitterSizes.size(); i++ )
-    MainSplitterSizes[i] = Settings->value( "MainSplitterSizes" + QString::number(i), MainSplitter->height()/MainSplitter->count() ).toInt();
-
-  int SizesSum = 0;
-  for ( int i = 0; i < MainSplitterSizes.size(); i++ )
-    SizesSum += MainSplitterSizes[i];
-  if ( SizesSum > 0 )
-    MainSplitter->setSizes( MainSplitterSizes );
-
-  Settings->endGroup();
-#endif
   QString String = Settings->value( name() ).toString();
   deserialize( String );
 }
