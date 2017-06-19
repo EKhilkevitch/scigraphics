@@ -528,6 +528,13 @@ scigraphics::graphCollection::iterator scigraphics::plot::eraseGraphic( graphCol
 
 // ------------------------------------------------------------
 
+size_t scigraphics::plot::countOfGraphics() const
+{
+  return Graphics.size();
+}
+
+// ------------------------------------------------------------
+
 void scigraphics::plot::deleteSelection( selection *Selection ) 
 { 
   Selections.remove( Selection ); 
@@ -538,6 +545,13 @@ void scigraphics::plot::deleteSelection( selection *Selection )
 void scigraphics::plot::clearSelections() 
 { 
   Selections.clear(); 
+}
+
+// ------------------------------------------------------------
+
+size_t scigraphics::plot::countOfSelections() const
+{
+  return Selections.size();
 }
 
 // ------------------------------------------------------------

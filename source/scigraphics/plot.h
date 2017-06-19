@@ -159,6 +159,7 @@ namespace scigraphics
       graphCollection::iterator endGraph()   { return Graphics.end(); }
       graphCollection::const_iterator beginGraph() const { return Graphics.begin(); }
       graphCollection::const_iterator endGraph()   const { return Graphics.end(); }
+      size_t countOfGraphics() const;
 
       template <class S> S* createSelection();
       void deleteSelection( selection *Selection );
@@ -167,6 +168,7 @@ namespace scigraphics
       selectionCollection::iterator endSelection()   { return Selections.end(); }
       selectionCollection::const_iterator beginSelection() const { return Selections.begin(); }
       selectionCollection::const_iterator endSelection()   const { return Selections.end(); }
+      size_t countOfSelections() const;
 
       pairScales getBottomLeftPairScales();
 
