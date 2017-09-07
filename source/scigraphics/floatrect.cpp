@@ -76,17 +76,10 @@ void scigraphics::floatRectangle::setRectangle( const wpoint &A, const wpoint &B
 }
 
 // ------------------------------------------------------------
-     
-unsigned scigraphics::floatRectangle::textHeight( painter &Painter, const std::string &Text, const textStyle &Style )
-{ 
-  return Painter.textHeight( Text, Style ); 
-}
-
-// ------------------------------------------------------------
 
 void scigraphics::floatRectangle::drawBackground( painter &Painter ) const
 {      
-  brushStyle BackgroundBrush( color::White );
+  const brushStyle BackgroundBrush( color::White );
   Painter.drawRectangleW( Rectangle, BackgroundBrush, getBorderStyle() );
 }
       

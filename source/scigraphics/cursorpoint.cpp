@@ -31,16 +31,38 @@
 
 #include <cstdio>
 #include <algorithm>
+#include <iostream>
 
 // ============================================================
 
 const scigraphics::wrectangle scigraphics::cursorPositionViewer::InitCursorRectangle( wpoint(30,30), wpoint(30,30) );
 
 // ============================================================
+
+struct scigraphics::cursorPositionViewer::textSizesCache
+{
+  std::string Text;
+  wcoord Width;
+  wcoord Height;
+
+  textSizesCache() :
+    Width(0),
+    Height(0) {}
+};
+
+// ============================================================
       
 scigraphics::cursorPositionViewer::cursorPositionViewer() : 
-  floatRectangle(InitCursorRectangle)
+  floatRectangle( InitCursorRectangle ),
+  TextSizesCache( NULL )
 {
+}
+
+// ------------------------------------------------------------
+
+scigraphics::cursorPositionViewer::~cursorPositionViewer()
+{
+  delete TextSizesCache;
 }
 
 // ------------------------------------------------------------
@@ -64,7 +86,7 @@ void scigraphics::cursorPositionViewer::draw( painter &Painter, const pairScales
   if ( ! isVisible() )
     return;
 
-  std::string Text = pointText( Painter, Scales, Point );
+  const std::string Text = pointText( Painter, Scales, Point );
 
   updateRectangle( Painter, Text );
   drawBackground( Painter );
@@ -73,13 +95,36 @@ void scigraphics::cursorPositionViewer::draw( painter &Painter, const pairScales
 
 // ------------------------------------------------------------
 
+void scigraphics::cursorPositionViewer::updateTextSizesCacheIfNeed( painter &Painter, const std::string &Text )
+{
+  if ( TextSizesCache == NULL )
+    TextSizesCache = new textSizesCache();
+
+  if ( TextSizesCache->Text == Text )
+  {
+    //std::cout << "cache OK!" << std::endl;
+    return;
+  }
+
+  {
+    //std::cout << "cache fault" << std::endl;
+    TextSizesCache->Text = Text;
+    TextSizesCache->Width = Painter.textWidth( Text, getTextStyle() );
+    TextSizesCache->Height = Painter.textHeight( Text, getTextStyle() );
+  }
+}
+
+// ------------------------------------------------------------
+
 void scigraphics::cursorPositionViewer::updateRectangle( painter &Painter, const std::string &Text )
 {
-  unsigned TextWidth  = Painter.textWidth( Text, getTextStyle() );
-  unsigned TextHeight = Painter.textHeight( Text, getTextStyle() );
+  updateTextSizesCacheIfNeed( Painter, Text );
   
-  wpoint LegendRightDownCorner = wpoint( std::max<wcoord>( getRectangle().left() + TextWidth + 2*textHorizontalIndent(), getRectangle().right() ), 
-                                         std::min<wcoord>( getRectangle().up() - TextHeight - 2*textVerticalIndent(),  getRectangle().down()  ) );
+  const wcoord TextWidth  = TextSizesCache->Width;
+  const wcoord TextHeight = TextSizesCache->Height;
+  
+  const wpoint LegendRightDownCorner = wpoint( std::max<wcoord>( getRectangle().left() + TextWidth + 2*textHorizontalIndent(), getRectangle().right() ), 
+                                               std::min<wcoord>( getRectangle().up() - TextHeight - 2*textVerticalIndent(),  getRectangle().down()  ) );
   setRectangle( getRectangle().leftUp(), LegendRightDownCorner );
 }
 
@@ -88,8 +133,8 @@ void scigraphics::cursorPositionViewer::updateRectangle( painter &Painter, const
 void scigraphics::cursorPositionViewer::drawText( painter &Painter, const std::string &Text )
 {
   wpoint Point = getRectangle().leftUp();
-  Point.moveY( -(int)textVerticalIndent() );
-  Point.moveX( +(int)textHorizontalIndent() );
+  Point.moveY( -static_cast<int>(textVerticalIndent()) );
+  Point.moveX( +static_cast<int>(textHorizontalIndent()) );
   Painter.drawTextW( Text, Point, painter::HLeft|painter::VDown, getTextStyle() );
 }
 

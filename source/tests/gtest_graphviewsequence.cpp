@@ -11,6 +11,8 @@
 
 #include "mockpainter.h"
 
+#include <cmath>
+
 using namespace scigraphics;
 
 // =========================================================

@@ -38,19 +38,30 @@ namespace scigraphics
   class cursorPositionViewer : public floatRectangle
   {
     private:
+      struct textSizesCache;
+
+    private:
       static const wrectangle InitCursorRectangle;
       textStyle TextStyle;
 
-    protected:
+      textSizesCache *TextSizesCache;
+
+    private:
       unsigned textVerticalIndent() const;
       unsigned textHorizontalIndent() const;
+
+      void updateTextSizesCacheIfNeed( painter &Painter, const std::string &Text );
   
       void drawText( painter &Painter, const std::string &Text );
       void updateRectangle( painter &Painter, const std::string &Text );
       std::string pointText( painter &Painter, const pairScales &Scales, const wpoint &Point ) const;
 
+      cursorPositionViewer( const cursorPositionViewer& );
+      cursorPositionViewer& operator=( const cursorPositionViewer& );
+
     public:
       cursorPositionViewer();
+      ~cursorPositionViewer();
       
       const textStyle& getTextStyle() const { return TextStyle; }
       void setTextStyle( const textStyle &S ) { TextStyle = S; }

@@ -31,13 +31,13 @@
 namespace scigraphics
 {
 
-// ============================================================
+  // ============================================================
 
   class painter;
   class textStyle;
   class pairScales;
 
-// ============================================================
+  // ============================================================
 
   class floatRectangle
   {
@@ -48,7 +48,6 @@ namespace scigraphics
       bool Visible;
 
     protected:
-      static unsigned textHeight( painter &Painter, const std::string &Text, const textStyle &Style );
       void drawBackground( painter &Painter ) const;
 
     public:
@@ -71,8 +70,7 @@ namespace scigraphics
       bool isVisible() const;
   };
 
-
-// ============================================================
+  // ============================================================
 
 }
 

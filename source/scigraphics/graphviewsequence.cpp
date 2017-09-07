@@ -259,16 +259,23 @@ void scigraphics::sequence::graphViewGeneralLine::drawUnorderedByX( painter &Pai
   Painter.setLineStyle( getStyle() );
   while ( true )
   {
-    if ( Point != End && Point->isValid() )
+    if ( Point == End )
     {
-      fpoint CurrFPoint = Scales.npoint2fpoint(*Point);
+      PointsWithSameXCoord.addToPolyline( &Polyline );
+      drawLineBetweenPoints( Painter, &Polyline );
+      break;
+    }
+
+    if ( Point->isValid() )
+    {
+      const fpoint CurrFPoint = Scales.npoint2fpoint(*Point);
       if ( PointsWithSameXCoord.canSeparate( Painter, CurrFPoint ) )
       {
         PointsWithSameXCoord.addToPolyline( &Polyline );
         PointsWithSameXCoord.clear();
         if ( Polyline.size() >= MaxPolylineSize )
         {
-          wpoint LastPoint = Polyline.back();
+          const wpoint LastPoint = Polyline.back();
           drawLineBetweenPoints( Painter, &Polyline );
           Polyline.clear();
           Polyline.reserve( MaxPolylineSize );
@@ -276,16 +283,22 @@ void scigraphics::sequence::graphViewGeneralLine::drawUnorderedByX( painter &Pai
         }
       }
       PointsWithSameXCoord.append( Painter, CurrFPoint );
-    } else {
+      ++Point;
+      continue;
+    }
+    
+    {
+      assert( ! Point->isValid() );
       PointsWithSameXCoord.addToPolyline( &Polyline );
       PointsWithSameXCoord.clear();
       drawLineBetweenPoints( Painter, &Polyline );
-//      Painter.drawLineW( Polyline );
       Polyline.clear();
-      if ( Point == End )
-        break;
+
+      ++Point;
+      while ( Point != End && ! Point->isValid() )
+        ++Point;
     }
-    ++Point;
+
   }
 
 }
@@ -341,11 +354,12 @@ void scigraphics::sequence::graphViewPoints::drawUnorderedByX( painter &Painter,
 {
   if ( getStyle().getShape() == pointStyle::None )
     return;
+
   for ( sequence::data::iterator Point = Begin; Point != End; ++Point )
   {
     if ( ! Point->isValid() )
       continue;
-    fpoint FPoint = Scales.npoint2fpoint( npoint(*Point) );
+    const fpoint FPoint = Scales.npoint2fpoint( npoint(*Point) );
     Painter.drawPointF( FPoint, getStyle() );
   }
 }
@@ -354,8 +368,8 @@ void scigraphics::sequence::graphViewPoints::drawUnorderedByX( painter &Painter,
 
 void scigraphics::sequence::graphViewPoints::drawLegendExample( painter &Painter, const wrectangle &Rectangle ) const
 {
-  wcoord VCenter = ( Rectangle.up() + Rectangle.down() )/2;
-  wcoord HCenter = ( Rectangle.left() + Rectangle.right() )/2;
+  const wcoord VCenter = ( Rectangle.up() + Rectangle.down() )/2;
+  const wcoord HCenter = ( Rectangle.left() + Rectangle.right() )/2;
   Painter.drawPointW( wpoint(HCenter,VCenter), getStyle() );
 }
 
@@ -398,8 +412,8 @@ void scigraphics::sequence::graphViewErrorBars::drawHorizontalErrorBar( painter 
 {
   if ( ErrX <= 0 )
     return;
-  fpoint Min = Scales.npoint2fpoint(npoint( Point.x() - ErrX, Point.y() ));
-  fpoint Max = Scales.npoint2fpoint(npoint( Point.x() + ErrX, Point.y() ));
+  const fpoint Min = Scales.npoint2fpoint(npoint( Point.x() - ErrX, Point.y() ));
+  const fpoint Max = Scales.npoint2fpoint(npoint( Point.x() + ErrX, Point.y() ));
   Painter.drawHorizontalErrorBarF( Min, Max, getStyle() );
 }
 
@@ -409,8 +423,8 @@ void scigraphics::sequence::graphViewErrorBars::drawVerticalErrorBar( painter &P
 {
   if ( ErrY <= 0 )
     return;
-  fpoint Min = Scales.npoint2fpoint(npoint( Point.x(), Point.y() - ErrY ));
-  fpoint Max = Scales.npoint2fpoint(npoint( Point.x(), Point.y() + ErrY ));
+  const fpoint Min = Scales.npoint2fpoint(npoint( Point.x(), Point.y() - ErrY ));
+  const fpoint Max = Scales.npoint2fpoint(npoint( Point.x(), Point.y() + ErrY ));
   Painter.drawVerticalErrorBarF( Min, Max, getStyle() );
 }
 
@@ -440,7 +454,7 @@ void scigraphics::sequence::graphViewLineHystogram::drawLineBetweenPoints( paint
   Points->resize( 2*Size-1, wpoint(0,0) );
   for ( size_t i = Size-1; i >= 1; i-- )
   {
-    size_t j = i*2;
+    const size_t j = i*2;
     assert( j >= 1 );
     assert( j >= i );
     assert( j < Points->size() );
@@ -476,7 +490,7 @@ scigraphics::sequence::data::iterator scigraphics::sequence::graphViewCoveredAre
   sequence::data::iterator Point = Begin;
   while ( Point != End && Point->isValid() )
   {
-    fpoint FPoint = Scales.npoint2fpoint( npoint(*Point) );
+    const fpoint FPoint = Scales.npoint2fpoint( npoint(*Point) );
     Polygon->push_back( FPoint );
     ++Point;
   }
@@ -491,7 +505,7 @@ scigraphics::sequence::data::iterator scigraphics::sequence::graphViewCoveredAre
 void scigraphics::sequence::graphViewCoveredArea::draw( painter &Painter, const pairScales& Scales, const sequence::data &Data ) const
 {
   sequence::data::iterator Iterator = Data.begin();
-  sequence::data::iterator End = Data.end();
+  const sequence::data::iterator End = Data.end();
 
   while ( Iterator != End )
   {

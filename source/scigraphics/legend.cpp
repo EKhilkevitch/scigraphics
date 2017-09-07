@@ -114,7 +114,7 @@ scigraphics::textStyle scigraphics::legend::updateLegendRectangle( painter &Pain
 
 scigraphics::wrectangle scigraphics::legend::createInitialRectangle( painter &Painter ) 
 {
-  wpoint Point( Painter.width() - 30, 90 );
+  const wpoint Point( Painter.width() - 30, 90 );
   return wrectangle( Point, Point );
 }
 
@@ -131,8 +131,8 @@ scigraphics::legend::legendSize scigraphics::legend::sizesForLegendRectangle( pa
 
     if ( shouldDrawGraphLegend(*Graph) )
     {
-      wcoord Width  = Graph->legendExampleWidth() + Painter.textWidth(  Graph->legend(), Style );
-      wcoord Height = std::max( Graph->legendExampleHeight(), Painter.textHeight( Graph->legend(), Style ) );
+      const wcoord Width  = Graph->legendExampleWidth() + Painter.textWidth(  Graph->legend(), Style );
+      const wcoord Height = std::max( Graph->legendExampleHeight(), Painter.textHeight( Graph->legend(), Style ) );
       Size.updateWidth( Width + 3*textHorizontalIndent() );
       Size.updateHeight( Height + VerticalDistance );
     }
@@ -148,18 +148,22 @@ scigraphics::legend::legendSize scigraphics::legend::sizesForLegendRectangle( pa
 
 void scigraphics::legend::setRectangleFromLegendSize( painter &Painter, const legendSize &LegendSize )
 {
-  wpoint LeftUp = getRectangle().leftUp();
-  wpoint RightDown( LeftUp.x() + LegendSize.width(), LeftUp.y() - LegendSize.height() );
+  const wpoint LeftUp = getRectangle().leftUp();
+  const wpoint RightDown( LeftUp.x() + LegendSize.width(), LeftUp.y() - LegendSize.height() );
 
   wrectangle LegendRectangle( LeftUp, RightDown );
 
   if ( LegendRectangle.width() < Painter.plotWidth() )
+  {
     while ( LegendRectangle.right() > Painter.plotWidth() ) 
       LegendRectangle.moveX( -1 );
+  }
 
   if ( LegendRectangle.height() < Painter.plotHeight() )
+  {
     while ( LegendRectangle.down() < 0 )
       LegendRectangle.moveY( +1 );
+  }
 
   setRectangle( LegendRectangle );
 }
@@ -190,9 +194,12 @@ unsigned scigraphics::legend::minFontSize()
 std::list<std::string> scigraphics::legend::legendsList( const graphCollection &Graphics )
 {
   std::list< std::string > Legends;
+  
   for ( graphCollection::const_iterator g = Graphics.begin(); g != Graphics.end(); ++g )
+  {
     if ( shouldDrawGraphLegend(*g) )
       Legends.push_back( g->legend() );
+  }
 
   return Legends;
 }
@@ -202,8 +209,10 @@ std::list<std::string> scigraphics::legend::legendsList( const graphCollection &
 bool scigraphics::legend::shouldDrawLegend( const graphCollection &Graphics )
 {
   for ( graphCollection::const_iterator g = Graphics.begin(); g != Graphics.end(); ++g )
+  {
     if ( shouldDrawGraphLegend(*g) )
       return true;
+  }
   return false;
 }
 
@@ -211,16 +220,16 @@ bool scigraphics::legend::shouldDrawLegend( const graphCollection &Graphics )
 
 scigraphics::wcoord scigraphics::legend::drawGraphLegend( painter &Painter, wcoord y, const graph &Graph, const textStyle &Style )
 {
-  const wcoord TextHeight = textHeight( Painter, Graph.legend(), Style );
+  const wcoord TextHeight = Painter.textHeight( Graph.legend(), Style );
 
-  wcoord x = getRectangle().left() + textHorizontalIndent();
-  wcoord ExampleWidth = Graph.legendExampleWidth();
-  wcoord GraphLegendHeight = std::max( Graph.legendExampleHeight(), TextHeight );
+  const wcoord XForExample = getRectangle().left() + textHorizontalIndent();
+  const wcoord ExampleWidth = Graph.legendExampleWidth();
+  const wcoord GraphLegendHeight = std::max( Graph.legendExampleHeight(), TextHeight );
 
-  Graph.drawLegendExample( Painter, wrectangle( wpoint(x,y-GraphLegendHeight), wpoint(x+ExampleWidth,y) ) );
+  Graph.drawLegendExample( Painter, wrectangle( wpoint( XForExample, y-GraphLegendHeight ), wpoint(XForExample+ExampleWidth,y) ) );
   
-  x += ExampleWidth + textHorizontalIndent();
-  Painter.drawTextW( Graph.legend(), wpoint(x,y-GraphLegendHeight/2), painter::HLeft|painter::VCenter, Style );
+  const wcoord XForText = XForExample + ExampleWidth + textHorizontalIndent();
+  Painter.drawTextW( Graph.legend(), wpoint( XForText, y-GraphLegendHeight/2 ), painter::HLeft|painter::VCenter, Style );
 
   return GraphLegendHeight;
 }
@@ -230,11 +239,12 @@ scigraphics::wcoord scigraphics::legend::drawGraphLegend( painter &Painter, wcoo
 void scigraphics::legend::drawAllLegends( painter &Painter, const graphCollection &Graphics, const textStyle &Style )
 {
   wcoord y = getRectangle().up() - interTextVerticalDistance(Style);
+
   for ( graphCollection::const_reverse_iterator Graph = Graphics.rbegin(); Graph != Graphics.rend(); ++Graph )
   {
     if ( shouldDrawGraphLegend( *Graph ) )
     {
-      wcoord LegendHeight = drawGraphLegend( Painter, y, *Graph, Style );
+      const wcoord LegendHeight = drawGraphLegend( Painter, y, *Graph, Style );
       y -=  LegendHeight + interTextVerticalDistance(Style);
     }
   }
@@ -257,7 +267,7 @@ void scigraphics::legend::draw( painter &Painter, const graphCollection &Graphic
   if ( ! shouldDrawLegend(Graphics) )
     return;
 
-  textStyle CurrTextStyle = updateLegendRectangle( Painter, Graphics );
+  const textStyle CurrTextStyle = updateLegendRectangle( Painter, Graphics );
   if ( getRectangle().width() <= 1 )
     return;
   

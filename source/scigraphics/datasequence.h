@@ -50,8 +50,8 @@ namespace scigraphics
         number errX() const { return ErrX; }
         number errY() const { return ErrY; }
 
-        bool isValid() const { return isValidNumbers( x(), y() ); }
-        bool isValidError() const { return isValidNumbers( errX(), errY() ); }
+        bool isValid() const { return isValidNumbers( y(), x() ); }
+        bool isValidError() const { return isValidNumbers( errY(), errX() ); }
         
         static inline point invalidPoint();
     };
