@@ -169,6 +169,8 @@ namespace scigraphics
       selectionCollection::const_iterator beginSelection() const { return Selections.begin(); }
       selectionCollection::const_iterator endSelection()   const { return Selections.end(); }
       size_t countOfSelections() const;
+      bool enabledMultipleMouseSelections() const;
+      void setEnableMultipleMouseSelections( bool Enable );
 
       pairScales getBottomLeftPairScales();
 

@@ -74,6 +74,7 @@ int main( int argc, char **argv )
   scigraphics::graphSV *Exp = Manager.plot(3)->createGraphSV( "Exp" );
   for ( double x = -2; x <= 10; x+= 0.1 )
     Exp->append( 1e5*x, 1e6*std::exp(x) );
+  Manager.plot(3)->setEnableMultipleMouseSelections(true);
 
   scigraphics::graphSV *Rounds = Manager.plot(4)->createGraphSV( "Ellipses" );
   for ( double Phi = 0; Phi <= 2*M_PI; Phi+=0.01 )

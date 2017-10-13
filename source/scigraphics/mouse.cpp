@@ -191,8 +191,8 @@ scigraphics::mouse::moveAction::moveAction( plot &Plot, wpoint Point ) :
 
 void scigraphics::mouse::moveAction::moved( wpoint Point )
 {
-  double DeltaX = Point.x() - lastPoint().x();
-  double DeltaY = Point.y() - lastPoint().y();
+  const double DeltaX = Point.x() - lastPoint().x();
+  const double DeltaY = Point.y() - lastPoint().y();
 
   addShiftX( - DeltaX/plotWidth() );
   addShiftY( + DeltaY/plotHeight() );
@@ -232,8 +232,8 @@ void scigraphics::mouse::zoomAction::released( wpoint Point )
 
 bool scigraphics::mouse::zoomAction::needToApplyChanges( wpoint Point )
 {
-  double DeltaX = std::fabs((double)(Point.x()-initPoint().x()));
-  double DeltaY = std::fabs((double)(Point.y()-initPoint().y()));
+  const double DeltaX = std::fabs(static_cast<double>(Point.x()-initPoint().x()));
+  const double DeltaY = std::fabs(static_cast<double>(Point.y()-initPoint().y()));
   const double MinDelta = 5;
 
   return ( DeltaX > MinDelta ) && 
@@ -247,8 +247,8 @@ void scigraphics::mouse::zoomAction::applyShifts( wpoint Point )
   wpoint XPoint( std::min(Point.x(),initPoint().x()), 
                  std::max(Point.y(),initPoint().y()) );
 
-  double RelDeltaX =     ( XPoint.x() - Plot.getPainter().getIndents().left() )/plotWidth();
-  double RelDeltaY = 1 - ( XPoint.y() - Plot.getPainter().getIndents().up()   )/plotHeight();
+  const double RelDeltaX =     ( XPoint.x() - Plot.getPainter().getIndents().left() )/plotWidth();
+  const double RelDeltaY = 1 - ( XPoint.y() - Plot.getPainter().getIndents().up()   )/plotHeight();
 
   addShiftX( RelDeltaX );
   addShiftY( RelDeltaY );
@@ -258,8 +258,8 @@ void scigraphics::mouse::zoomAction::applyShifts( wpoint Point )
 
 void scigraphics::mouse::zoomAction::applyZooms( wpoint Point )
 {
-  double DeltaX = std::fabs((double)(Point.x()-initPoint().x()));
-  double DeltaY = std::fabs((double)(Point.y()-initPoint().y()));
+  const double DeltaX = std::fabs(static_cast<double>(Point.x()-initPoint().x()));
+  const double DeltaY = std::fabs(static_cast<double>(Point.y()-initPoint().y()));
  
   mulZoomX( DeltaX/plotWidth() );
   mulZoomY( DeltaY/plotHeight() );
@@ -300,8 +300,8 @@ void scigraphics::mouse::moveFloatAction::moved( wpoint Point )
 {
   if ( Float != NULL )
   {
-    wcoord DeltaX = Point.x() - lastPoint().x();
-    wcoord DeltaY = Point.y() - lastPoint().y();
+    const wcoord DeltaX = Point.x() - lastPoint().x();
+    const wcoord DeltaY = Point.y() - lastPoint().y();
     setLastPositions( Point );
     
     Float->move( DeltaX, DeltaY );
@@ -320,7 +320,8 @@ scigraphics::mouse::selectAction::selectAction( plot &P, wpoint Point )
 
 void scigraphics::mouse::selectAction::initSelection()
 {
-  Plot.clearSelections();
+  if ( ! Plot.enabledMultipleMouseSelections() )
+    Plot.clearSelections();
   Selection = createSelection();
 }
 
@@ -346,8 +347,9 @@ void scigraphics::mouse::selectAction::released( wpoint )
 {
   if ( Selection == NULL )
     return;
-  number Min = Selection->min();
-  number Max = Selection->max();
+
+  const number Min = Selection->min();
+  const number Max = Selection->max();
   if ( ! isValidNumbers( Min, Max ) )
   {
     Plot.deleteSelection(Selection);
@@ -397,8 +399,8 @@ scigraphics::mouse::moveSelectionAction::moveSelectionAction( plot &Plot, wpoint
 
 scigraphics::selectionStrip* scigraphics::mouse::moveSelectionAction::getSelection( wpoint Point )
 {
-  selection *S = Plot.getSelection(Point);
-  return dynamic_cast<selectionStrip*>( S );
+  selection *SelectionUnderCursor = Plot.getSelection(Point);
+  return dynamic_cast<selectionStrip*>( SelectionUnderCursor );
 }
 
 // ------------------------------------------------------------
@@ -427,9 +429,10 @@ scigraphics::mouse::resetSelectionAction::resetSelectionAction( plot &Plot, wpoi
 
 // ------------------------------------------------------------
 
-void scigraphics::mouse::resetSelectionAction::released( wpoint )
+void scigraphics::mouse::resetSelectionAction::released( wpoint Point )
 {
-  Plot.clearSelections();
+  selection *SelectionUnderCursor = Plot.getSelection(Point);
+  Plot.deleteSelection( SelectionUnderCursor );
 }
 
 // ============================================================
@@ -499,9 +502,9 @@ scigraphics::mouse::mouseZoomWheel::mouseZoomWheel( plot &Plot ) :
 
 void scigraphics::mouse::mouseZoomWheel::wheel( wpoint Point, wheeldelta Delta )
 {
-  fpoint FPoint = Plot.getPainter().wpoint2fpoint( Point );
+  const fpoint FPoint = Plot.getPainter().wpoint2fpoint( Point );
   
-  double Zoom = - Delta * deltaDumpFactor();
+  const double Zoom = - Delta * deltaDumpFactor();
   
   addShiftX( - FPoint.x() * Zoom );
   addShiftY( - FPoint.y() * Zoom );
@@ -515,6 +518,7 @@ void scigraphics::mouse::mouseZoomWheel::wheel( wpoint Point, wheeldelta Delta )
 scigraphics::mouse::mouse( plot &P ) : 
   Plot(P),
   ReplotOnMouseActions( true ),
+  EnableMultipleUserSelections( false ),
   ActionHandler( new noneAction(P) ),
   WheelHandler( new mouseNoneWheel(P) ),
   LastPosition(0,0)
@@ -609,8 +613,10 @@ void scigraphics::mouse::mousePressed( wpoint Point, unsigned Buttons )
 { 
   updateLastPosition(Point);
   replaceActionHandler(Point,Buttons); 
+
   if ( ! isNoneHandler() )
     Plot.getMouseCallBack().onPressed( ActionHandler );
+
   if ( ! isNoneHandler() )
     replot();
 }
@@ -622,8 +628,10 @@ void scigraphics::mouse::mouseMoved( wpoint Point )
   updateLastPosition(Point);
   assert( ActionHandler != NULL );
   ActionHandler->moved(Point);
+
   if ( ! isNoneHandler() )
     Plot.getMouseCallBack().onMoved( ActionHandler );
+
   if ( ! isNoneHandler() )
     replot();
 }
@@ -635,10 +643,13 @@ void scigraphics::mouse::mouseReleased( wpoint Point )
   updateLastPosition(Point);
   assert( ActionHandler != NULL );
   ActionHandler->released(Point); 
+
   if ( ! isNoneHandler() )
     Plot.getMouseCallBack().onRelease( ActionHandler );
+
   if ( ! isNoneHandler() )
     replot();
+
   setNoneActionHandler(); 
 }
       
@@ -715,6 +726,20 @@ void scigraphics::mouse::setReplotOnMouseActions( bool R )
 bool scigraphics::mouse::replotOnMouseActions() const 
 { 
   return ReplotOnMouseActions; 
+}
+
+// ------------------------------------------------------------
+      
+void scigraphics::mouse::setEnableMultipleMouseSelections( bool E ) 
+{
+  EnableMultipleUserSelections = E;
+}
+
+// ------------------------------------------------------------
+ 
+bool scigraphics::mouse::enabledMultipleMouseSelections() const
+{
+  return EnableMultipleUserSelections;
 }
 
 // ------------------------------------------------------------

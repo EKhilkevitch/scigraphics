@@ -299,6 +299,7 @@ namespace scigraphics
     private:
       plot &Plot;
       bool ReplotOnMouseActions;
+      bool EnableMultipleUserSelections;
       
       mouseActionHandler *ActionHandler;
       mouseWheelHandler *WheelHandler;
@@ -344,6 +345,9 @@ namespace scigraphics
 
       void setReplotOnMouseActions( bool IsReplot );
       bool replotOnMouseActions() const;
+      
+      void setEnableMultipleMouseSelections( bool Enable );
+      bool enabledMultipleMouseSelections() const;
   };
 
 // ============================================================

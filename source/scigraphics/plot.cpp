@@ -556,6 +556,20 @@ size_t scigraphics::plot::countOfSelections() const
 
 // ------------------------------------------------------------
       
+bool scigraphics::plot::enabledMultipleMouseSelections() const
+{
+  return Pimpl->MouseHandler.enabledMultipleMouseSelections();
+}
+
+// ------------------------------------------------------------
+
+void scigraphics::plot::setEnableMultipleMouseSelections( bool Enable )
+{
+  Pimpl->MouseHandler.setEnableMultipleMouseSelections( Enable );
+}
+
+// ------------------------------------------------------------
+      
 void scigraphics::plot::addScalesShift( double Shift, axisDirection Direction )
 {
   Pimpl->AxisSets.addScalesShift(Shift,Direction);

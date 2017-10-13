@@ -36,7 +36,7 @@ scigraphics::selection* scigraphics::selectionCollection::getSelectionOnPoint( c
   {
     pairScales Scales = getPairScales( &(*s) );
     if ( s->pointInSelection(Point,Scales) )
-      return &*s;
+      return &( *s );
   }
 
   return NULL;
@@ -49,7 +49,7 @@ void scigraphics::selectionCollection::setSelectionInterval( selectionStrip *Sel
   if ( ! exists(Selection) )
     throw std::invalid_argument( "Selection not exists in collection (in setSelectionInterval)" );
 
-  pairScales Scales = getPairScales( Selection );
+  const pairScales Scales = getPairScales( Selection );
   Selection->setIntervalPointsF( Pt1, Pt2, Scales );
 }
 
@@ -60,7 +60,7 @@ void scigraphics::selectionCollection::shiftSelection( selectionStrip *Selection
   if ( ! exists(Selection) )
     throw std::invalid_argument( "Selection not exists in collection (in shiftSelection)" );
   
-  pairScales Scales = getPairScales( Selection );
+  const pairScales Scales = getPairScales( Selection );
   Selection->shiftPointsF( From, To, Scales );
 }
 
