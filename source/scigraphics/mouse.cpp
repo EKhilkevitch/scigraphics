@@ -431,8 +431,13 @@ scigraphics::mouse::resetSelectionAction::resetSelectionAction( plot &Plot, wpoi
 
 void scigraphics::mouse::resetSelectionAction::released( wpoint Point )
 {
-  selection *SelectionUnderCursor = Plot.getSelection(Point);
-  Plot.deleteSelection( SelectionUnderCursor );
+  if ( Plot.enabledMultipleMouseSelections() )
+  {
+    selection *SelectionUnderCursor = Plot.getSelection(Point);
+    Plot.deleteSelection( SelectionUnderCursor );
+  } else {
+    Plot.clearSelections();
+  }
 }
 
 // ============================================================
