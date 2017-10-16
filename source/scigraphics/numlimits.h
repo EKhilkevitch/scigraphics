@@ -64,8 +64,11 @@ namespace scigraphics
       bool inLimits( number Number ) const { return TotalLimits.inInterval(Number); }
       
       void setPositiveInterval( interval<number> Interval );
+      void setPositiveInterval( number Min, number Max );
       void setNegativeInterval( interval<number> Interval );
+      void setNegativeInterval( number Min, number Max );
       void setTotalInterval( interval<number> Interval );
+      void setTotalInterval( number Min, number Max );
       
       static bool isValidInterval( interval<number> );
       template <class iterator, class value> static std::pair<iterator,iterator> boundsOfInterval( iterator Begin, iterator End, const value &First, const value &Last );

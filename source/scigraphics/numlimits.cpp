@@ -89,6 +89,13 @@ void scigraphics::numberLimits::setPositiveInterval( interval<number> Interval )
 
 // ------------------------------------------------------------
 
+void scigraphics::numberLimits::setPositiveInterval( number Min, number Max )
+{
+  setPositiveInterval( interval<number>( Min, Max ) );
+}
+
+// ------------------------------------------------------------
+
 void scigraphics::numberLimits::setNegativeInterval( interval<number> Interval )
 {
   if ( ! isValidInterval(Interval) )
@@ -101,12 +108,26 @@ void scigraphics::numberLimits::setNegativeInterval( interval<number> Interval )
       
 // ------------------------------------------------------------
 
+void scigraphics::numberLimits::setNegativeInterval( number Min, number Max )
+{
+  setNegativeInterval( interval<number>( Min, Max ) );
+}
+
+// ------------------------------------------------------------
+
 void scigraphics::numberLimits::setTotalInterval( interval<number> Interval )
 {
   if ( ! isValidInterval(Interval) )
     TotalLimits = invalidInterval();
   else
     TotalLimits = Interval;
+}
+
+// ------------------------------------------------------------
+
+void scigraphics::numberLimits::setTotalInterval( number Min, number Max )
+{
+  setTotalInterval( interval<number>( Min, Max ) );
 }
   
 // ============================================================
