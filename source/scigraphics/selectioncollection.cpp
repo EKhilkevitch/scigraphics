@@ -32,7 +32,7 @@
       
 scigraphics::selection* scigraphics::selectionCollection::getSelectionOnPoint( const fpoint &Point )
 {
-  for ( iterator s = begin(); s != end(); ++s )
+  for ( reverse_iterator s = rbegin(); s != rend(); ++s )
   {
     pairScales Scales = getPairScales( &(*s) );
     if ( s->pointInSelection(Point,Scales) )

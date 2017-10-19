@@ -310,8 +310,8 @@ void scigraphics::mouse::moveFloatAction::moved( wpoint Point )
 
 // ============================================================
 
-scigraphics::mouse::selectAction::selectAction( plot &P, wpoint Point ) 
-  : mouseActionHandler(P,Point),
+scigraphics::mouse::selectAction::selectAction( plot &P, wpoint Point ) : 
+  mouseActionHandler(P,Point),
   Selection(NULL)
 {
 }
@@ -431,12 +431,12 @@ scigraphics::mouse::resetSelectionAction::resetSelectionAction( plot &Plot, wpoi
 
 void scigraphics::mouse::resetSelectionAction::released( wpoint Point )
 {
-  if ( Plot.enabledMultipleMouseSelections() )
+  if ( Plot.countOfSelections() == 1 )
   {
+    Plot.clearSelections();
+  } else {
     selection *SelectionUnderCursor = Plot.getSelection(Point);
     Plot.deleteSelection( SelectionUnderCursor );
-  } else {
-    Plot.clearSelections();
   }
 }
 

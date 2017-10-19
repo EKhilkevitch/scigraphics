@@ -124,6 +124,7 @@ namespace scigraphics
       typedef container_ptr< T > templatePlotElementList;
       typedef typename templatePlotElementList::iterator iterator;
       typedef typename templatePlotElementList::const_iterator const_iterator;
+      typedef typename templatePlotElementList::reverse_iterator reverse_iterator;
       typedef typename templatePlotElementList::const_reverse_iterator const_reverse_iterator;
 
     private:
@@ -141,6 +142,9 @@ namespace scigraphics
 
       const_iterator begin() const { return castIterator<const_iterator>(getPlotElementsList().begin()); }
       const_iterator end()   const { return castIterator<const_iterator>(getPlotElementsList().end()); }
+      
+      reverse_iterator rbegin() { return castIterator<reverse_iterator>(getPlotElementsList().rbegin()); }
+      reverse_iterator rend()   { return castIterator<reverse_iterator>(getPlotElementsList().rend()); }
       
       const_reverse_iterator rbegin() const { return castIterator<const_reverse_iterator>(getPlotElementsList().rbegin()); }
       const_reverse_iterator rend()   const { return castIterator<const_reverse_iterator>(getPlotElementsList().rend()); }

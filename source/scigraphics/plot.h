@@ -168,6 +168,8 @@ namespace scigraphics
       selectionCollection::iterator endSelection()   { return Selections.end(); }
       selectionCollection::const_iterator beginSelection() const { return Selections.begin(); }
       selectionCollection::const_iterator endSelection()   const { return Selections.end(); }
+      selectionCollection::const_reverse_iterator rbeginSelection() const { return Selections.rbegin(); }
+      selectionCollection::const_reverse_iterator rendSelection()   const { return Selections.rend(); }
       size_t countOfSelections() const;
       bool enabledMultipleMouseSelections() const;
       void setEnableMultipleMouseSelections( bool Enable );
