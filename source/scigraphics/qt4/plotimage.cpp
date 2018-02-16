@@ -57,7 +57,7 @@ scigraphics::qt4plotOnImage::qt4plotOnImage( size_t SizeX, size_t SizeY ) :
   StoredMsgHandler(NULL)
 {
   makeQApplicationIfNeed();
-  setDrawer( new qt4drawerOnImage( QSize(SizeX,SizeY) ) );
+  setDrawer( new qt4drawerOnImage( QSize( static_cast<int>(SizeX), static_cast<int>(SizeY) ) ) );
 }
 
 // ----------------------------------------------------------------

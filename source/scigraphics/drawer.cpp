@@ -94,7 +94,7 @@ scigraphics::wcoord scigraphics::drawer::textWidth( const std::string &Text, con
 
 scigraphics::wcoord scigraphics::drawer::textHeight( const std::string &Text, const textStyle &Style )
 { 
-  return Style.getFontSize() * numOfLinesInString(Text); 
+  return static_cast<wcoord>( Style.getFontSize() * numOfLinesInString(Text) ); 
 }
 
 // ------------------------------------------------------------
