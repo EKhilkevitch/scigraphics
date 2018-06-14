@@ -31,7 +31,7 @@
 
 // ======================================================
 
-const unsigned TimerInterval = 20;
+const int TimerInterval = 20;
 
 // ======================================================
 
@@ -93,7 +93,7 @@ int main( int argc, char **argv )
 
   int RetCode = app.exec();
 
-  qDebug() << "FPS = " << (double)Animator.count() / ( 1e-3 * WorkTime.elapsed() ) << " Max is " << 1.e3/TimerInterval;
+  qDebug() << "FPS = " << static_cast<double>(Animator.count()) / ( 1e-3 * WorkTime.elapsed() ) << " Max is " << 1.e3/TimerInterval;
   
   Thread.stop();
   

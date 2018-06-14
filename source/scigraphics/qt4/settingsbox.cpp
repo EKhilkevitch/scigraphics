@@ -97,8 +97,6 @@ void scigraphics::qt4settingsGroupSuperBox::init( const QList<axisPosition> &Axi
 
   setLayout( new QGridLayout() );
 
-  QGridLayout *Layout = new QGridLayout();
-
   foreach ( axisPosition Position, AxisPositions )
   {
     qt4settingsGroupBox *Box = createBoxForAxisPosition( Position );

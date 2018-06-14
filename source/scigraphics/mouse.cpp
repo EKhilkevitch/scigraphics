@@ -600,7 +600,7 @@ void scigraphics::mouse::replaceWheelHandler( unsigned Buttons )
 
 void scigraphics::mouse::setNoneWheelHandler()
 {
-  replaceWheelHandler( (mouseWheelHandler*)(0) );
+  replaceWheelHandler( static_cast<mouseWheelHandler*>(NULL) );
 }
 
 // ------------------------------------------------------------

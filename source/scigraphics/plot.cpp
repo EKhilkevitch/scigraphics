@@ -51,11 +51,11 @@ namespace scigraphics
 {
   struct plotInternalData
   {
+    colorSequence GraphicsColorSequence;
+
     painter Painter;
     
     plotLimits PlotLimits;
-
-    colorSequence GraphicsColorSequence;
 
     zoomRectangle ZoomRectangle;
 
@@ -79,9 +79,9 @@ namespace scigraphics
 // ------------------------------------------------------------
 
 scigraphics::plotInternalData::plotInternalData( plot &Plot ) :
+  GraphicsColorSequence( colorSequence::defaultColorSequence() ),
   MouseHandler( Plot ), 
-  CallBackContainer( Plot ),
-  GraphicsColorSequence( colorSequence::defaultColorSequence() )
+  CallBackContainer( Plot )
 {
   prepareAxisSets(Plot);
   prepareFloatRectangles();

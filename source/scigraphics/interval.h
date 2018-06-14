@@ -138,7 +138,9 @@ namespace scigraphics
   
   template <class T> double interval<T>::partOfDistance( T Value ) const 
   { 
-    return isSingular() ? 0 : ( (double)Value - (double)min() )/(double)distance(); 
+    if ( isSingular() )
+      return 0;
+    return ( static_cast<double>(Value) - static_cast<double>(min()) ) / static_cast<double>(distance());
   }
   
   // ------------------------------------------------------------
