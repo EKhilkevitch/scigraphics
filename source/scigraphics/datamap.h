@@ -88,6 +88,9 @@ namespace scigraphics
         
         virtual const point_t at( int_t Index ) const = 0;
         const point_t operator[]( int_t Index ) const { return at(Index); }
+
+        const point_t firstPoint() const { return at(0); }
+        const point_t lastPoint() const { return at( size()-1 ); }
         
         iterator begin() const { return iterator( *this, 0 ); }
         iterator end() const { return iterator( *this, size() ); }
