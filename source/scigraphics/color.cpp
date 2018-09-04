@@ -36,6 +36,24 @@
 #include <cstdio>
 
 // ============================================================
+
+const scigraphics::color::rgb scigraphics::color::Black;
+const scigraphics::color::rgb scigraphics::color::White;
+const scigraphics::color::rgb scigraphics::color::Blue;
+const scigraphics::color::rgb scigraphics::color::Green;
+const scigraphics::color::rgb scigraphics::color::Red;
+const scigraphics::color::rgb scigraphics::color::Cyan;
+const scigraphics::color::rgb scigraphics::color::Yellow;
+const scigraphics::color::rgb scigraphics::color::Magenta;
+const scigraphics::color::rgb scigraphics::color::DarkRed;
+const scigraphics::color::rgb scigraphics::color::DarkBlue;
+const scigraphics::color::rgb scigraphics::color::DarkGreen;
+const scigraphics::color::rgb scigraphics::color::DarkYellow;
+const scigraphics::color::rgb scigraphics::color::DarkCyan;
+const scigraphics::color::rgb scigraphics::color::DarkMagenta;
+const scigraphics::color::rgb scigraphics::color::Transparency;
+
+// ============================================================
         
 scigraphics::color::color( rgb Value ) : 
   RGB(Value) 
