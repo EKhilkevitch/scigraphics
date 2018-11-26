@@ -53,7 +53,7 @@ QPoint scigraphics::qt4drawer::pointQt( const wpoint& Point )
 
 // ----------------------------------------------------------------
     
-QRect  scigraphics::qt4drawer::rectangleQt( const wrectangle& Rect ) 
+QRect scigraphics::qt4drawer::rectangleQt( const wrectangle& Rect ) 
 { 
   return QRect( Rect.left(), Rect.down(), Rect.width(), Rect.height() );
 }
@@ -212,7 +212,14 @@ void scigraphics::qt4drawer::drawRectangle( const wrectangle& Rectangle )
 {
   if ( Painter == NULL )
     return;
-  Painter->drawRect( rectangleQt(Rectangle) );
+
+  QRect RectangleQt( rectangleQt(Rectangle) );
+  
+  // Win32 bug on 4.8.5
+  if ( RectangleQt.top() < 0 )
+    RectangleQt.setTop( -1 );
+
+  Painter->drawRect( RectangleQt );
 }
 
 // ----------------------------------------------------------------
