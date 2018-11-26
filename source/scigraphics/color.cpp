@@ -37,6 +37,7 @@
 
 // ============================================================
 
+#if __unix__
 const scigraphics::color::rgb scigraphics::color::Black;
 const scigraphics::color::rgb scigraphics::color::White;
 const scigraphics::color::rgb scigraphics::color::Blue;
@@ -52,6 +53,7 @@ const scigraphics::color::rgb scigraphics::color::DarkYellow;
 const scigraphics::color::rgb scigraphics::color::DarkCyan;
 const scigraphics::color::rgb scigraphics::color::DarkMagenta;
 const scigraphics::color::rgb scigraphics::color::Transparency;
+#endif
 
 // ============================================================
         
