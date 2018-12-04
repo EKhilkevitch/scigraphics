@@ -146,6 +146,9 @@ namespace scigraphics
 
         void setStepX( number Step );
         number stepX() const;
+
+        void setShiftX( number Shift );
+        number shiftX() const;
         
         void append( number Y );
         void append( number Y, number ErrY );

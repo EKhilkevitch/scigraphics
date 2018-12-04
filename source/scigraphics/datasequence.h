@@ -166,7 +166,7 @@ namespace scigraphics
     class dataUniformVector : public data
     {
       private:
-        number StepX;
+        number StepX, ShiftX;
         std::vector<number> Values, Errors;
         numberLimitsDataCache LimitsCache;
 
@@ -176,7 +176,7 @@ namespace scigraphics
         int_t size() const { return static_cast<int_t>(Values.size()); }
         const point_t at( int_t Index ) const;
 
-        number valueX( int_t Index ) const { return Index * stepX(); }
+        number valueX( int_t Index ) const { return static_cast<number>(Index) * stepX() + shiftX(); }
         number valueY( int_t Index ) const { return Values.at( static_cast<size_t>(Index) ); }
         number errorY( int_t Index ) const { return Errors.at( static_cast<size_t>(Index) ); }
 
@@ -185,6 +185,9 @@ namespace scigraphics
 
         void setStepX( number StepX );
         number stepX() const { return StepX; }
+
+        void setShiftX( number ShiftX );
+        number shiftX() const { return ShiftX; }
 
         void clear();
         

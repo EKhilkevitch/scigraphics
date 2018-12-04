@@ -503,6 +503,14 @@ void scigraphics::sequence::dataUniformVector::setStepX( number StepX )
 }
 
 // ------------------------------------------------------------
+        
+void scigraphics::sequence::dataUniformVector::setShiftX( number ShiftX )
+{
+  this->ShiftX = ShiftX;
+  LimitsCache.recalculate(*this);
+}
+
+// ------------------------------------------------------------
 
 void scigraphics::sequence::dataUniformVector::clear()
 {

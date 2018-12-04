@@ -257,6 +257,20 @@ scigraphics::number scigraphics::sequence::graphUniformVector::stepX() const
 
 // ------------------------------------------------------------
         
+void scigraphics::sequence::graphUniformVector::setShiftX( number Shift )
+{
+  getDataVector().setShiftX( Shift );
+}
+
+// ------------------------------------------------------------
+
+scigraphics::number scigraphics::sequence::graphUniformVector::shiftX() const
+{
+  return getDataVector().shiftX();
+}
+
+// ------------------------------------------------------------
+        
 void scigraphics::sequence::graphUniformVector::append( number Y )              
 { 
   getCastedData().append(Y); 
