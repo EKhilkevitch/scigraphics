@@ -95,9 +95,18 @@ void scigraphics::qt4settings::setName( const QString &Name )
 
 // ----------------------------------------------------------------
 
-scigraphics::settings* scigraphics::qt4settings::plotSettings() 
+const scigraphics::settings& scigraphics::qt4settings::plotSettings() const
 { 
-  return Settings; 
+  return *Settings; 
+}
+
+// ----------------------------------------------------------------
+      
+void scigraphics::qt4settings::setPlotSettings( const settings &Settings )
+{
+  *(this->Settings) = Settings;
+  updateSubWidgetsFromSettings();
+  emit settingsChanged( this );
 }
 
 // ----------------------------------------------------------------
@@ -249,6 +258,7 @@ bool scigraphics::qt4settings::deserialize( const QString &String )
     updateSubWidgetsFromSettings();
     emit settingsChanged( this );
   }
+
   return Ok;
 }
 
@@ -310,7 +320,7 @@ void scigraphics::qt4settings::updateSubWidgetsFromSettings()
 
 void scigraphics::qt4settings::applySettings( plot *Plot )
 {
-  plotSettings()->apply(Plot);
+  plotSettings().apply(Plot);
 }
 
 // ----------------------------------------------------------------
