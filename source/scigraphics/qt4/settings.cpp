@@ -168,7 +168,7 @@ void scigraphics::qt4settings::delSettingWidget( size_t Index )
 }
 
 // ----------------------------------------------------------------
-    
+
 scigraphics::qt4settingsGroupBox* scigraphics::qt4settings::getSettingWidget( size_t Index )
 {
   Q_ASSERT( SettingsComposer != NULL );

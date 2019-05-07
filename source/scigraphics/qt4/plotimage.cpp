@@ -18,6 +18,8 @@
 
 namespace
 {
+  // ----------------------------------------------------------------
+  
   void silentMsgHandler( QtMsgType Type, const char *Message )
   {
     switch ( Type ) 
@@ -36,6 +38,15 @@ namespace
         std::abort();
     }
   }
+  
+  // ----------------------------------------------------------------
+
+  char FakeProgramName[] = "scigraphicsQt4FakeProgram";
+  char* FakeArgv[2] = { FakeProgramName, NULL };
+  int FakeArgc = 1;
+
+  // ----------------------------------------------------------------
+
 }
 
 // ================================================================
@@ -77,19 +88,10 @@ void scigraphics::qt4plotOnImage::makeQApplicationIfNeed()
 {
   Q_ASSERT( LocalApplication == NULL );
   
-  static char Dummy[32]; 
-  static int argc;
-  static char *argv[] = { NULL, NULL }; 
-
   if ( QApplication::instance() == NULL )
   {
     StoredMsgHandler = reinterpret_cast<void*>( qInstallMsgHandler( silentMsgHandler ) );
-
-    std::strncpy( Dummy, "dummy", sizeof(Dummy)-1 );
-    argv[0] = Dummy;
-    argv[1] = NULL;
-    argc = 1;
-    LocalApplication = new QApplication(argc,argv);
+    LocalApplication = new QApplication( FakeArgc, FakeArgv );
   }
 }
 
