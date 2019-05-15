@@ -146,8 +146,8 @@ int scigraphics::qt4plot::sceneShift() const
 
 void scigraphics::qt4plot::printTestCornerRectangles()
 {
-  int W = getDrawerQt()->width();
-  int H = getDrawerQt()->height();
+  const unsigned W = getDrawerQt()->width();
+  const unsigned H = getDrawerQt()->height();
 
   getDrawerQt()->eraseAll();
   getDrawerQt()->setLineStyle( lineStyle(1,color::Red) );

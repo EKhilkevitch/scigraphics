@@ -57,12 +57,14 @@ scigraphics::numberStyle::sprintfNumberTextFactory* scigraphics::numberStyle::sp
 std::string scigraphics::numberStyle::sprintfNumberTextFactory::numberText( const number Number ) const
 {
 #if _WIN32 && _MSC_VER
-  int (__cdecl *snprintf)( char *buffer, size_t count, const char *format, ... ) = _snprintf;
+  int (__cdecl *std_snprintf)( char *buffer, size_t count, const char *format, ... ) = &_snprintf;
+#else
+  int (*std_snprintf)( char *buffer, size_t count, const char *format, ... ) = &std::snprintf;
 #endif
 
   char Buffer[ 128 ];
   Buffer[0] = Buffer[ sizeof(Buffer)-1 ] = '\0';
-  snprintf( Buffer, sizeof(Buffer)-1, Format.c_str(), Number );
+  std_snprintf( Buffer, sizeof(Buffer)-1, Format.c_str(), Number );
   return Buffer;
 }
 
