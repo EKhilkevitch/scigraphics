@@ -42,10 +42,6 @@ if ( UNIX )
   set( CMAKE_C_FLAGS   "${CMAKE_C_FLAGS}   -fPIC") 
 endif()
 
-if ( WIN32 )
-  add_definitions( -D_CRT_SECURE_NO_DEPRECATE=1 )
-endif()
-
 add_subdirectory( ./source/scigraphics/ )
 add_subdirectory( ./source/scigraphics/qt4/ )
 add_subdirectory( ./source/scigraphics/imagemagick/ )

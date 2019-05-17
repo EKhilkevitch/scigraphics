@@ -20,7 +20,6 @@ set ( tests_source_files
         mockpainter.cpp
     )
 
-include_directories( "${PROJECT_SOURCE_DIR}/../scigraphics/" )
 
 find_library( gtest  NAMES gtest )
 find_library( gtest_main  NAMES gtest_main )
@@ -39,6 +38,7 @@ if ( NOT ${gtest} MATCHES gtest-NOTFOUND AND ENABLE_TESTS )
   target_link_libraries( selfTest ${gtest_main} )
   target_link_libraries( selfTest scigraphics )
   target_link_libraries( selfTest pthread )
+  target_include_directories( selfTest PRIVATE "${PROJECT_SOURCE_DIR}/../scigraphics/" )
   set_target_properties( selfTest PROPERTIES COMPILE_FLAGS "-std=c++0x")
 else()
   message( "Tests disabed (use -DENABLE_TESTS=1)" )
