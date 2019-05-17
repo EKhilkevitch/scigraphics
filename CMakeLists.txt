@@ -36,8 +36,8 @@ message( "IMAGEMAGICK_ENABLED = ${IMAGEMAGICK_ENABLED}" )
 #set( CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -pg -g")
 
 if ( UNIX )
-  set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC") 
-  set( CMAKE_C_FLAGS   "${CMAKE_C_FLAGS}   -fPIC") 
+  set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC -Wall ") 
+  set( CMAKE_C_FLAGS   "${CMAKE_C_FLAGS}   -fPIC -Wall ") 
 endif()
 
 add_subdirectory( ./source/scigraphics/ )

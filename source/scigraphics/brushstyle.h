@@ -44,7 +44,6 @@ namespace scigraphics
     private:
       style Style;
       color Color;
-      int Transperancy;
 
     public:
       explicit brushStyle( color Color = color::Black, style Style = Solid );

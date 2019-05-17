@@ -99,9 +99,6 @@ namespace scigraphics
 
       class mouseHandler 
       {
-        private:
-          unsigned EnabledOperations;
-
         protected:
           plot &Plot;
 
