@@ -47,4 +47,5 @@ qt4_add_resources( qrc_sources ${resources} )
 
 add_library( scigraphicsQt ${LIBRARY_TYPE} ${graphics_qt_source_files} ${moc_sources} ${qm_sources} ${qrc_sources} )
 target_link_libraries( scigraphicsQt ${QT_LIBRARIES} scigraphics )
+target_include_directories( scigraphicsQt PRIVATE "${PROJECT_SOURCE_DIR}/../../" )
 
