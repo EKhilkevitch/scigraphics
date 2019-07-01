@@ -179,8 +179,8 @@ TEST_F( test_scaleLinear, marks )
   scaleLinear  Scale;
   Scale.setNumberLimits( createNumberLimits() );
 
-  auto Marks = Scale.marks();
-  ASSERT_EQ( (size_t)5, Marks.size() );
+  std::vector<number> Marks = Scale.marks();
+  ASSERT_EQ( 5, Marks.size() );
   ASSERT_NEAR(  2.0, Marks[0], 1e-5 );
   ASSERT_NEAR( 10.0, Marks[4], 1e-5 );
 }
@@ -222,8 +222,8 @@ TEST_F( test_scaleLogPositive, marks )
   scaleLogarithmPositive Scale;
   Scale.setNumberLimits( createNumberLimits() );
 
-  auto Marks = Scale.marks();
-  ASSERT_EQ( (size_t)5, Marks.size() );
+  std::vector<number> Marks = Scale.marks();
+  ASSERT_EQ( 5, Marks.size() );
   ASSERT_NEAR( 0.01, Marks[0], 1e-5 );
   ASSERT_NEAR( 0.1,  Marks[1], 1e-5 );
   ASSERT_NEAR( 1.0,  Marks[2], 1e-5 );
@@ -268,9 +268,9 @@ TEST_F( test_scaleLogNegative, marks )
   scaleLogarithmNegative Scale;
   Scale.setNumberLimits( createNumberLimits() );
 
-  auto Marks = Scale.marks();
+  std::vector<number> Marks = Scale.marks();
 
-  ASSERT_EQ( (size_t)5, Marks.size() );
+  ASSERT_EQ( 5, Marks.size() );
   ASSERT_NEAR( -0.01, Marks[0], 1e-5 );
   ASSERT_NEAR( -0.1,  Marks[1], 1e-5 );
   ASSERT_NEAR( -1.0,  Marks[2], 1e-5 );
@@ -312,9 +312,9 @@ TEST_F( test_scaleSquare, marks )
   scaleSquare Scale;
   Scale.setNumberLimits( createNumberLimits() );
 
-  auto Marks = Scale.marks();
+  std::vector<number> Marks = Scale.marks();
 
-  ASSERT_EQ( (size_t)9, Marks.size() );
+  ASSERT_EQ( 9, Marks.size() );
   ASSERT_EQ( 0.0,    Marks[0] );
   ASSERT_NEAR( 0.5, Marks[1], 1e-5 );
   ASSERT_NEAR( 1.0, Marks[2], 1e-5 );

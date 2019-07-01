@@ -88,7 +88,7 @@ TEST( test_graphCollection, append )
 
   try
   {
-    Collection.append(nullptr);
+    Collection.append(NULL);
     FAIL() << "NULL can not be append to collection";;
   } catch ( std::exception ) {}
   
@@ -110,15 +110,15 @@ TEST( test_graphCollection, create )
   axisSetY SetY(0);
   Collection.setDefaultAxisSets( &SetX, &SetY );
 
-  auto Graph = Collection.create<sequence::graphVector>("L",color::Black);
+  sequence::graphVector *Graph = Collection.create<sequence::graphVector>("L",color::Black);
 
-  ASSERT_EQ( (size_t)1, Collection.size() );
+  ASSERT_EQ( 1, Collection.size() );
   ASSERT_EQ( std::string("L"), Graph->legend() );
   ASSERT_EQ( std::string("L"), Collection.begin()->legend() );
   
-  auto Graph2 = Collection.create<sequence::graphVector>(color());
+  sequence::graphVector *Graph2 = Collection.create<sequence::graphVector>(color());
 
-  ASSERT_EQ( (size_t)2, Collection.size() );
+  ASSERT_EQ( 2, Collection.size() );
   ASSERT_EQ( std::string(), Graph2->legend() );
   ASSERT_TRUE( Graph != Graph2 );
   
@@ -180,13 +180,13 @@ TEST( test_graphCollection, iterators )
   Legends.push_back("2");
   Legends.push_back("3");
 
-  for ( auto l = Legends.begin(); l != Legends.end(); ++l )
+  for ( std::list< std::string >::const_iterator l = Legends.begin(); l != Legends.end(); ++l )
     Collection.create<sequence::graphVector>( *l, color() );
 
   ASSERT_EQ( Legends.size(), Collection.size() );
 
-  auto li = Legends.begin();
-  auto gi = Collection.begin();
+  std::list< std::string >::const_iterator li = Legends.begin();
+  graphCollection::const_iterator gi = Collection.begin();
 
   for ( ; li != Legends.end(); ++li, ++gi )
     ASSERT_EQ( *li, gi->legend() );

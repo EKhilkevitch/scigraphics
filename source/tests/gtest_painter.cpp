@@ -8,7 +8,6 @@
 #include "mockpainter.h"
 #include "painter.h"
 
-namespace scigraphics {};
 using namespace scigraphics;
 
 // =========================================================
@@ -16,10 +15,10 @@ using namespace scigraphics;
 TEST( test_painter, setDrawer )
 {
   painter Painter;
-  ASSERT_TRUE( Painter.getDrawer() == nullptr );
+  ASSERT_TRUE( Painter.getDrawer() == NULL );
   ASSERT_TRUE( ! Painter.ableToDraw() );
 
-  auto Drawer = new mockDrawer();
+  mockDrawer *Drawer = new mockDrawer();
   Painter.setDrawer( Drawer );
   ASSERT_TRUE( Drawer == Painter.getDrawer() );
   ASSERT_TRUE( Painter.ableToDraw() );
@@ -29,7 +28,7 @@ TEST( test_painter, setDrawer )
 
 TEST( test_painter, setIndents )
 {
-  auto Drawer = new mockDrawer();
+  mockDrawer *Drawer = new mockDrawer();
   painter Painter;
 
   Painter.setIndents( indents<wcoord>(10, 20, 30, 40) );
@@ -51,7 +50,7 @@ TEST( test_painter, setIndents )
 
 TEST( test_painter, update )
 {
-  auto Drawer = new mockDrawer();
+  mockDrawer *Drawer = new mockDrawer();
   painter Painter( Drawer );
   Painter.update();
   
@@ -70,7 +69,7 @@ TEST( test_painter, update )
 
 TEST( test_painter, fpoint2wpoint )
 {
-  auto Drawer = new mockDrawer();
+  mockDrawer *Drawer = new mockDrawer();
   painter Painter( Drawer );
   Painter.setIndents( indents<wcoord>(10, 30, 20, 60) );
   Painter.update();
@@ -121,7 +120,7 @@ TEST( test_painter, canSeparatePoints )
 
 TEST( test_painter, textWidth )
 {
-  auto Drawer = new mockDrawer();
+  mockDrawer *Drawer = new mockDrawer();
   painter Painter( Drawer );
 
   textStyle TextStyle;
@@ -135,7 +134,7 @@ TEST( test_painter, textWidth )
 
 TEST( test_painter, textHeight )
 {
-  auto Drawer = new mockDrawer();
+  mockDrawer *Drawer = new mockDrawer();
   painter Painter( Drawer );
 
   textStyle TextStyle;

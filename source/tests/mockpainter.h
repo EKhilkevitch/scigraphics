@@ -47,9 +47,10 @@ namespace scigraphics
           None,
           DrawLine,
           DrawRectangle
-        } Type = None;
+        } Type;
         color Color;
         std::vector<wpoint> Points;
+        action() : Type(None) {}
       };
 
     private:

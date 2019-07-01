@@ -45,7 +45,8 @@ namespace scigraphics
       interval<number> PositiveLimits, NegativeLimits;
 
       static void updateInterval( interval<number> *Interval, number Number );
-      static inline interval<number> invalidInterval() { return interval<number>( invalidNumber(), invalidNumber() ); }
+      static inline interval<number> invalidInterval();
+      static inline number returnSelfValue( number Value );
 
     public:
       numberLimits();
@@ -79,6 +80,20 @@ namespace scigraphics
 
   // ============================================================
       
+  interval<number> numberLimits::invalidInterval() 
+  { 
+    return interval<number>( invalidNumber(), invalidNumber() ); 
+  }
+  
+  // ------------------------------------------------------------
+      
+  number numberLimits::returnSelfValue( number Value )
+  {
+    return Value;
+  }
+  
+  // ------------------------------------------------------------
+      
   template <class iterator, class extractor> void numberLimits::updateLimits( iterator Begin, iterator End, extractor Extractor )
   {
     while ( Begin != End )
@@ -92,11 +107,7 @@ namespace scigraphics
   
   template <class iterator> void numberLimits::updateLimits( iterator Begin, iterator End )
   {
-    struct self 
-    {
-      number operator()( number Number ) { return Number; }
-    };
-    updateLimits( Begin, End, self() );
+    updateLimits( Begin, End, returnSelfValue );
   }
   
   // ------------------------------------------------------------

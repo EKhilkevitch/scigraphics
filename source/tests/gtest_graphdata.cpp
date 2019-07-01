@@ -78,7 +78,7 @@ TEST( test_dataSequenceVector, iterator )
   Data.append( 2, 4 );
   Data.append( 3, 9 );
   
-  auto Iterator = Data.begin();
+  sequence::dataVector::iterator Iterator = Data.begin();
   ASSERT_TRUE( Iterator != Data.end() );
   ASSERT_NEAR( 1, Iterator->x(), 1e-5 );
 
@@ -297,9 +297,9 @@ TEST( test_dataMap, limits )
 {
   map::dataVector Data( 10, interval<number>( 1, 5 ), 5, interval<number>(-10,-4) );
 
-  ASSERT_EQ( (size_t)50, Data.size() );
-  ASSERT_EQ( (size_t)10, Data.sizeX() );
-  ASSERT_EQ( (size_t)5,  Data.sizeY() );
+  ASSERT_EQ( 50, Data.size() );
+  ASSERT_EQ( 10, Data.sizeX() );
+  ASSERT_EQ( 5,  Data.sizeY() );
   
   ASSERT_EQ( 0,  Data.index(0,0) );
   ASSERT_EQ( 9, Data.indexX(49) );
@@ -338,7 +338,7 @@ TEST( test_dataMap, set )
   map::dataVector Data( 10, interval<number>( 1, 5 ), 5, interval<number>(-10,-4) );
  
   Data.set( 3, 2, 0.5, 0.1 );
-  auto Point = Data.at( 3, 2 );
+  scigraphics::map::point Point = Data.at( 3, 2 );
   ASSERT_NEAR( 0.5, Point.z(), 1e-5 );
   ASSERT_NEAR( 0.1, Point.errZ(), 1e-5 );
 }
@@ -353,9 +353,9 @@ TEST( test_dataMap, resize )
   Data.setIntervalY( -5, -25 );
   Data.resize( 20, 10 );
 
-  ASSERT_EQ( (size_t)20, Data.sizeX() );
-  ASSERT_EQ( (size_t)10, Data.sizeY() );
-  ASSERT_EQ( (size_t)200, Data.size() );
+  ASSERT_EQ( 20, Data.sizeX() );
+  ASSERT_EQ( 10, Data.sizeY() );
+  ASSERT_EQ( 200, Data.size() );
   
   Data.set( 14, 8, 0.5, 0.1 );
   ASSERT_NEAR( 0.5, Data.at(14,8).z(), 1e-5 );
@@ -364,9 +364,9 @@ TEST( test_dataMap, resize )
   ASSERT_NEAR( 0.5, Data.at(14,8).z(), 1e-5 );
   
   Data.resize( 5, 2 );
-  ASSERT_EQ( (size_t)5, Data.sizeX() );
-  ASSERT_EQ( (size_t)2, Data.sizeY() );
-  ASSERT_EQ( (size_t)10, Data.size() );
+  ASSERT_EQ( 5, Data.sizeX() );
+  ASSERT_EQ( 2, Data.sizeY() );
+  ASSERT_EQ( 10, Data.size() );
 }
 
 // =========================================================

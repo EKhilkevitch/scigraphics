@@ -12,27 +12,35 @@ using namespace scigraphics;
 
 // =========================================================
 
-class test_plotLimits_limitsXY : public testing::Test
+namespace
 {
-};
 
-// =========================================================
-
-struct test_plotLimits : public testing::Test
-{
-  axisSet *AxisX, *AxisY;
-  void SetUp()
+  // ---------------------------------------------------------
+ 
+  class test_plotLimits_limitsXY : public testing::Test
   {
-    AxisX = new axisSetX(0);
-    AxisY = new axisSetY(0);
-  }
+  };
+  
+  // ---------------------------------------------------------
 
-  void TearDown()
+  struct test_plotLimits : public testing::Test
   {
-    delete AxisX;
-    delete AxisY;
-  }
-};
+    axisSet *AxisX, *AxisY;
+    void SetUp()
+    {
+      AxisX = new axisSetX(0);
+      AxisY = new axisSetY(0);
+    }
+
+    void TearDown()
+    {
+      delete AxisX;
+      delete AxisY;
+    }
+  };
+  
+  // ---------------------------------------------------------
+}
 
 // =========================================================
 
@@ -129,8 +137,7 @@ TEST_F( test_plotLimits, limitsForGraphics )
   graphCollection Graphics;
   Graphics.setDefaultAxisSets( AxisX, AxisY );
 
-
-  auto Graph = Graphics.create<sequence::graphVector>();
+  sequence::graphVector *Graph = Graphics.create<sequence::graphVector>();
   Graph->append( -1, -1.5 );
   Graph->append( invalidNumber(), 4.0 );
   Graph->append( +2, +0.5 );
@@ -147,7 +154,7 @@ TEST_F( test_plotLimits, limitsForGraphics )
 
   plotLimits PlotLimits;
   PlotLimits.setStretchFactor(1);
-  auto Limits = PlotLimits.limitsForGraphics( Graphics );
+  plotLimits::limitsXY Limits = PlotLimits.limitsForGraphics( Graphics );
   
   ASSERT_NEAR( -7.5, Limits.getX().totalLimits().min(), 1e-5 );
   ASSERT_NEAR( +5.0, Limits.getX().totalLimits().max(), 1e-5 );
@@ -191,7 +198,7 @@ TEST_F( test_plotLimits, limitsForEmptyGraphics )
 
   plotLimits PlotLimits;
   PlotLimits.setStretchFactor(1);
-  auto Limits = PlotLimits.limitsForGraphics( Graphics );
+  plotLimits::limitsXY Limits = PlotLimits.limitsForGraphics( Graphics );
 
   ASSERT_NEAR( -1,   Limits.getX().totalLimits().min(), 1e-5 );
   ASSERT_NEAR( -0.1, Limits.getX().negativeLimits().max(), 1e-5 );
@@ -203,7 +210,7 @@ TEST_F( test_plotLimits, limitsForEmptyGraphics )
   ASSERT_NEAR( +1,   Limits.getY().totalLimits().max(), 1e-5 );
 
   Graphics.create<sequence::graphVector>();
-  auto Graph = Graphics.create<sequence::graphVector>();
+  sequence::graphVector *Graph = Graphics.create<sequence::graphVector>();
   Graph->append( invalidNumber(), 4 );
   
   Limits = PlotLimits.limitsForGraphics( Graphics );
@@ -252,7 +259,7 @@ TEST_F( test_plotLimits, limitsForGraphicsPositive )
   graphCollection Graphics;
   Graphics.setDefaultAxisSets( AxisX, AxisY );
 
-  auto Graph = Graphics.create<sequence::graphVector>();
+  sequence::graphVector *Graph = Graphics.create<sequence::graphVector>();
   Graph->append( 1, 1.5 );
   Graph->append( 2, 2.0 );
   
@@ -262,7 +269,7 @@ TEST_F( test_plotLimits, limitsForGraphicsPositive )
 
   plotLimits PlotLimits;
   PlotLimits.setStretchFactor(1);
-  auto Limits = PlotLimits.limitsForGraphics( Graphics );
+  plotLimits::limitsXY Limits = PlotLimits.limitsForGraphics( Graphics );
   
   ASSERT_NEAR( +1.0, Limits.getX().totalLimits().min(), 1e-5 );
   ASSERT_NEAR( -1.0, Limits.getX().negativeLimits().min(), 1e-5 );
@@ -304,7 +311,7 @@ TEST_F( test_plotLimits, limitsForGraphicsNegative )
   graphCollection Graphics;
   Graphics.setDefaultAxisSets( AxisX, AxisY );
 
-  auto Graph = Graphics.create<sequence::graphVector>();
+  sequence::graphVector *Graph = Graphics.create<sequence::graphVector>();
 
   Graph = Graphics.create<sequence::graphVector>();
   Graph->append( -1, -1.5 );
@@ -316,7 +323,7 @@ TEST_F( test_plotLimits, limitsForGraphicsNegative )
 
   plotLimits PlotLimits;
   PlotLimits.setStretchFactor(1);
-  auto Limits = PlotLimits.limitsForGraphics( Graphics );
+  plotLimits::limitsXY Limits = PlotLimits.limitsForGraphics( Graphics );
   
   ASSERT_NEAR( -7.5, Limits.getX().totalLimits().min(), 1e-5 );
   ASSERT_NEAR( -7.5, Limits.getX().negativeLimits().min(), 1e-5 );
@@ -358,7 +365,7 @@ TEST_F( test_plotLimits, limitsForGraphicsCloseToZero )
   graphCollection Graphics;
   Graphics.setDefaultAxisSets( AxisX, AxisY );
 
-  auto Graph = Graphics.create<sequence::graphVector>();
+  sequence::graphVector *Graph = Graphics.create<sequence::graphVector>();
   Graph->append( -2,     1 );
   Graph->append( -1.5,   1 );
   Graph->append( -1,     1 );
@@ -371,7 +378,7 @@ TEST_F( test_plotLimits, limitsForGraphicsCloseToZero )
   
   plotLimits PlotLimits;
   PlotLimits.setStretchFactor(1);
-  auto Limits = PlotLimits.limitsForGraphics( Graphics );
+  plotLimits::limitsXY Limits = PlotLimits.limitsForGraphics( Graphics );
   
   ASSERT_NEAR( -2.0, Limits.getX().totalLimits().min(), 1e-5 );
   ASSERT_NEAR( -2.0, Limits.getX().negativeLimits().min(), 1e-5 );
@@ -401,7 +408,7 @@ TEST_F( test_plotLimits, limitsForGraphicsStretch )
   graphCollection Graphics;
   Graphics.setDefaultAxisSets( AxisX, AxisY );
 
-  auto Graph = Graphics.create<sequence::graphVector>();
+  sequence::graphVector *Graph = Graphics.create<sequence::graphVector>();
   Graph->append( -2,     1 );
   Graph->append( -1.5,   2 );
   Graph->append( -1,     5 );
@@ -411,7 +418,7 @@ TEST_F( test_plotLimits, limitsForGraphicsStretch )
 
   plotLimits PlotLimits;
   PlotLimits.setStretchFactor(1.1);
-  auto Limits = PlotLimits.limitsForGraphics( Graphics );
+  plotLimits::limitsXY Limits = PlotLimits.limitsForGraphics( Graphics );
   
   ASSERT_NEAR( 1.1, PlotLimits.stretchFactorX(), 1e-5 );
   ASSERT_NEAR( 1.1, PlotLimits.stretchFactorY(), 1e-5 );

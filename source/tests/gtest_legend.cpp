@@ -14,7 +14,6 @@
 #define protected public
 #include "scigraphics/legend.h"
 
-namespace scigraphics {};
 using namespace scigraphics;
 
 // =========================================================
@@ -25,7 +24,7 @@ struct test_legend : public testing::Test
 
   void SetUp()
   {
-    auto Drawer = new mockDrawer();
+    mockDrawer *Drawer = new mockDrawer();
     Drawer->setWidth(400);
     Drawer->setHeight(300);
     Painter.setDrawer( Drawer );
@@ -57,7 +56,7 @@ TEST_F( test_legend, legendsList )
   axisSetY SetY(0);
   Graphics.setDefaultAxisSets( &SetX, &SetY );
 
-  auto Graph = Graphics.create<sequence::graphVector>();
+  sequence::graphVector *Graph = Graphics.create<sequence::graphVector>();
   
   Graph = Graphics.create<sequence::graphVector>();
   Graph->setLegend("1");
@@ -69,8 +68,8 @@ TEST_F( test_legend, legendsList )
   Graph = Graphics.create<sequence::graphVector>();
   Graph->setLegend("3");
 
-  auto Legends = legend::legendsList( Graphics );
-  ASSERT_EQ( (size_t)2, Legends.size() );
+  std::list<std::string> Legends = legend::legendsList( Graphics );
+  ASSERT_EQ( 2, Legends.size() );
   ASSERT_EQ( std::string("1"), Legends.front() );
   ASSERT_EQ( std::string("3"), Legends.back() );
 }
@@ -87,7 +86,7 @@ TEST_F( test_legend, sizesForLegendRectangle )
   axisSetY SetY(0);
   Graphics.setDefaultAxisSets( &SetX, &SetY );
 
-  auto Size = legend::sizesForLegendRectangle( Painter, TextStyle, Graphics );
+  legend::legendSize Size = legend::sizesForLegendRectangle( Painter, TextStyle, Graphics );
 
   int ExpectedWidth  = 0;
   int ExpectedHeight = 0; //legend::interTextVerticalDistance(TextStyle);
@@ -122,10 +121,10 @@ TEST_F( test_legend, updateLegendRectangleShortList )
   ASSERT_EQ( 0, Legend.getRectangle().up() );
   ASSERT_EQ( 0, Legend.getRectangle().left() );
   
-  auto FontSize = Legend.getLegendTextStyle().getFontSize();
+  int FontSize = Legend.getLegendTextStyle().getFontSize();
   ASSERT_EQ( 12U, FontSize );
 
-  auto TextStyle = Legend.updateLegendRectangle( Painter, Graphics );
+  textStyle TextStyle = Legend.updateLegendRectangle( Painter, Graphics );
   ASSERT_EQ( FontSize, TextStyle.getFontSize() );
   ASSERT_EQ( FontSize, Legend.getLegendTextStyle().getFontSize() );
   ASSERT_EQ( 0U, TextStyle.getColor().valueRgb() );
@@ -154,7 +153,7 @@ TEST_F( test_legend, updateLegendRectangleLongList )
     Graphics.create<sequence::graphVector>( "xxx", color() );
 
   legend Legend;
-  auto TextStyle = Legend.updateLegendRectangle( Painter, Graphics );
+  textStyle TextStyle = Legend.updateLegendRectangle( Painter, Graphics );
 
   ASSERT_EQ( 8U,  TextStyle.getFontSize() );
   ASSERT_EQ( 12U, Legend.getLegendTextStyle().getFontSize() );
@@ -181,7 +180,7 @@ TEST_F( test_legend, updateLegendRectangleVeryLongList )
     Graphics.create<sequence::graphVector>( "xxx", color() );
 
   legend Legend;
-  auto TextStyle = Legend.updateLegendRectangle( Painter, Graphics );
+  textStyle TextStyle = Legend.updateLegendRectangle( Painter, Graphics );
   
   ASSERT_EQ( Legend.minFontSize(), TextStyle.getFontSize() );
   ASSERT_TRUE( Legend.minFontSize() > 0 );

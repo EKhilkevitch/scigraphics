@@ -14,6 +14,29 @@ using namespace scigraphics;
 
 // =========================================================
 
+namespace
+{
+
+  // ---------------------------------------------------------
+  
+  bool comparePointValueByX( fpoint Point, double Value ) 
+  { 
+    return Point.x() < Value; 
+  }
+  
+  // ---------------------------------------------------------
+
+  number extractPointX( fpoint Point ) 
+  { 
+    return Point.x(); 
+  }
+  
+  // ---------------------------------------------------------
+
+}
+
+// =========================================================
+
 TEST( test_numberLimits, isValidInterval )
 {
   interval<number> I1(1,2), I2( invalidNumber(), invalidNumber() );
@@ -181,13 +204,12 @@ TEST( test_numberLimits, updateLimits )
 
 TEST( test_numberLimits, updateLimits_2 )
 {
-  typedef std::vector<double> dvector;
-  dvector Numbers;
+  std::vector<double> Numbers;
   for ( int i = -10; i <= 20; i++ )
     Numbers.push_back( i );
 
   numberLimits Limits;
-  Limits.updateLimits( Numbers.begin(), Numbers.end() );
+  Limits.updateLimits< std::vector<double>::const_iterator >( Numbers.begin(), Numbers.end() );
   
   EXPECT_NEAR( -10.0, Limits.totalLimits().min(), 1e-5 );
   EXPECT_NEAR(  20.0, Limits.totalLimits().max(), 1e-5 );
@@ -201,23 +223,13 @@ TEST( test_numberLimits, updateLimits_2 )
 
 TEST( test_numberLimits, updateLimitsOrdered )
 {
-  struct cmp
-  {
-    bool operator()( fpoint Point, double Value ) { return Point.x() < Value; }
-  };
-
-  struct extract
-  {
-    number operator()( fpoint Point ) { return Point.x(); }
-  };
-  
   typedef std::vector<fpoint> pvector;
   pvector Points;
   for ( int i = -10; i <= 20; i++ )
     Points.push_back( fpoint( i, 0.5*i ) );
   
   numberLimits Limits;
-  Limits.updateLimitsOrdered( Points.begin(), Points.end(), cmp(), extract() );
+  Limits.updateLimitsOrdered( Points.begin(), Points.end(), comparePointValueByX, extractPointX );
   
   EXPECT_NEAR( -10.0, Limits.totalLimits().min(), 1e-5 );
   EXPECT_NEAR(  20.0, Limits.totalLimits().max(), 1e-5 );
@@ -256,19 +268,15 @@ TEST( test_numberLimits, boundsOfInterval )
 // ---------------------------------------------------------
 
 TEST( test_numberLimits, boundsOfInterval_2 )
-{
-  struct cmp
-  {
-    bool operator()( fpoint Point, double Value ) { return Point.x() < Value; }
-  };
-  
+{  
   typedef std::vector<fpoint> pvector;
   
   pvector Points;
   for ( size_t i = 0; i < 20; i++ )
     Points.push_back( fpoint( 0.1 * i, i ) );
 
-  std::pair< pvector::const_iterator, pvector::const_iterator > Result = numberLimits::boundsOfInterval( Points.begin(), Points.end(), 0.45, 1.3 + 1e-7, cmp() );
+  std::pair< pvector::const_iterator, pvector::const_iterator > Result = numberLimits::boundsOfInterval( Points.begin(), Points.end(), 0.45, 1.3 + 1e-7, comparePointValueByX );
+
   EXPECT_EQ(  5, Result.first - Points.begin() );
   EXPECT_EQ( 14, Result.second - Points.begin() );
 }
