@@ -102,7 +102,8 @@ namespace scigraphics
       void connectToPlot( qt4plot *Plot );
       void disconnectFromPlot( qt4plot *Plot );
 
-      settings* plotSettings();
+      const settings& plotSettings() const;
+      void setPlotSettings( const settings &Settings );
 
       void apply( qt4plot *Plot );
 

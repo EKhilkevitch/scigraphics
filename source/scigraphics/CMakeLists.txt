@@ -46,4 +46,9 @@ set( graphics_source_files
    )
 
 add_library( scigraphics ${LIBRARY_TYPE} ${graphics_source_files} )
+target_include_directories( scigraphics PRIVATE "${PROJECT_SOURCE_DIR}/../" )
+
+if ( WIN32 )
+  target_compile_definitions( scigraphics PRIVATE "-D_CRT_SECURE_NO_DEPRECATE=1" )
+endif()
 

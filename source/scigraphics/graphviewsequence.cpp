@@ -247,7 +247,7 @@ void scigraphics::sequence::graphViewGeneralLine::drawUnorderedByX( painter &Pai
   if ( Begin == End )
     return;
 
-  const size_t MaxPolylineSize = 2*std::min<size_t>( ( End - Begin ), std::max( Painter.width(), Painter.height() ) ) + 128;
+  const size_t MaxPolylineSize = 2*std::min( static_cast<size_t>( End - Begin ), static_cast<size_t>( std::max( Painter.width(), Painter.height() ) ) ) + 128;
   
   std::vector< wpoint > Polyline;
   Polyline.reserve( MaxPolylineSize );

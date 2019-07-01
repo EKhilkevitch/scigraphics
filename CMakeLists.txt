@@ -9,8 +9,6 @@ endif()
 set( EXECUTABLE_OUTPUT_PATH "${PROJECT_SOURCE_DIR}/bin/" )
 set( LIBRARY_OUTPUT_PATH "${PROJECT_SOURCE_DIR}/lib/" )
 
-include_directories( "./source/" )
-
 if ( NOT LIBRARY_TYPE )
   if ( WIN32 )
     set( LIBRARY_TYPE STATIC )
@@ -38,12 +36,8 @@ message( "IMAGEMAGICK_ENABLED = ${IMAGEMAGICK_ENABLED}" )
 #set( CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -pg -g")
 
 if ( UNIX )
-  set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC") 
-  set( CMAKE_C_FLAGS   "${CMAKE_C_FLAGS}   -fPIC") 
-endif()
-
-if ( WIN32 )
-  add_definitions( -D_CRT_SECURE_NO_DEPRECATE=1 )
+  set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC -Wall ") 
+  set( CMAKE_C_FLAGS   "${CMAKE_C_FLAGS}   -fPIC -Wall ") 
 endif()
 
 add_subdirectory( ./source/scigraphics/ )

@@ -1,5 +1,6 @@
 
 cmake_minimum_required( VERSION 2.6 )
+<<<<<<< HEAD
 
 if ( ENABLE_TESTS )
 
@@ -35,10 +36,11 @@ if ( ENABLE_TESTS )
     target_link_libraries( selfTest-scigraphics ${gtest_main} )
     target_link_libraries( selfTest-scigraphics scigraphics )
     target_link_libraries( selfTest-scigraphics pthread )
+    target_include_directories( selfTest-scigraphics PRIVATE "${PROJECT_SOURCE_DIR}/../" )
+    target_include_directories( selfTest-scigraphics PRIVATE "${PROJECT_SOURCE_DIR}/../scigraphics/" )
   else()
     message( "gtest not found, test not build" )
   endif()  
-
 else()
     message( "Tests disabed (use -DENABLE_TESTS=1)" )
 endif()
