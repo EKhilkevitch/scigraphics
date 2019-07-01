@@ -1,6 +1,5 @@
 
 cmake_minimum_required( VERSION 2.6 )
-<<<<<<< HEAD
 
 if ( ENABLE_TESTS )
 
