@@ -4,7 +4,7 @@ cmake_minimum_required( VERSION 2.6 )
 
 if ( ENABLE_TESTS )
 
-  project( selfTest ) 
+  project( selfTest-scigraphics ) 
 
   set ( tests_source_files
           gtest_geometry.cpp
