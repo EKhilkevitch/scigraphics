@@ -10,7 +10,6 @@
 #include "scigraphics/datasequence.h"
 #include "scigraphics/datamap.h"
 
-namespace scigraphics {};
 using namespace scigraphics;
 
 // =========================================================
@@ -39,29 +38,29 @@ TEST( test_dataSequenceVector, append )
   sequence::dataVector Data;
   
   ASSERT_TRUE( Data.empty() );
-  ASSERT_EQ( size_t(0), Data.size() );
+  ASSERT_EQ( 0, Data.size() );
 
   Data.append( 1.2, 2.3 );
-  ASSERT_EQ( size_t(1), Data.size() );
+  ASSERT_EQ( 1, Data.size() );
   ASSERT_NEAR( 1.2, Data[0].x(), 1e-5 );
   ASSERT_NEAR( 2.3, Data[0].y(), 1e-5 );
   ASSERT_NEAR( 0, Data[0].errX(), 1e-5 );
   ASSERT_NEAR( 0, Data[0].errY(), 1e-5 );
   
   Data.append( 1, 2, 3 );
-  ASSERT_EQ( size_t(2), Data.size() );
+  ASSERT_EQ( 2, Data.size() );
   ASSERT_NEAR( 0, Data[1].errX(), 1e-5 );
   ASSERT_NEAR( 3, Data[1].errY(), 1e-5 );
   
   Data.append( 1, 2, 3, 4 );
-  ASSERT_EQ( size_t(3), Data.size() );
+  ASSERT_EQ( 3, Data.size() );
   ASSERT_NEAR( 1, Data[2].x(), 1e-5 );
   ASSERT_NEAR( 2, Data[2].y(), 1e-5 );
   ASSERT_NEAR( 3, Data[2].errX(), 1e-5 );
   ASSERT_NEAR( 4, Data[2].errY(), 1e-5 );
   
   Data.append( 2, invalidNumber(), 3 );
-  ASSERT_EQ( size_t(4), Data.size() );
+  ASSERT_EQ( 4, Data.size() );
   ASSERT_FALSE( Data[3].isValid() );
   ASSERT_NEAR( 2, Data[3].x(), 1e-5 );
   ASSERT_EQ( invalidNumber(), Data[3].y() );

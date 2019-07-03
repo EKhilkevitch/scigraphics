@@ -17,8 +17,8 @@ TEST( test_graphCollection, scales )
 {
   graphCollection Collection;
   
-  ASSERT_EQ( (const scigraphics::scale*)NULL, Collection.graphScaleX(NULL) );
-  ASSERT_EQ( (const scigraphics::scale*)NULL, Collection.graphScaleY(NULL) );
+  ASSERT_EQ( NULL, Collection.graphScaleX(NULL) );
+  ASSERT_EQ( NULL, Collection.graphScaleY(NULL) );
 
 
   axisSet *AxisX = new axisSetX(0);
@@ -27,10 +27,10 @@ TEST( test_graphCollection, scales )
  
   graph *Graph = Collection.create<sequence::graphVector>(color());
   
-  ASSERT_EQ( (const scigraphics::scale*)AxisX->getScale(), Collection.graphScaleX(Graph) );
-  ASSERT_EQ( (const scigraphics::scale*)AxisY->getScale(), Collection.graphScaleY(Graph) );
-  ASSERT_EQ( (const scigraphics::axisSet*)AxisX, Collection.graphAxisSetX(Graph) );
-  ASSERT_EQ( (const scigraphics::axisSet*)AxisY, Collection.graphAxisSetY(Graph) );
+  ASSERT_EQ( AxisX->getScale(), Collection.graphScaleX(Graph) );
+  ASSERT_EQ( AxisY->getScale(), Collection.graphScaleY(Graph) );
+  ASSERT_EQ( AxisX, Collection.graphAxisSetX(Graph) );
+  ASSERT_EQ( AxisY, Collection.graphAxisSetY(Graph) );
 
   delete AxisX;
   delete AxisY;
@@ -46,15 +46,15 @@ TEST( test_graphCollection, bindGraphToAxisSet )
   Collection.setDefaultAxisSets( &SetX, &SetY );
 
   graph *Graph = Collection.create<sequence::graphVector>(color());
-  ASSERT_EQ( (const scigraphics::scale*)(SetX.getScale()), Collection.graphScaleX(Graph) );
-  ASSERT_EQ( (const scigraphics::scale*)(SetY.getScale()), Collection.graphScaleY(Graph) );
+  ASSERT_EQ( SetX.getScale(), Collection.graphScaleX(Graph) );
+  ASSERT_EQ( SetY.getScale(), Collection.graphScaleY(Graph) );
 
   axisSet *AxisX = new axisSetX(0);
   axisSet *AxisY = new axisSetY(0);
   Collection.bindGraphToAxisSet( Graph, AxisX, AxisY );
 
-  ASSERT_EQ( (const scigraphics::scale*)AxisX->getScale(), Collection.graphScaleX(Graph) );
-  ASSERT_EQ( (const scigraphics::scale*)AxisY->getScale(), Collection.graphScaleY(Graph) );
+  ASSERT_EQ( AxisX->getScale(), Collection.graphScaleX(Graph) );
+  ASSERT_EQ( AxisY->getScale(), Collection.graphScaleY(Graph) );
 
   delete AxisX;
   delete AxisY;
@@ -70,35 +70,35 @@ TEST( test_graphCollection, append )
   Collection.setDefaultAxisSets( &SetX, &SetY );
 
   ASSERT_TRUE( Collection.empty() );
-  ASSERT_EQ( (size_t)0, Collection.size() );
+  ASSERT_EQ( 0, Collection.size() );
 
   graph *Graph = new sequence::graphVector(color::Black);
 
   Collection.append(Graph);
   
   ASSERT_TRUE( ! Collection.empty() );
-  ASSERT_EQ( (size_t)1, Collection.size() );
+  ASSERT_EQ( 1, Collection.size() );
   ASSERT_TRUE( Collection.begin() != Collection.end() );
   
   Graph->setLegend("1");
-  ASSERT_EQ( std::string("1"), Collection.begin()->legend() );
+  ASSERT_EQ( "1", Collection.begin()->legend() );
   
   Collection.append( new sequence::graphVector(color::Black) );
-  ASSERT_EQ( (size_t)2, Collection.size() );
+  ASSERT_EQ( 2, Collection.size() );
 
   try
   {
     Collection.append(NULL);
     FAIL() << "NULL can not be append to collection";;
-  } catch ( std::exception ) {}
+  } catch ( const std::exception& ) {}
   
   try
   {
     Collection.append(Graph);
     FAIL() << "Graph already exist in collection";;
-  } catch ( std::exception ) {}
+  } catch ( const std::exception& ) {}
   
-  ASSERT_EQ( (size_t)2, Collection.size() );
+  ASSERT_EQ( 2, Collection.size() );
 }
 
 // ---------------------------------------------------------
