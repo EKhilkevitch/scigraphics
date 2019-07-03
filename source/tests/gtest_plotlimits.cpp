@@ -100,7 +100,8 @@ TEST_F( test_plotLimits_limitsXY, set )
   ASSERT_NEAR( 0,  Limits.getY().totalLimits().min(), 1e-5 );
   ASSERT_NEAR( 11, Limits.getY().totalLimits().max(), 1e-5 );
 
-  delete AxisX, AxisY;
+  delete AxisX;
+  delete AxisY;
 }
 
 // ---------------------------------------------------------
@@ -127,7 +128,8 @@ TEST_F( test_plotLimits_limitsXY, applyStretch )
   ASSERT_NEAR( -7, Limits.get(AxisY).totalLimits().min(), 1e-5 );
   ASSERT_NEAR( +7, Limits.get(AxisY).totalLimits().max(), 1e-5 );
 
-  delete AxisX, AxisY;
+  delete AxisX;
+  delete AxisY;
 }
 
 // ---------------------------------------------------------

@@ -228,7 +228,8 @@ void scigraphics::qt4plot::mouseReleased( QMouseEvent *Event )
 void scigraphics::qt4plot::mouseDoubleClicked( QMouseEvent *Event )  
 {
   scigraphics::wpoint Point = plotMousePoisition( Event );
-  mouseHandler().mouseDoubleClicked( Point ); 
+  unsigned Buttons = plotMouseModifiers( Event->modifiers() );
+  mouseHandler().mouseDoubleClicked( Point, Buttons ); 
 }
 
 // ----------------------------------------------------------------

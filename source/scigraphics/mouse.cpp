@@ -40,6 +40,41 @@ scigraphics::mouse::allowing::allowing( unsigned A ) :
   AllowedOperations(A) 
 {
 }
+          
+// ------------------------------------------------------------
+          
+unsigned scigraphics::mouse::allowing::value() const 
+{ 
+  return AllowedOperations; 
+}
+
+// ------------------------------------------------------------
+          
+void scigraphics::mouse::allowing::set( unsigned Op )               
+{ 
+  AllowedOperations = Op;     
+}
+
+// ------------------------------------------------------------
+          
+void scigraphics::mouse::allowing::allowOperation( unsigned Op )    
+{ 
+  AllowedOperations |= Op;    
+}
+
+// ------------------------------------------------------------
+          
+void scigraphics::mouse::allowing::disallowOperation( unsigned Op ) 
+{ 
+  AllowedOperations &= (~Op); 
+}  
+
+// ------------------------------------------------------------
+          
+bool scigraphics::mouse::allowing::isAllowed( unsigned Op ) const 
+{ 
+  return ( Op & AllowedOperations ) != 0; 
+} 
 
 // ============================================================
           
@@ -660,9 +695,10 @@ void scigraphics::mouse::mouseReleased( wpoint Point )
       
 // ------------------------------------------------------------
 
-void scigraphics::mouse::mouseDoubleClicked( wpoint Point ) 
+void scigraphics::mouse::mouseDoubleClicked( wpoint Point, unsigned Buttons ) 
 { 
-  mousePressed( Point, Middle ); 
+  mousePressed( Point, Middle|Buttons ); 
+  mouseReleased( Point );
   replot();
 }
 

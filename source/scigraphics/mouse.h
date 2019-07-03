@@ -88,13 +88,13 @@ namespace scigraphics
         public:
           explicit allowing( unsigned AllowedOperations = Everything );
 
-          unsigned value() const { return AllowedOperations; }
+          unsigned value() const;
 
-          void set( unsigned Op )               { AllowedOperations = Op;     }
-          void allowOperation( unsigned Op )    { AllowedOperations |= Op;    }
-          void disallowOperation( unsigned Op ) { AllowedOperations &= (~Op); }  
+          void set( unsigned Op );
+          void allowOperation( unsigned Op );
+          void disallowOperation( unsigned Op );
 
-          bool isAllowed( unsigned Op ) const { return ( Op & AllowedOperations ) != 0; } 
+          bool isAllowed( unsigned Op ) const;
       };
 
       class mouseHandler 
@@ -328,7 +328,7 @@ namespace scigraphics
       void mousePressed( wpoint Point, unsigned Buttons ); 
       void mouseMoved( wpoint Point ); 
       void mouseReleased( wpoint Point ); 
-      void mouseDoubleClicked( wpoint Point ); 
+      void mouseDoubleClicked( wpoint Point, unsigned Buttons ); 
       void mouseWheel( wpoint Point, wheeldelta Delta, unsigned Buttons );
 
       mouseActionHandler* actionHandler();
