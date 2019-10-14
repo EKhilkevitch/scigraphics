@@ -302,8 +302,9 @@ void scigraphics::painter::drawTextW( const std::string &String, wpoint Point, u
   if ( ! ableToDraw() )
     return;
 
-  const int Width  = Drawer->textWidth( String, Style );
-  const int Height = Drawer->textHeight( String, Style );
+  const std::pair<wcoord,wcoord> TextSizes = Drawer->textWidthHeight( String, Style );
+  const int Width = TextSizes.first;
+  const int Height = TextSizes.second;
 
   switch ( Position & 0x00FF )
   {
@@ -482,21 +483,12 @@ void scigraphics::painter::drawPolygonW( const std::vector<wpoint> &Points, cons
 }
 
 // ------------------------------------------------------------
-
-scigraphics::wcoord scigraphics::painter::textWidth( const std::string &Text, const textStyle &Style )
+      
+std::pair<scigraphics::wcoord,scigraphics::wcoord> scigraphics::painter::textWidthHeight( const std::string &Text, const textStyle &Style )
 {
   if ( ! ableToDraw() )
-    return 0;
-  return Drawer->textWidth( Text, Style );
-}
-
-// ------------------------------------------------------------
-
-scigraphics::wcoord scigraphics::painter::textHeight( const std::string &Text, const textStyle &Style )
-{
-  if ( ! ableToDraw() )
-    return 0;
-  return Drawer->textHeight( Text, Style);
+    return std::make_pair<wcoord,wcoord>( 0, 0 );
+  return Drawer->textWidthHeight( Text, Style );
 }
 
 // ============================================================

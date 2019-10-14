@@ -255,20 +255,12 @@ void scigraphics::qt4drawer::drawText( const std::string &Text, const wrectangle
 
 // ----------------------------------------------------------------
 
-scigraphics::wcoord scigraphics::qt4drawer::textWidth( const std::string &Text, const textStyle &Style )
+std::pair<scigraphics::wcoord,scigraphics::wcoord> scigraphics::qt4drawer::textWidthHeight( const std::string &Text, const textStyle &Style )
 {
   const QString QtText = stringQt(Text);
-  QFontMetrics Metrics( fontQt(Style) );
-  return Metrics.size( 0, QtText ).width();
-}
-
-// ----------------------------------------------------------------
-
-scigraphics::wcoord scigraphics::qt4drawer::textHeight( const std::string &Text, const textStyle &Style )
-{
-  const QString QtText = stringQt(Text);
-  QFontMetrics Metrics( fontQt(Style) );
-  return Metrics.size( 0, QtText ).height();
+  const QFontMetrics Metrics( fontQt(Style) );
+  const QSize Sizes = Metrics.size( 0, QtText );
+  return std::make_pair<wcoord,wcoord>( Sizes.width(), Sizes.height() );
 }
 
 // ----------------------------------------------------------------

@@ -118,7 +118,7 @@ TEST( test_painter, canSeparatePoints )
 
 // ---------------------------------------------------------
 
-TEST( test_painter, textWidth )
+TEST( test_painter, textWidthHeight )
 {
   mockDrawer *Drawer = new mockDrawer();
   painter Painter( Drawer );
@@ -126,22 +126,10 @@ TEST( test_painter, textWidth )
   textStyle TextStyle;
   TextStyle.setFontSize(10);
 
-  ASSERT_EQ( Drawer->textWidth("xxx",TextStyle), Painter.textWidth("xxx",TextStyle) );
-  ASSERT_EQ( 30, Painter.textWidth("xxx",TextStyle) ); // Only for mock drawer
-}
-
-// ---------------------------------------------------------
-
-TEST( test_painter, textHeight )
-{
-  mockDrawer *Drawer = new mockDrawer();
-  painter Painter( Drawer );
-
-  textStyle TextStyle;
-  TextStyle.setFontSize(10);
-
-  ASSERT_EQ( Drawer->textHeight("xxx",TextStyle), Painter.textHeight("xxx",TextStyle) );
-  ASSERT_EQ( 10, Painter.textHeight("xxx",TextStyle) ); // Only for mock drawer
+  ASSERT_EQ( Drawer->textWidthHeight("xxx",TextStyle).first, Painter.textWidthHeight("xxx",TextStyle).first );
+  ASSERT_EQ( Drawer->textWidthHeight("xxx",TextStyle).second, Painter.textWidthHeight("xxx",TextStyle).second );
+  ASSERT_EQ( 30, Painter.textWidthHeight("xxx",TextStyle).first ); // Only for mock drawer
+  ASSERT_EQ( 10, Painter.textWidthHeight("xxx",TextStyle).second ); // Only for mock drawer
 }
 
 // =========================================================

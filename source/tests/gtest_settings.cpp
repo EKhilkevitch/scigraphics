@@ -28,9 +28,9 @@ TEST( settings, output )
   Stream << Settings;
   EXPECT_EQ( "{ "
     "[ 0.5 .. 1.5 ] Linear 1 "
-    "[ -1.79769e+308 .. 1.79769e+308 ] Linear 1 "
+    "[ -1.79769e+308 .. 1.79769e+308 ] Linear 0 "
     "[ 10 .. 30 ] Linear 0 "
-    "[ -1.79769e+308 .. 1.79769e+308 ] LogarithmPositive 1 "
+    "[ -1.79769e+308 .. 1.79769e+308 ] LogarithmPositive 0 "
     "18 3 "
     "VerticalStrip [ 5 .. 6 ] }", Stream.str() );
 }

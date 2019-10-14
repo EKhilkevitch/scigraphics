@@ -28,6 +28,7 @@
 
 #include <string>
 #include <vector>
+#include <utility>
   
 // ============================================================
 
@@ -127,8 +128,7 @@ namespace scigraphics
       void drawPolygonF( const std::vector<fpoint> &Points, const brushStyle &Style );
       void drawPolygonW( const std::vector<wpoint> &Points, const brushStyle &Style );
 
-      wcoord textWidth( const std::string &Text, const textStyle &Style );
-      wcoord textHeight( const std::string &Text, const textStyle &Style );
+      std::pair<wcoord,wcoord> textWidthHeight( const std::string &Text, const textStyle &Style );
   };
 
 // ============================================================

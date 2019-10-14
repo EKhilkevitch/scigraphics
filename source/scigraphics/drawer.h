@@ -27,6 +27,7 @@
 
 #include <string>
 #include <vector>
+#include <utility>
 
 // ============================================================
 
@@ -66,8 +67,7 @@ namespace scigraphics
       virtual void eraseRectangle( const wrectangle& Rectangle );
       virtual void flush();
 
-      virtual wcoord textWidth( const std::string &Text, const textStyle &Style );
-      virtual wcoord textHeight( const std::string &Text, const textStyle &Style );
+      virtual std::pair<wcoord,wcoord> textWidthHeight( const std::string &Text, const textStyle &Style ) = 0;
       
       virtual ~drawer();
   };

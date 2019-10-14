@@ -131,8 +131,9 @@ scigraphics::legend::legendSize scigraphics::legend::sizesForLegendRectangle( pa
 
     if ( shouldDrawGraphLegend(*Graph) )
     {
-      const wcoord Width  = Graph->legendExampleWidth() + Painter.textWidth(  Graph->legend(), Style );
-      const wcoord Height = std::max( Graph->legendExampleHeight(), Painter.textHeight( Graph->legend(), Style ) );
+      const std::pair<wcoord,wcoord> TextSizes = Painter.textWidthHeight( Graph->legend(), Style );
+      const wcoord Width = Graph->legendExampleWidth() + TextSizes.first;
+      const wcoord Height = std::max( Graph->legendExampleHeight(), TextSizes.second );
       Size.updateWidth( Width + 3*textHorizontalIndent() );
       Size.updateHeight( Height + VerticalDistance );
     }
@@ -220,7 +221,7 @@ bool scigraphics::legend::shouldDrawLegend( const graphCollection &Graphics )
 
 scigraphics::wcoord scigraphics::legend::drawGraphLegend( painter &Painter, wcoord y, const graph &Graph, const textStyle &Style )
 {
-  const wcoord TextHeight = Painter.textHeight( Graph.legend(), Style );
+  const wcoord TextHeight = Painter.textWidthHeight( Graph.legend(), Style ).second;
 
   const wcoord XForExample = getRectangle().left() + textHorizontalIndent();
   const wcoord ExampleWidth = Graph.legendExampleWidth();

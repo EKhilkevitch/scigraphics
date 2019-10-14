@@ -42,12 +42,12 @@ const scigraphics::wrectangle scigraphics::cursorPositionViewer::InitCursorRecta
 struct scigraphics::cursorPositionViewer::textSizesCache
 {
   std::string Text;
-  wcoord Width;
-  wcoord Height;
+  std::pair<wcoord,wcoord> WidthHeight;
 
   textSizesCache() :
-    Width(0),
-    Height(0) {}
+    WidthHeight( 0, 0 ) 
+  {}
+  
 };
 
 // ============================================================
@@ -109,8 +109,7 @@ void scigraphics::cursorPositionViewer::updateTextSizesCacheIfNeed( painter &Pai
   {
     //std::cout << "cache fault" << std::endl;
     TextSizesCache->Text = Text;
-    TextSizesCache->Width = Painter.textWidth( Text, getTextStyle() );
-    TextSizesCache->Height = Painter.textHeight( Text, getTextStyle() );
+    TextSizesCache->WidthHeight = Painter.textWidthHeight( Text, getTextStyle() );
   }
 }
 
@@ -120,8 +119,8 @@ void scigraphics::cursorPositionViewer::updateRectangle( painter &Painter, const
 {
   updateTextSizesCacheIfNeed( Painter, Text );
   
-  const wcoord TextWidth  = TextSizesCache->Width;
-  const wcoord TextHeight = TextSizesCache->Height;
+  const wcoord TextWidth  = TextSizesCache->WidthHeight.first;
+  const wcoord TextHeight = TextSizesCache->WidthHeight.second;
   
   const wpoint LegendRightDownCorner = wpoint( std::max<wcoord>( getRectangle().left() + TextWidth + 2*textHorizontalIndent(), getRectangle().right() ), 
                                                std::min<wcoord>( getRectangle().up() - TextHeight - 2*textVerticalIndent(),  getRectangle().down()  ) );

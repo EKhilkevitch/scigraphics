@@ -85,8 +85,7 @@ namespace scigraphics
       void eraseAll();
       void flush();
 
-      wcoord textWidth( const std::string &Text, const textStyle &Style );
-      wcoord textHeight( const std::string &Text, const textStyle &Style );
+      std::pair<wcoord,wcoord> textWidthHeight( const std::string &Text, const textStyle &Style );
       
       wcoord width()  const;
       wcoord height() const;

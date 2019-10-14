@@ -81,6 +81,8 @@ namespace scigraphics
       wcoord width() const  { return Width; }
       wcoord height() const { return Height; }
 
+      std::pair<wcoord,wcoord> textWidthHeight( const std::string &Text, const textStyle &Style ) { return drawer::textWidthHeight(Text,Style); }
+
       const std::vector<action>& actions() const { return Actions; }
   };
   

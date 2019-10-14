@@ -84,17 +84,12 @@ void scigraphics::drawer::flush()
 }
 
 // ------------------------------------------------------------
-      
-scigraphics::wcoord scigraphics::drawer::textWidth( const std::string &Text, const textStyle &Style )       
-{ 
-  return static_cast<wcoord>( Text.length() * Style.getFontSize() ); 
-}
 
-// ------------------------------------------------------------
-
-scigraphics::wcoord scigraphics::drawer::textHeight( const std::string &Text, const textStyle &Style )
-{ 
-  return static_cast<wcoord>( Style.getFontSize() * numOfLinesInString(Text) ); 
+std::pair<scigraphics::wcoord,scigraphics::wcoord> scigraphics::drawer::textWidthHeight( const std::string &Text, const textStyle &Style )
+{
+  const wcoord Width = static_cast<wcoord>( Text.length() * Style.getFontSize() );
+  const wcoord Height = static_cast<wcoord>( Style.getFontSize() * numOfLinesInString(Text) );
+  return std::make_pair( Width, Height );
 }
 
 // ------------------------------------------------------------
