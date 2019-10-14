@@ -37,7 +37,7 @@ namespace scigraphics
   class textStyle 
   {
     private:
-      std::string Font;
+      char Font[ 96 ];
       unsigned FontSize;
       color Color;
 
@@ -50,8 +50,8 @@ namespace scigraphics
       unsigned getFontSize() const { return FontSize; }
       void setFontSize( unsigned S ) { FontSize = S; }
 
-      void setFontName( const std::string &F ) { Font = F; }
-      const std::string& getFontName() const { return Font; }
+      void setFontName( const std::string &F );
+      std::string getFontName() const;
   };
   
 // ======================================================

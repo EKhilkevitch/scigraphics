@@ -62,12 +62,9 @@ namespace scigraphics
         static color fromHSV( unsigned H, unsigned S, unsigned V, unsigned T = 0 );
 
         color( rgb Value = Black );
-        color( const color &Color );
         color( int R, int G, int B, int T = 0x00 );
-        ~color() {};
 
         color& operator=( rgb Value );
-        color& operator=( const color &Color );
 
         unsigned valueRgb()  const { return RGB; }
         unsigned int red()   const { return ( valueRgb() >> 16 ) & 0xFF; }

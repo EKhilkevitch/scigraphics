@@ -23,13 +23,36 @@
 
 #include "scigraphics/textstyle.h"
 
+#include <cstring>
+#include <stdexcept>
+
 // ============================================================
       
 scigraphics::textStyle::textStyle( unsigned FS ) : 
-  Font(), 
   FontSize(FS), 
   Color() 
 {
+  Font[0] = '\0';
+}
+
+// ------------------------------------------------------------
+      
+void scigraphics::textStyle::setFontName( const std::string &F ) 
+{ 
+  const size_t MaxFontLength = sizeof(Font);
+  
+  if ( F.length() >= MaxFontLength )
+    throw std::invalid_argument( "Font name length too big" );
+
+  std::strncpy( Font, F.c_str(), MaxFontLength );
+  Font[ MaxFontLength-1 ] = '\0';
+}
+
+// ------------------------------------------------------------
+      
+std::string scigraphics::textStyle::getFontName() const 
+{ 
+  return std::string(Font);
 }
       
 // ============================================================

@@ -64,13 +64,6 @@ scigraphics::color::color( rgb Value ) :
 
 // ------------------------------------------------------------
 
-scigraphics::color::color( const color &Color ) : 
-  RGB( Color.RGB ) 
-{
-}
-
-// ------------------------------------------------------------
-
 scigraphics::color::color( int R, int G, int B, int T )
 {
   interval<int> Lims(0,0xFF); 
@@ -90,19 +83,15 @@ scigraphics::color& scigraphics::color::operator=( rgb Value )
 
 // ------------------------------------------------------------
 
-scigraphics::color& scigraphics::color::operator=( const color &Color ) 
-{ 
-  RGB = Color.RGB; 
-  return *this; 
-}
-
-// ------------------------------------------------------------
-
 void scigraphics::color::setTransparency( double Part ) 
 { 
-  if ( Part < 0 ) return setTransparency(0); 
-  else if ( Part > 1 ) return setTransparency(1);
-  else RGB = ( RGB & 0x00FFFFFF ) | ( static_cast<unsigned char>( Part * 0xFF ) << 24 );
+  if ( Part < 0 )
+    Part = 0;
+  
+  if ( Part > 1 )
+    Part = 1;
+  
+  RGB = ( RGB & 0x00FFFFFF ) | ( static_cast<unsigned char>( Part * 0xFF ) << 24 );
 }
 
 // ------------------------------------------------------------
@@ -114,7 +103,7 @@ std::string scigraphics::color::name( bool WithPrefix ) const
 #endif
 
   char Name[32];
-  snprintf(Name,sizeof(Name)-1, WithPrefix ? "0x%08X" : "%08X",valueRgb());
+  snprintf(Name,sizeof(Name)-1, WithPrefix ? "0x%08X" : "%08X", valueRgb() );
   return std::string(Name); 
 }
 
@@ -198,12 +187,13 @@ unsigned scigraphics::color::hue() const
 
 unsigned scigraphics::color::saturation() const
 {
-  unsigned Min = minRGB();
-  unsigned Max = maxRGB();
+  const unsigned Min = minRGB();
+  const unsigned Max = maxRGB();
 
   if ( Max == 0 )
     return 0;
-  return 100.0 * ( 1.0 - static_cast<double>(Min)/Max );
+
+  return 100.0 * ( 1.0 - static_cast<double>(Min)/static_cast<double>(Max) );
 }
 
 // ------------------------------------------------------------

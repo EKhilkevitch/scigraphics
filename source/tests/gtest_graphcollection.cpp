@@ -126,7 +126,7 @@ TEST( test_graphCollection, create )
   {
     Collection.append(Graph);
     FAIL() << "Graph already exist in collection";;
-  } catch ( std::exception ) {}
+  } catch ( const std::exception& ) {}
 }
 
 // ---------------------------------------------------------
