@@ -140,6 +140,7 @@ namespace scigraphics
 
         void drawLegendExample( painter &Painter, const wrectangle &Rectangle ) const;
         void setPointSize( unsigned Size );
+        void setPointShape( pointStyle::shape Shape );
     };
 
     // ------------------------------------------------------------

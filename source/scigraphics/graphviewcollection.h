@@ -88,6 +88,7 @@ namespace scigraphics
         ordinarGraphViewCollection();
         
         void setLineStyle( lineStyle::style LineStyle );
+        void setPointShape( pointStyle::shape Shape );
         void setLineWidth( unsigned Width );
         void setPointSize( unsigned Size );
     };

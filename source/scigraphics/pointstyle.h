@@ -39,7 +39,7 @@ namespace scigraphics
       {
         None,
         Square,
-        Cyrcle
+        Cross,
       };
 
     private:

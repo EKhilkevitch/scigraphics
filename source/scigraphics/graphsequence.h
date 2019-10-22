@@ -106,6 +106,7 @@ namespace scigraphics
         void setLineWidth( unsigned Width );
         void setPointSize( unsigned Size );
         void setLineStyle( lineStyle::style LineStyle );
+        void setPointShape( pointStyle::shape PointShape );
         
         void setVisibleLines( bool Show );
         void setVisiblePoints( bool Show );
@@ -308,6 +309,13 @@ namespace scigraphics
     template < class D, class V > void graphSpecified<D,V>::setLineStyle( lineStyle::style LineStyle ) 
     { 
       getCastedViews().setLineStyle(LineStyle); 
+    }
+    
+    // ------------------------------------------------------------
+
+    template < class D, class V > void graphSpecified<D,V>::setPointShape( pointStyle::shape PointShape ) 
+    { 
+      getCastedViews().setPointShape(PointShape); 
     }
         
     // ------------------------------------------------------------

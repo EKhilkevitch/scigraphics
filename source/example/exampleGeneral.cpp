@@ -82,6 +82,8 @@ int main( int argc, char *argv[] )
   for ( double x = 0; x <= 3; x+= 0.1 )
     Cos->append( x, std::cos(x)+1 );
   Cos->setLineStyle( scigraphics::lineStyle::Dash );
+  Cos->setPointShape( scigraphics::pointStyle::Cross );
+  Cos->setPointSize( 25 );
   Plot.bindGraphToAxis( Cos, scigraphics::AxisTop, scigraphics::AxisRight );
 
   scigraphics::graphAV *Polygons = Plot.createGraphAV("Polygons");

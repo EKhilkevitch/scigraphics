@@ -400,6 +400,20 @@ void scigraphics::painter::drawPointW( const wpoint &Point, const pointStyle &St
       }
       break;
 
+    case pointStyle::Cross:
+      {
+        const wpoint VertUp( Point.x(), Point.y() + Style.width()/2 );
+        const wpoint VertDown( Point.x(), Point.y() - Style.width()/2 );
+        
+        const wpoint HorLeft( Point.x() + Style.width()/2, Point.y() );
+        const wpoint HorRight( Point.x() - Style.width()/2, Point.y() );
+        
+        Drawer->setLineStyle( lineStyle(BrushStyle.getColor()) );
+        Drawer->drawLine( VertUp, VertDown );
+        Drawer->drawLine( HorLeft, HorRight );
+      }
+      break;
+
     default:
       abort();
   }

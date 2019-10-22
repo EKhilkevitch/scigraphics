@@ -21,6 +21,7 @@ TEST( settings, output )
   Settings.setAxisScaleLimits( 0.5, 1.5, AxisLeft );
   Settings.setAxisScaleLimits(  10,  30, AxisTop );
   Settings.setEnabledAxisScaleLimits( false, AxisTop );
+  Settings.setEnabledAxisScaleLimits( true, AxisLeft );
   Settings.setAxisScaleType( settings::LogarithmPositive, AxisBottom );
   Settings.setGraphType( settings::Points | settings::ErrorBars );
   Settings.setSelectionInterval( settings::VerticalStrip, 5, 6 );

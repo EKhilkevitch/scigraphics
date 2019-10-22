@@ -382,6 +382,15 @@ void scigraphics::sequence::graphViewPoints::setPointSize( unsigned Size )
   setStyle( Style );
 }
 
+// ------------------------------------------------------------
+        
+void scigraphics::sequence::graphViewPoints::setPointShape( pointStyle::shape Shape )
+{
+  pointStyle Style = getStyle();
+  Style.setShape( Shape );
+  setStyle( Style );
+}
+
 // ============================================================
         
 scigraphics::sequence::graphViewErrorBars::graphViewErrorBars( const style &Style ) : 

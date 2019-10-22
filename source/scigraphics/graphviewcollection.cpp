@@ -162,6 +162,15 @@ void scigraphics::sequence::ordinarGraphViewCollection::setLineStyle( lineStyle:
 
 // ------------------------------------------------------------
 
+void scigraphics::sequence::ordinarGraphViewCollection::setPointShape( pointStyle::shape PointShape )
+{
+  graphViewPoints *View = getView<graphViewPoints>();
+  if ( View != NULL )
+    View->setPointShape( PointShape );
+}
+
+// ------------------------------------------------------------
+
 void scigraphics::sequence::ordinarGraphViewCollection::setLineWidth( unsigned Width )
 {
   graphViewGeneralLine *View = getView<graphViewLine>();
