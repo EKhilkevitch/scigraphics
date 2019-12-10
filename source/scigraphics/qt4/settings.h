@@ -95,6 +95,7 @@ namespace scigraphics
 
       void addSettingWidget( qt4settingsGroupBox *Box );
       void delSettingWidget( size_t Index );
+      template <class widgetType> void delSettingWidget();
       qt4settingsGroupBox* getSettingWidget( size_t Index );
       template <class widgetType> widgetType* getSettingWidget();
       size_t numberOfSettingsWidget() const;
@@ -120,7 +121,7 @@ namespace scigraphics
   
   template <class widgetType> widgetType* qt4settings::getSettingWidget()
   {
-    size_t NumberOfSettingsWidget = numberOfSettingsWidget();
+    const size_t NumberOfSettingsWidget = numberOfSettingsWidget();
     for ( size_t i = 0; i < NumberOfSettingsWidget; i++ )
     {
       widgetType* Widget = dynamic_cast<widgetType*>( getSettingWidget(i) );
@@ -128,6 +129,22 @@ namespace scigraphics
         return Widget;
     }
     return NULL;
+  }
+  
+  // ----------------------------------------------------------------
+      
+  template <class widgetType> void qt4settings::delSettingWidget()
+  {
+    const size_t NumberOfSettingsWidget = numberOfSettingsWidget();
+    for ( size_t i = 0; i < NumberOfSettingsWidget; i++ )
+    {
+      widgetType* Widget = dynamic_cast<widgetType*>( getSettingWidget(i) );
+      if ( Widget != NULL )
+      {
+        delSettingWidget(i);
+        return;
+      }
+    }
   }
   
   // ================================================================
