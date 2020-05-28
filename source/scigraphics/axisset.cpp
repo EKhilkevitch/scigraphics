@@ -239,6 +239,13 @@ scigraphics::axisSetX::axisSetX( fcoord BaseY ) :
 
 // ------------------------------------------------------------
       
+scigraphics::axisDirection scigraphics::axisSetX::getDirection() const 
+{ 
+  return AxisDirectionX; 
+}
+
+// ------------------------------------------------------------
+      
 scigraphics::wcoord scigraphics::axisSetX::requiredIndent( bool Used ) const
 {
   wcoord Indent = 7;
@@ -271,6 +278,13 @@ scigraphics::axisSetY::axisSetY( fcoord BaseX ) :
     new gridY(), 
     new scaleLinear() )
 {
+}
+
+// ------------------------------------------------------------
+      
+scigraphics::axisDirection scigraphics::axisSetY::getDirection() const 
+{ 
+  return AxisDirectionY; 
 }
 
 // ------------------------------------------------------------
@@ -408,11 +422,9 @@ void scigraphics::axisSetCollection::drawAxisTitles( painter &Painter )
 
 // ------------------------------------------------------------
 
-void scigraphics::axisSetCollection::applyScalesChanging( double Value, axisDirection Direction, void (*Operation)( scale *Scale, double Value ) )
+void scigraphics::axisSetCollection::applyScaleChanging( double Value, axisDirection Direction, void (*Operation)( scale *Scale, double Value ) )
 {
-  if ( Operation == NULL )
-    throw std::invalid_argument( "Operation pointer must be not NULL" );
-
+  assert( Operation != NULL );
   for ( axis_iterator Set = AxisSets.begin(); Set != AxisSets.end(); ++Set )
   {
     assert( &*Set != NULL );
@@ -426,32 +438,142 @@ void scigraphics::axisSetCollection::applyScalesChanging( double Value, axisDire
 }
 
 // ------------------------------------------------------------
-
-void scigraphics::axisSetCollection::addScalesShift( double Shift, axisDirection Direction )
+      
+double scigraphics::axisSetCollection::getScaleValue( axisDirection Direction, double (*Operation)( const scale *Scale ) ) const
 {
-  applyScalesChanging( Shift, Direction, scale::addScaleShift );
+  assert( Operation != NULL );
+  for ( axis_const_iterator Set = AxisSets.begin(); Set != AxisSets.end(); ++Set )
+  {
+    assert( &*Set != NULL );
+    if ( Set->getDirection() == Direction )
+    {
+      const scale *Scale = Set->getScale();
+      assert( Scale != NULL );
+      return Operation(Scale);
+    }
+  }
+
+  return 0;
+}
+
+// ------------------------------------------------------------
+      
+void scigraphics::axisSetCollection::addScaleShift( scale *Scale, double Shift )
+{
+  if ( Scale == NULL )
+    return;
+  Scale->setShift( Scale->shift() + Shift/Scale->zoom() );
+}
+
+// ------------------------------------------------------------
+      
+void scigraphics::axisSetCollection::setScaleShift( scale *Scale, double Shift )
+{
+  if ( Scale == NULL )
+    return;
+  Scale->setShift( Shift );
 }
 
 // ------------------------------------------------------------
 
-void scigraphics::axisSetCollection::mulScalesZoom( double Zoom, axisDirection Direction )
+double scigraphics::axisSetCollection::scaleShift( const scale *Scale )
 {
-  applyScalesChanging( Zoom, Direction, scale::mulScaleZoom );
+  if ( Scale == NULL )
+    return 0;
+  return Scale->shift();
+}
+
+// ------------------------------------------------------------
+
+void scigraphics::axisSetCollection::mulScaleZoom( scale *Scale, double Zoom )
+{
+  if ( Scale == NULL )
+    return;
+  Scale->setZoom( Scale->zoom() / Zoom );
+}
+
+// ------------------------------------------------------------
+
+void scigraphics::axisSetCollection::setScaleZoom( scale *Scale, double Zoom )
+{
+  if ( Scale == NULL )
+    return;
+  Scale->setZoom( Zoom );
+}
+
+// ------------------------------------------------------------
+
+double scigraphics::axisSetCollection::scaleZoom( const scale *Scale )
+{
+  if ( Scale == NULL )
+    return 1;
+  return Scale->zoom();
+}
+
+// ------------------------------------------------------------
+
+void scigraphics::axisSetCollection::resetScale( scale *Scale, double )
+{
+  if ( Scale == NULL )
+    return;
+  Scale->reset();
+}
+
+// ------------------------------------------------------------
+
+void scigraphics::axisSetCollection::addScaleShift( double Shift, axisDirection Direction )
+{
+  applyScaleChanging( Shift, Direction, &addScaleShift );
+}
+
+// ------------------------------------------------------------
+
+void scigraphics::axisSetCollection::setScaleShift( double Shift, axisDirection Direction )
+{
+  applyScaleChanging( Shift, Direction, &setScaleShift );
+}
+
+// ------------------------------------------------------------
+
+double scigraphics::axisSetCollection::scaleShift( axisDirection Direction ) const
+{
+  return getScaleValue( Direction, &scaleShift );
+}
+
+// ------------------------------------------------------------
+
+void scigraphics::axisSetCollection::mulScaleZoom( double Zoom, axisDirection Direction )
+{
+  applyScaleChanging( Zoom, Direction, &mulScaleZoom );
+}
+
+// ------------------------------------------------------------
+
+void scigraphics::axisSetCollection::setScaleZoom( double Zoom, axisDirection Direction )
+{
+  applyScaleChanging( Zoom, Direction, &setScaleZoom );
+}
+
+// ------------------------------------------------------------
+
+double scigraphics::axisSetCollection::scaleZoom( axisDirection Direction ) const
+{
+  return getScaleValue( Direction, &scaleZoom );
 }
 
 // ------------------------------------------------------------
 
 void scigraphics::axisSetCollection::resetScales( axisDirection Direction )
 {
-  applyScalesChanging( 0, Direction, scale::resetScale );
+  applyScaleChanging( 0, Direction, &resetScale );
 }
 
 // ------------------------------------------------------------
 
 void scigraphics::axisSetCollection::resetAllScales()
 {
-  applyScalesChanging( 0, AxisDirectionX, scale::resetScale );
-  applyScalesChanging( 0, AxisDirectionY, scale::resetScale );
+  applyScaleChanging( 0, AxisDirectionX, &resetScale );
+  applyScaleChanging( 0, AxisDirectionY, &resetScale );
 }
 
 // ------------------------------------------------------------
@@ -470,8 +592,8 @@ void scigraphics::axisSetCollection::setScalesTo1x1( const painter &Painter )
     double MulZoom = WPointsPerNPoints / MinWPointsPerNPoints;
     scale *Scale = Set->getScale();
     assert( Scale != NULL );
-    scale::addScaleShift( Scale, ( 1 - MulZoom  )/2 );
-    scale::mulScaleZoom( Scale, MulZoom );
+    addScaleShift( Scale, ( 1 - MulZoom  )/2 );
+    mulScaleZoom( Scale, MulZoom );
   }
 
 }

@@ -61,10 +61,31 @@ void scigraphics::scale::setMarker( marker *M )
 
 // ------------------------------------------------------------
       
+const scigraphics::marker* scigraphics::scale::getMarker() const 
+{ 
+  return Marker; 
+}
+
+// ------------------------------------------------------------
+
+scigraphics::marker* scigraphics::scale::getMarker() 
+{ 
+  return Marker; 
+}
+
+// ------------------------------------------------------------
+      
 void scigraphics::scale::setShift( double S ) 
 { 
   if ( ! isLocked() ) 
     Shift = S; 
+}
+
+// ------------------------------------------------------------
+      
+double scigraphics::scale::shift() const 
+{ 
+  return Shift; 
 }
 
 // ------------------------------------------------------------
@@ -73,6 +94,13 @@ void scigraphics::scale::setZoom( double Z )
 { 
   if ( ! isLocked() ) 
     Zoom  = Z; 
+}
+
+// ------------------------------------------------------------
+      
+double scigraphics::scale::zoom()  const 
+{ 
+  return Zoom; 
 }
 
 // ------------------------------------------------------------
@@ -184,33 +212,6 @@ std::vector<scigraphics::number> scigraphics::scale::marks() const
   assert( Marker != NULL );
   interval<number> Interval = getVisivleInterval();
   return Marker->marks( Interval );
-}
-
-// ------------------------------------------------------------
-      
-void scigraphics::scale::addScaleShift( scale *Scale, double Shift )
-{
-  if ( Scale == NULL )
-    return;
-  Scale->setShift( Scale->shift() + Shift/Scale->zoom() );
-}
-
-// ------------------------------------------------------------
-
-void scigraphics::scale::mulScaleZoom( scale *Scale, double Zoom )
-{
-  if ( Scale == NULL )
-    return;
-  Scale->setZoom( Scale->zoom() / Zoom );
-}
-
-// ------------------------------------------------------------
-
-void scigraphics::scale::resetScale( scale *Scale, double )
-{
-  if ( Scale == NULL )
-    return;
-  Scale->reset();
 }
 
 // ============================================================

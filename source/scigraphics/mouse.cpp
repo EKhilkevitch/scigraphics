@@ -114,28 +114,28 @@ double scigraphics::mouse::mouseHandler::plotHeight() const
 
 void scigraphics::mouse::mouseHandler::mulZoomX( double Z )
 {
-  Plot.mulScalesZoom( Z, AxisDirectionX );
+  Plot.mulScaleZoom( Z, AxisDirectionX );
 }
 
 // ------------------------------------------------------------
 
 void scigraphics::mouse::mouseHandler::mulZoomY( double Z )
 {
-  Plot.mulScalesZoom( Z, AxisDirectionY );
+  Plot.mulScaleZoom( Z, AxisDirectionY );
 }
 
 // ------------------------------------------------------------
 
 void scigraphics::mouse::mouseHandler::addShiftX( double S )
 {
-  Plot.addScalesShift( S, AxisDirectionX );
+  Plot.addScaleShift( S, AxisDirectionX );
 }
 
 // ------------------------------------------------------------
 
 void scigraphics::mouse::mouseHandler::addShiftY( double S )
 {
-  Plot.addScalesShift( S, AxisDirectionY );
+  Plot.addScaleShift( S, AxisDirectionY );
 }
 
 // ------------------------------------------------------------

@@ -57,12 +57,12 @@ namespace scigraphics
       virtual number partOfDistanceToNumber( double Part ) const = 0;
       
       void setMarker( marker *Marker );
-      const marker* getMarker() const { return Marker; }
-      marker* getMarker() { return Marker; }
+      const marker* getMarker() const;
+      marker* getMarker();
 
     public:
       scale();
-      virtual ~scale();
+      virtual ~scale() = 0;
 
       void setNumberLimits( const numberLimits &NumberLimits );
       const numberLimits& getNumberLimits() const;
@@ -73,11 +73,11 @@ namespace scigraphics
       fcoord numberToFraction( number Number ) const;
       number fractionToNumber( fcoord Coordinate ) const;
 
-      double shift() const { return Shift; }
-      void setShift( double S );
+      double shift() const;
+      void setShift( double Shift );
      
-      double zoom()  const { return Zoom; }
-      void setZoom( double Z );
+      double zoom()  const;
+      void setZoom( double Zoom );
 
       void reset();
 
@@ -88,10 +88,6 @@ namespace scigraphics
 
       void setNumberOfMarks( unsigned Min, unsigned Max );
       std::vector<number> marks() const;
-
-      static void addScaleShift( scale *Scale, double Shift );
-      static void mulScaleZoom( scale *Scale, double Zoom );
-      static void resetScale( scale *Scale, double Junk = 0 );
   };
 
 // ============================================================
@@ -137,9 +133,9 @@ namespace scigraphics
   class scaleSquare : public scale
   {
     protected:
-      static number sign( number Val );
-      static number signsqr( number Val );
-      static number signsqrt( number Val );
+      static inline number sign( number Val );
+      static inline number signsqr( number Val );
+      static inline number signsqrt( number Val );
       
       double numberToPartOfDistance( number Number ) const;
       number partOfDistanceToNumber( double Part ) const;

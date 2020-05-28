@@ -570,16 +570,44 @@ void scigraphics::plot::setEnableMultipleMouseSelections( bool Enable )
 
 // ------------------------------------------------------------
       
-void scigraphics::plot::addScalesShift( double Shift, axisDirection Direction )
+void scigraphics::plot::addScaleShift( double Shift, axisDirection Direction )
 {
-  Pimpl->AxisSets.addScalesShift(Shift,Direction);
+  Pimpl->AxisSets.addScaleShift(Shift,Direction);
 }
 
 // ------------------------------------------------------------
       
-void scigraphics::plot::mulScalesZoom( double Zoom, axisDirection Direction )
+void scigraphics::plot::setScaleShift( double Shift, axisDirection Direction )
 {
-  Pimpl->AxisSets.mulScalesZoom(Zoom,Direction);
+  Pimpl->AxisSets.setScaleShift(Shift,Direction);
+}
+
+// ------------------------------------------------------------
+
+double scigraphics::plot::scaleShift( axisDirection Direction ) const
+{
+  return Pimpl->AxisSets.scaleShift(Direction);
+}
+
+// ------------------------------------------------------------
+      
+void scigraphics::plot::mulScaleZoom( double Zoom, axisDirection Direction )
+{
+  Pimpl->AxisSets.mulScaleZoom(Zoom,Direction);
+}
+
+// ------------------------------------------------------------
+      
+void scigraphics::plot::setScaleZoom( double Zoom, axisDirection Direction )
+{
+  Pimpl->AxisSets.setScaleZoom(Zoom,Direction);
+}
+
+// ------------------------------------------------------------
+
+double scigraphics::plot::scaleZoom( axisDirection Direction ) const 
+{
+  return Pimpl->AxisSets.scaleZoom( Direction );
 }
 
 // ------------------------------------------------------------

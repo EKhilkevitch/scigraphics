@@ -106,7 +106,7 @@ namespace scigraphics
   {
     public:
       explicit axisSetX( fcoord BaseY );
-      axisDirection getDirection() const { return AxisDirectionX; }
+      axisDirection getDirection() const;
       wcoord requiredIndent( bool Used ) const;
   };
   
@@ -114,7 +114,7 @@ namespace scigraphics
   {
     public:
       explicit axisSetY( fcoord BaseX );
-      axisDirection getDirection() const { return AxisDirectionY; }
+      axisDirection getDirection() const;
       wcoord requiredIndent( bool Used ) const;
   };
   
@@ -133,6 +133,17 @@ namespace scigraphics
 
     private:
       double minWPointsPerNPoints( const painter &Painter ) const;
+      
+      static void addScaleShift( scale *Scale, double Shift );
+      static void setScaleShift( scale *Scale, double Shift );
+      static double scaleShift( const scale *Scale );
+      static void mulScaleZoom( scale *Scale, double Zoom );
+      static void setScaleZoom( scale *Scale, double Zoom );
+      static double scaleZoom( const scale *Scale );
+      static void resetScale( scale *Scale, double Junk );
+      
+      void applyScaleChanging( double Value, axisDirection Direction, void (*Operation)( scale *Scale, double Value ) );
+      double getScaleValue( axisDirection Direction, double (*Operation)( const scale *Scale ) ) const;
 
     public:
       axisSetCollection();
@@ -153,9 +164,12 @@ namespace scigraphics
       void drawAxisLabels( painter &Painter );
       void drawAxisTitles( painter &Painter );
 
-      void applyScalesChanging( double Value, axisDirection Direction, void (*Operation)( scale *Scale, double Value ) );
-      void addScalesShift( double Shift, axisDirection Direction );
-      void mulScalesZoom( double Zoom, axisDirection Direction );
+      void addScaleShift( double Shift, axisDirection Direction );
+      void setScaleShift( double Shift, axisDirection Direction );
+      double scaleShift( axisDirection Direction ) const;
+      void mulScaleZoom( double Zoom, axisDirection Direction );
+      void setScaleZoom( double Zoom, axisDirection Direction );
+      double scaleZoom( axisDirection Direction ) const;
       void resetScales( axisDirection Direction );
       void resetAllScales();
 

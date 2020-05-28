@@ -200,8 +200,12 @@ namespace scigraphics
       interval<number> visibleIntervalX() const;
       interval<number> visibleIntervalY() const;
       
-      void addScalesShift( double Shift, axisDirection Direction );
-      void mulScalesZoom( double Zoom, axisDirection Direction );
+      void addScaleShift( double Shift, axisDirection Direction );
+      void setScaleShift( double Shift, axisDirection Direction );
+      double scaleShift( axisDirection Direction ) const;
+      void mulScaleZoom( double Zoom, axisDirection Direction );
+      void setScaleZoom( double Zoom, axisDirection Direction );
+      double scaleZoom( axisDirection Direction ) const;
       void resetScales( axisDirection Direction );
       void resetAllScales();
       void setScalesTo1x1( bool SetTo1x1 );
