@@ -37,7 +37,7 @@ scigraphics::scale::scale() :
   Shift(0), 
   Zoom(1), 
   Locked(false), 
-  Marker( NULL ) 
+  Marker(NULL) 
 {
 }
 

@@ -41,7 +41,7 @@ namespace
   
   // ----------------------------------------------------------------
 
-  char FakeProgramName[] = "scigraphicsQt4FakeProgram";
+  char FakeProgramName[] = "SciGraphics";
   char* FakeArgv[2] = { FakeProgramName, NULL };
   int FakeArgc = 1;
 
@@ -77,7 +77,9 @@ scigraphics::qt4plotOnImage::~qt4plotOnImage()
 {
   if ( LocalApplication != NULL )
   {
-    qInstallMsgHandler( reinterpret_cast<QtMsgHandler>(StoredMsgHandler) );
+    QtMsgHandler Handler = NULL;
+    *reinterpret_cast<void**>(&Handler) = StoredMsgHandler;
+    qInstallMsgHandler( Handler );
     delete LocalApplication;
   }
 }
@@ -90,7 +92,8 @@ void scigraphics::qt4plotOnImage::makeQApplicationIfNeed()
   
   if ( QApplication::instance() == NULL )
   {
-    StoredMsgHandler = reinterpret_cast<void*>( qInstallMsgHandler( silentMsgHandler ) );
+    QtMsgHandler Handler = qInstallMsgHandler( silentMsgHandler );
+    StoredMsgHandler = *reinterpret_cast<void**>( &Handler );
     LocalApplication = new QApplication( FakeArgc, FakeArgv );
   }
 }
