@@ -523,57 +523,57 @@ void scigraphics::axisSetCollection::resetScale( scale *Scale, double )
 
 void scigraphics::axisSetCollection::addScaleShift( double Shift, axisDirection Direction )
 {
-  applyScaleChanging( Shift, Direction, &addScaleShift );
+  applyScaleChanging( Shift, Direction, &axisSetCollection::addScaleShift );
 }
 
 // ------------------------------------------------------------
 
 void scigraphics::axisSetCollection::setScaleShift( double Shift, axisDirection Direction )
 {
-  applyScaleChanging( Shift, Direction, &setScaleShift );
+  applyScaleChanging( Shift, Direction, &axisSetCollection::setScaleShift );
 }
 
 // ------------------------------------------------------------
 
 double scigraphics::axisSetCollection::scaleShift( axisDirection Direction ) const
 {
-  return getScaleValue( Direction, &scaleShift );
+  return getScaleValue( Direction, &axisSetCollection::scaleShift );
 }
 
 // ------------------------------------------------------------
 
 void scigraphics::axisSetCollection::mulScaleZoom( double Zoom, axisDirection Direction )
 {
-  applyScaleChanging( Zoom, Direction, &mulScaleZoom );
+  applyScaleChanging( Zoom, Direction, &axisSetCollection::mulScaleZoom );
 }
 
 // ------------------------------------------------------------
 
 void scigraphics::axisSetCollection::setScaleZoom( double Zoom, axisDirection Direction )
 {
-  applyScaleChanging( Zoom, Direction, &setScaleZoom );
+  applyScaleChanging( Zoom, Direction, &axisSetCollection::setScaleZoom );
 }
 
 // ------------------------------------------------------------
 
 double scigraphics::axisSetCollection::scaleZoom( axisDirection Direction ) const
 {
-  return getScaleValue( Direction, &scaleZoom );
+  return getScaleValue( Direction, &axisSetCollection::scaleZoom );
 }
 
 // ------------------------------------------------------------
 
 void scigraphics::axisSetCollection::resetScales( axisDirection Direction )
 {
-  applyScaleChanging( 0, Direction, &resetScale );
+  applyScaleChanging( 0, Direction, &axisSetCollection::resetScale );
 }
 
 // ------------------------------------------------------------
 
 void scigraphics::axisSetCollection::resetAllScales()
 {
-  applyScaleChanging( 0, AxisDirectionX, &resetScale );
-  applyScaleChanging( 0, AxisDirectionY, &resetScale );
+  applyScaleChanging( 0, AxisDirectionX, &axisSetCollection::resetScale );
+  applyScaleChanging( 0, AxisDirectionY, &axisSetCollection::resetScale );
 }
 
 // ------------------------------------------------------------
