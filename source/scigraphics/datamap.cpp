@@ -137,7 +137,7 @@ void scigraphics::map::dataVector::resize( size_t SX, size_t SY )
 
 scigraphics::map::dataVector::int_t scigraphics::map::dataVector::size() const
 {
-  assert( sizeX()*sizeY() == Values.size() );
+  assert( static_cast<size_t>(sizeX()) * static_cast<size_t>(sizeY()) == Values.size() );
   return static_cast<int_t>( Values.size() );
 }
 
