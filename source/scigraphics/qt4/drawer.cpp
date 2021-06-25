@@ -316,9 +316,11 @@ scigraphics::qt4drawerOnWidget::qt4drawerOnWidget( QWidget *Widget ) :
   qt4drawer( screenGeometrySize() ),
   Parent( Widget )
 {
-  Scene = new QGraphicsScene();
-  PixmapItem = new QGraphicsPixmapItem( Scene->activePanel() );
+  PixmapItem = new QGraphicsPixmapItem( pixmap(), NULL );
   PixmapItem->setOffset( 0, 0 );
+  
+  Scene = new QGraphicsScene();
+  Scene->addItem(PixmapItem);
   
   View  = new qt4plotView( Parent );
   View->setScene( Scene );

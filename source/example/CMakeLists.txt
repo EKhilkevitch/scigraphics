@@ -5,9 +5,13 @@ if ( ENABLE_EXAMPLES )
   
   message( "Examples enabled" )
 
-  find_package(ImageMagick COMPONENTS Magick++)
-  find_package(Qt4 REQUIRED)
-  include( ${QT_USE_FILE} )
+  if( POLICY CMP0012 )
+    cmake_policy(SET CMP0012 NEW)
+  endif()
+
+  find_package( Qt4 QUIET )
+  find_package( Qt5 COMPONENTS Widgets LinguistTools QUIET )
+
 
   if(WIN32)
     set( gui_type WIN32 )
@@ -16,8 +20,12 @@ if ( ENABLE_EXAMPLES )
   if ( WIN32 )
     set( QtLibs ${QT_LIBRARIES} ${QT_QTMAIN_LIBRARY} )
   else()
-    set( QtLibs ${QT_LIBRARIES} )
+    set( QtLibs ${Qt5Widgets_LIBRARIES} )
   endif()
+  
+  if ( ${Qt4_FOUND} )  
+    include( ${QT_USE_FILE} )
+  endif()  
 
   message( "Qt libraries are ${QT_LIBRARIES}" )
 
@@ -37,7 +45,11 @@ if ( ENABLE_EXAMPLES )
   target_include_directories( exampleManager PRIVATE "${PROJECT_SOURCE_DIR}/../" )
 
   project( exampleAnimation )
-  qt4_wrap_cpp( exampleAnimation_moc_sources exampleAnimation.h )
+  if ( ${Qt4_FOUND} )
+    qt4_wrap_cpp( exampleAnimation_moc_sources exampleAnimation.h )
+  elseif ( ${Qt5_FOUND} )
+    qt5_wrap_cpp( exampleAnimation_moc_sources exampleAnimation.h )
+  endif()
   add_executable( exampleAnimation exampleAnimation.cpp ${exampleAnimation_moc_sources} )
   target_link_libraries( exampleAnimation ${QtLibs} scigraphicsQt )
   target_include_directories( exampleAnimation PRIVATE "${PROJECT_SOURCE_DIR}/../" )
@@ -49,7 +61,7 @@ if ( ENABLE_EXAMPLES )
 
   project( exampleQtImage )
   add_executable( exampleQtImage ${gui_type} exampleQtImage.cpp )
-  target_link_libraries( exampleQtImage ${QtLibs} scigraphicsQt )
+  target_link_libraries( exampleQtImage scigraphicsQt ${QtLibs}  )
   target_include_directories( exampleQtImage PRIVATE "${PROJECT_SOURCE_DIR}/../" )
 
   project( exampleImagemagick )
