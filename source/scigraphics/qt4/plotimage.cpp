@@ -9,6 +9,7 @@
 #include <QWidget>
 #include <QApplication>
 #include <QLabel>
+#include <QtGlobal>
 
 #include <cstring>
 #include <cstdio>
@@ -20,24 +21,25 @@ namespace
 {
   // ----------------------------------------------------------------
   
-  void silentMsgHandler( QtMsgType Type, const char *Message )
+#if QT_VERSION >= QT_VERSION_CHECK( 5, 0, 0 )
+  void silentMsgHandler( QtMsgType Type, const QMessageLogContext&, const QString &Message )
   {
-    switch ( Type ) 
+    if ( Type == QtFatalMsg )
     {
-      case QtDebugMsg:
-        break;
-
-      case QtWarningMsg:
-        break;
-
-      case QtCriticalMsg:
-        break;
-
-      case QtFatalMsg:
-        std::fprintf( stderr, "Fatal: %s\n", Message );
-        std::abort();
+      std::fprintf( stderr, "Fatal: %s\n", Message.toLocal8Bit().data() );
+      std::abort();
     }
   }
+#else
+  void silentMsgHandler( QtMsgType Type, const char *Message )
+  {
+    if ( Type == QtFatalMsg )
+    {
+      std::fprintf( stderr, "Fatal: %s\n", Message );
+      std::abort();
+    }
+  }
+#endif
   
   // ----------------------------------------------------------------
 
@@ -77,9 +79,15 @@ scigraphics::qt4plotOnImage::~qt4plotOnImage()
 {
   if ( LocalApplication != NULL )
   {
+#if QT_VERSION >= QT_VERSION_CHECK( 5, 0, 0 )
+    QtMessageHandler Handler = NULL;
+    *reinterpret_cast<void**>(&Handler) = StoredMsgHandler;
+    qInstallMessageHandler( Handler );
+#else
     QtMsgHandler Handler = NULL;
     *reinterpret_cast<void**>(&Handler) = StoredMsgHandler;
     qInstallMsgHandler( Handler );
+#endif
     delete LocalApplication;
   }
 }
@@ -92,7 +100,11 @@ void scigraphics::qt4plotOnImage::makeQApplicationIfNeed()
   
   if ( QApplication::instance() == NULL )
   {
+#if QT_VERSION >= QT_VERSION_CHECK( 5, 0, 0 )
+    QtMessageHandler Handler = qInstallMessageHandler( silentMsgHandler );
+#else
     QtMsgHandler Handler = qInstallMsgHandler( silentMsgHandler );
+#endif
     StoredMsgHandler = *reinterpret_cast<void**>( &Handler );
     LocalApplication = new QApplication( FakeArgc, FakeArgv );
   }

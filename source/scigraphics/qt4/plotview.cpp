@@ -24,6 +24,7 @@
 #include "scigraphics/qt4/plotview.h"
 
 #include <QDragEnterEvent>
+#include <QMimeData>
 #include <QUrl>
 
 // ================================================================

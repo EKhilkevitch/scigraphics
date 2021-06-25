@@ -111,6 +111,9 @@ namespace scigraphics
       qt4drawerOnWidget( const qt4drawerOnWidget& );
       qt4drawerOnWidget& operator=( const qt4drawerOnWidget& );
 
+    private:
+      static QSize screenGeometrySize();
+
     public:
       explicit qt4drawerOnWidget( QWidget *Parent );
       ~qt4drawerOnWidget();

@@ -37,6 +37,10 @@
 #include <QDesktopWidget>
 #include <QFile>
 
+#if QT_VERSION >= QT_VERSION_CHECK( 5, 0, 0 )
+#  include <QScreen>
+#endif
+
 // ================================================================
 
 QColor scigraphics::qt4drawer::colorQt( color Color )         
@@ -309,11 +313,11 @@ scigraphics::qt4drawer::~qt4drawer()
 // ================================================================
 
 scigraphics::qt4drawerOnWidget::qt4drawerOnWidget( QWidget *Widget ) :
-  qt4drawer( QApplication::desktop()->screenGeometry().size() ),
-  Parent(Widget)
+  qt4drawer( screenGeometrySize() ),
+  Parent( Widget )
 {
   Scene = new QGraphicsScene();
-  PixmapItem = new QGraphicsPixmapItem( 0, Scene );
+  PixmapItem = new QGraphicsPixmapItem( Scene->activePanel() );
   PixmapItem->setOffset( 0, 0 );
   
   View  = new qt4plotView( Parent );
@@ -330,6 +334,30 @@ scigraphics::qt4drawerOnWidget::~qt4drawerOnWidget()
   delete View;
   delete PixmapItem;
   delete Scene;
+}
+
+// ----------------------------------------------------------------
+      
+QSize scigraphics::qt4drawerOnWidget::screenGeometrySize()
+{
+#if QT_VERSION >= QT_VERSION_CHECK( 5, 0, 0 )
+  QList<QScreen*> Screens = QGuiApplication::screens();
+
+  if ( Screens.isEmpty() )
+    return QSize( 1000, 1000 );
+
+  QSize Result = Screens[0]->size();
+  for ( int i = 1; i < Screens.size(); i++ )
+  {
+    if ( Screens[i]->size().width() > Result.width() )
+      Result = Screens[i]->size();
+  }
+
+  return Result;
+
+#else
+  return QApplication::desktop()->screenGeometry().size();
+#endif
 }
 
 // ----------------------------------------------------------------

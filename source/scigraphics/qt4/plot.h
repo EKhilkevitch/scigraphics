@@ -50,6 +50,8 @@ namespace scigraphics
       void resizeEvent( QResizeEvent* );
 
     private:
+      void init();
+
       int sceneShift() const;
       void printTestCornerRectangles();
 
@@ -65,7 +67,8 @@ namespace scigraphics
       void emitPlotChangedByMouse();
       
     public:
-      explicit qt4plot( QWidget* Parent = NULL, Qt::WindowFlags Flags = 0 );
+      explicit qt4plot( QWidget* Parent = NULL );
+      explicit qt4plot( QWidget* Parent, Qt::WindowFlags Flags );
       virtual ~qt4plot();
 
       void resize( int Width, int Height );

@@ -39,6 +39,22 @@ scigraphics::qt4plot::qt4plot( QWidget* Parent, Qt::WindowFlags Flags ) :
   QWidget(Parent,Flags), 
   plot()
 {
+  init();
+}
+
+// ----------------------------------------------------------------
+
+scigraphics::qt4plot::qt4plot( QWidget* Parent ) : 
+  QWidget(Parent), 
+  plot()
+{
+  init();
+}
+
+// ----------------------------------------------------------------
+      
+void scigraphics::qt4plot::init()
+{
   setMouseCallBack( new qt4mouseCallBack(*this) );
 
   qt4drawerOnWidget *Drawer = new qt4drawerOnWidget(this); 
@@ -59,6 +75,7 @@ scigraphics::qt4plot::qt4plot( QWidget* Parent, Qt::WindowFlags Flags ) :
   resize( 700, 800 );
 
   printTestCornerRectangles();
+
 }
 
 // ----------------------------------------------------------------
@@ -132,7 +149,13 @@ scigraphics::wpoint scigraphics::qt4plot::plotMousePoisition( const QMouseEvent 
 scigraphics::wpoint scigraphics::qt4plot::plotMousePoisition( const QWheelEvent *Event )
 {
   Q_ASSERT( Event != NULL );
-  return scigraphics::wpoint( Event->x(), Event->y() );
+
+#if QT_VERSION >= QT_VERSION_CHECK( 5, 0, 0 )
+  const QPointF Point = Event->position();
+#else
+  const QPoint Point = Event->pos();
+#endif
+  return scigraphics::wpoint( Point.x(), Point.y() );
 }
 
 // ----------------------------------------------------------------
@@ -236,9 +259,13 @@ void scigraphics::qt4plot::mouseDoubleClicked( QMouseEvent *Event )
 
 void scigraphics::qt4plot::mouseWheel( QWheelEvent *Event )     
 { 
-  int Delta = Event->delta();
-  unsigned Buttons = plotMouseButtons(Event);
-  scigraphics::wpoint Point = plotMousePoisition( Event );
+#if QT_VERSION >= QT_VERSION_CHECK( 5, 0, 0 )
+  const int Delta = Event->angleDelta().y();
+#else
+  const int Delta = Event->delta();
+#endif
+  const unsigned Buttons = plotMouseButtons(Event);
+  const scigraphics::wpoint Point = plotMousePoisition( Event );
   mouseHandler().mouseWheel( Point, Delta, Buttons ); 
 }
 
