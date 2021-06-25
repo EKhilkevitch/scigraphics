@@ -1,6 +1,10 @@
 
 project( graphicsQt )
 
+if( POLICY CMP0012 )
+  cmake_policy(SET CMP0012 NEW)
+endif()
+
 find_package( Qt4 QUIET )
 find_package( Qt5 COMPONENTS Widgets LinguistTools QUIET )
 
