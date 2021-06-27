@@ -16,7 +16,7 @@ In source/example/ directory there are some examples of this graphics usage.
 
 Building
 =====================
-You need cmake program for building. Run build.sh on Linux platform or build.bat on Windows (you need MSVC). Tests are based on CppUnit framework and not necessary for library.
+You need cmake program for building. Run build.sh on Linux platform or build.bat on Windows (you need MSVC). Tests are based on gtest framework and not necessary for library.
 
 
 Author
