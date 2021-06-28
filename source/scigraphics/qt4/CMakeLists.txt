@@ -37,7 +37,7 @@ set( translations
 
 if ( ${Qt4_FOUND} )
   message( "Qt4 found" )
-  #include( ${QT_USE_FILE} )
+  include( ${QT_USE_FILE} )
 
   set( translations_qrc "${CMAKE_CURRENT_BINARY_DIR}/translations.qrc" )
   file( WRITE ${translations_qrc} "<RCC>\n\t<qresource prefix=\"/scigraphics\">" )
@@ -56,7 +56,6 @@ if ( ${Qt4_FOUND} )
   add_library( scigraphicsQt ${LIBRARY_TYPE} ${graphics_qt_source_files} ${moc_sources} ${qm_sources} ${qrc_sources} )
   target_link_libraries( scigraphicsQt ${QT_LIBRARIES} scigraphics )
   target_include_directories( scigraphicsQt PRIVATE "${PROJECT_SOURCE_DIR}/../../" )
-  target_include_directories( scigraphicsQt PRIVATE ${QT_USE_FILE} )
 elseif ( ${Qt5_FOUND} )
   
   message( "Qt5 found" )
