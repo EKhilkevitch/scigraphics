@@ -5,39 +5,39 @@ if( POLICY CMP0012 )
   cmake_policy(SET CMP0012 NEW)
 endif()
 
-find_package( Qt4 QUIET )
+find_package( Qt4 COMPONENTS QtGui QtCore QUIET )
 find_package( Qt5 COMPONENTS Widgets LinguistTools QUIET )
+
+set ( graphics_qt_source_files
+        plotview.cpp
+        drawer.cpp
+        mousecallback.cpp
+        plot.cpp
+        plotimage.cpp
+        labeledline.cpp
+        settingsbox.cpp
+        settingscomposer.cpp
+        settings.cpp
+        manager.cpp
+        debugprint.cpp
+    )
+
+set( moc_headers 
+        plotview.h
+        plot.h
+        labeledline.h
+        settingsbox.h
+        settings.h
+        manager.h
+   )
+
+set( translations 
+        settingsbox_ru.ts 
+   )
 
 if ( ${Qt4_FOUND} )
   message( "Qt4 found" )
-  include( ${QT_USE_FILE} )
-
-  set ( graphics_qt_source_files
-          plotview.cpp
-          drawer.cpp
-          mousecallback.cpp
-          plot.cpp
-          plotimage.cpp
-          labeledline.cpp
-          settingsbox.cpp
-          settingscomposer.cpp
-          settings.cpp
-          manager.cpp
-          debugprint.cpp
-      )
-
-  set( moc_headers 
-          plotview.h
-          plot.h
-          labeledline.h
-          settingsbox.h
-          settings.h
-          manager.h
-     )
-
-  set( translations 
-          settingsbox_ru.ts 
-     )
+  #include( ${QT_USE_FILE} )
 
   set( translations_qrc "${CMAKE_CURRENT_BINARY_DIR}/translations.qrc" )
   file( WRITE ${translations_qrc} "<RCC>\n\t<qresource prefix=\"/scigraphics\">" )
@@ -56,36 +56,10 @@ if ( ${Qt4_FOUND} )
   add_library( scigraphicsQt ${LIBRARY_TYPE} ${graphics_qt_source_files} ${moc_sources} ${qm_sources} ${qrc_sources} )
   target_link_libraries( scigraphicsQt ${QT_LIBRARIES} scigraphics )
   target_include_directories( scigraphicsQt PRIVATE "${PROJECT_SOURCE_DIR}/../../" )
+  target_include_directories( scigraphicsQt PRIVATE ${QT_USE_FILE} )
 elseif ( ${Qt5_FOUND} )
   
   message( "Qt5 found" )
-
-  set ( graphics_qt_source_files
-          plotview.cpp
-          drawer.cpp
-          mousecallback.cpp
-          plot.cpp
-          plotimage.cpp
-          labeledline.cpp
-          settingsbox.cpp
-          settingscomposer.cpp
-          settings.cpp
-          manager.cpp
-          debugprint.cpp
-      )
-
-  set( moc_headers 
-          plotview.h
-          plot.h
-          labeledline.h
-          settingsbox.h
-          settings.h
-          manager.h
-     )
-
-  set( translations 
-          settingsbox_ru.ts 
-     )
 
   set( translations_qrc "${CMAKE_CURRENT_BINARY_DIR}/translations.qrc" )
   file( WRITE ${translations_qrc} "<RCC>\n\t<qresource prefix=\"/scigraphics\">" )

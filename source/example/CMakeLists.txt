@@ -32,8 +32,6 @@ if ( ENABLE_EXAMPLES )
     endif()
   endif()  
 
-  message( "Qt libraries are ${QT_LIBRARIES}" )
-
   project( examapleSimple )
   add_executable( exampleSimple ${gui_type} exampleSimple.cpp )
   target_link_libraries( exampleSimple ${QtLibs} scigraphicsQt )
