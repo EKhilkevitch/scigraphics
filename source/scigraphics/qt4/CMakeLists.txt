@@ -5,8 +5,10 @@ if( POLICY CMP0012 )
   cmake_policy(SET CMP0012 NEW)
 endif()
 
-find_package( Qt4 COMPONENTS QtGui QtCore QUIET )
 find_package( Qt5 COMPONENTS Widgets LinguistTools QUIET )
+if ( NOT ${Qt5_FOUND} )
+  find_package( Qt4 COMPONENTS QtGui QtCore QUIET )
+endif()
 
 set ( graphics_qt_source_files
         plotview.cpp
