@@ -24,7 +24,6 @@
 // ============================================================
 
 #include "scigraphics/color.h"
-#include "scigraphics/linestyle.h"
 
 // ============================================================
 
@@ -39,17 +38,17 @@ namespace scigraphics
   {
     private:
       color Color;
-      int HatWidth;
-      int LineWidth;
+      unsigned HatWidth;
+      unsigned LineWidth;
 
     public:
       explicit errorBarStyle( color Color = color::Black );
 
-      int hatWidth() const { return HatWidth; }
-      int lineWidth() const { return LineWidth; }
+      unsigned hatWidth() const;
+      unsigned lineWidth() const;
 
-      const color& getColor() const { return Color; }
-      void setColor( color C ) { Color = C; } 
+      const color& getColor() const;
+      void setColor( color C );
 
       lineStyle getLineStyle() const;
   };

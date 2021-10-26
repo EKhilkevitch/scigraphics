@@ -57,14 +57,14 @@ namespace scigraphics
       explicit lineStyle( color Color );
       lineStyle( unsigned Width, color Color );
 
-      unsigned width() const { return Style == None ? 0 : Width; }
-      void setWidth( unsigned W ) { Width = W; }
+      unsigned width() const;
+      void setWidth( unsigned W );
 
-      style getStyle() const { return Style; } 
-      void setStyle( style S ) { Style = S; }
+      style getStyle() const;
+      void setStyle( style S );
 
-      color getColor() const { return Color; }
-      void setColor( color C ) { Color = C; }
+      color getColor() const;
+      void setColor( color C );
   };
   
   // ======================================================

@@ -39,6 +39,34 @@ scigraphics::lineStyle scigraphics::errorBarStyle::getLineStyle() const
 { 
   return lineStyle( lineWidth(), getColor() ); 
 }
+
+// ------------------------------------------------------------
+      
+unsigned scigraphics::errorBarStyle::hatWidth() const 
+{ 
+  return HatWidth; 
+}
+
+// ------------------------------------------------------------
+
+unsigned scigraphics::errorBarStyle::lineWidth() const 
+{ 
+  return LineWidth; 
+}
+
+// ------------------------------------------------------------
+
+const scigraphics::color& scigraphics::errorBarStyle::getColor() const 
+{ 
+  return Color; 
+}
+
+// ------------------------------------------------------------
+
+void scigraphics::errorBarStyle::setColor( color C ) 
+{ 
+  Color = C; 
+} 
       
 // ============================================================
 

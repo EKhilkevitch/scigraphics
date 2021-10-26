@@ -72,5 +72,49 @@ scigraphics::lineStyle::lineStyle( unsigned W, color C )
   Width = W; 
 }
 
+// ------------------------------------------------------------
+      
+unsigned scigraphics::lineStyle::width() const 
+{ 
+  if ( Style == None )
+    return 0;
+  return Width;
+}
+
+// ------------------------------------------------------------
+
+void scigraphics::lineStyle::setWidth( unsigned W ) 
+{ 
+  Width = W; 
+}
+
+// ------------------------------------------------------------
+
+scigraphics::lineStyle::style scigraphics::lineStyle::getStyle() const 
+{ 
+  return Style; 
+} 
+
+// ------------------------------------------------------------
+
+void scigraphics::lineStyle::setStyle( style S ) 
+{ 
+  Style = S; 
+}
+
+// ------------------------------------------------------------
+
+scigraphics::color scigraphics::lineStyle::getColor() const 
+{ 
+  return Color; 
+}
+
+// ------------------------------------------------------------
+
+void scigraphics::lineStyle::setColor( color C ) 
+{ 
+  Color = C; 
+}
+
 // ============================================================
 
