@@ -372,14 +372,26 @@ void scigraphics::qt4settingsGraphType::setGraphType( unsigned GraphType )
 {
   ErrorBarsChk->setChecked( GraphType & settings::ErrorBars );
 
-  if ( GraphType == settings::LinesHystogram )
-    ShowLineHystogramBtn->setChecked( true );
-  else if ( GraphType == settings::LinesAndPoints )
-    ShowLinesAndPointsBtn->setChecked( true );
-  else if ( GraphType == settings::Points )
-    ShowPointsBtn->setChecked( true );
-  else 
-    ShowLinesBtn->setChecked( true );
+  GraphType = GraphType & ( ~settings::ErrorBars );
+
+  switch ( GraphType )
+  {
+    case settings::LinesHystogram:
+      ShowLineHystogramBtn->setChecked( true );
+      break;
+
+    case settings::LinesAndPoints:
+      ShowLinesAndPointsBtn->setChecked( true );
+      break;
+
+    case settings::Points:
+      ShowPointsBtn->setChecked( true );
+      break;
+
+    default:
+      ShowLinesBtn->setChecked( true );
+      break;
+  }
 }
 
 // ----------------------------------------------------------------
