@@ -355,10 +355,23 @@ QSize scigraphics::qt4drawerOnWidget::screenGeometrySize()
       Result = Screens[i]->size();
   }
 
-  return Result;
+  return QSize( Result.width()*Screens.size(), Result.height()*Screens.size() );
 
 #else
-  return QApplication::desktop()->screenGeometry().size();
+  QDesktopWidget *Desktop = QApplication::desktop();
+
+  if ( Desktop == NULL || Desktop->screenCount() <= 0 )
+    return QSize( 1000, 1000 );
+
+  QSize Result = Desktop->screenGeometry(0).size();
+  for ( int i = 1; i < Desktop->screenCount(); i++ )
+  {
+    if ( Desktop->screenGeometry(i).size().width() > Result.width() )
+      Result = Desktop->screenGeometry(i).size();
+  }
+  
+  return QSize( Result.width()*Desktop->screenCount(), Result.height()*Desktop->screenCount() );
+  
 #endif
 }
 

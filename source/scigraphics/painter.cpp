@@ -246,7 +246,6 @@ void scigraphics::painter::setLineStyle( const lineStyle &Style )
 
 void scigraphics::painter::drawLineW( wpoint A, wpoint B, const lineStyle &Style ) 
 { 
-  //std::cout << "painter::drawCoordLine()" << A.x() << " " << A.y() << " " << Style.getColor().name() << std::endl;
   setLineStyle( Style );
   drawLineW( A, B );
 }
@@ -291,6 +290,7 @@ void scigraphics::painter::drawLineF( fpoint A, fpoint B )
     return;
   const wpoint WA = fpoint2wpoint(A);
   const wpoint WB = fpoint2wpoint(B);
+
   drawLineW( WA, WB );
 }
       

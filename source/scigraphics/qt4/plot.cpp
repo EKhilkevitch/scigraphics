@@ -74,7 +74,7 @@ void scigraphics::qt4plot::init()
 
   resize( 700, 800 );
 
-  printTestCornerRectangles();
+  //printTestCornerRectangles();
 
 }
 
@@ -96,6 +96,7 @@ scigraphics::qt4drawerOnWidget* scigraphics::qt4plot::getDrawerQt()
 void scigraphics::qt4plot::resizeEvent( QResizeEvent* ) 
 { 
   resizePlot(); 
+  //printTestCornerRectangles();
 }
 
 // ----------------------------------------------------------------
