@@ -151,6 +151,7 @@ scigraphics::sequence::ordinarGraphViewCollection::ordinarGraphViewCollection()
 
 void scigraphics::sequence::ordinarGraphViewCollection::setLineStyle( lineStyle::style LineStyle )
 {
+#if 0
   lineStyle Style = getViewStyle<graphViewLine>();
   Style.setStyle( LineStyle );
   setViewStyle<graphViewLine>( Style );
@@ -158,6 +159,17 @@ void scigraphics::sequence::ordinarGraphViewCollection::setLineStyle( lineStyle:
   Style = getViewStyle<graphViewLineHystogram>();
   Style.setStyle( LineStyle );
   setViewStyle<graphViewLineHystogram>( Style );
+#endif
+
+  graphViewGeneralLine *View = NULL;
+
+  View = getView<graphViewLine>();
+  if ( View != NULL )
+    View->setLineStyle( LineStyle );
+
+  View = getView<graphViewLineHystogram>();
+  if ( View != NULL )
+    View->setLineStyle( LineStyle );
 }
 
 // ------------------------------------------------------------
@@ -173,7 +185,9 @@ void scigraphics::sequence::ordinarGraphViewCollection::setPointShape( pointStyl
 
 void scigraphics::sequence::ordinarGraphViewCollection::setLineWidth( unsigned Width )
 {
-  graphViewGeneralLine *View = getView<graphViewLine>();
+  graphViewGeneralLine *View = NULL;
+
+  View = getView<graphViewLine>();
   if ( View != NULL )
     View->setLineWidth( Width );
 

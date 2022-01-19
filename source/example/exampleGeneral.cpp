@@ -84,6 +84,7 @@ int main( int argc, char *argv[] )
   Cos->setLineStyle( scigraphics::lineStyle::Dash );
   Cos->setPointShape( scigraphics::pointStyle::Cross );
   Cos->setPointSize( 25 );
+  Cos->setLineWidth( 5 );
   Plot.bindGraphToAxis( Cos, scigraphics::AxisTop, scigraphics::AxisRight );
 
   scigraphics::graphAV *Polygons = Plot.createGraphAV("Polygons");

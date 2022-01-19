@@ -117,6 +117,7 @@ namespace scigraphics
         void drawLegendExample( painter &Painter, const wrectangle &Rectangle ) const;
 
         void setLineWidth( unsigned Width );
+        void setLineStyle( lineStyle::style LineStyle ); 
     };
     
     // ------------------------------------------------------------

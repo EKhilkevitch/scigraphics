@@ -326,6 +326,15 @@ void scigraphics::sequence::graphViewGeneralLine::setLineWidth( unsigned Width )
   setStyle( Style );
 }
 
+// ------------------------------------------------------------
+        
+void scigraphics::sequence::graphViewGeneralLine::setLineStyle( lineStyle::style LineStyle )
+{
+  lineStyle Style = getStyle();
+  Style.setStyle( LineStyle );
+  setStyle( Style );
+}
+
 // ============================================================
         
 scigraphics::sequence::graphViewLine::graphViewLine( const style &Style ) : 
