@@ -132,14 +132,14 @@ void scigraphics::painter::updatePlotRectangle()
 
 scigraphics::wcoord scigraphics::painter::fcoord2wcoordX( fcoord X ) const
 {
-  return X * PlotRectangle.width() + Indents.left();
+  return static_cast<wcoord>( X * PlotRectangle.width() + Indents.left() );
 }
 
 // ------------------------------------------------------------
 
 scigraphics::wcoord scigraphics::painter::fcoord2wcoordY( fcoord Y ) const
 {
-  return ( static_cast<scigraphics::number>(1) - Y ) * PlotRectangle.height() + Indents.up();
+  return static_cast<wcoord>( ( static_cast<scigraphics::number>(1) - Y ) * PlotRectangle.height() + Indents.up() );
 }
 
 // ------------------------------------------------------------

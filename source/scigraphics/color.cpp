@@ -135,14 +135,19 @@ scigraphics::color scigraphics::color::fromHSV( unsigned H, unsigned S, unsigned
   Vinc *= 0xFF/100.0;
   Vdec *= 0xFF/100.0;
 
+  const int VeffInt = static_cast<int>(Veff);
+  const int VminInt = static_cast<int>(Vmin);
+  const int VdecInt = static_cast<int>(Vdec);
+  const int VincInt = static_cast<int>(Vinc);
+
   switch ( std::min( H / 60, 5U ) )
   {
-    case 0:     return color( Veff, Vinc, Vmin, T );
-    case 1:     return color( Vdec, Veff, Vmin, T );
-    case 2:     return color( Vmin, Veff, Vinc, T );
-    case 3:     return color( Vmin, Vdec, Veff, T );
-    case 4:     return color( Vinc, Vmin, Veff, T );
-    case 5:     return color( Veff, Vmin, Vdec, T );
+    case 0:     return color( VeffInt, VincInt, VminInt, T );
+    case 1:     return color( VdecInt, VeffInt, VminInt, T );
+    case 2:     return color( VminInt, VeffInt, VincInt, T );
+    case 3:     return color( VminInt, VdecInt, VeffInt, T );
+    case 4:     return color( VincInt, VminInt, VeffInt, T );
+    case 5:     return color( VeffInt, VminInt, VdecInt, T );
     default:    std::abort(); return color();
   }
 }
@@ -171,13 +176,13 @@ unsigned scigraphics::color::hue() const
   if ( Min == Max )
     return 0;
   else if ( Max == red() && green() >= blue() )
-    return 60.0 * ( static_cast<double>(green()) - blue() )/( Max - Min ) + 0;
+    return static_cast<unsigned>( 60.0 * ( static_cast<double>(green()) - blue() )/( Max - Min ) ) + 0;
   else if ( Max == red() && green() < blue() )
-    return 60.0 * ( static_cast<double>(green()) - blue() )/( Max - Min ) + 360;
+    return static_cast<unsigned>( 60.0 * ( static_cast<double>(green()) - blue() )/( Max - Min ) ) + 360 ;
   else if ( Max == green() )
-    return 60.0 * ( static_cast<double>(blue()) - red() )/( Max - Min ) + 120;
+    return static_cast<unsigned>( 60.0 * ( static_cast<double>(blue()) - red() )/( Max - Min ) ) + 120;
   else if ( Max == blue() )
-    return 60.0 * ( static_cast<double>(red()) - green() )/( Max - Min ) + 240;
+    return static_cast<unsigned>( 60.0 * ( static_cast<double>(red()) - green() )/( Max - Min ) ) + 240;
   else 
     std::abort();
   return 0;
@@ -193,14 +198,14 @@ unsigned scigraphics::color::saturation() const
   if ( Max == 0 )
     return 0;
 
-  return 100.0 * ( 1.0 - static_cast<double>(Min)/static_cast<double>(Max) );
+  return static_cast<unsigned>( 100.0 * ( 1.0 - static_cast<double>(Min)/static_cast<double>(Max) ) );
 }
 
 // ------------------------------------------------------------
 
 unsigned scigraphics::color::value() const
 {
-  return 100.0 * static_cast<double>( maxRGB() )/0xFF;
+  return static_cast<unsigned>( 100.0 * static_cast<double>( maxRGB() )/0xFF );
 }
 
 // ------------------------------------------------------------
@@ -208,7 +213,12 @@ unsigned scigraphics::color::value() const
 scigraphics::color scigraphics::color::darker( double Value ) const
 {
   Value *= 100.0;
-  return color( red()-Value, green()-Value, blue()-Value, transparency() ); 
+
+  const int Red = static_cast<int>( red() - Value );
+  const int Green = static_cast<int>( green() - Value );
+  const int Blue = static_cast<int>( blue() - Value );
+
+  return color( Red, Green, Blue, transparency() ); 
 }
 
 // ------------------------------------------------------------

@@ -156,7 +156,7 @@ scigraphics::wpoint scigraphics::qt4plot::plotMousePoisition( const QWheelEvent 
 #else
   const QPoint Point = Event->pos();
 #endif
-  return scigraphics::wpoint( Point.x(), Point.y() );
+  return scigraphics::wpoint( static_cast<wcoord>(Point.x()), static_cast<wcoord>(Point.y()) );
 }
 
 // ----------------------------------------------------------------

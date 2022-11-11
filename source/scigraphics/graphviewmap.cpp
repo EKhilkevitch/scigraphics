@@ -134,7 +134,7 @@ scigraphics::color scigraphics::map::graphViewRectangle::grayscalePointColorStra
   if ( Value < 0.0 || 1.0 < Value )
     return invalidValueColor();
   
-  int ColorValue = Value * 0xFF;
+  const int ColorValue = static_cast<int>( Value * 0xFF );
   return color( ColorValue, ColorValue, ColorValue );
 }
 
@@ -145,9 +145,9 @@ scigraphics::color scigraphics::map::graphViewRectangle::redYellowBluePointColor
   if ( Value < 0.0 || 1.0 < Value )
     return invalidValueColor();
 
-  int HsvHue = ( 1.0 - Value )*240; 
-  int HsvSaturation = 100;
-  int HsvValue = 80;
+  const int HsvHue = static_cast<int>( ( 1.0 - Value )*240 ); 
+  const int HsvSaturation = 100;
+  const int HsvValue = 80;
 
   return color::fromHSV( HsvHue, HsvSaturation, HsvValue );
 }
@@ -159,9 +159,9 @@ scigraphics::color scigraphics::map::graphViewRectangle::yellowRedBluePointColor
   if ( Value < 0 || 1 < Value )
     return invalidValueColor();
 
-  int HsvHue = 360 + 60 - ( 1.0 - Value )*180; 
-  int HsvSaturation = 100;
-  int HsvValue = 80;
+  const int HsvHue = 360 + 60 - static_cast<int>( ( 1.0 - Value )*180 ); 
+  const int HsvSaturation = 100;
+  const int HsvValue = 80;
 
   return color::fromHSV( HsvHue % 360, HsvSaturation, HsvValue );
 }
@@ -212,10 +212,10 @@ void scigraphics::map::graphViewRectangle::drawPoint( painter &Painter, const pa
   if ( ! Point.isValid() )
     return;
 
-  color Color = PointColorStrategy->pointColor( Point, ScaleZ );
+  const color Color = PointColorStrategy->pointColor( Point, ScaleZ );
 
-  fpoint Point0 = Scales.npoint2fpoint( npoint( Point.x0(), Point.y0() ) );
-  fpoint Point1 = Scales.npoint2fpoint( npoint( Point.x1(), Point.y1() ) );
+  const fpoint Point0 = Scales.npoint2fpoint( npoint( Point.x0(), Point.y0() ) );
+  const fpoint Point1 = Scales.npoint2fpoint( npoint( Point.x1(), Point.y1() ) );
 
   Painter.drawRectangleF( frectangle(Point0,Point1), brushStyle(Color) );
 }
@@ -230,7 +230,7 @@ void scigraphics::map::graphViewRectangle::drawLegendExample( painter &Painter, 
   LeftUp.moveXY( 5, -5 );
   RightDown.moveXY( -5, 5 );
 
-  wrectangle EffRectangle = wrectangle( LeftUp, RightDown );
+  const wrectangle EffRectangle = wrectangle( LeftUp, RightDown );
 
   drawRainbowRectangle( Painter, EffRectangle );
   drawRainbowRectangleBorder( Painter, EffRectangle );
@@ -241,10 +241,10 @@ void scigraphics::map::graphViewRectangle::drawLegendExample( painter &Painter, 
       
 void scigraphics::map::graphViewRectangle::drawRainbowRectangleBorder( painter &Painter, const wrectangle &Rectangle ) const
 {
-  lineStyle BorderLineStyle( color::Black );
-  brushStyle BrushStyle( color::Yellow, brushStyle::None );
-  wpoint LeftUp = Rectangle.leftUp();
-  wpoint RightDown = wpoint( Rectangle.left() + rainbowRectangleWidth(), Rectangle.down() );
+  const lineStyle BorderLineStyle( color::Black );
+  const brushStyle BrushStyle( color::Yellow, brushStyle::None );
+  const wpoint LeftUp = Rectangle.leftUp();
+  const wpoint RightDown = wpoint( Rectangle.left() + rainbowRectangleWidth(), Rectangle.down() );
   Painter.drawRectangleW( wrectangle( LeftUp, RightDown ), BrushStyle, BorderLineStyle );
 }
 
@@ -262,16 +262,16 @@ void scigraphics::map::graphViewRectangle::drawRainbowRectangle( painter &Painte
 
   for ( unsigned i = 0; i < NumOfRainbowLines; i++ )
   {
-    double Part0 = static_cast<double>(i)/(NumOfRainbowLines);
-    double Part1 = static_cast<double>(i+1)/(NumOfRainbowLines);
+    const double Part0 = static_cast<double>(i)/(NumOfRainbowLines);
+    const double Part1 = static_cast<double>(i+1)/(NumOfRainbowLines);
     
-    wcoord Y0 = Rectangle.up() - Rectangle.height() * Part0;
-    wcoord Y1 = Rectangle.up() - Rectangle.height() * Part1;
-    wcoord X0 = Rectangle.left();
-    wcoord X1 = Rectangle.left() + RainbowRectangleWidth;
+    const wcoord Y0 = static_cast<wcoord>( Rectangle.up() - Rectangle.height() * Part0 );
+    const wcoord Y1 = static_cast<wcoord>( Rectangle.up() - Rectangle.height() * Part1 );
+    const wcoord X0 = Rectangle.left();
+    const wcoord X1 = Rectangle.left() + RainbowRectangleWidth;
 
-    color Color = PointColorStrategy->relativeValueColor( Part0 );
-    brushStyle BrushStyle( Color );
+    const color Color = PointColorStrategy->relativeValueColor( Part0 );
+    const brushStyle BrushStyle( Color );
     NoneLineStyle.setColor( Color );
     Painter.drawRectangleW( wrectangle( wpoint(X0,Y0), wpoint(X1,Y1) ), BrushStyle, NoneLineStyle );
   }
@@ -281,21 +281,21 @@ void scigraphics::map::graphViewRectangle::drawRainbowRectangle( painter &Painte
       
 void scigraphics::map::graphViewRectangle::drawRainbowMarkers( painter &Painter, const wrectangle &Rectangle, const scale &ScaleZ ) const
 {
-  std::vector<number> Marks = ScaleZ.marks();
+  const std::vector<number> Marks = ScaleZ.marks();
 
-  wcoord RainbowRectangleWidth = rainbowRectangleWidth();
+  const wcoord RainbowRectangleWidth = rainbowRectangleWidth();
 
-  numberStyle NumberStyle( numberStyle::General );
-  lineStyle LineStyle( color::Black );
-  textStyle TextStyle( 13 );
+  const numberStyle NumberStyle( numberStyle::General );
+  const lineStyle LineStyle( color::Black );
+  const textStyle TextStyle( 13 );
 
   for ( size_t i = 0; i < Marks.size(); i++ )
   {
-    double Part = ScaleZ.numberToFraction( Marks[i] );
+    const double Part = ScaleZ.numberToFraction( Marks[i] );
     
-    wcoord X0 = Rectangle.left();
-    wcoord X1 = Rectangle.left() + RainbowRectangleWidth;
-    wcoord Y  = Rectangle.up() - Rectangle.height() * Part;
+    const wcoord X0 = Rectangle.left();
+    const wcoord X1 = Rectangle.left() + RainbowRectangleWidth;
+    const wcoord Y  = static_cast<wcoord>( Rectangle.up() - Rectangle.height() * Part );
     
     Painter.drawLineW( wpoint(X0,Y), wpoint(X1,Y), LineStyle );
     Painter.drawTextW( NumberStyle.numberText(Marks[i]), wpoint( X1 + 4, Y ), painter::HLeft|painter::VCenter, TextStyle );

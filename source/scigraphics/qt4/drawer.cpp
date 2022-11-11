@@ -325,7 +325,7 @@ scigraphics::qt4drawerOnWidget::qt4drawerOnWidget( QWidget *Widget ) :
   View  = new qt4plotView( Parent );
   View->setScene( Scene );
   View->move( Parent->x(), Parent->y() );
-  View->resize( Scene->width(), Scene->height() );
+  View->resize( static_cast<int>(Scene->width()), static_cast<int>(Scene->height()) );
   View->show();
 }
 
@@ -379,14 +379,14 @@ QSize scigraphics::qt4drawerOnWidget::screenGeometrySize()
 
 scigraphics::wcoord scigraphics::qt4drawerOnWidget::width()  const 
 { 
-  return Scene->width();
+  return static_cast<int>( Scene->width() );
 }
 
 // ----------------------------------------------------------------
 
 scigraphics::wcoord scigraphics::qt4drawerOnWidget::height() const 
 { 
-  return Scene->height(); 
+  return static_cast<int>( Scene->height() ); 
 }
 
 // ----------------------------------------------------------------
