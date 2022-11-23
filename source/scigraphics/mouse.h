@@ -38,6 +38,11 @@ namespace scigraphics
   class floatRectangle;
   class selectionStrip;
 
+  namespace sequence
+  {
+    class graphCreatedByMouseVector;
+  }
+
   // ============================================================
 
   class mouse
@@ -69,17 +74,21 @@ namespace scigraphics
             MoveY           = 0x00000008,
             Move            = MoveX | MoveY,
             MoveAndZoom     = Move | Zoom,
-            WheelH          = 0x00000100,
-            WheelV          = 0x00000200,
+            WheelH          = 0x00000010,
+            WheelV          = 0x00000020,
             Wheel           = WheelH | WheelV,
-            Reset           = 0x00000400,
-            SelectV         = 0x00010000,
-            SelectH         = 0x00020000,
+            Reset           = 0x00000040,
+            SelectV         = 0x00000100,
+            SelectH         = 0x00000200,
             Select          = SelectV | SelectH,
-            MoveSelect      = 0x00040000,
-            ResetSelect     = 0x00080000,
-            MoveFloat       = 0x01000000,
-            Everything      = (~0)
+            MoveSelect      = 0x00004000,
+            ResetSelect     = 0x00008000,
+            MoveFloat       = 0x00010000,
+            AddPointGraph   = 0x00100000,
+            MovePointGraph  = 0x00200000,
+            DelPointGraph   = 0x00400000,
+            PointGraph      = AddPointGraph | MovePointGraph | DelPointGraph,
+            Everything      = 0x000FFFFF,
           };
 
         private:
@@ -118,7 +127,7 @@ namespace scigraphics
 
         public:
           explicit mouseHandler( plot &Plot );
-          virtual ~mouseHandler();
+          virtual ~mouseHandler() = 0;
 
           virtual unsigned requestedAllowing() const;
           bool isAllowed( const allowing &Allowing ) const;
@@ -138,7 +147,7 @@ namespace scigraphics
 
         public:
           mouseActionHandler( plot &Plot, wpoint Point );
-          virtual ~mouseActionHandler();
+          virtual ~mouseActionHandler() = 0;
 
           virtual void moved( wpoint );
           virtual void released( wpoint );
@@ -255,7 +264,7 @@ namespace scigraphics
 
         public:
           explicit mouseWheelHandler( plot &Plot );
-          virtual void wheel( wpoint, wheeldelta ) {};
+          virtual void wheel( wpoint, wheeldelta );
       };
 
       class mouseNoneWheel : public mouseWheelHandler 
@@ -265,33 +274,74 @@ namespace scigraphics
           unsigned requestedAllowing() const { return allowing::Everything; }
       };
 
-      class mouseHorizontalWheel : public mouseWheelHandler
+      class horizontalWheel : public mouseWheelHandler
       {
         public:
-          explicit mouseHorizontalWheel( plot &Plot );
+          explicit horizontalWheel( plot &Plot );
           void wheel( wpoint, wheeldelta Delta );
           unsigned requestedAllowing() const { return allowing::WheelH; }
       };
       
-      class mouseVerticalWheel : public mouseWheelHandler
+      class verticalWheel : public mouseWheelHandler
       {
         public:
-          explicit mouseVerticalWheel( plot &Plot );
+          explicit verticalWheel( plot &Plot );
           void wheel( wpoint, wheeldelta Delta );
           unsigned requestedAllowing() const { return allowing::WheelV; }
       };
 
-      class mouseZoomWheel : public mouseWheelHandler
+      class zoomWheel : public mouseWheelHandler
       {
         protected:
           virtual double deltaDumpFactor() const;
 
         public:
-          explicit  mouseZoomWheel( plot &Plot );
+          explicit zoomWheel( plot &Plot );
           void wheel( wpoint, wheeldelta Delta );
           unsigned requestedAllowing() const { return allowing::Zoom; }
       };
 
+      class mouseGraphHandler : public mouseActionHandler
+      {
+        protected:
+          sequence::graphCreatedByMouseVector* findGraph();
+          sequence::graphCreatedByMouseVector* findOrCreateGraph();
+          npoint wpoint2npoint( wpoint Point ) const;
+          wpoint npoint2wpoint( npoint Point ) const;
+          static wcoord distance( wpoint Pt1, wpoint Pt2 );
+          size_t indexOfPoint( const npoint Point ) const;
+          wcoord pointRadius() const;
+
+        public:
+          explicit mouseGraphHandler( plot &Plot, wpoint Point );
+      };
+
+      class addPointGraphAction : public mouseGraphHandler
+      {
+        public:
+          addPointGraphAction( plot &Plot, wpoint Point );
+          void released( wpoint Point );
+          unsigned requestedAllowing() const { return allowing::AddPointGraph; }
+      };
+
+      class movePointGraphAction : public mouseGraphHandler
+      {
+        private:
+          size_t Index;
+
+        public:
+          movePointGraphAction( plot &Plot, wpoint Point );
+          void moved( wpoint Point );
+          unsigned requestedAllowing() const { return allowing::MovePointGraph; }
+      };
+
+      class delPointGraphAction : public mouseGraphHandler
+      {
+        public:
+          delPointGraphAction( plot &Plot, wpoint Point );
+          void released( wpoint Point );
+          unsigned requestedAllowing() const { return allowing::DelPointGraph; }
+      };
 
     private:
       plot &Plot;
@@ -304,6 +354,10 @@ namespace scigraphics
       allowing AllowedOperations;
 
       wpoint LastPosition;
+
+    private:
+      mouse( const mouse& );
+      mouse& operator=( const mouse& );
 
     protected:
       mouseActionHandler* createMouseActionHandler( wpoint Point, unsigned Buttons );

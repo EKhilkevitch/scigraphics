@@ -28,6 +28,8 @@
 #include "scigraphics/zoomrect.h"
 #include "scigraphics/mousecallback.h"
 #include "scigraphics/selection.h"
+#include "scigraphics/graphsequence.h"
+#include "scigraphics/scale.h"
 
 #include <typeinfo>
 #include <algorithm>
@@ -489,6 +491,12 @@ scigraphics::mouse::mouseWheelHandler::mouseWheelHandler( plot &Plot ) :
 {
 }
 
+// ------------------------------------------------------------
+          
+void scigraphics::mouse::mouseWheelHandler::wheel( wpoint, wheeldelta ) 
+{
+}
+
 // ============================================================
 
 scigraphics::mouse::mouseNoneWheel::mouseNoneWheel( plot &Plot ) : 
@@ -498,49 +506,49 @@ scigraphics::mouse::mouseNoneWheel::mouseNoneWheel( plot &Plot ) :
 
 // ============================================================
           
-scigraphics::mouse::mouseHorizontalWheel::mouseHorizontalWheel( plot &Plot ) : 
+scigraphics::mouse::horizontalWheel::horizontalWheel( plot &Plot ) : 
   mouseWheelHandler(Plot) 
 {
 }
 
 // ------------------------------------------------------------
 
-void scigraphics::mouse::mouseHorizontalWheel::wheel( wpoint, wheeldelta Delta )
+void scigraphics::mouse::horizontalWheel::wheel( wpoint, wheeldelta Delta )
 {
   addShiftX( - static_cast<double>( Delta * deltaDumpFactor() )/plotWidth() );
 }
 
 // ============================================================
           
-scigraphics::mouse::mouseVerticalWheel::mouseVerticalWheel( plot &Plot ) : 
+scigraphics::mouse::verticalWheel::verticalWheel( plot &Plot ) : 
   mouseWheelHandler(Plot) 
 {
 }
 
 // ------------------------------------------------------------
 
-void scigraphics::mouse::mouseVerticalWheel::wheel( wpoint, wheeldelta Delta )
+void scigraphics::mouse::verticalWheel::wheel( wpoint, wheeldelta Delta )
 {
   addShiftY( + static_cast<double>( Delta * deltaDumpFactor() )/plotHeight() );
 }
 
 // ============================================================
           
-double scigraphics::mouse::mouseZoomWheel::deltaDumpFactor() const 
+double scigraphics::mouse::zoomWheel::deltaDumpFactor() const 
 { 
   return 0.001; 
 }
 
 // ------------------------------------------------------------
 
-scigraphics::mouse::mouseZoomWheel::mouseZoomWheel( plot &Plot ) : 
+scigraphics::mouse::zoomWheel::zoomWheel( plot &Plot ) : 
   mouseWheelHandler(Plot) 
 {
 }
 
 // ------------------------------------------------------------
 
-void scigraphics::mouse::mouseZoomWheel::wheel( wpoint Point, wheeldelta Delta )
+void scigraphics::mouse::zoomWheel::wheel( wpoint Point, wheeldelta Delta )
 {
   const fpoint FPoint = Plot.getPainter().wpoint2fpoint( Point );
   
@@ -551,6 +559,173 @@ void scigraphics::mouse::mouseZoomWheel::wheel( wpoint Point, wheeldelta Delta )
   
   mulZoomX( 1 + Zoom );
   mulZoomY( 1 + Zoom );
+}
+
+// ============================================================
+
+scigraphics::mouse::mouseGraphHandler::mouseGraphHandler( plot &P, wpoint Point ) :
+  mouseActionHandler( P, Point )
+{
+}
+
+// ------------------------------------------------------------
+          
+scigraphics::wcoord scigraphics::mouse::mouseGraphHandler::pointRadius() const
+{
+  return 10;
+}
+
+// ------------------------------------------------------------
+          
+scigraphics::wcoord scigraphics::mouse::mouseGraphHandler::distance( wpoint Pt1, wpoint Pt2 )
+{
+  const wcoord DeltaX = Pt1.x() - Pt2.x();
+  const wcoord DeltaY = Pt1.y() - Pt2.y();
+  const double Distance = std::sqrt( static_cast<double>( DeltaX*DeltaX + DeltaY*DeltaY ) );
+  return static_cast<wcoord>( Distance );
+}
+
+// ------------------------------------------------------------
+          
+scigraphics::sequence::graphCreatedByMouseVector* scigraphics::mouse::mouseGraphHandler::findGraph()
+{
+  for ( graphCollection::reverse_iterator it = Plot.rbeginGraph(); it != Plot.rendGraph(); ++it )
+  {
+    sequence::graphCreatedByMouseVector *Graph = dynamic_cast< sequence::graphCreatedByMouseVector* >( &*it );
+    if ( Graph != NULL )
+      return Graph;
+  }
+
+  return NULL;
+}
+
+// ------------------------------------------------------------
+          
+scigraphics::sequence::graphCreatedByMouseVector* scigraphics::mouse::mouseGraphHandler::findOrCreateGraph()
+{
+  sequence::graphCreatedByMouseVector *Graph = findGraph();
+
+  if ( Graph == NULL )
+  {
+    Graph = new sequence::graphCreatedByMouseVector();
+    Plot.appendGraphic( Graph );
+    Plot.bindGraphToAxis( Graph, scigraphics::AxisBottom, scigraphics::AxisLeft );
+    Graph->setVisiblePoints( true );
+    Graph->setPointSize( 5 );
+  }
+
+  return Graph;
+}
+
+// ------------------------------------------------------------
+          
+scigraphics::npoint scigraphics::mouse::mouseGraphHandler::wpoint2npoint( wpoint WPoint ) const
+{
+  const scale *ScaleX = Plot.scaleWithPosition( AxisBottom );
+  const scale *ScaleY = Plot.scaleWithPosition( AxisLeft );
+
+  const fpoint FPoint = Plot.getPainter().wpoint2fpoint( WPoint );
+  const number RealX = ScaleX->fractionToNumber( FPoint.x() );
+  const number RealY = ScaleY->fractionToNumber( FPoint.y() );
+
+  return npoint( RealX, RealY );
+}
+
+// ------------------------------------------------------------
+          
+scigraphics::wpoint scigraphics::mouse::mouseGraphHandler::npoint2wpoint( npoint NPoint ) const
+{
+  const scale *ScaleX = Plot.scaleWithPosition( AxisBottom );
+  const scale *ScaleY = Plot.scaleWithPosition( AxisLeft );
+
+  const fcoord FloatX = ScaleX->numberToFraction( NPoint.x() );
+  const fcoord FloatY = ScaleY->numberToFraction( NPoint.y() );
+
+  return Plot.getPainter().fpoint2wpoint( fpoint(FloatX,FloatY) );
+}
+
+// ============================================================
+
+scigraphics::mouse::addPointGraphAction::addPointGraphAction( plot &P, wpoint Point ) : 
+  mouseGraphHandler( P, Point )
+{
+}
+
+// ------------------------------------------------------------
+
+void scigraphics::mouse::addPointGraphAction::released( wpoint WPoint )
+{
+  sequence::graphCreatedByMouseVector *Graph = findOrCreateGraph();
+  const npoint Point = wpoint2npoint( WPoint );
+  Graph->append( Point.x(), Point.y() );
+}
+
+// ============================================================
+
+scigraphics::mouse::movePointGraphAction::movePointGraphAction( plot &P, wpoint WPoint ) : 
+  mouseGraphHandler( P, WPoint ),
+  Index( std::numeric_limits<size_t>::max() )
+{
+  const sequence::graphCreatedByMouseVector *Graph = findGraph();
+  if ( Graph == NULL )
+    return;
+
+  const npoint NPoint = wpoint2npoint( WPoint );
+  
+  const size_t IndexOfPoint = Graph->indexOfPoint( NPoint.x(), NPoint.y() );
+  if ( IndexOfPoint >= Graph->size() )
+    return;
+
+  const wpoint GraphWPoint = npoint2wpoint( Graph->at(IndexOfPoint) ); 
+  if ( distance( GraphWPoint, WPoint ) > pointRadius() )
+    return;
+
+  Index = IndexOfPoint;
+}
+
+// ------------------------------------------------------------
+          
+void scigraphics::mouse::movePointGraphAction::moved( wpoint WPoint )
+{
+  if ( Index == std::numeric_limits<size_t>::max() )
+    return;
+  
+  sequence::graphCreatedByMouseVector *Graph = findGraph();
+  if ( Graph == NULL )
+    return;
+
+  assert( Index < Graph->size() );
+
+  const npoint NPoint = wpoint2npoint( WPoint );
+  Graph->set( Index, NPoint.x(), NPoint.y() );
+}
+
+// ============================================================
+
+scigraphics::mouse::delPointGraphAction::delPointGraphAction( plot &P, wpoint Point ) : 
+  mouseGraphHandler( P, Point )
+{
+}
+
+// ------------------------------------------------------------
+
+void scigraphics::mouse::delPointGraphAction::released( wpoint WPoint )
+{
+  sequence::graphCreatedByMouseVector *Graph = findGraph();
+  if ( Graph == NULL )
+    return;
+
+  const npoint NPoint = wpoint2npoint( WPoint );
+  
+  const size_t IndexOfPoint = Graph->indexOfPoint( NPoint.x(), NPoint.y() );
+  if ( IndexOfPoint >= Graph->size() )
+    return;
+
+  const wpoint GraphWPoint = npoint2wpoint( Graph->at(IndexOfPoint) ); 
+  if ( distance( GraphWPoint, WPoint ) > pointRadius() )
+    return;
+
+  Graph->erase( IndexOfPoint );
 }
 
 // ============================================================
@@ -828,6 +1003,15 @@ scigraphics::mouse::mouseActionHandler* scigraphics::mouse::createMouseActionHan
     case (Middle|Ctrl):
       return new resetSelectionAction( Plot, Point );
 
+    case (Left|Alt):
+      return new addPointGraphAction( Plot, Point );
+    
+    case (Right|Alt):
+      return new movePointGraphAction( Plot, Point );
+    
+    case (Middle|Alt):
+      return new delPointGraphAction( Plot, Point );
+
     default:
       return new noneAction( Plot, Point );
   }
@@ -840,13 +1024,13 @@ scigraphics::mouse::mouseWheelHandler* scigraphics::mouse::createMouseWheelHandl
   switch ( Buttons )
   {
     case None:
-      return new mouseHorizontalWheel( Plot );
+      return new horizontalWheel( Plot );
 
     case Shift:
-      return new mouseVerticalWheel( Plot );
+      return new verticalWheel( Plot );
 
     case Ctrl:
-      return new mouseZoomWheel( Plot );
+      return new zoomWheel( Plot );
 
     default:
       return NULL;

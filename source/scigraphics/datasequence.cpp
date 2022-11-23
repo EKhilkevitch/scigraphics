@@ -371,6 +371,13 @@ scigraphics::sequence::dataVector::dataVector() :
 }
 
 // ------------------------------------------------------------
+        
+void scigraphics::sequence::dataVector::appendPoint( const point_t &Point ) 
+{ 
+  Points.push_back(Point); 
+}
+
+// ------------------------------------------------------------
 
 void scigraphics::sequence::dataVector::append( const point_t &Point )
 { 
@@ -404,11 +411,41 @@ void scigraphics::sequence::dataVector::append( number X, number Y, number ErrX,
 }
 
 // ------------------------------------------------------------
+        
+void scigraphics::sequence::dataVector::set( size_t Index, number X, number Y )
+{
+  if ( Index >= Points.size() )
+    throw std::runtime_error( "Index out of range" );
+
+  Points[Index] = point_t( X, Y );
+  LimitsCache.recalculate( *this );
+  recalculateOrderedByX(); 
+}
+
+// ------------------------------------------------------------
+
+void scigraphics::sequence::dataVector::erase( size_t Index )
+{
+  if ( Index >= Points.size() )
+    throw std::runtime_error( "Index out of range" );
+
+  Points.erase( Points.begin() + Index );
+  LimitsCache.recalculate( *this );
+  recalculateOrderedByX(); 
+}
+
+// ------------------------------------------------------------
 
 void scigraphics::sequence::dataVector::updateOrderedByX()
 {
   if ( ! OrderedByX )      
     return;
+
+  if ( Points.size() <= 1 )
+  {
+    recalculateOrderedByX();
+    return;
+  }
 
   if ( Points.empty() ) 
   {
@@ -416,22 +453,37 @@ void scigraphics::sequence::dataVector::updateOrderedByX()
     return; 
   }
 
-  point_t Last = Points.back();
+  const point_t Last = Points.back();
+  const point_t BeforeLast = Points[ Points.size()-2 ];
+  OrderedByX = ( Last.x() >= BeforeLast.x() );
+}
 
-  if ( Points.size() <= 1 )
+// ------------------------------------------------------------
+
+void scigraphics::sequence::dataVector::recalculateOrderedByX()
+{
+  if ( Points.empty() )
   {
-    OrderedByX = isValidNumber( Last.x() );
+    OrderedByX = true;
     return;
   }
 
-  if ( ! isValidNumber( Last.x() ) )
+  if ( ! isValidNumber( Points.front().x() ) )
   {
     OrderedByX = false;
     return;
   }
 
-  point_t BeforeLast = Points[ Points.size()-2 ];
-  OrderedByX = ( Last.x() >= BeforeLast.x() );
+  for ( size_t i = 1; i < Points.size(); i++ )
+  {
+    if ( ! isValidNumber( Points[i].x() ) || Points[i-1].x() > Points[i].x() )
+    {
+      OrderedByX = false;
+      return;
+    }
+  }
+
+  OrderedByX = true;
 }
 
 // ------------------------------------------------------------

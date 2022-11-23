@@ -134,6 +134,29 @@ namespace scigraphics
   
     // ------------------------------------------------------------
     
+    class graphCreatedByMouseVector : public graphSpecified< dataVector, ordinarGraphViewCollection >
+    {
+      private:
+        static number distance( const npoint &Pt1, const npoint &Pt2 ); 
+
+      public:
+        static const color DefaultColor;
+
+      public:
+        graphCreatedByMouseVector( const color &Color = DefaultColor );
+
+        dataVector& getDataVector();
+        ordinarGraphViewCollection& getViews();
+
+        void append( number X, number Y );
+        void set( size_t Index, number X, number Y );
+        void erase( size_t Index );
+
+        size_t indexOfPoint( number X, number Y ) const;
+    };
+
+    // ------------------------------------------------------------
+    
     class graphUniformVector : public graphSpecified< dataUniformVector, ordinarGraphViewCollection >
     {
       public:

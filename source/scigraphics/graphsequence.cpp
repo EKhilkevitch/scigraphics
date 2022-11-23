@@ -23,6 +23,7 @@
 
 #include "scigraphics/graphsequence.h"
 
+#include <limits>
 #include <cassert>
 #include <cmath>
 
@@ -201,10 +202,87 @@ void scigraphics::sequence::graphVector::appendInvalid()
 
 void scigraphics::sequence::graphVector::appendPolar( number Phi, number R )                    
 { 
-  number X = R*std::cos(Phi);
-  number Y = R*std::sin(Phi);
+  const number X = R*std::cos(Phi);
+  const number Y = R*std::sin(Phi);
   append( X, Y ); 
 } 
+
+// ============================================================
+
+const scigraphics::color scigraphics::sequence::graphCreatedByMouseVector::DefaultColor = scigraphics::color::Black;
+
+// ------------------------------------------------------------
+
+scigraphics::sequence::graphCreatedByMouseVector::graphCreatedByMouseVector( const color &Color ) : 
+  graphSpecified< dataVector, ordinarGraphViewCollection >( Color ) 
+{
+}
+
+// ------------------------------------------------------------
+
+scigraphics::sequence::dataVector& scigraphics::sequence::graphCreatedByMouseVector::getDataVector() 
+{ 
+  return getCastedData(); 
+}
+
+// ------------------------------------------------------------
+
+scigraphics::sequence::ordinarGraphViewCollection& scigraphics::sequence::graphCreatedByMouseVector::getViews() 
+{ 
+  return getCastedViews(); 
+}
+
+// ------------------------------------------------------------
+
+void scigraphics::sequence::graphCreatedByMouseVector::append( number X, number Y )                           
+{ 
+  getCastedData().append(X,Y); 
+}
+
+// ------------------------------------------------------------
+        
+void scigraphics::sequence::graphCreatedByMouseVector::set( size_t Index, number X, number Y )
+{
+  getCastedData().set( Index, X, Y );
+}
+
+// ------------------------------------------------------------
+        
+void scigraphics::sequence::graphCreatedByMouseVector::erase( size_t Index )
+{
+  getCastedData().erase( Index );
+}
+
+// ------------------------------------------------------------
+        
+size_t scigraphics::sequence::graphCreatedByMouseVector::indexOfPoint( number X, number Y ) const
+{
+  const npoint Base( X, Y );
+  const sequence::data &Data = getData();
+  const size_t Size = Data.size();
+
+  std::pair< size_t, number > IndexAndDistance( std::numeric_limits<size_t>::max(), std::numeric_limits<number>::max() );
+  for ( size_t i = 0; i < Size; i++ )
+  {
+    const sequence::data::point_t Point = Data[i];
+    const npoint NPoint( Point.x(), Point.y() );
+    const number Distance = distance( NPoint, Base );
+    if ( Distance < IndexAndDistance.second )
+      IndexAndDistance = std::make_pair( i, Distance );
+  }
+ 
+  return IndexAndDistance.first;
+}
+
+// ------------------------------------------------------------
+        
+scigraphics::number scigraphics::sequence::graphCreatedByMouseVector::distance( const npoint &Pt1, const npoint &Pt2 )
+{
+  const number DeltaX = Pt1.x() - Pt2.x();
+  const number DeltaY = Pt1.y() - Pt2.y();
+
+  return std::sqrt( DeltaX*DeltaX + DeltaY*DeltaY );
+}
 
 // ============================================================
 

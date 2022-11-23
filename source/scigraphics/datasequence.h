@@ -139,8 +139,9 @@ namespace scigraphics
         numberLimitsDataCache LimitsCache;
 
       private:
-        void appendPoint( const point_t &Point ) { Points.push_back(Point); }
+        void appendPoint( const point_t &Point ); 
         void updateOrderedByX();
+        void recalculateOrderedByX();
 
       public:
         dataVector();
@@ -152,6 +153,8 @@ namespace scigraphics
         void append( number X, number Y );
         void append( number X, number Y, number ErrY );
         void append( number X, number Y, number ErrX, number ErrY );
+        void set( size_t Index, number X, number Y );
+        void erase( size_t Index );
 
         void clear();
         

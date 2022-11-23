@@ -157,6 +157,8 @@ namespace scigraphics
       graphCollection::iterator eraseGraphic( graphCollection::iterator Iterator );
       graphCollection::iterator beginGraph() { return Graphics.begin(); }
       graphCollection::iterator endGraph()   { return Graphics.end(); }
+      graphCollection::reverse_iterator rbeginGraph() { return Graphics.rbegin(); }
+      graphCollection::reverse_iterator rendGraph()   { return Graphics.rend(); }
       graphCollection::const_iterator beginGraph() const { return Graphics.begin(); }
       graphCollection::const_iterator endGraph()   const { return Graphics.end(); }
       size_t countOfGraphics() const;
