@@ -228,11 +228,11 @@ scigraphics::mouse::moveAction::moveAction( plot &Plot, wpoint Point ) :
 
 void scigraphics::mouse::moveAction::moved( wpoint Point )
 {
-  const double DeltaX = Point.x() - lastPoint().x();
-  const double DeltaY = Point.y() - lastPoint().y();
+  const wcoord DeltaX = Point.x() - lastPoint().x();
+  const wcoord DeltaY = Point.y() - lastPoint().y();
 
-  addShiftX( - DeltaX/plotWidth() );
-  addShiftY( + DeltaY/plotHeight() );
+  addShiftX( - static_cast<double>(DeltaX)/plotWidth() );
+  addShiftY( + static_cast<double>(DeltaY)/plotHeight() );
 
   setLastPositions(Point); 
 }
@@ -269,9 +269,9 @@ void scigraphics::mouse::zoomAction::released( wpoint Point )
 
 bool scigraphics::mouse::zoomAction::needToApplyChanges( wpoint Point )
 {
-  const double DeltaX = std::fabs(static_cast<double>(Point.x()-initPoint().x()));
-  const double DeltaY = std::fabs(static_cast<double>(Point.y()-initPoint().y()));
-  const double MinDelta = 5;
+  const wcoord DeltaX = std::abs( Point.x() - initPoint().x() );
+  const wcoord DeltaY = std::abs( Point.y() - initPoint().y() );
+  const wcoord MinDelta = 5;
 
   return ( DeltaX > MinDelta ) && 
          ( DeltaY > MinDelta );
@@ -281,11 +281,11 @@ bool scigraphics::mouse::zoomAction::needToApplyChanges( wpoint Point )
 
 void scigraphics::mouse::zoomAction::applyShifts( wpoint Point )
 {
-  wpoint XPoint( std::min(Point.x(),initPoint().x()), 
-                 std::max(Point.y(),initPoint().y()) );
+  const wpoint XPoint( std::min(Point.x(),initPoint().x()), 
+                       std::max(Point.y(),initPoint().y()) );
 
-  const double RelDeltaX =     ( XPoint.x() - Plot.getPainter().getIndents().left() )/plotWidth();
-  const double RelDeltaY = 1 - ( XPoint.y() - Plot.getPainter().getIndents().up()   )/plotHeight();
+  const double RelDeltaX =     static_cast<double>( XPoint.x() - Plot.getPainter().getIndents().left() )/plotWidth();
+  const double RelDeltaY = 1 - static_cast<double>( XPoint.y() - Plot.getPainter().getIndents().up()   )/plotHeight();
 
   addShiftX( RelDeltaX );
   addShiftY( RelDeltaY );
@@ -295,11 +295,11 @@ void scigraphics::mouse::zoomAction::applyShifts( wpoint Point )
 
 void scigraphics::mouse::zoomAction::applyZooms( wpoint Point )
 {
-  const double DeltaX = std::fabs(static_cast<double>(Point.x()-initPoint().x()));
-  const double DeltaY = std::fabs(static_cast<double>(Point.y()-initPoint().y()));
+  const wcoord DeltaX = std::abs( Point.x() - initPoint().x() );
+  const wcoord DeltaY = std::abs( Point.y() - initPoint().y() );
  
-  mulZoomX( DeltaX/plotWidth() );
-  mulZoomY( DeltaY/plotHeight() );
+  mulZoomX( static_cast<double>(DeltaX)/plotWidth() );
+  mulZoomY( static_cast<double>(DeltaY)/plotHeight() );
 }
 
 // ============================================================
@@ -325,8 +325,8 @@ void scigraphics::mouse::resetAction::released( wpoint )
 
 // ============================================================
 
-scigraphics::mouse::moveFloatAction::moveFloatAction( plot &P, wpoint Point )
-  : mouseActionHandler(P,Point)
+scigraphics::mouse::moveFloatAction::moveFloatAction( plot &P, wpoint Point ) : 
+  mouseActionHandler(P,Point)
 {
   Float = Plot.getFloatRectangle( Point );
 }

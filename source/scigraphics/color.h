@@ -108,6 +108,7 @@ namespace scigraphics
 
         size_t size() const;
         bool empty() const;
+        color operator[]( size_t Index ) const;
 
         color current() const;
         color next();

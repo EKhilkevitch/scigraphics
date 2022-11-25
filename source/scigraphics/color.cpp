@@ -32,6 +32,7 @@
 #include <algorithm>
 #include <limits>
 #include <ostream>
+#include <stdexcept>
 #include <cstdlib>
 #include <cstdio>
 
@@ -276,6 +277,15 @@ size_t scigraphics::colorSequence::size() const
 bool scigraphics::colorSequence::empty() const 
 { 
   return Sequence.empty(); 
+}
+
+// ------------------------------------------------------------
+        
+scigraphics::color scigraphics::colorSequence::operator[]( size_t Index ) const
+{
+  if ( Index >= Sequence.size() )
+    throw std::runtime_error( "Index of color sequence out of range" );
+  return Sequence[Index];
 }
 
 // ------------------------------------------------------------

@@ -26,7 +26,7 @@
 
 #include <QApplication>
 #include <QThread>
-#include <QTime>
+#include <QElapsedTimer>
 #include <QDebug>
 
 // ======================================================
@@ -41,11 +41,12 @@ class timerThread : public QThread
     plotAnimator *Animator;
     bool NeedToStop;
 
+  private:
     void run()
     {
       do
       {
-	QTime Timer;
+	QElapsedTimer Timer;
 	Timer.start();
 	while ( Timer.elapsed() < TimerInterval && !NeedToStop )
 	  msleep(1);
@@ -54,7 +55,12 @@ class timerThread : public QThread
     }
 
   public:
-    timerThread( plotAnimator *A ) : Animator(A), NeedToStop(false) {}
+    explicit timerThread( plotAnimator *A ) : 
+      Animator(A), 
+      NeedToStop(false) 
+    {
+    }
+
     void stop() 
     { 
       NeedToStop = true; 
@@ -78,20 +84,20 @@ int main( int argc, char **argv )
   Plot.replot();
 
 #if 0 
-  // Easy way to do animation, but on Windows this is very slow.
+  /* Easy way to do animation, but on Windows this is very slow. */
   QTimer Timer;
   QObject::connect( &Timer, SIGNAL(timeout()), &Animator, SLOT(updateGraphics()) );
   Timer.start(TimerInterval);
 #else
-  // Difficult way to do animation, but on Windows this code is fast.
+  /* Difficult way to do animation, but on Windows this code is fast. */
   timerThread Thread(&Animator);
   Thread.start();
 #endif
   
-  QTime WorkTime;
+  QElapsedTimer WorkTime;
   WorkTime.start();
 
-  int RetCode = app.exec();
+  const int RetCode = app.exec();
 
   qDebug() << "FPS = " << static_cast<double>(Animator.count()) / ( 1e-3 * WorkTime.elapsed() ) << " Max is " << 1.e3/TimerInterval;
   
