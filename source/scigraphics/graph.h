@@ -64,7 +64,7 @@ namespace scigraphics
       virtual wcoord legendExampleWidth() const;
       virtual wcoord legendExampleHeight() const;
 
-      virtual void draw( painter &Painter, const pairScales& Scales ) const = 0;
+      virtual void draw( painter &Painter, const pairScales &Scales ) const = 0;
       virtual void drawLegendExample( painter &Painter, const wrectangle &Rectangle ) const = 0;
 
       virtual void setDrawOverGrid( bool Draw );

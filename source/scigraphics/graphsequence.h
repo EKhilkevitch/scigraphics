@@ -148,9 +148,9 @@ namespace scigraphics
         dataVector& getDataVector();
         ordinarGraphViewCollection& getViews();
 
-        void append( number X, number Y );
-        void set( size_t Index, number X, number Y );
-        void erase( size_t Index );
+        virtual void append( number X, number Y );
+        virtual void set( size_t Index, number X, number Y );
+        virtual void erase( size_t Index );
 
         size_t indexOfPoint( number X, number Y ) const;
     };
