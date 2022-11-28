@@ -587,9 +587,12 @@ scigraphics::wcoord scigraphics::mouse::mouseGraphHandler::distance( wpoint Pt1,
 
 // ------------------------------------------------------------
           
-scigraphics::sequence::graphCreatedByMouseVector* scigraphics::mouse::mouseGraphHandler::findGraph()
+scigraphics::sequence::graphCreatedByMouseVector* scigraphics::mouse::mouseGraphHandler::findGraph( plot *Plot )
 {
-  for ( graphCollection::reverse_iterator it = Plot.rbeginGraph(); it != Plot.rendGraph(); ++it )
+  if ( Plot == NULL )
+    return NULL;
+
+  for ( graphCollection::reverse_iterator it = Plot->rbeginGraph(); it != Plot->rendGraph(); ++it )
   {
     sequence::graphCreatedByMouseVector *Graph = dynamic_cast< sequence::graphCreatedByMouseVector* >( &*it );
     if ( Graph != NULL )
@@ -601,15 +604,18 @@ scigraphics::sequence::graphCreatedByMouseVector* scigraphics::mouse::mouseGraph
 
 // ------------------------------------------------------------
           
-scigraphics::sequence::graphCreatedByMouseVector* scigraphics::mouse::mouseGraphHandler::findOrCreateGraph()
+scigraphics::sequence::graphCreatedByMouseVector* scigraphics::mouse::mouseGraphHandler::findOrCreateGraph( plot *Plot )
 {
-  sequence::graphCreatedByMouseVector *Graph = findGraph();
+  if ( Plot == NULL )
+    return NULL;
+  
+  sequence::graphCreatedByMouseVector *Graph = findGraph(Plot);
 
   if ( Graph == NULL )
   {
     Graph = new sequence::graphCreatedByMouseVector();
-    Plot.appendGraphic( Graph );
-    Plot.bindGraphToAxis( Graph, scigraphics::AxisBottom, scigraphics::AxisLeft );
+    Plot->appendGraphic( Graph );
+    Plot->bindGraphToAxis( Graph, scigraphics::AxisBottom, scigraphics::AxisLeft );
     Graph->setVisiblePoints( true );
     Graph->setPointSize( 5 );
   }
@@ -655,7 +661,7 @@ scigraphics::mouse::addPointGraphAction::addPointGraphAction( plot &P, wpoint Po
 
 void scigraphics::mouse::addPointGraphAction::released( wpoint WPoint )
 {
-  sequence::graphCreatedByMouseVector *Graph = findOrCreateGraph();
+  sequence::graphCreatedByMouseVector *Graph = findOrCreateGraph(&Plot);
   const npoint Point = wpoint2npoint( WPoint );
   Graph->append( Point.x(), Point.y() );
 }
@@ -666,7 +672,7 @@ scigraphics::mouse::movePointGraphAction::movePointGraphAction( plot &P, wpoint 
   mouseGraphHandler( P, WPoint ),
   Index( std::numeric_limits<size_t>::max() )
 {
-  const sequence::graphCreatedByMouseVector *Graph = findGraph();
+  const sequence::graphCreatedByMouseVector *Graph = findGraph(&Plot);
   if ( Graph == NULL )
     return;
 
@@ -690,7 +696,7 @@ void scigraphics::mouse::movePointGraphAction::moved( wpoint WPoint )
   if ( Index == std::numeric_limits<size_t>::max() )
     return;
   
-  sequence::graphCreatedByMouseVector *Graph = findGraph();
+  sequence::graphCreatedByMouseVector *Graph = findGraph(&Plot);
   if ( Graph == NULL )
     return;
 
@@ -711,7 +717,7 @@ scigraphics::mouse::delPointGraphAction::delPointGraphAction( plot &P, wpoint Po
 
 void scigraphics::mouse::delPointGraphAction::released( wpoint WPoint )
 {
-  sequence::graphCreatedByMouseVector *Graph = findGraph();
+  sequence::graphCreatedByMouseVector *Graph = findGraph(&Plot);
   if ( Graph == NULL )
     return;
 

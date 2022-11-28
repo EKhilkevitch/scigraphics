@@ -304,8 +304,6 @@ namespace scigraphics
       class mouseGraphHandler : public mouseActionHandler
       {
         protected:
-          sequence::graphCreatedByMouseVector* findGraph();
-          sequence::graphCreatedByMouseVector* findOrCreateGraph();
           npoint wpoint2npoint( wpoint Point ) const;
           wpoint npoint2wpoint( npoint Point ) const;
           static wcoord distance( wpoint Pt1, wpoint Pt2 );
@@ -314,6 +312,9 @@ namespace scigraphics
 
         public:
           explicit mouseGraphHandler( plot &Plot, wpoint Point );
+
+          static sequence::graphCreatedByMouseVector* findGraph( plot *Plot );
+          static sequence::graphCreatedByMouseVector* findOrCreateGraph( plot *Plot );
       };
 
       class addPointGraphAction : public mouseGraphHandler
