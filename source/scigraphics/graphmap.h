@@ -108,8 +108,8 @@ namespace scigraphics
         void resize( size_t SX, size_t SY ) { return getCastedData().resize(SX,SY); }
         bool empty() const  { return getData().empty(); }
 
-        void setIntervalX( number Min, number Max ) { getCastedData().setIntervalX( Min, Max ); }
-        void setIntervalY( number Min, number Max ) { getCastedData().setIntervalY( Min, Max ); }
+        void setIntervalX( number Min, number Max ) { setIntervalX( interval<number>( Min, Max ) ); }
+        void setIntervalY( number Min, number Max ) { setIntervalY( interval<number>( Min, Max ) ); }
         void setIntervalX( interval<number> Interval ) { getCastedData().setIntervalX( Interval ); }
         void setIntervalY( interval<number> Interval ) { getCastedData().setIntervalY( Interval ); }
 

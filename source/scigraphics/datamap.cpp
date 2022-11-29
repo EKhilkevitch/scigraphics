@@ -45,6 +45,34 @@ scigraphics::map::data::~data()
 
 // ------------------------------------------------------------
 
+void scigraphics::map::data::setIntervalX( number Min, number Max )
+{ 
+  setIntervalX( interval<number>(Min,Max) ); 
+}
+
+// ------------------------------------------------------------
+
+void scigraphics::map::data::setIntervalY( number Min, number Max ) 
+{ 
+  setIntervalY( interval<number>(Min,Max) ); 
+}
+
+// ------------------------------------------------------------
+
+void scigraphics::map::data::setIntervalX( interval<number> Interval ) 
+{ 
+  IntervalX = Interval; 
+}
+
+// ------------------------------------------------------------
+
+void scigraphics::map::data::setIntervalY( interval<number> Interval ) 
+{ 
+  IntervalY = Interval; 
+}
+
+// ------------------------------------------------------------
+
 scigraphics::numberLimits scigraphics::map::data::limitsForInterval( interval<number> Interval )
 {
   numberLimits Limits;

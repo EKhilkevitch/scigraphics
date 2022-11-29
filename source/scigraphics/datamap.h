@@ -80,8 +80,10 @@ namespace scigraphics
         interval<number> intervalX() const { return IntervalX; }
         interval<number> intervalY() const { return IntervalY; }
 
-        void setIntervalX( number Min, number Max ) { IntervalX = interval<number>(Min,Max); };
-        void setIntervalY( number Min, number Max ) { IntervalY = interval<number>(Min,Max); }
+        void setIntervalX( number Min, number Max );
+        void setIntervalY( number Min, number Max );
+        void setIntervalX( interval<number> Interval );
+        void setIntervalY( interval<number> Interval );
 
         virtual int_t size() const = 0;
         bool empty() const { return size() == 0; }
