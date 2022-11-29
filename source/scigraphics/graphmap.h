@@ -110,6 +110,8 @@ namespace scigraphics
 
         void setIntervalX( number Min, number Max ) { getCastedData().setIntervalX( Min, Max ); }
         void setIntervalY( number Min, number Max ) { getCastedData().setIntervalY( Min, Max ); }
+        void setIntervalX( interval<number> Interval ) { getCastedData().setIntervalX( Interval ); }
+        void setIntervalY( interval<number> Interval ) { getCastedData().setIntervalY( Interval ); }
 
         number coordinateX( size_t IndexX ) const { return getCastedData().coordinateX(IndexX); }
         number coordinateY( size_t IndexY ) const { return getCastedData().coordinateY(IndexY); }
