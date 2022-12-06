@@ -122,7 +122,7 @@ unsigned scigraphics::qt4plot::plotMouseButtons( const QMouseEvent *Event )
 
   if ( Event->button() & Qt::LeftButton )    Result |= scigraphics::mouse::Left;
   if ( Event->button() & Qt::RightButton )   Result |= scigraphics::mouse::Right;
-  if ( Event->button() & Qt::MidButton )     Result |= scigraphics::mouse::Middle;
+  if ( Event->button() & Qt::MiddleButton )  Result |= scigraphics::mouse::Middle;
 
   Result |= plotMouseModifiers( Event->modifiers() );
 
