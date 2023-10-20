@@ -29,9 +29,16 @@
 
 // ============================================================
 
-bool scigraphics::numberLimits::isValidInterval( interval<number> Interval )
+bool scigraphics::numberLimits::isValidIntervalInline( const interval<number> &Interval )
 {
   return isValidNumbers( Interval.min(), Interval.max() );
+}
+
+// ------------------------------------------------------------
+      
+bool scigraphics::numberLimits::isValidInterval( const interval<number> &Interval )
+{
+  return isValidIntervalInline( Interval );
 }
 
 // ------------------------------------------------------------
@@ -39,6 +46,20 @@ bool scigraphics::numberLimits::isValidInterval( interval<number> Interval )
 scigraphics::numberLimits::numberLimits() 
 { 
   clear(); 
+}
+
+// ------------------------------------------------------------
+      
+bool scigraphics::numberLimits::isValid() const 
+{ 
+  return isValidInterval(TotalLimits); 
+}
+
+// ------------------------------------------------------------
+
+bool scigraphics::numberLimits::inLimits( number Number ) const 
+{ 
+  return TotalLimits.inInterval(Number); 
 }
 
 // ------------------------------------------------------------

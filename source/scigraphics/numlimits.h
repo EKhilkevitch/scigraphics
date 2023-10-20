@@ -47,6 +47,7 @@ namespace scigraphics
       static inline void updateInterval( interval<number> *Interval, number Number );
       static inline interval<number> invalidInterval();
       static inline number returnSelfValue( number Value );
+      static inline bool isValidIntervalInline( const interval<number> &Interval );
 
     public:
       numberLimits();
@@ -61,8 +62,8 @@ namespace scigraphics
       inline interval<number> positiveLimits() const { return PositiveLimits; }
       inline interval<number> negativeLimits() const { return NegativeLimits; }
 
-      bool isValid() const { return isValidInterval(TotalLimits); }
-      bool inLimits( number Number ) const { return TotalLimits.inInterval(Number); }
+      bool isValid() const;
+      bool inLimits( number Number ) const;
       
       void setPositiveInterval( interval<number> Interval );
       void setPositiveInterval( number Min, number Max );
@@ -71,7 +72,7 @@ namespace scigraphics
       void setTotalInterval( interval<number> Interval );
       void setTotalInterval( number Min, number Max );
       
-      static bool isValidInterval( interval<number> Interval );
+      static bool isValidInterval( const interval<number> &Interval );
       template <class iterator, class value> static std::pair<iterator,iterator> boundsOfInterval( iterator Begin, iterator End, const value &First, const value &Last );
       template <class iterator, class value, class comparator> static std::pair<iterator,iterator> boundsOfInterval( iterator Begin, iterator End, const value &First, const value &Last, comparator Comparator );
   };
