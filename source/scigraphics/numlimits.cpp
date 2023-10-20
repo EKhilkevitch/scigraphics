@@ -81,7 +81,7 @@ void scigraphics::numberLimits::updateInterval( interval<number> *Interval, numb
   if ( ! isValidNumber(Number) )
     return;
 
-  if ( isValidInterval(*Interval) )
+  if ( isValidIntervalInline(*Interval) )
     Interval->updateInterval( Number );
   else
     Interval->setMinMax( Number, Number );
@@ -100,7 +100,7 @@ void scigraphics::numberLimits::clear()
 
 void scigraphics::numberLimits::setPositiveInterval( interval<number> Interval )
 {
-  if ( ! isValidInterval(Interval) )
+  if ( ! isValidIntervalInline(Interval) )
     PositiveLimits = invalidInterval();
   else if ( Interval.min() <= 0 )
     throw std::invalid_argument( "Positive interval must be really positive" );
@@ -119,7 +119,7 @@ void scigraphics::numberLimits::setPositiveInterval( number Min, number Max )
 
 void scigraphics::numberLimits::setNegativeInterval( interval<number> Interval )
 {
-  if ( ! isValidInterval(Interval) )
+  if ( ! isValidIntervalInline(Interval) )
     NegativeLimits = invalidInterval();
   else if ( Interval.max() >= 0 )
     throw std::invalid_argument( "Negative interval must be really negative" );
@@ -138,7 +138,7 @@ void scigraphics::numberLimits::setNegativeInterval( number Min, number Max )
 
 void scigraphics::numberLimits::setTotalInterval( interval<number> Interval )
 {
-  if ( ! isValidInterval(Interval) )
+  if ( ! isValidIntervalInline(Interval) )
     TotalLimits = invalidInterval();
   else
     TotalLimits = Interval;
