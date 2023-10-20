@@ -130,8 +130,8 @@ namespace scigraphics
       
       void setSelectionInterval( selectionStripType Type, interval<number> Interval );
       void setSelectionInterval( selectionStripType Type, number Min, number Max );
-      selectionStripType selectionType() const { return SelectionStripType; }
-      interval<number> selectionInterval() const { return SelectionStripInterval; }
+      selectionStripType selectionType() const;
+      interval<number> selectionInterval() const;
 
       std::string serialize() const;
       bool deserialize( const std::string &String );

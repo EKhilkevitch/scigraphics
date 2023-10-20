@@ -48,7 +48,7 @@ void scigraphics::numberLimits::updateLimits( number Number )
   updateInterval( &TotalLimits, Number );
   if ( Number > 0 )
     updateInterval( &PositiveLimits, Number );
-  if ( Number < 0 )
+  else if ( Number < 0 )
     updateInterval( &NegativeLimits, Number );
 }
 

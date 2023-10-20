@@ -170,8 +170,8 @@ void scigraphics::sequence::numberLimitsDataCache::update( const point_t &Point,
   if ( ! Point.isValid() )
     return;
     
-  updateLimits( Point, CoordinateX, Data, &LimitsX );
-  updateLimits( Point, CoordinateY, Data, &LimitsY );
+  updateLimits<CoordinateX>( Point, Data, &LimitsX );
+  updateLimits<CoordinateY>( Point, Data, &LimitsY );
 }
         
 // ------------------------------------------------------------
@@ -222,21 +222,21 @@ void scigraphics::sequence::numberLimitsDataCache::recalculateIfRequired( const 
 
 // ------------------------------------------------------------
 
-void scigraphics::sequence::numberLimitsDataCache::updateLimits( const point_t &Point, const coordinateType Coordinate, const data &Data, numberLimits *Limits )
+template <scigraphics::sequence::numberLimitsDataCache::coordinateType Coordinate> void scigraphics::sequence::numberLimitsDataCache::updateLimits( const point_t &Point, const data &Data, numberLimits *Limits )
 {
   assert( Limits != NULL );
   
-  number Value = pointValue( Point, Coordinate );
-  number Error = pointError( Point, Coordinate );
+  const number Value = pointValue<Coordinate>( Point );
+  const number Error = pointError<Coordinate>( Point );
 
-  updateLimits( Value + Error, Coordinate, Data, Limits );
+  updateLimits<Coordinate>( Value + Error, Data, Limits );
   if ( Error != 0 )
-    updateLimits( Value - Error, Coordinate, Data, Limits );
+    updateLimits<Coordinate>( Value - Error, Data, Limits );
 }
 
 // ------------------------------------------------------------
 
-void scigraphics::sequence::numberLimitsDataCache::updateLimits( number Number, const coordinateType Coordinate, const data &Data, numberLimits *Limits )
+template <scigraphics::sequence::numberLimitsDataCache::coordinateType Coordinate> void scigraphics::sequence::numberLimitsDataCache::updateLimits( number Number, const data &Data, numberLimits *Limits )
 {
   assert( Limits != NULL );
   assert( isValidNumber(Number) );
@@ -244,7 +244,7 @@ void scigraphics::sequence::numberLimitsDataCache::updateLimits( number Number, 
   Limits->updateLimits( Number );
 
   if ( needToRecalculate( Limits->positiveLimits() ) || needToRecalculate( Limits->negativeLimits() ) )
-    recalculate( Coordinate, Data, Limits );
+    recalculate<Coordinate>( Data, Limits );
 }
 
 // ------------------------------------------------------------
@@ -253,19 +253,19 @@ bool scigraphics::sequence::numberLimitsDataCache::needToRecalculate( const inte
 {
   const number Epsilon = std::numeric_limits<number>::epsilon();
 
-  number Distance = Interval.distance();
+  const number Distance = Interval.distance();
   assert( Distance >= 0 );
   if ( Distance == 0 )
     return false;
   
-  scigraphics::number MinAbs = Interval.minAbs();
+  const number MinAbs = Interval.minAbs();
   assert( MinAbs >= 0 );
   return ( MinAbs < Epsilon * Distance );
 }
 
 // ------------------------------------------------------------
         
-void scigraphics::sequence::numberLimitsDataCache::recalculate( const coordinateType Coordinate, const data &Data, numberLimits *Limits )
+template <scigraphics::sequence::numberLimitsDataCache::coordinateType Coordinate> void scigraphics::sequence::numberLimitsDataCache::recalculate( const data &Data, numberLimits *Limits )
 {
   assert( Limits != NULL );
 
@@ -274,16 +274,16 @@ void scigraphics::sequence::numberLimitsDataCache::recalculate( const coordinate
 
   *Limits = numberLimits();
 
-  iterator Begin = Data.begin();
-  iterator End = Data.end();
+  const iterator Begin = Data.begin();
+  const iterator End = Data.end();
 
   for ( iterator p = Begin; p != End; ++p )
   {
     if ( ! p->isValid() )
       continue;
 
-    number Value = pointValue( *p, Coordinate );
-    number Error = pointError( *p, Coordinate );
+    const number Value = pointValue<Coordinate>( *p );
+    const number Error = pointError<Coordinate>( *p );
 
     updateByValue( Value + Error, PosDistance, NegDistance, Limits );
     if ( Error != 0 )
@@ -301,8 +301,8 @@ void scigraphics::sequence::numberLimitsDataCache::updateByValue( number Value, 
 
   const number DistMultiplier = std::numeric_limits<number>::epsilon();
 
-  number MinPosValue = + DistMultiplier * PosDistance;
-  number MaxNegValue = - DistMultiplier * NegDistance;
+  const number MinPosValue = + DistMultiplier * PosDistance;
+  const number MaxNegValue = - DistMultiplier * NegDistance;
 
   if ( MaxNegValue <= Value && Value <= MinPosValue )
     Value = 0;
@@ -312,9 +312,9 @@ void scigraphics::sequence::numberLimitsDataCache::updateByValue( number Value, 
 
 // ------------------------------------------------------------
 
-scigraphics::number scigraphics::sequence::numberLimitsDataCache::pointValue( const point_t &Point, coordinateType Type )
+template <scigraphics::sequence::numberLimitsDataCache::coordinateType Coordinate> scigraphics::number scigraphics::sequence::numberLimitsDataCache::pointValue( const point_t &Point )
 {
-  switch ( Type )
+  switch ( Coordinate )
   {
     case CoordinateX: 
       return Point.x();
@@ -330,12 +330,12 @@ scigraphics::number scigraphics::sequence::numberLimitsDataCache::pointValue( co
 
 // ------------------------------------------------------------
 
-scigraphics::number scigraphics::sequence::numberLimitsDataCache::pointError( const point_t &Point, coordinateType Type )
+template <scigraphics::sequence::numberLimitsDataCache::coordinateType Coordinate> scigraphics::number scigraphics::sequence::numberLimitsDataCache::pointError( const point_t &Point )
 {
   if ( ! Point.isValidError() )
     return 0;
 
-  switch ( Type )
+  switch ( Coordinate )
   {
     case CoordinateX: 
       return Point.errX();

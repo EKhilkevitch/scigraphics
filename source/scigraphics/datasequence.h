@@ -104,14 +104,14 @@ namespace scigraphics
         bool RecalculateRequest;
 
       private:
-        static void updateLimits( const point_t &Point, const coordinateType Type, const data &Data, numberLimits *Limits );
-        static void updateLimits( number Number, const coordinateType Type, const data &Data, numberLimits *Limits );
+        template <coordinateType Type> static void updateLimits( const point_t &Point, const data &Data, numberLimits *Limits );
+        template <coordinateType Type> static void updateLimits( number Number, const data &Data, numberLimits *Limits );
         static bool needToRecalculate( const interval<number> Interval );
-        static void recalculate( const coordinateType Type, const data &Data, numberLimits *Limits );
+        template <coordinateType Type> static void recalculate( const data &Data, numberLimits *Limits );
         static void updateByValue( number Value, number PosDistance, number NegDistance, numberLimits *Limits );
         
-        static number pointValue( const point_t &Point, coordinateType Type );
-        static number pointError( const point_t &Point, coordinateType Type );
+        template <coordinateType Type> inline static number pointValue( const point_t &Point );
+        template <coordinateType Type> inline static number pointError( const point_t &Point );
 
       public:
         numberLimitsDataCache();

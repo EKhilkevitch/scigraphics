@@ -258,7 +258,7 @@ void scigraphics::settings::applySelectionIntervals( plot *Plot ) const
       break;
 
     default:
-      std::abort();
+      assert( false );
   }
 
 }
@@ -385,6 +385,20 @@ void scigraphics::settings::setSelectionInterval( selectionStripType Type, inter
 void scigraphics::settings::setSelectionInterval( selectionStripType Type, number Min, number Max )
 {
   setSelectionInterval( Type, interval<number>( Min, Max ) );
+}
+
+// ------------------------------------------------------------
+      
+scigraphics::settings::selectionStripType scigraphics::settings::selectionType() const 
+{ 
+  return SelectionStripType; 
+}
+
+// ------------------------------------------------------------
+
+scigraphics::interval<scigraphics::number> scigraphics::settings::selectionInterval() const 
+{ 
+  return SelectionStripInterval; 
 }
 
 // ============================================================
