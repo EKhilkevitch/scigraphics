@@ -156,6 +156,9 @@ namespace scigraphics
       public:
         explicit graphViewErrorBars( const style &Style );
         void drawLegendExample( painter &, const wrectangle & ) const;
+        
+        void setLineWidth( unsigned Width );
+        void setHatWidth( unsigned Width );
     };
 
     // ------------------------------------------------------------

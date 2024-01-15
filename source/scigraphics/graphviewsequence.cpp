@@ -454,6 +454,24 @@ void scigraphics::sequence::graphViewErrorBars::drawLegendExample( painter &, co
 
 // ------------------------------------------------------------
 
+void scigraphics::sequence::graphViewErrorBars::setLineWidth( unsigned Width )
+{
+  errorBarStyle Style = getStyle();
+  Style.setLineWidth( Width );
+  setStyle( Style );
+}
+
+// ------------------------------------------------------------
+        
+void scigraphics::sequence::graphViewErrorBars::setHatWidth( unsigned Width )
+{
+  errorBarStyle Style = getStyle();
+  Style.setHatWidth( Width );
+  setStyle( Style );
+}
+
+// ============================================================
+
 scigraphics::sequence::graphViewLineHystogram::graphViewLineHystogram( const style &Style ) : 
   graphViewGeneralLine(Style) 
 {

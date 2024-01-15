@@ -49,9 +49,23 @@ unsigned scigraphics::errorBarStyle::hatWidth() const
 
 // ------------------------------------------------------------
 
+void scigraphics::errorBarStyle::setHatWidth( unsigned W )
+{
+  HatWidth = W;
+}
+
+// ------------------------------------------------------------
+
 unsigned scigraphics::errorBarStyle::lineWidth() const 
 { 
   return LineWidth; 
+}
+
+// ------------------------------------------------------------
+
+void scigraphics::errorBarStyle::setLineWidth( unsigned W )
+{
+  LineWidth = W;
 }
 
 // ------------------------------------------------------------

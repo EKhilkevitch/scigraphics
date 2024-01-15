@@ -45,7 +45,10 @@ namespace scigraphics
       explicit errorBarStyle( color Color = color::Black );
 
       unsigned hatWidth() const;
+      void setHatWidth( unsigned W );
+      
       unsigned lineWidth() const;
+      void setLineWidth( unsigned W );
 
       const color& getColor() const;
       void setColor( color C );
