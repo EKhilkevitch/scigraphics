@@ -25,6 +25,8 @@ if ( NOT IMAGEMAGICK_ENABLED )
   endif()  
 endif()
 
+set( CMAKE_POSITION_INDEPENDENT_CODE ON )
+
 message( "LIBRARY_TYPE = ${LIBRARY_TYPE}" )
 message( "CMAKE_BUILD_TYPE = ${CMAKE_BUILD_TYPE}" )
 message( "IMAGEMAGICK_ENABLED = ${IMAGEMAGICK_ENABLED}" )
@@ -36,8 +38,8 @@ message( "IMAGEMAGICK_ENABLED = ${IMAGEMAGICK_ENABLED}" )
 #set( CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -pg -g")
 
 if ( UNIX )
-  set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC -Wall ") 
-  set( CMAKE_C_FLAGS   "${CMAKE_C_FLAGS}   -fPIC -Wall ") 
+  set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra") 
+  set( CMAKE_C_FLAGS   "${CMAKE_C_FLAGS}   -Wall -Wextra") 
 endif()
 
 add_subdirectory( ./source/scigraphics/ )
