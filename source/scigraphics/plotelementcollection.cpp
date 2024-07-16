@@ -192,17 +192,20 @@ bool  scigraphics::plotElementsCollection::empty() const
 
 // ------------------------------------------------------------
 
-void scigraphics::plotElementsCollection::draw( painter &Painter, bool isGridDrawn ) const
+void scigraphics::plotElementsCollection::draw( painter &Painter, gridDrawStatusType GridDrawStatus ) const
 {
   for ( plotElementList::const_iterator p = PlotElementsList.begin(); p != PlotElementsList.end(); ++p )
   {
     if ( ! p->isVisible() )
       continue;
 
-    if ( isGridDrawn != p->isDrawOverGrid() )
+    const plotElement::gridDrawOrderType DrawOrderType = p->gridDrawOrder();
+    if ( GridDrawStatus == GridAlreadyDrawn && DrawOrderType == plotElement::DrawUnderGrid )
       continue;
-      
-    pairScales Scales = getPairScales( &*p );
+    if ( GridDrawStatus == GridNotDrawnYet && DrawOrderType == plotElement::DrawOverGrid )
+      continue;
+
+    const pairScales Scales = getPairScales( &*p );
     p->draw(Painter,Scales);
   }
 }

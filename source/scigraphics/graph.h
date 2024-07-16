@@ -47,7 +47,7 @@ namespace scigraphics
     private:
       bool Visible;
       bool ShowLegend;
-      bool DrawOverGrid;
+      gridDrawOrderType GridDrawOrder;
       std::string Legend;
 
     public:
@@ -67,11 +67,11 @@ namespace scigraphics
       virtual void draw( painter &Painter, const pairScales &Scales ) const = 0;
       virtual void drawLegendExample( painter &Painter, const wrectangle &Rectangle ) const = 0;
 
-      virtual void setDrawOverGrid( bool Draw );
-      virtual bool isDrawOverGrid() const;
+      void setGridDrawOrder( gridDrawOrderType GridDrawOrder );
+      gridDrawOrderType gridDrawOrder() const;
 
-      virtual void setVisible( bool Visible );
-      virtual bool isVisible() const;
+      void setVisible( bool Visible );
+      bool isVisible() const;
   };
 
   // ============================================================

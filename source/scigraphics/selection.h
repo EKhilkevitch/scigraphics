@@ -52,6 +52,8 @@ namespace scigraphics
     public:
       explicit selection( const selectionStyle &SelectionStyle = selectionStyle() );
       virtual ~selection();
+      
+      gridDrawOrderType gridDrawOrder() const;
 
       void setSelectionStyle( const selectionStyle &Style );
       const selectionStyle& getSelectionStyle() const;

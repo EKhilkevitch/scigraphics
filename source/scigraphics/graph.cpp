@@ -28,7 +28,7 @@
 scigraphics::graph::graph() : 
   Visible(true),
   ShowLegend(true), 
-  DrawOverGrid(true)
+  GridDrawOrder( plotElement::DrawOverGrid )
 {
 }
 
@@ -82,16 +82,16 @@ scigraphics::wcoord scigraphics::graph::legendExampleHeight() const
       
 // ------------------------------------------------------------
 
-void scigraphics::graph::setDrawOverGrid( bool D ) 
+void scigraphics::graph::setGridDrawOrder( gridDrawOrderType G ) 
 { 
-  DrawOverGrid = D; 
+  GridDrawOrder = G;
 }
 
 // ------------------------------------------------------------
 
-bool scigraphics::graph::isDrawOverGrid() const 
+scigraphics::graph::gridDrawOrderType scigraphics::graph::gridDrawOrder() const 
 { 
-  return DrawOverGrid; 
+  return GridDrawOrder; 
 }
 
 // ------------------------------------------------------------

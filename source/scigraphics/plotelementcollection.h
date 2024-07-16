@@ -50,6 +50,12 @@ namespace scigraphics
 
     public:
       typedef container_ptr< plotElement > plotElementList;
+
+      enum gridDrawStatusType
+      {
+        GridNotDrawnYet,
+        GridAlreadyDrawn
+      };
       
     private:
       class axisSetsPair
@@ -103,7 +109,7 @@ namespace scigraphics
 
       void setDefaultAxisSets( const axisSet *X, const axisSet *Y );
 
-      void draw( painter &Painter, bool isGridDrawn ) const;
+      void draw( painter &Painter, gridDrawStatusType GridDrawStatus ) const;
 
       const scale* graphScaleX( const plotElement *PlotElement ) const;
       const scale* graphScaleY( const plotElement *PlotElement ) const;

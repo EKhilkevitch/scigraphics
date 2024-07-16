@@ -289,7 +289,7 @@ namespace scigraphics
 
     template < class D, class V > data::point_t graphSpecified<D,V>::operator[]( data::int_t Index ) const 
     { 
-      return at(Index); 
+      return getData()[Index]; 
     }
     
     // ------------------------------------------------------------

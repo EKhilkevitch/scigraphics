@@ -40,7 +40,7 @@ scigraphics::map::graph::graph( const std::string &Legend ) :
   ScaleZ = new scaleLinear();
   ScaleZ->setNumberOfMarks( 7, 15 );
 
-  setDrawOverGrid( false );
+  setGridDrawOrder( plotElement::DrawUnderGrid );
   setLegend(Legend);
 }
 

@@ -365,21 +365,21 @@ void scigraphics::plot::drawAxisTitles()
 
 void scigraphics::plot::drawGraphicsOverGrid()
 {
-  Graphics.draw( Pimpl->Painter, true );
+  Graphics.draw( Pimpl->Painter, plotElementsCollection::GridAlreadyDrawn );
 }
 
 // ------------------------------------------------------------
 
 void scigraphics::plot::drawGraphicsUnderGrid()
 {
-  Graphics.draw( Pimpl->Painter, false );
+  Graphics.draw( Pimpl->Painter, plotElementsCollection::GridNotDrawnYet );
 }
 
 // ------------------------------------------------------------
 
 void scigraphics::plot::drawSelections()
 {
-  Selections.draw( Pimpl->Painter, true );
+  Selections.draw( Pimpl->Painter, plotElementsCollection::GridAlreadyDrawn );
 }
 
 // ------------------------------------------------------------

@@ -45,13 +45,13 @@ namespace scigraphics
         inline point();
         inline point( number x, number y, number ex = 0, number ey = 0 );
 
-        number x() const { return X; }
-        number y() const { return Y; }
-        number errX() const { return ErrX; }
-        number errY() const { return ErrY; }
+        inline number x() const { return X; }
+        inline number y() const { return Y; }
+        inline number errX() const { return ErrX; }
+        inline number errY() const { return ErrY; }
 
-        bool isValid() const { return isValidNumbers( y(), x() ); }
-        bool isValidError() const { return isValidNumbers( errY(), errX() ); }
+        inline bool isValid() const;
+        inline bool isValidError() const;
         
         static inline point invalidPoint();
     };
@@ -62,27 +62,30 @@ namespace scigraphics
     {
       public:
         typedef point point_t;
-        typedef long long int int_t;
+        typedef long long unsigned int int_t;
         typedef data_iterator< data > iterator;
+
+      protected:
+        virtual const point_t get( int_t Index ) const = 0;
 
       public:
         virtual ~data();
 
         virtual int_t size() const = 0;
-        bool empty() const { return size() == 0; }
+        inline bool empty() const;
 
-        virtual const point_t at( int_t Index ) const = 0;
-        const point_t operator[]( int_t Index ) const { return at(Index); }
+        const point_t at( int_t Index ) const;
+        inline const point_t operator[]( int_t Index ) const;
 
         const point_t first() const;
         const point_t last()  const;
 
-        iterator begin() const { return iterator( *this, 0 ); }
-        iterator end() const { return iterator( *this, size() ); }
+        inline iterator begin() const;
+        inline iterator end() const;
 
         virtual const numberLimits limitsX() const;
         virtual const numberLimits limitsY( const interval<number> &LimitsX ) const;
-        virtual bool isOrderedByX() const { return false; }
+        virtual bool isOrderedByX() const;
     };
   
     // ------------------------------------------------------------
@@ -143,11 +146,13 @@ namespace scigraphics
         void updateOrderedByX();
         void recalculateOrderedByX();
 
+      protected:
+        const point_t get( int_t Index ) const;
+
       public:
         dataVector();
 
-        int_t size() const { return static_cast<int_t>(Points.size()); }
-        const point_t at( int_t Index ) const { return Points.at( static_cast<size_t>(Index) ); }
+        int_t size() const;
 
         void append( const point_t &Point );
         void append( number X, number Y );
@@ -161,7 +166,7 @@ namespace scigraphics
         const numberLimits limitsX() const { return LimitsCache.limitsX(); }
         const numberLimits limitsY( const interval<number> &LimitsX ) const;
         
-        bool isOrderedByX() const { return OrderedByX; }
+        bool isOrderedByX() const;
     };
   
     // ------------------------------------------------------------
@@ -172,16 +177,18 @@ namespace scigraphics
         number StepX, ShiftX;
         std::vector<number> Values, Errors;
         numberLimitsDataCache LimitsCache;
+      
+      protected:
+        const point_t get( int_t Index ) const;
 
       public:
         dataUniformVector();
 
-        int_t size() const { return static_cast<int_t>(Values.size()); }
-        const point_t at( int_t Index ) const;
+        int_t size() const;
 
-        number valueX( int_t Index ) const { return static_cast<number>(Index) * stepX() + shiftX(); }
-        number valueY( int_t Index ) const { return Values.at( static_cast<size_t>(Index) ); }
-        number errorY( int_t Index ) const { return Errors.at( static_cast<size_t>(Index) ); }
+        inline number valueX( int_t Index ) const;
+        inline number valueY( int_t Index ) const;
+        inline number errorY( int_t Index ) const;
 
         void append( number Y );
         void append( number Y, number ErrY );
@@ -197,7 +204,7 @@ namespace scigraphics
         const numberLimits limitsX() const { return LimitsCache.limitsX(); }
         const numberLimits limitsY( const interval<number> &LimitsX ) const;
 
-        bool isOrderedByX() const { return true; }
+        bool isOrderedByX() const;
     };
     
     // ------------------------------------------------------------
@@ -232,8 +239,71 @@ namespace scigraphics
       return point( invalidNumber(), invalidNumber() );  
     }
     
+    // ------------------------------------------------------------
+        
+    bool point::isValid() const 
+    { 
+      return isValidNumbers( y(), x() ); 
+    }
+    
+    // ------------------------------------------------------------
+    
+    bool point::isValidError() const 
+    { 
+      return isValidNumbers( errY(), errX() ); 
+    }
+    
     // ============================================================
 
+    bool data::empty() const 
+    { 
+      return size() == 0; 
+    }
+    
+    // ------------------------------------------------------------
+        
+    const data::point_t data::operator[]( int_t Index ) const 
+    { 
+      return get(Index); 
+    }
+    
+    // ------------------------------------------------------------
+        
+    data::iterator data::begin() const 
+    { 
+      return iterator( *this, 0 ); 
+    }
+    
+    // ------------------------------------------------------------
+    
+    data::iterator data::end() const 
+    { 
+      return iterator( *this, size() ); 
+    }
+
+    // ============================================================
+        
+    number dataUniformVector::valueX( int_t Index ) const 
+    { 
+      return static_cast<number>(Index) * stepX() + shiftX(); 
+    }
+    
+    // ------------------------------------------------------------
+    
+    number dataUniformVector::valueY( int_t Index ) const 
+    { 
+      return Values[ static_cast<size_t>(Index) ]; 
+    }
+    
+    // ------------------------------------------------------------
+    
+    number dataUniformVector::errorY( int_t Index ) const 
+    { 
+      return Errors[ static_cast<size_t>(Index) ]; 
+    }
+    
+    // ============================================================
+    
   }
 }
 

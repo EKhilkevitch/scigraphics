@@ -36,20 +36,19 @@ namespace scigraphics
 
   class plotElement
   {
-    private:
-      plotElementsCollection *Collection;
+    public:
+      enum gridDrawOrderType
+      {
+        DrawOverGrid,
+        DrawUnderGrid
+      };
 
     public:
-      plotElement();
-      plotElement( const plotElement &PlotElement );
-      plotElement& operator=( const plotElement &PlotElement );
-      virtual ~plotElement();
+      virtual ~plotElement() = 0;
 
       virtual void draw( painter &Painter, const pairScales& Scales ) const = 0;
-      virtual bool isDrawOverGrid() const;
+      virtual gridDrawOrderType gridDrawOrder() const = 0;
       virtual bool isVisible() const;
-
-      void assignToCollection( plotElementsCollection *Collection );
   };
 
 // ============================================================

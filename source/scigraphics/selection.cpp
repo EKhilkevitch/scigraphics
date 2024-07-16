@@ -43,6 +43,13 @@ scigraphics::selection::~selection()
 }
 
 // ------------------------------------------------------------
+      
+scigraphics::selection::gridDrawOrderType scigraphics::selection::gridDrawOrder() const
+{
+  return DrawOverGrid;
+}
+
+// ------------------------------------------------------------
 
 void scigraphics::selection::setSelectionStyle( const selectionStyle &S ) 
 { 

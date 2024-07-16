@@ -26,22 +26,8 @@
 
 // ============================================================
 
-scigraphics::plotElement::plotElement() :
-  Collection( NULL )
-{
-}
-
-// ------------------------------------------------------------
-
 scigraphics::plotElement::~plotElement() 
 {
-}
-
-// ------------------------------------------------------------
-
-bool scigraphics::plotElement::isDrawOverGrid() const 
-{ 
-  return true; 
 }
 
 // ------------------------------------------------------------
@@ -49,13 +35,6 @@ bool scigraphics::plotElement::isDrawOverGrid() const
 bool scigraphics::plotElement::isVisible() const 
 { 
   return true; 
-}
-
-// ------------------------------------------------------------
-      
-void scigraphics::plotElement::assignToCollection( plotElementsCollection *Collection )
-{
-  this->Collection = Collection;
 }
 
 // ============================================================

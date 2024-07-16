@@ -35,7 +35,7 @@ namespace scigraphics
       typedef typename data_t::point_t point_t;
       typedef typename data_t::int_t int_t;
 
-      typedef int_t difference_type;
+      typedef long long int difference_type;
       typedef std::random_access_iterator_tag iterator_category;
       typedef const point_t value_type;
       typedef const point_t* pointer;
@@ -180,7 +180,7 @@ namespace scigraphics
   { 
     if ( CurrentPoint.Index != Index )
     {
-      CurrentPoint.Point = Data->at(Index);
+      CurrentPoint.Point = (*Data)[Index];
       CurrentPoint.Index = Index;
     }
     return CurrentPoint.Point;
@@ -192,7 +192,7 @@ namespace scigraphics
   { 
     if ( CurrentPoint.Index != Index )
     {
-      CurrentPoint.Point = Data->at(Index);
+      CurrentPoint.Point = (*Data)[Index];
       CurrentPoint.Index = Index;
     }
     return &CurrentPoint.Point;

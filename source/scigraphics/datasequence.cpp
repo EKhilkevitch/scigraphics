@@ -56,16 +56,39 @@ scigraphics::sequence::data::~data()
 
 // ------------------------------------------------------------
 
+const scigraphics::sequence::data::point_t scigraphics::sequence::data::at( int_t Index ) const
+{
+  const int_t Size = size();
+  if ( Index >= Size )
+    throw std::out_of_range( "scigraphics::data index is out of range" );
+  return get(Index);
+}
+
+// ------------------------------------------------------------
+
 const scigraphics::sequence::data::point_t scigraphics::sequence::data::first() const 
 { 
-  return  empty() ? point_t() : at(0); 
+  const int_t Size = size();
+  if ( Size <= 0 )
+    return point_t();
+  return get(0);
 }
 
 // ------------------------------------------------------------
 
 const scigraphics::sequence::data::point_t scigraphics::sequence::data::last()  const 
 { 
-  return  empty() ? point_t() : at(size()-1); 
+  const int_t Size = size();
+  if ( Size <= 0 )
+    return point_t();
+  return get( Size - 1 );
+}
+
+// ------------------------------------------------------------
+        
+bool scigraphics::sequence::data::isOrderedByX() const 
+{ 
+  return false; 
 }
 
 // ------------------------------------------------------------
@@ -371,6 +394,20 @@ scigraphics::sequence::dataVector::dataVector() :
 }
 
 // ------------------------------------------------------------
+
+scigraphics::sequence::dataVector::int_t scigraphics::sequence::dataVector::size() const 
+{ 
+  return static_cast<int_t>( Points.size() ); 
+}
+
+// ------------------------------------------------------------
+    
+const scigraphics::sequence::dataVector::point_t scigraphics::sequence::dataVector::get( int_t Index ) const 
+{ 
+  return Points[ static_cast<size_t>(Index) ]; 
+}
+
+// ------------------------------------------------------------
         
 void scigraphics::sequence::dataVector::appendPoint( const point_t &Point ) 
 { 
@@ -382,6 +419,7 @@ void scigraphics::sequence::dataVector::appendPoint( const point_t &Point )
 void scigraphics::sequence::dataVector::append( const point_t &Point )
 { 
   appendPoint( Point );
+
   if ( Points.size() >= static_cast<size_t>(std::numeric_limits<int>::max()) - 2 )
     throw std::runtime_error( "Data size is too big" );
 
@@ -393,7 +431,7 @@ void scigraphics::sequence::dataVector::append( const point_t &Point )
 
 void scigraphics::sequence::dataVector::append( number X, number Y ) 
 { 
-  append( point_t(X,Y) );  
+  append( point_t(X,Y,0,0) );  
 }
 
 // ------------------------------------------------------------
@@ -503,6 +541,13 @@ void scigraphics::sequence::dataVector::clear()
   Points.clear();
   LimitsCache.clear();
 }
+    
+// ------------------------------------------------------------
+    
+bool scigraphics::sequence::dataVector::isOrderedByX() const 
+{ 
+  return OrderedByX; 
+}
 
 // ============================================================
 
@@ -513,7 +558,7 @@ scigraphics::sequence::dataUniformVector::dataUniformVector() :
 
 // ------------------------------------------------------------
         
-const scigraphics::sequence::dataUniformVector::point_t scigraphics::sequence::dataUniformVector::at( int_t Index ) const
+const scigraphics::sequence::dataUniformVector::point_t scigraphics::sequence::dataUniformVector::get( int_t Index ) const
 {
   assert( Values.size() == Errors.size() );
 
@@ -523,6 +568,13 @@ const scigraphics::sequence::dataUniformVector::point_t scigraphics::sequence::d
   number ErrY = errorY( Index );
 
   return point_t( X, Y, ErrX, ErrY );
+}
+
+// ------------------------------------------------------------
+
+scigraphics::sequence::dataUniformVector::int_t scigraphics::sequence::dataUniformVector::size() const 
+{ 
+  return static_cast<int_t>(Values.size()); 
 }
 
 // ------------------------------------------------------------
@@ -578,6 +630,13 @@ const scigraphics::numberLimits scigraphics::sequence::dataUniformVector::limits
   if ( LimitsCache.canUseCachedLimitsY(LimitsX) )
     return LimitsCache.limitsY();
   return data::limitsY( LimitsX );
+}
+
+// ------------------------------------------------------------        
+
+bool scigraphics::sequence::dataUniformVector::isOrderedByX() const 
+{ 
+  return true; 
 }
 
 // ============================================================
