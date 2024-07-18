@@ -56,7 +56,6 @@ namespace scigraphics
     public:
       data_iterator();
       data_iterator( const data_t &D, int_t I );
-      ~data_iterator() {}
 
       data_iterator operator++();
       data_iterator operator++(int);
@@ -73,7 +72,6 @@ namespace scigraphics
 
       value_type operator *() const;
       pointer operator->() const;
-
   };
 
   // ============================================================
