@@ -58,9 +58,13 @@ scigraphics::sequence::data::~data()
 
 const scigraphics::sequence::data::point_t scigraphics::sequence::data::at( int_t Index ) const
 {
+  if ( Index < 0 )
+    throw std::out_of_range( "scigraphics::data index is negative" );
+  
   const int_t Size = size();
   if ( Index >= Size )
     throw std::out_of_range( "scigraphics::data index is out of range" );
+
   return get(Index);
 }
 
