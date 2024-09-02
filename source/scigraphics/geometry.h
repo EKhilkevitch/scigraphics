@@ -183,6 +183,7 @@ namespace scigraphics
   { 
     return point<T>( 0, 0 ); 
   }
+
   // ------------------------------------------------------------
   
   template <class T> bool operator==( const point<T> &Point1, const point<T> &Point2 ) 

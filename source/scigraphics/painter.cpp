@@ -130,20 +130,6 @@ void scigraphics::painter::updatePlotRectangle()
 
 // ------------------------------------------------------------
 
-scigraphics::wcoord scigraphics::painter::fcoord2wcoordX( fcoord X ) const
-{
-  return static_cast<wcoord>( X * PlotRectangle.width() + Indents.left() );
-}
-
-// ------------------------------------------------------------
-
-scigraphics::wcoord scigraphics::painter::fcoord2wcoordY( fcoord Y ) const
-{
-  return static_cast<wcoord>( ( static_cast<scigraphics::number>(1) - Y ) * PlotRectangle.height() + Indents.up() );
-}
-
-// ------------------------------------------------------------
-
 scigraphics::wpoint scigraphics::painter::fpoint2wpoint( fpoint Pt ) const
 {
   const wcoord X = fcoord2wcoordX(Pt.x()); 

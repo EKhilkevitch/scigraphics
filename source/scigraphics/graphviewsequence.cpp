@@ -62,6 +62,7 @@ namespace scigraphics
   {
     private:
       const pairScales &Scales;
+
     public:
       explicit checkIsLessThan( const pairScales &Scales );
       bool operator()( const fcoord FValue, const sequence::data::point_t &Point ) const;
@@ -323,56 +324,6 @@ void scigraphics::sequence::graphViewGeneralLine::drawUnorderedByX( painter &Pai
     }
 
   }
-
-
-#if 0
-  sequence::data::iterator Point = Begin;
-
-  Painter.setLineStyle( getStyle() );
-  while ( true )
-  {
-    if ( Point == End )
-    {
-      PointsWithSameXCoord.addToPolyline( &Polyline );
-      drawLineBetweenPoints( Painter, &Polyline );
-      break;
-    }
-
-    if ( Point->isValid() )
-    {
-      const fpoint CurrFPoint = Scales.npoint2fpoint(*Point);
-      if ( PointsWithSameXCoord.canSeparate( Painter, CurrFPoint ) )
-      {
-        PointsWithSameXCoord.addToPolyline( &Polyline );
-        PointsWithSameXCoord.clear();
-        if ( Polyline.size() >= MaxPolylineSize )
-        {
-          const wpoint LastPoint = Polyline.back();
-          drawLineBetweenPoints( Painter, &Polyline );
-          Polyline.clear();
-          Polyline.reserve( MaxPolylineSize );
-          Polyline.push_back( LastPoint );
-        }
-      }
-      PointsWithSameXCoord.append( Painter, CurrFPoint );
-      ++Point;
-      continue;
-    }
-    
-    {
-      assert( ! Point->isValid() );
-      PointsWithSameXCoord.addToPolyline( &Polyline );
-      PointsWithSameXCoord.clear();
-      drawLineBetweenPoints( Painter, &Polyline );
-      Polyline.clear();
-
-      ++Point;
-      while ( Point != End && ! Point->isValid() )
-        ++Point;
-    }
-
-  }
-#endif
 
 }
 

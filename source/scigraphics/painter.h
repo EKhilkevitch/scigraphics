@@ -79,15 +79,15 @@ namespace scigraphics
       void setIndents( const indents<wcoord>& Indents );
       const indents<wcoord> getIndents() const { return Indents; }
       
-      const wrectangle& plotRectangle() const { return PlotRectangle; }
-      wcoord width() const  { return PlotRectangle.width();  }
-      wcoord height() const { return PlotRectangle.height(); }
+      inline const wrectangle& plotRectangle() const;
+      inline wcoord width() const;
+      inline wcoord height() const;
 
       fcoord wcoord2fcoordX( wcoord X ) const;
       fcoord wcoord2fcoordY( wcoord Y ) const;
       
-      wcoord fcoord2wcoordX( fcoord X ) const;
-      wcoord fcoord2wcoordY( fcoord Y ) const;
+      inline wcoord fcoord2wcoordX( fcoord X ) const;
+      inline wcoord fcoord2wcoordY( fcoord Y ) const;
       
       wpoint fpoint2wpoint( fpoint Pt ) const;
       fpoint wpoint2fpoint( wpoint Pt ) const;
@@ -131,7 +131,43 @@ namespace scigraphics
       std::pair<wcoord,wcoord> textWidthHeight( const std::string &Text, const textStyle &Style );
   };
 
-// ============================================================
+  // ============================================================
+      
+  const wrectangle& painter::plotRectangle() const 
+  { 
+    return PlotRectangle; 
+  }
+  
+  // ------------------------------------------------------------
+  
+  wcoord painter::width() const  
+  { 
+    return PlotRectangle.width();  
+  }
+  
+  // ------------------------------------------------------------
+  
+  wcoord painter::height() const 
+  { 
+    return PlotRectangle.height(); 
+  }
+  
+  // ------------------------------------------------------------
+
+  wcoord painter::fcoord2wcoordX( fcoord X ) const
+  {
+    return static_cast<wcoord>( X * PlotRectangle.width() ) + Indents.left();
+  }
+
+  // ------------------------------------------------------------
+
+  wcoord painter::fcoord2wcoordY( fcoord Y ) const
+  {
+    return static_cast<wcoord>( ( static_cast<scigraphics::number>(1) - Y ) * PlotRectangle.height() ) + Indents.up();
+  }
+  
+  // ============================================================
+
 
 }
 
