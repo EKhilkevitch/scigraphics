@@ -69,6 +69,32 @@ const scigraphics::sequence::data::point_t scigraphics::sequence::data::at( int_
 }
 
 // ------------------------------------------------------------
+        
+size_t scigraphics::sequence::data::fill( int_t BeginIndex, size_t Size, std::vector<point_t> *Points ) const
+{
+  if ( Points == NULL )
+    throw std::invalid_argument( "Points argument must be not NULL" );
+
+  if ( BeginIndex < 0 )
+    throw std::out_of_range( "scigraphics::data index is negative" );
+
+  if ( Points->size() < Size )
+    Points->resize( Size );
+
+  const int_t DataSize = size();
+  for ( size_t i = 0; i < Size; i++ )
+  {
+    const int_t DataIndex = BeginIndex + i;
+//    std::cerr << "sequence::data::fill: i = " << i << ", DataIndex = " << DataIndex << ", DataSize = " << DataSize << std::endl;
+    if ( DataIndex >= DataSize )
+      return i;
+    (*Points)[i] = get( DataIndex );
+  }
+
+  return Size;
+}
+
+// ------------------------------------------------------------
 
 const scigraphics::sequence::data::point_t scigraphics::sequence::data::first() const 
 { 

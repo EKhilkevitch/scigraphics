@@ -60,6 +60,10 @@ namespace scigraphics
       const marker* getMarker() const;
       marker* getMarker();
 
+    private:
+      scale( const scale& );
+      scale& operator=( const scale& );
+
     public:
       scale();
       virtual ~scale() = 0;

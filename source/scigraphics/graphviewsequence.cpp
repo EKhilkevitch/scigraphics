@@ -220,14 +220,24 @@ void scigraphics::sequence::graphViewOrdered::drawOrderedByX( painter &Painter, 
   if ( Scales.numberToFractionX(Begin->x()) > 1 )
     return;
 
-  checkIsLessThan Checker(Scales);
-  sequence::data::iterator BeginVisbile = Checker(0,*Begin)   ? Begin : std::lower_bound( Begin,        End, static_cast<fcoord>(0), Checker );
-  if ( BeginVisbile != Begin )
-    --BeginVisbile;
-  sequence::data::iterator EndVisible   = Checker(*(End-1),1) ? End   : std::upper_bound( BeginVisbile, End, static_cast<fcoord>(1), Checker );
+  const checkIsLessThan Checker(Scales);
+
+  sequence::data::iterator BeginVisibile = Begin;
+  if ( ! Checker( 0, *Begin ) )
+    BeginVisibile = std::lower_bound( Begin, End, static_cast<fcoord>(0), Checker );
+  if ( BeginVisibile != Begin )
+    --BeginVisibile;
+
+  sequence::data::iterator EndVisible = End;
+  if ( ! Checker( *(End-1), 1 ) )
+    EndVisible = std::upper_bound( BeginVisibile, End, static_cast<fcoord>(1), Checker );
   if ( EndVisible != End )
     ++EndVisible;
-  drawUnorderedByX( Painter, Scales, BeginVisbile, EndVisible );
+
+  assert( BeginVisibile.index() >= Begin.index() );
+  assert( EndVisible.index() <= End.index() );
+
+  drawUnorderedByX( Painter, Scales, BeginVisibile, EndVisible );
 }
 
 // ============================================================
@@ -254,6 +264,68 @@ void scigraphics::sequence::graphViewGeneralLine::drawUnorderedByX( painter &Pai
 
   pointsWithSameXCoord PointsWithSameXCoord;
 
+  Painter.setLineStyle( getStyle() );
+
+  const size_t SingleFillSize = 1024;
+  std::vector<data::point_t> PointsVector;
+  
+  sequence::data::iterator DataIterator = Begin;
+
+  // std::clog << "graphViewGeneralLine::drawUnorderedByX: begin" << std::endl;
+  while ( true )
+  {
+    // std::clog << "graphViewGeneralLine::drawUnorderedByX: DataIterator.Index = " << DataIterator.index() << ", End.Index = " << End.index() << std::endl;
+
+    if ( DataIterator == End )
+    {
+      PointsWithSameXCoord.addToPolyline( &Polyline );
+      drawLineBetweenPoints( Painter, &Polyline );
+      break;
+    }
+
+    DataIterator.fill( std::min<data::iterator::difference_type>( End - DataIterator, SingleFillSize ), &PointsVector );
+    //std::clog << "graphViewGeneralLine::drawUnorderedByX: SingleFillSize = " << SingleFillSize << ", PointsVector.size = " << PointsVector.size() << std::endl;
+    assert( ! PointsVector.empty() );
+
+    std::vector<data::point_t>::const_iterator Point = PointsVector.begin();
+    while ( Point != PointsVector.end() )
+    {
+      if ( Point->isValid() )
+      {
+        const fpoint CurrFPoint = Scales.npoint2fpoint(*Point);
+        if ( PointsWithSameXCoord.canSeparate( Painter, CurrFPoint ) )
+        {
+          PointsWithSameXCoord.addToPolyline( &Polyline );
+          PointsWithSameXCoord.clear();
+          if ( Polyline.size() >= MaxPolylineSize )
+          {
+            const wpoint LastPoint = Polyline.back();
+            drawLineBetweenPoints( Painter, &Polyline );
+            Polyline.clear();
+            Polyline.reserve( MaxPolylineSize );
+            Polyline.push_back( LastPoint );
+          }
+        }
+        PointsWithSameXCoord.append( Painter, CurrFPoint );
+        ++Point;
+      } else {
+        assert( ! Point->isValid() );
+        PointsWithSameXCoord.addToPolyline( &Polyline );
+        PointsWithSameXCoord.clear();
+        drawLineBetweenPoints( Painter, &Polyline );
+        Polyline.clear();
+
+        ++Point;
+        while ( Point != PointsVector.end() && ! Point->isValid() )
+          ++Point;
+      }
+
+    }
+
+  }
+
+
+#if 0
   sequence::data::iterator Point = Begin;
 
   Painter.setLineStyle( getStyle() );
@@ -300,6 +372,7 @@ void scigraphics::sequence::graphViewGeneralLine::drawUnorderedByX( painter &Pai
     }
 
   }
+#endif
 
 }
 

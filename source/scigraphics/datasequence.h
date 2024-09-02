@@ -76,6 +76,7 @@ namespace scigraphics
 
         const point_t at( int_t Index ) const;
         inline const point_t operator[]( int_t Index ) const;
+        virtual size_t fill( int_t BeginIndex, size_t Size, std::vector<point_t> *Points ) const;
 
         const point_t first() const;
         const point_t last()  const;

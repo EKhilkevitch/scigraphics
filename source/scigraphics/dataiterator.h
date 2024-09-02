@@ -22,6 +22,7 @@
 #pragma once
 
 #include <iterator>
+#include <vector>
 #include <limits>
 
 namespace scigraphics 
@@ -72,6 +73,9 @@ namespace scigraphics
 
       value_type operator *() const;
       pointer operator->() const;
+
+      data_iterator& fill( size_t Size, std::vector<point_t> *Vector );
+      int_t index() const;
   };
 
   // ============================================================
@@ -195,7 +199,29 @@ namespace scigraphics
     }
     return &CurrentPoint.Point;
   }
+  
+  // ------------------------------------------------------------
+      
+  template <class DT> data_iterator<DT>& data_iterator<DT>::fill( size_t Size, std::vector<point_t> *Vector )
+  {
+    if ( Vector == NULL || Size <= 0 ) 
+      return *this;
+
+    const size_t ReadedSize = Data->fill( Index, Size, Vector );
+    Index += ReadedSize;
+    Vector->resize( ReadedSize );
+
+    return *this;
+  }
+  
+  // ------------------------------------------------------------
+      
+  template <class DT> typename data_iterator<DT>::int_t data_iterator<DT>::index() const
+  {
+    return Index;
+  }
 
   // ============================================================
+
 }
 
