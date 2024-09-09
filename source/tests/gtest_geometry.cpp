@@ -44,10 +44,10 @@ TEST( geometry, trectangle )
   ASSERT_NEAR( 2, Rect.down(),  1e-5 );
   ASSERT_NEAR( 5, Rect.width(), 1e-5 );
   ASSERT_NEAR( 6, Rect.height(),1e-5 );
-  ASSERT_TRUE( Rect.contain( point<number>(2,3) ) );
-  ASSERT_TRUE( Rect.contain( point<number>(1,2) ) );
-  ASSERT_TRUE( ! Rect.contain( point<number>(0,3) ) );
-  ASSERT_TRUE( ! Rect.contain( point<number>(0,0) ) );
+  ASSERT_TRUE( Rect.contains( point<number>(2,3) ) );
+  ASSERT_TRUE( Rect.contains( point<number>(1,2) ) );
+  ASSERT_TRUE( ! Rect.contains( point<number>(0,3) ) );
+  ASSERT_TRUE( ! Rect.contains( point<number>(0,0) ) );
  
   Rect.moveX( 0.5 );
   ASSERT_NEAR( 1.5, Rect.left(),  1e-5 );
@@ -74,7 +74,6 @@ TEST( geometry, tindents )
   ASSERT_NEAR( 4.5, IRect.right(), 1e-5 );
   ASSERT_NEAR( 6, IRect.up(),    1e-5 );
   ASSERT_NEAR( 5, IRect.down(),  1e-5 );
-
 }
 
 // =========================================================
