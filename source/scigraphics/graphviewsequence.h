@@ -115,14 +115,14 @@ namespace scigraphics
         class pointsWithSameXCoord;
 
       private:
-        void fializeDrawPolylineAndPointsSameCoord( painter &Painter, pointsWithSameXCoord *PointsWithSameXCoord, std::vector<wpoint> *Polyline ) const;
+        void finalizeDrawPolylineAndPointsSameCoord( painter &Painter, pointsWithSameXCoord *PointsWithSameXCoord, std::vector<wpoint> *Polyline ) const;
         static sequence::data::iterator fillDataPointsVector( std::vector<data::point_t> *DPointsVector, sequence::data::iterator Iterator, sequence::data::iterator End );
         void processDataPointsVector( painter &Painter, const pairScales &Scales, const std::vector<data::point_t> &DPointsVector, pointsWithSameXCoord *PointsWithSameXCoord, 
           std::vector<wpoint> *Polyline, size_t MaxPolylineSize ) const;
-        static inline std::vector<data::point_t>::const_iterator skipInvalidPoints( std::vector<data::point_t>::const_iterator Iterator, std::vector<data::point_t>::const_iterator End );
+        static std::vector<data::point_t>::const_iterator skipInvalidPoints( std::vector<data::point_t>::const_iterator Iterator, std::vector<data::point_t>::const_iterator End );
         std::vector<data::point_t>::const_iterator processValidPoints( painter &Painter, const pairScales &Scales, pointsWithSameXCoord *PointsWithSameXCoord, 
           std::vector<wpoint> *Polyline, size_t MaxPolylineSize, std::vector<data::point_t>::const_iterator Iterator, std::vector<data::point_t>::const_iterator End ) const;
-        void processValidFPoint( painter &Painter, pointsWithSameXCoord *PointsWithSameXCoord, 
+        inline void processValidFPoint( painter &Painter, pointsWithSameXCoord *PointsWithSameXCoord, 
           std::vector<wpoint> *Polyline, size_t MaxPolylineSize, const fpoint FPoint ) const;
         static size_t maxPolylineSize( const painter &Painter, sequence::data::iterator Begin, sequence::data::iterator End );
 

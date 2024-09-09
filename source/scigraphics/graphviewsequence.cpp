@@ -268,14 +268,14 @@ void scigraphics::sequence::graphViewGeneralLine::drawUnorderedByX( painter &Pai
     processDataPointsVector( Painter, Scales, DPointsVector, &PointsWithSameXCoord, &Polyline, MaxPolylineSize );
   }
       
-  fializeDrawPolylineAndPointsSameCoord( Painter, &PointsWithSameXCoord, &Polyline );
+  finalizeDrawPolylineAndPointsSameCoord( Painter, &PointsWithSameXCoord, &Polyline );
 }
 
 // ------------------------------------------------------------
         
-void scigraphics::sequence::graphViewGeneralLine::fializeDrawPolylineAndPointsSameCoord( painter &Painter, pointsWithSameXCoord *PointsWithSameXCoord, std::vector<wpoint> *Polyline ) const
+void scigraphics::sequence::graphViewGeneralLine::finalizeDrawPolylineAndPointsSameCoord( painter &Painter, pointsWithSameXCoord *PointsWithSameXCoord, std::vector<wpoint> *Polyline ) const
 {
-  assert( PointsWithSameXCoord != nullptr );
+  assert( PointsWithSameXCoord != NULL );
   assert( Polyline != NULL );
 
   PointsWithSameXCoord->addToPolyline( Polyline );
@@ -292,7 +292,7 @@ scigraphics::sequence::data::iterator scigraphics::sequence::graphViewGeneralLin
 {
   assert( Iterator <= End );
 
-  const size_t SingleFillSize = 1024;
+  const size_t SingleFillSize = 2048;
   const data::iterator::difference_type CountOfPointsToEnd = End - Iterator;
 
   const data::iterator Result = Iterator.fill( std::min<data::iterator::difference_type>( CountOfPointsToEnd, SingleFillSize ), DPointsVector );
@@ -321,7 +321,7 @@ void scigraphics::sequence::graphViewGeneralLine::processDataPointsVector( paint
     Point = processValidPoints( Painter, Scales, PointsWithSameXCoord, Polyline, MaxPolylineSize, Point, DPointsVector.end() );
     if ( Point == DPointsVector.end() )
       break;
-    fializeDrawPolylineAndPointsSameCoord( Painter, PointsWithSameXCoord, Polyline );
+    finalizeDrawPolylineAndPointsSameCoord( Painter, PointsWithSameXCoord, Polyline );
     Point = skipInvalidPoints( Point, DPointsVector.end() );
   }
 }
@@ -332,6 +332,7 @@ std::vector<scigraphics::sequence::data::point_t>::const_iterator scigraphics::s
   pointsWithSameXCoord *PointsWithSameXCoord, std::vector<wpoint> *Polyline, size_t MaxPolylineSize, 
   std::vector<data::point_t>::const_iterator Iterator, std::vector<data::point_t>::const_iterator End ) const
 {
+#if 0
   std::vector< fcoord > FCoords( 2 * ( End - Iterator ) + 2 );
   assert( sizeof(fpoint) == 2*sizeof(fcoord) );
   const fpoint *FPoints = reinterpret_cast<const fpoint*>( &FCoords[0] );
@@ -352,8 +353,9 @@ std::vector<scigraphics::sequence::data::point_t>::const_iterator scigraphics::s
   }
 
   return Iterator;
+#endif
 
-#if 0
+#if 1
   while ( Iterator != End && Iterator->isValid() )
   {
     const fpoint FPoint = Scales.npoint2fpoint( npoint( Iterator->x(), Iterator->y() ) );
