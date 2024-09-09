@@ -339,16 +339,58 @@ void scigraphics::sequence::graphViewGeneralLine::processDataPointsVector( paint
       PointsWithSameXCoord->append( Painter, CurrFPoint );
       ++Point;
     } else {
-      
       fializeDrawPolylineAndPointsSameCoord( Painter, PointsWithSameXCoord, Polyline );
-
-      assert( ! Point->isValid() );
-      ++Point;
-      while ( Point != DPointsVector.end() && ! Point->isValid() )
-        ++Point;
+      Point = skipInvalidPoints( Point, DPointsVector.end() );
     }
   }
+}
 
+// ------------------------------------------------------------
+        
+std::vector<scigraphics::sequence::data::point_t>::const_iterator scigraphics::sequence::graphViewGeneralLine::processValidPoints( painter &Painter, const pairScales &Scales, 
+  pointsWithSameXCoord *PointsWithSameXCoord, std::vector<wpoint> *Polyline, size_t MaxPolylineSize, 
+  std::vector<data::point_t>::const_iterator Iterator, std::vector<data::point_t>::const_iterator End ) const
+{
+  while ( Iterator != End && Iterator->isValid() )
+  {
+    const fpoint FPoint = Scales.npoint2fpoint( npoint( Iterator->x(), Iterator->y() ) );
+    processValidFPoint( Painter, PointsWithSameXCoord, Polyline, MaxPolylineSize, FPoint );
+    ++Iterator;
+  }
+
+  return Iterator;
+}
+
+// ------------------------------------------------------------
+        
+void scigraphics::sequence::graphViewGeneralLine::processValidFPoint( painter &Painter, pointsWithSameXCoord *PointsWithSameXCoord, 
+          std::vector<wpoint> *Polyline, size_t MaxPolylineSize, const fpoint FPoint ) const
+{
+  if ( PointsWithSameXCoord->canSeparate( Painter, FPoint ) )
+  {
+    PointsWithSameXCoord->addToPolyline( Polyline );
+    PointsWithSameXCoord->clear();
+    if ( Polyline->size() >= MaxPolylineSize )
+    {
+      const wpoint LastPoint = Polyline->back();
+      drawLineBetweenPoints( Painter, Polyline );
+      Polyline->clear();
+      Polyline->reserve( MaxPolylineSize );
+      Polyline->push_back( LastPoint );
+    }
+  }
+  PointsWithSameXCoord->append( Painter, FPoint );
+}
+
+// ------------------------------------------------------------
+        
+std::vector<scigraphics::sequence::data::point_t>::const_iterator scigraphics::sequence::graphViewGeneralLine::skipInvalidPoints( std::vector<data::point_t>::const_iterator Iterator, 
+  std::vector<data::point_t>::const_iterator End )
+{
+  while ( Iterator != End && !Iterator->isValid() )
+    ++Iterator;
+
+  return Iterator;
 }
 
 // ------------------------------------------------------------
