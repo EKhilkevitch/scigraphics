@@ -30,133 +30,6 @@
 #include <cassert>
 
 // ============================================================
-
-namespace scigraphics 
-{
-  
-  // ============================================================
-  
-  class pointsWithSameXCoord
-  {
-    private:
-      wcoord X;
-      wcoord MinY, MaxY, FirstY, LastY;
-      size_t Count;
-
-    public:
-      pointsWithSameXCoord();
-      void clear();
-
-      wpoint min()  const { return wpoint( X, MinY );  }
-      wpoint max()  const { return wpoint( X, MaxY );  }
-      wpoint last() const { return wpoint( X, LastY ); }
-
-      bool canSeparate( const painter &Painter, fpoint Point );
-      void append( const painter &Painter, fpoint Point );
-      void addToPolyline( std::vector<wpoint> *Polyline ) const;
-  };
-
-  // ============================================================
-
-  class checkIsLessThan
-  {
-    private:
-      const pairScales &Scales;
-
-    public:
-      explicit checkIsLessThan( const pairScales &Scales );
-      bool operator()( const fcoord FValue, const sequence::data::point_t &Point ) const;
-      bool operator()( const sequence::data::point_t &Point, const fcoord FValue ) const;
-  };
-
-  // ============================================================
-  
-  pointsWithSameXCoord::pointsWithSameXCoord() 
-  {
-    clear();
-  }
-
-  // ------------------------------------------------------------
-  
-  void pointsWithSameXCoord::clear()
-  {
-    X = 0; 
-    MinY = MaxY = FirstY = LastY = 0;
-    Count = 0;
-  }
-  
-  // ------------------------------------------------------------
-  
-  bool pointsWithSameXCoord::canSeparate( const painter &Painter, fpoint Point )
-  {
-    if ( Count == 0 )
-      return true;
-    return X != Painter.fcoord2wcoordX( Point.x() );
-  }
-  
-  // ------------------------------------------------------------
-      
-  void pointsWithSameXCoord::append( const painter &Painter, fpoint Point )
-  {
-    LastY = Painter.fcoord2wcoordY( Point.y() );
-    if ( Count == 0 )
-    {
-      X = Painter.fcoord2wcoordX( Point.x() );
-      MinY = MaxY = FirstY = LastY;
-    } else {
-      MinY = std::min( MinY, LastY );
-      MaxY = std::max( MaxY, LastY );
-    }
-    Count += 1;
-  }
-  
-  // ------------------------------------------------------------
-      
-  void pointsWithSameXCoord::addToPolyline( std::vector<wpoint> *Polyline ) const
-  {
-    assert( Polyline != NULL );
-
-    if ( Count == 0 )
-      return;
-
-    Polyline->push_back( wpoint( X, FirstY ) );
-   
-    if ( MinY != FirstY )
-      Polyline->push_back( wpoint( X, MinY ) );
-
-    if ( MaxY != MinY )
-      Polyline->push_back( wpoint( X, MaxY ) );
-
-    if ( MaxY != LastY )
-      Polyline->push_back( wpoint( X, LastY ) );
-  }
-  
-  // ============================================================
-
-  checkIsLessThan::checkIsLessThan( const pairScales &S ) :
-    Scales( S )
-  {
-  }
-  
-  // ------------------------------------------------------------
-      
-  bool checkIsLessThan::operator()( const fcoord FValue, const sequence::data::point_t &Point ) const 
-  { 
-    return FValue < Scales.numberToFractionX(Point.x()); 
-  }
-  
-  // ------------------------------------------------------------
-  
-  bool checkIsLessThan::operator()( const sequence::data::point_t &Point, const fcoord FValue ) const 
-  { 
-    return Scales.numberToFractionX(Point.x()) < FValue; 
-  }
-
-  // ============================================================
-}
-
-
-// ============================================================
    
 scigraphics::sequence::graphView::graphView() : 
   Visible(true) 
@@ -195,6 +68,41 @@ scigraphics::wcoord scigraphics::sequence::graphView::legendExampleWidth() const
 scigraphics::wcoord scigraphics::sequence::graphView::legendExampleHeight() const 
 { 
   return 5;  
+}
+
+// ============================================================
+
+class scigraphics::sequence::graphViewOrdered::checkIsLessThan
+{
+  private:
+    const pairScales &Scales;
+
+  public:
+    explicit checkIsLessThan( const pairScales &Scales );
+
+    inline bool operator()( const fcoord FValue, const sequence::data::point_t &Point ) const;
+    inline bool operator()( const sequence::data::point_t &Point, const fcoord FValue ) const;
+};
+  
+// ------------------------------------------------------------
+
+scigraphics::sequence::graphViewOrdered::checkIsLessThan::checkIsLessThan( const pairScales &S ) :
+  Scales( S )
+{
+}
+
+// ------------------------------------------------------------
+    
+bool scigraphics::sequence::graphViewOrdered::checkIsLessThan::operator()( const fcoord FValue, const sequence::data::point_t &Point ) const 
+{ 
+  return FValue < Scales.numberToFractionX(Point.x()); 
+}
+
+// ------------------------------------------------------------
+
+bool scigraphics::sequence::graphViewOrdered::checkIsLessThan::operator()( const sequence::data::point_t &Point, const fcoord FValue ) const 
+{ 
+  return Scales.numberToFractionX(Point.x()) < FValue; 
 }
 
 // ============================================================
@@ -242,7 +150,91 @@ void scigraphics::sequence::graphViewOrdered::drawOrderedByX( painter &Painter, 
 }
 
 // ============================================================
-        
+          
+class scigraphics::sequence::graphViewGeneralLine::pointsWithSameXCoord
+{
+  private:
+    wcoord X;
+    wcoord MinY, MaxY, FirstY, LastY;
+    size_t Count;
+
+  public:
+    pointsWithSameXCoord();
+    void clear();
+
+    wpoint min()  const { return wpoint( X, MinY );  }
+    wpoint max()  const { return wpoint( X, MaxY );  }
+    wpoint last() const { return wpoint( X, LastY ); }
+
+    inline bool canSeparate( const painter &Painter, fpoint Point );
+    inline void append( const painter &Painter, fpoint Point );
+    inline void addToPolyline( std::vector<wpoint> *Polyline ) const;
+};
+
+// ------------------------------------------------------------
+
+scigraphics::sequence::graphViewGeneralLine::pointsWithSameXCoord::pointsWithSameXCoord() 
+{
+  clear();
+}
+
+// ------------------------------------------------------------
+
+void scigraphics::sequence::graphViewGeneralLine::pointsWithSameXCoord::clear()
+{
+  X = 0; 
+  MinY = MaxY = FirstY = LastY = 0;
+  Count = 0;
+}
+
+// ------------------------------------------------------------
+
+bool scigraphics::sequence::graphViewGeneralLine::pointsWithSameXCoord::canSeparate( const painter &Painter, fpoint Point )
+{
+  if ( Count == 0 )
+    return true;
+  return X != Painter.fcoord2wcoordX( Point.x() );
+}
+
+// ------------------------------------------------------------
+    
+void scigraphics::sequence::graphViewGeneralLine::pointsWithSameXCoord::append( const painter &Painter, fpoint Point )
+{
+  LastY = Painter.fcoord2wcoordY( Point.y() );
+  if ( Count == 0 )
+  {
+    X = Painter.fcoord2wcoordX( Point.x() );
+    MinY = MaxY = FirstY = LastY;
+  } else {
+    MinY = std::min( MinY, LastY );
+    MaxY = std::max( MaxY, LastY );
+  }
+  Count += 1;
+}
+
+// ------------------------------------------------------------
+    
+void scigraphics::sequence::graphViewGeneralLine::pointsWithSameXCoord::addToPolyline( std::vector<wpoint> *Polyline ) const
+{
+  assert( Polyline != NULL );
+
+  if ( Count == 0 )
+    return;
+
+  Polyline->push_back( wpoint( X, FirstY ) );
+ 
+  if ( MinY != FirstY )
+    Polyline->push_back( wpoint( X, MinY ) );
+
+  if ( MaxY != MinY )
+    Polyline->push_back( wpoint( X, MaxY ) );
+
+  if ( MaxY != LastY )
+    Polyline->push_back( wpoint( X, LastY ) );
+}
+
+// ============================================================
+
 scigraphics::sequence::graphViewGeneralLine::graphViewGeneralLine( const style &Style ) : 
   graphViewStyle<lineStyle,graphViewOrdered>(Style) 
 {
@@ -268,7 +260,7 @@ void scigraphics::sequence::graphViewGeneralLine::drawUnorderedByX( painter &Pai
   Painter.setLineStyle( getStyle() );
 
   const size_t SingleFillSize = 1024;
-  std::vector<data::point_t> PointsVector;
+  std::vector<data::point_t> DPointsVector;
   
   sequence::data::iterator DataIterator = Begin;
 
@@ -284,12 +276,12 @@ void scigraphics::sequence::graphViewGeneralLine::drawUnorderedByX( painter &Pai
       break;
     }
 
-    DataIterator.fill( std::min<data::iterator::difference_type>( End - DataIterator, SingleFillSize ), &PointsVector );
+    DataIterator.fill( std::min<data::iterator::difference_type>( End - DataIterator, SingleFillSize ), &DPointsVector );
     //std::clog << "graphViewGeneralLine::drawUnorderedByX: SingleFillSize = " << SingleFillSize << ", PointsVector.size = " << PointsVector.size() << std::endl;
-    assert( ! PointsVector.empty() );
+    assert( ! DPointsVector.empty() );
 
-    std::vector<data::point_t>::const_iterator Point = PointsVector.begin();
-    while ( Point != PointsVector.end() )
+    std::vector<data::point_t>::const_iterator Point = DPointsVector.begin();
+    while ( Point != DPointsVector.end() )
     {
       if ( Point->isValid() )
       {
@@ -317,7 +309,7 @@ void scigraphics::sequence::graphViewGeneralLine::drawUnorderedByX( painter &Pai
         Polyline.clear();
 
         ++Point;
-        while ( Point != PointsVector.end() && ! Point->isValid() )
+        while ( Point != DPointsVector.end() && ! Point->isValid() )
           ++Point;
       }
 

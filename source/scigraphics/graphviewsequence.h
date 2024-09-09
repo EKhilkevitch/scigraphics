@@ -76,6 +76,9 @@ namespace scigraphics
 
     class graphViewOrdered : public graphView
     {
+      private:
+        class checkIsLessThan;
+
       protected:
         virtual void drawUnorderedByX( painter &Painter, const pairScales& Scales, sequence::data::iterator Begin, sequence::data::iterator End ) const = 0;
         virtual void drawOrderedByX( painter &Painter, const pairScales& Scales, sequence::data::iterator Begin, sequence::data::iterator End ) const;
@@ -108,6 +111,9 @@ namespace scigraphics
 
     class graphViewGeneralLine : public graphViewStyle<lineStyle,graphViewOrdered>
     {
+      private:
+        class pointsWithSameXCoord;
+
       protected:
         virtual void drawLineBetweenPoints( painter &Painter, std::vector<wpoint> *Points ) const = 0;
         void drawUnorderedByX( painter &Painter, const pairScales& Scales, sequence::data::iterator Begin, sequence::data::iterator End ) const;
