@@ -338,12 +338,10 @@ std::vector<scigraphics::sequence::data::point_t>::const_iterator scigraphics::s
 
   const std::vector<data::point_t>::const_iterator Begin = Iterator;
   while ( Iterator != End && Iterator->isValid() )
-    ++Iterator;
-
-  for ( std::vector<data::point_t>::const_iterator it = Begin; it != Iterator; ++it )
   {
-    const size_t BaseIndex = static_cast<size_t>( it - Begin ) * 2;
-    FCoords[ BaseIndex ] = Scales.numberToFractionX( it->x() );
+    const size_t BaseIndex = static_cast<size_t>( Iterator - Begin ) * 2;
+    FCoords[ BaseIndex ] = Scales.numberToFractionX( Iterator->x() );
+    ++Iterator;
   }
 
   for ( std::vector<data::point_t>::const_iterator it = Begin; it != Iterator; ++it )
