@@ -94,10 +94,11 @@ scigraphics::axisLabelsX::axisLabelsX( fcoord Y ) :
 
 void scigraphics::axisLabelsX::drawOneLabel( painter &Painter, const scale &Scale, number Value ) const
 {
-  fcoord X = Scale.numberToFraction( Value );
-  std::string Text = getNumberStyle().numberText( Value );
-  unsigned Flags = ( BaseY < 0.5 ) ? painter::HCenter|painter::VUp : painter::HCenter|painter::VDown;
-  int Shift = ( BaseY < 0.5 ? +1 : -1 ) * (-3);
+  const fcoord X = Scale.numberToFraction( Value );
+  const std::string Text = getNumberStyle().numberText( Value );
+  
+  const unsigned Flags = ( BaseY < static_cast<fcoord>(0.5) ) ? painter::HCenter|painter::VUp : painter::HCenter|painter::VDown;
+  const int Shift = ( BaseY < static_cast<fcoord>(0.5) ? +1 : -1 ) * (-3);
 
 //  std::cout << "axisTicksX: draw " << Text << " crd " << Coord << " clr " << getTextStyle().getColor().name() << std::endl;
   Painter.drawTextF( Text, fpoint(X,BaseY), Flags, getTextStyle(), 0, Shift );
@@ -114,10 +115,10 @@ scigraphics::axisLabelsY::axisLabelsY( fcoord X ) :
 
 void scigraphics::axisLabelsY::drawOneLabel( painter &Painter, const scale &Scale, number Value ) const
 {
-  fcoord Y = Scale.numberToFraction( Value );
-  std::string Text = getNumberStyle().numberText( Value );
-  unsigned Flags = ( BaseX < 0.5 ) ? painter::HRight|painter::VCenter : painter::HLeft|painter::VCenter;
-  int Shift = ( BaseX < 0.5 ? +1 : -1 ) * 6; 
+  const fcoord Y = Scale.numberToFraction( Value );
+  const std::string Text = getNumberStyle().numberText( Value );
+  const unsigned Flags = ( BaseX < static_cast<fcoord>(0.5) ) ? painter::HRight|painter::VCenter : painter::HLeft|painter::VCenter;
+  const int Shift = ( BaseX < static_cast<fcoord>(0.5) ? +1 : -1 ) * 6; 
 
   Painter.drawTextF( Text, fpoint(BaseX,Y), Flags, getTextStyle(), Shift, 0 );
 //  std::cout << "axisLabelsY::drawOneLabel: " << Text << " - " << BaseX << " " << Y << " " << Shift << std::endl;

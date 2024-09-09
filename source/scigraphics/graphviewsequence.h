@@ -114,9 +114,16 @@ namespace scigraphics
       private:
         class pointsWithSameXCoord;
 
+      private:
+        void fializeDrawPolylineAndPointsSameCoord( painter &Painter, pointsWithSameXCoord *PointsWithSameXCoord, std::vector<wpoint> *Polyline ) const;
+        static sequence::data::iterator fillDataPointsVector( std::vector<data::point_t> *DPointsVector, sequence::data::iterator Iterator, sequence::data::iterator End );
+        void processDataPointsVector( painter &Painter, const pairScales &Scales, const std::vector<data::point_t> &DPointsVector, pointsWithSameXCoord *PointsWithSameXCoord, 
+          std::vector<wpoint> *Polyline, size_t MaxPolylineSize ) const;
+        static size_t maxPolylineSize( const painter &Painter, sequence::data::iterator Begin, sequence::data::iterator End );
+
       protected:
         virtual void drawLineBetweenPoints( painter &Painter, std::vector<wpoint> *Points ) const = 0;
-        void drawUnorderedByX( painter &Painter, const pairScales& Scales, sequence::data::iterator Begin, sequence::data::iterator End ) const;
+        void drawUnorderedByX( painter &Painter, const pairScales &Scales, sequence::data::iterator Begin, sequence::data::iterator End ) const;
         
       public:
         explicit graphViewGeneralLine( const style &Style );
@@ -132,6 +139,7 @@ namespace scigraphics
     {
       protected:
         void drawLineBetweenPoints( painter &Painter, std::vector<wpoint> *Points ) const;
+
       public:
         explicit graphViewLine( const style &Style );
     };

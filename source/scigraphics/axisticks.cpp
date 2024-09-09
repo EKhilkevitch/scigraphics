@@ -79,11 +79,11 @@ scigraphics::axisTicksX::axisTicksX( fcoord Y ) :
 
 void scigraphics::axisTicksX::drawOneTick( painter &Painter, const scale &Scale, number Value ) const
 {
-  double FLength = std::fabs( Painter.wcoord2fcoordY( getTickLength() ) - Painter.wcoord2fcoordY( 0 ) );
+  const fcoord FLength = std::fabs( Painter.wcoord2fcoordY( getTickLength() ) - Painter.wcoord2fcoordY( 0 ) );
 
-  fcoord X  = Scale.numberToFraction( Value );
-  fcoord Y0 = BaseY;
-  fcoord Y1 = Y0 + ( BaseY < 0.5 ? +1 : -1 ) * FLength;
+  const fcoord X  = Scale.numberToFraction( Value );
+  const fcoord Y0 = BaseY;
+  const fcoord Y1 = Y0 + ( BaseY < static_cast<fcoord>(0.5) ? +1 : -1 ) * FLength;
 
   Painter.drawLineF( fpoint(X,Y0), fpoint(X,Y1), getTickStyle() );
 }
@@ -99,11 +99,11 @@ scigraphics::axisTicksY::axisTicksY( fcoord X ) :
 
 void scigraphics::axisTicksY::drawOneTick( painter &Painter, const scale &Scale, number Value ) const
 {
-  double FLength = std::fabs( Painter.wcoord2fcoordX( getTickLength() ) - Painter.wcoord2fcoordX( 0 ) );
+  const fcoord FLength = std::fabs( Painter.wcoord2fcoordX( getTickLength() ) - Painter.wcoord2fcoordX( 0 ) );
 
-  fcoord Y  = Scale.numberToFraction( Value );
-  fcoord X0 = BaseX;
-  fcoord X1 = X0 + ( BaseX < 0.5 ? +1 : -1 ) * FLength;
+  const fcoord Y  = Scale.numberToFraction( Value );
+  const fcoord X0 = BaseX;
+  const fcoord X1 = X0 + ( BaseX < static_cast<fcoord>(0.5) ? +1 : -1 ) * FLength;
 
   Painter.drawLineF( fpoint(X0,Y), fpoint(X1,Y), getTickStyle() );
 }

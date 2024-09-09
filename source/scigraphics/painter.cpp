@@ -183,8 +183,8 @@ bool scigraphics::painter::canSeparatePointsF( fpoint Pt1, fpoint Pt2 ) const
 
 bool scigraphics::painter::canSepareteXcoordsF( fcoord X1, fcoord X2 ) const
 {
-  const double ApproxStepX = 1.0 / static_cast<double>( PlotRectangle.width() );
-  if ( std::fabs(X1-X2) < ApproxStepX/3.0 )
+  const fcoord ApproxStepX = 1 / static_cast<fcoord>( PlotRectangle.width() );
+  if ( std::fabs(X1-X2) < ApproxStepX/3 )
     return true;
   return canSeparatePointsF( fpoint(X1,0), fpoint(X2,0) );
 }

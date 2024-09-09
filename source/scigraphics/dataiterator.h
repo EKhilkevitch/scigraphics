@@ -67,9 +67,6 @@ namespace scigraphics
       data_iterator& operator-=( difference_type N );
       data_iterator operator+( difference_type N ) const;
       data_iterator operator-( difference_type N ) const;
-      bool operator==( const data_iterator& I ) const           { return I.Index == Index; }
-      bool operator!=( const data_iterator& I ) const           { return !(*this==I); }
-      bool operator<(  const data_iterator& I ) const           { return Index < I.Index; }
 
       value_type operator *() const;
       pointer operator->() const;
@@ -77,6 +74,11 @@ namespace scigraphics
       data_iterator& fill( size_t Size, std::vector<point_t> *Vector );
       int_t index() const;
   };
+      
+  template <class DT> inline bool operator==( const data_iterator<DT>& A, const data_iterator<DT>& B );
+  template <class DT> inline bool operator!=( const data_iterator<DT>& A, const data_iterator<DT>& B );
+  template <class DT> inline bool operator<(  const data_iterator<DT>& A, const data_iterator<DT>& B );
+  template <class DT> inline bool operator<=( const data_iterator<DT>& A, const data_iterator<DT>& B );
 
   // ============================================================
   
@@ -221,6 +223,13 @@ namespace scigraphics
     return Index;
   }
 
+  // ============================================================
+  
+  template <class DT> bool operator==( const data_iterator<DT>& A, const data_iterator<DT>& B ) { return A.index() == B.index(); }
+  template <class DT> bool operator!=( const data_iterator<DT>& A, const data_iterator<DT>& B ) { return ! ( A == B ); }
+  template <class DT> bool operator<(  const data_iterator<DT>& A, const data_iterator<DT>& B ) { return A.index() < B.index(); }
+  template <class DT> bool operator<=( const data_iterator<DT>& A, const data_iterator<DT>& B ) { return A.index() <= B.index(); }
+  
   // ============================================================
 
 }

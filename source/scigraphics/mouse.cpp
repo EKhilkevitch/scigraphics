@@ -554,8 +554,8 @@ void scigraphics::mouse::zoomWheel::wheel( wpoint Point, wheeldelta Delta )
   
   const double Zoom = - Delta * deltaDumpFactor();
   
-  addShiftX( - FPoint.x() * Zoom );
-  addShiftY( - FPoint.y() * Zoom );
+  addShiftX( - static_cast<double>(FPoint.x()) * Zoom );
+  addShiftY( - static_cast<double>(FPoint.y()) * Zoom );
   
   mulZoomX( 1 + Zoom );
   mulZoomY( 1 + Zoom );

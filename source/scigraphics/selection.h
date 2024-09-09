@@ -108,8 +108,8 @@ namespace scigraphics
       void setIntervalPoints( const npoint &PointA, const npoint &PointB );
       void shift( number , number DeltaY ) { shiftInterval( DeltaY ); }
       
-      number minF( const pairScales &Scales ) const;
-      number maxF( const pairScales &Scales ) const;
+      fcoord minF( const pairScales &Scales ) const;
+      fcoord maxF( const pairScales &Scales ) const;
   };
 
   // ============================================================
@@ -117,8 +117,8 @@ namespace scigraphics
   class selectionVertical : public selectionStrip
   {
     protected:
-      fpoint firstCorner() const;
-      fpoint secondCorner() const;
+      npoint firstCorner() const;
+      npoint secondCorner() const;
 
     public:
       explicit selectionVertical( const selectionStyle &SelectionStyle = selectionStyle() );
@@ -126,8 +126,8 @@ namespace scigraphics
       void setIntervalPoints( const npoint &PointA, const npoint &PointB );
       void shift( number DeltaX, number ) { shiftInterval( DeltaX ); }
       
-      number minF( const pairScales &Scales ) const;
-      number maxF( const pairScales &Scales ) const;
+      fcoord minF( const pairScales &Scales ) const;
+      fcoord maxF( const pairScales &Scales ) const;
   };
 
 // ============================================================

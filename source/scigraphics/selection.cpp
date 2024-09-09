@@ -196,14 +196,14 @@ void scigraphics::selectionHorizontal::setIntervalPoints( const npoint &PointA, 
 
 // ------------------------------------------------------------
 
-scigraphics::number scigraphics::selectionHorizontal::minF( const pairScales &Scales ) const 
+scigraphics::fcoord scigraphics::selectionHorizontal::minF( const pairScales &Scales ) const 
 { 
   return Scales.numberToFractionY(min()); 
 }
 
 // ------------------------------------------------------------
 
-scigraphics::number scigraphics::selectionHorizontal::maxF( const pairScales &Scales ) const 
+scigraphics::fcoord scigraphics::selectionHorizontal::maxF( const pairScales &Scales ) const 
 { 
   return Scales.numberToFractionY(max()); 
 }
@@ -217,16 +217,16 @@ scigraphics::selectionVertical::selectionVertical( const selectionStyle &S ) :
 
 // ------------------------------------------------------------
       
-scigraphics::fpoint scigraphics::selectionVertical::firstCorner() const  
+scigraphics::npoint scigraphics::selectionVertical::firstCorner() const  
 { 
-  return fpoint( min(), - std::numeric_limits<number>::max() ); 
+  return npoint( min(), - std::numeric_limits<number>::max() ); 
 }
 
 // ------------------------------------------------------------
 
-scigraphics::fpoint scigraphics::selectionVertical::secondCorner() const 
+scigraphics::npoint scigraphics::selectionVertical::secondCorner() const 
 { 
-  return fpoint( max(), + std::numeric_limits<number>::max() ); 
+  return npoint( max(), + std::numeric_limits<number>::max() ); 
 }
 
 // ------------------------------------------------------------
@@ -238,14 +238,14 @@ void scigraphics::selectionVertical::setIntervalPoints( const npoint &PointA, co
 
 // ------------------------------------------------------------
 
-scigraphics::number scigraphics::selectionVertical::minF( const pairScales &Scales ) const 
+scigraphics::fcoord scigraphics::selectionVertical::minF( const pairScales &Scales ) const 
 { 
   return Scales.numberToFractionX(min()); 
 }
 
 // ------------------------------------------------------------
 
-scigraphics::number scigraphics::selectionVertical::maxF( const pairScales &Scales ) const 
+scigraphics::fcoord scigraphics::selectionVertical::maxF( const pairScales &Scales ) const 
 { 
   return Scales.numberToFractionX(max()); 
 }

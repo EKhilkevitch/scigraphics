@@ -150,18 +150,23 @@ scigraphics::fcoord scigraphics::scale::numberToFraction( number Number ) const
   if ( Number < - std::numeric_limits<number>::max()/4 )
     return -1000;
   
-  double Coordinate = numberToPartOfDistance(Number);
+  number Coordinate = numberToPartOfDistance(Number);
   Coordinate -= Shift;
   Coordinate *= Zoom; 
-  return Coordinate;
+  return static_cast<fcoord>( Coordinate );
 }
 
 // ------------------------------------------------------------
 
 scigraphics::number scigraphics::scale::fractionToNumber( fcoord Coordinate ) const 
 {
-  double Number = Coordinate;
-  Number = ( Zoom == 0 ) ? 0 : Number/Zoom;
+  double Number = static_cast<double>(Coordinate);
+  
+  if ( Zoom == 0 )
+    Number = 0;
+  else
+    Number /= Zoom;
+
   Number += Shift;
   Number = partOfDistanceToNumber(Number);
   return Number;

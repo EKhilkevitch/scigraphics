@@ -163,7 +163,7 @@ namespace scigraphics
 
   wcoord painter::fcoord2wcoordY( fcoord Y ) const
   {
-    return static_cast<wcoord>( ( static_cast<scigraphics::number>(1) - Y ) * PlotRectangle.height() ) + Indents.up();
+    return static_cast<wcoord>( ( static_cast<scigraphics::fcoord>(1) - Y ) * PlotRectangle.height() ) + Indents.up();
   }
   
   // ============================================================

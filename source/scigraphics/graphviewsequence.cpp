@@ -1,4 +1,6 @@
 
+#undef NDEBUG
+
 /*
  * Copyright 2011,2012 Evgeniy Khilkevitch 
  * 
@@ -26,6 +28,7 @@
 #include "scigraphics/scale.h"
 
 #include <iostream>
+#include <limits>
 #include <algorithm>
 #include <cassert>
 
@@ -242,81 +245,128 @@ scigraphics::sequence::graphViewGeneralLine::graphViewGeneralLine( const style &
 
 // ------------------------------------------------------------
 
-void scigraphics::sequence::graphViewGeneralLine::drawUnorderedByX( painter &Painter, const pairScales& Scales, sequence::data::iterator Begin, sequence::data::iterator End ) const
+void scigraphics::sequence::graphViewGeneralLine::drawUnorderedByX( painter &Painter, const pairScales &Scales, sequence::data::iterator Begin, sequence::data::iterator End ) const
 {
   if ( getStyle().getStyle() == lineStyle::None )
     return;
 
   if ( Begin == End )
     return;
-
-  const size_t MaxPolylineSize = 2*std::min( static_cast<size_t>( End - Begin ), static_cast<size_t>( std::max( Painter.width(), Painter.height() ) ) ) + 128;
   
-  std::vector< wpoint > Polyline;
-  Polyline.reserve( MaxPolylineSize );
-
-  pointsWithSameXCoord PointsWithSameXCoord;
-
   Painter.setLineStyle( getStyle() );
 
-  const size_t SingleFillSize = 1024;
+  const size_t MaxPolylineSize = maxPolylineSize( Painter, Begin, End );
+  
+  pointsWithSameXCoord PointsWithSameXCoord;
   std::vector<data::point_t> DPointsVector;
+  std::vector< wpoint > Polyline;
+  Polyline.reserve( MaxPolylineSize );
   
   sequence::data::iterator DataIterator = Begin;
 
-  // std::clog << "graphViewGeneralLine::drawUnorderedByX: begin" << std::endl;
-  while ( true )
+  while ( DataIterator < End )
   {
-    // std::clog << "graphViewGeneralLine::drawUnorderedByX: DataIterator.Index = " << DataIterator.index() << ", End.Index = " << End.index() << std::endl;
+    DataIterator = fillDataPointsVector( &DPointsVector, DataIterator, End );
+    processDataPointsVector( Painter, Scales, DPointsVector, &PointsWithSameXCoord, &Polyline, MaxPolylineSize );
+  }
+      
+  fializeDrawPolylineAndPointsSameCoord( Painter, &PointsWithSameXCoord, &Polyline );
+}
 
-    if ( DataIterator == End )
-    {
-      PointsWithSameXCoord.addToPolyline( &Polyline );
-      drawLineBetweenPoints( Painter, &Polyline );
-      break;
-    }
+// ------------------------------------------------------------
+        
+void scigraphics::sequence::graphViewGeneralLine::fializeDrawPolylineAndPointsSameCoord( painter &Painter, pointsWithSameXCoord *PointsWithSameXCoord, std::vector<wpoint> *Polyline ) const
+{
+  assert( PointsWithSameXCoord != nullptr );
+  assert( Polyline != NULL );
 
-    DataIterator.fill( std::min<data::iterator::difference_type>( End - DataIterator, SingleFillSize ), &DPointsVector );
+  PointsWithSameXCoord->addToPolyline( Polyline );
+  PointsWithSameXCoord->clear();
+
+  drawLineBetweenPoints( Painter, Polyline );
+  Polyline->clear();
+}
+
+// ------------------------------------------------------------
+    
+scigraphics::sequence::data::iterator scigraphics::sequence::graphViewGeneralLine::fillDataPointsVector( std::vector<data::point_t> *DPointsVector, 
+  sequence::data::iterator Iterator, sequence::data::iterator End )
+{
+  assert( Iterator <= End );
+
+  const size_t SingleFillSize = 1024;
+  const data::iterator::difference_type CountOfPointsToEnd = End - Iterator;
+
+  const data::iterator Result = Iterator.fill( std::min<data::iterator::difference_type>( CountOfPointsToEnd, SingleFillSize ), DPointsVector );
     //std::clog << "graphViewGeneralLine::drawUnorderedByX: SingleFillSize = " << SingleFillSize << ", PointsVector.size = " << PointsVector.size() << std::endl;
-    assert( ! DPointsVector.empty() );
+  
+  assert( ! DPointsVector->empty() );
+  assert( DPointsVector->size() <= SingleFillSize );
+  assert( Result <= End );
 
-    std::vector<data::point_t>::const_iterator Point = DPointsVector.begin();
-    while ( Point != DPointsVector.end() )
+  return Result;
+}
+
+// ------------------------------------------------------------
+        
+void scigraphics::sequence::graphViewGeneralLine::processDataPointsVector( painter &Painter, const pairScales &Scales, const std::vector<data::point_t> &DPointsVector, 
+  pointsWithSameXCoord *PointsWithSameXCoord, std::vector<wpoint> *Polyline, size_t MaxPolylineSize ) const
+{
+  assert( PointsWithSameXCoord != NULL );
+  assert( Polyline != NULL );
+  assert( MaxPolylineSize > 0 );
+
+  std::vector<data::point_t>::const_iterator Point = DPointsVector.begin();
+
+  while ( Point != DPointsVector.end() )
+  {
+    if ( Point->isValid() )
     {
-      if ( Point->isValid() )
+      const fpoint CurrFPoint = Scales.npoint2fpoint( npoint( Point->x(), Point->y() ) );
+      if ( PointsWithSameXCoord->canSeparate( Painter, CurrFPoint ) )
       {
-        const fpoint CurrFPoint = Scales.npoint2fpoint( npoint( Point->x(), Point->y() ) );
-        if ( PointsWithSameXCoord.canSeparate( Painter, CurrFPoint ) )
+        PointsWithSameXCoord->addToPolyline( Polyline );
+        PointsWithSameXCoord->clear();
+        if ( Polyline->size() >= MaxPolylineSize )
         {
-          PointsWithSameXCoord.addToPolyline( &Polyline );
-          PointsWithSameXCoord.clear();
-          if ( Polyline.size() >= MaxPolylineSize )
-          {
-            const wpoint LastPoint = Polyline.back();
-            drawLineBetweenPoints( Painter, &Polyline );
-            Polyline.clear();
-            Polyline.reserve( MaxPolylineSize );
-            Polyline.push_back( LastPoint );
-          }
+          const wpoint LastPoint = Polyline->back();
+          drawLineBetweenPoints( Painter, Polyline );
+          Polyline->clear();
+          Polyline->reserve( MaxPolylineSize );
+          Polyline->push_back( LastPoint );
         }
-        PointsWithSameXCoord.append( Painter, CurrFPoint );
-        ++Point;
-      } else {
-        assert( ! Point->isValid() );
-        PointsWithSameXCoord.addToPolyline( &Polyline );
-        PointsWithSameXCoord.clear();
-        drawLineBetweenPoints( Painter, &Polyline );
-        Polyline.clear();
-
-        ++Point;
-        while ( Point != DPointsVector.end() && ! Point->isValid() )
-          ++Point;
       }
+      PointsWithSameXCoord->append( Painter, CurrFPoint );
+      ++Point;
+    } else {
+      
+      fializeDrawPolylineAndPointsSameCoord( Painter, PointsWithSameXCoord, Polyline );
 
+      assert( ! Point->isValid() );
+      ++Point;
+      while ( Point != DPointsVector.end() && ! Point->isValid() )
+        ++Point;
     }
-
   }
 
+}
+
+// ------------------------------------------------------------
+        
+size_t scigraphics::sequence::graphViewGeneralLine::maxPolylineSize( const painter &Painter, sequence::data::iterator Begin, sequence::data::iterator End )
+{
+  assert( Begin <= End );
+
+  data::iterator::difference_type CountOfPoints = End - Begin;
+  if ( CountOfPoints >= static_cast<data::iterator::difference_type>(std::numeric_limits<size_t>::max()/4) )
+    CountOfPoints = std::numeric_limits<size_t>::max()/4;
+  
+  const wcoord PainterMaxDimension = std::max( Painter.width(), Painter.height() );
+
+  const size_t MaxPolylineSize = 1024 +
+    4*std::min( static_cast<size_t>( PainterMaxDimension ), static_cast<size_t>(CountOfPoints) );
+
+  return MaxPolylineSize;
 }
 
 // ------------------------------------------------------------

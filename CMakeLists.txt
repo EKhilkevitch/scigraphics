@@ -38,8 +38,8 @@ message( "IMAGEMAGICK_ENABLED = ${IMAGEMAGICK_ENABLED}" )
 #set( CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -pg -g")
 
 if ( UNIX )
-  set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra") 
-  set( CMAKE_C_FLAGS   "${CMAKE_C_FLAGS}   -Wall -Wextra") 
+  set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wfloat-conversion -Wdouble-promotion") 
+  set( CMAKE_C_FLAGS   "${CMAKE_C_FLAGS}   -Wall -Wextra -Wfloat-conversion -Wdouble-promotion") 
 endif()
 
 add_subdirectory( ./source/scigraphics/ )
