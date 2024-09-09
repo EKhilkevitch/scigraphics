@@ -332,6 +332,30 @@ std::vector<scigraphics::sequence::data::point_t>::const_iterator scigraphics::s
   pointsWithSameXCoord *PointsWithSameXCoord, std::vector<wpoint> *Polyline, size_t MaxPolylineSize, 
   std::vector<data::point_t>::const_iterator Iterator, std::vector<data::point_t>::const_iterator End ) const
 {
+  std::vector< fcoord > FCoords( 2 * ( End - Iterator ) + 2 );
+  assert( sizeof(fpoint) == 2*sizeof(fcoord) );
+  const fpoint *FPoints = reinterpret_cast<const fpoint*>( &FCoords[0] );
+
+  const std::vector<data::point_t>::const_iterator Begin = Iterator;
+  while ( Iterator != End && Iterator->isValid() )
+    ++Iterator;
+
+  for ( std::vector<data::point_t>::const_iterator it = Begin; it != Iterator; ++it )
+  {
+    const size_t BaseIndex = static_cast<size_t>( it - Begin ) * 2;
+    FCoords[ BaseIndex ] = Scales.numberToFractionX( it->x() );
+  }
+
+  for ( std::vector<data::point_t>::const_iterator it = Begin; it != Iterator; ++it )
+  {
+    const size_t BaseIndex = static_cast<size_t>( it - Begin ) * 2;
+    FCoords[ BaseIndex+1 ] = Scales.numberToFractionY( it->y() );
+    processValidFPoint( Painter, PointsWithSameXCoord, Polyline, MaxPolylineSize, FPoints[ it - Begin ] );
+  }
+
+  return Iterator;
+
+#if 0
   while ( Iterator != End && Iterator->isValid() )
   {
     const fpoint FPoint = Scales.npoint2fpoint( npoint( Iterator->x(), Iterator->y() ) );
@@ -340,6 +364,7 @@ std::vector<scigraphics::sequence::data::point_t>::const_iterator scigraphics::s
   }
 
   return Iterator;
+#endif
 }
 
 // ------------------------------------------------------------
