@@ -1,6 +1,4 @@
 
-#undef NDEBUG
-
 /*
  * Copyright 2011,2012 Evgeniy Khilkevitch 
  * 
@@ -318,30 +316,13 @@ void scigraphics::sequence::graphViewGeneralLine::processDataPointsVector( paint
 
   std::vector<data::point_t>::const_iterator Point = DPointsVector.begin();
 
-  while ( Point != DPointsVector.end() )
+  while ( true )
   {
-    if ( Point->isValid() )
-    {
-      const fpoint CurrFPoint = Scales.npoint2fpoint( npoint( Point->x(), Point->y() ) );
-      if ( PointsWithSameXCoord->canSeparate( Painter, CurrFPoint ) )
-      {
-        PointsWithSameXCoord->addToPolyline( Polyline );
-        PointsWithSameXCoord->clear();
-        if ( Polyline->size() >= MaxPolylineSize )
-        {
-          const wpoint LastPoint = Polyline->back();
-          drawLineBetweenPoints( Painter, Polyline );
-          Polyline->clear();
-          Polyline->reserve( MaxPolylineSize );
-          Polyline->push_back( LastPoint );
-        }
-      }
-      PointsWithSameXCoord->append( Painter, CurrFPoint );
-      ++Point;
-    } else {
-      fializeDrawPolylineAndPointsSameCoord( Painter, PointsWithSameXCoord, Polyline );
-      Point = skipInvalidPoints( Point, DPointsVector.end() );
-    }
+    Point = processValidPoints( Painter, Scales, PointsWithSameXCoord, Polyline, MaxPolylineSize, Point, DPointsVector.end() );
+    if ( Point == DPointsVector.end() )
+      break;
+    fializeDrawPolylineAndPointsSameCoord( Painter, PointsWithSameXCoord, Polyline );
+    Point = skipInvalidPoints( Point, DPointsVector.end() );
   }
 }
 
