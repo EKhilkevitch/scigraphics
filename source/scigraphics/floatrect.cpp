@@ -108,7 +108,7 @@ void scigraphics::floatRectangle::moveY( const wcoord DY )
 
 bool scigraphics::floatRectangle::containPoint( wpoint Point ) const 
 { 
-  return Rectangle.contain(Point); 
+  return Rectangle.contains(Point); 
 }
       
 // ------------------------------------------------------------

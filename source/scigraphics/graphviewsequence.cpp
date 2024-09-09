@@ -293,7 +293,7 @@ void scigraphics::sequence::graphViewGeneralLine::drawUnorderedByX( painter &Pai
     {
       if ( Point->isValid() )
       {
-        const fpoint CurrFPoint = Scales.npoint2fpoint(*Point);
+        const fpoint CurrFPoint = Scales.npoint2fpoint( npoint( Point->x(), Point->y() ) );
         if ( PointsWithSameXCoord.canSeparate( Painter, CurrFPoint ) )
         {
           PointsWithSameXCoord.addToPolyline( &Polyline );
@@ -392,7 +392,7 @@ void scigraphics::sequence::graphViewPoints::drawUnorderedByX( painter &Painter,
   {
     if ( ! Point->isValid() )
       continue;
-    const fpoint FPoint = Scales.npoint2fpoint( npoint(*Point) );
+    const fpoint FPoint = Scales.npoint2fpoint( npoint( Point->x(), Point->y() ) );
     Painter.drawPointF( FPoint, getStyle() );
   }
 }
@@ -442,9 +442,10 @@ void scigraphics::sequence::graphViewErrorBars::drawUnorderedByX( painter &Paint
 
     if ( ! (*Point).isValidError() )
       continue;
- 
-    drawHorizontalErrorBar( Painter, Scales, *Point, Point->errX() );
-    drawVerticalErrorBar( Painter, Scales, *Point, Point->errY() );
+
+    const npoint NPoint( Point->x(), Point->y() );
+    drawHorizontalErrorBar( Painter, Scales, NPoint, Point->errX() );
+    drawVerticalErrorBar( Painter, Scales, NPoint, Point->errY() );
   }
 }
 
@@ -550,7 +551,7 @@ scigraphics::sequence::data::iterator scigraphics::sequence::graphViewCoveredAre
   sequence::data::iterator Point = Begin;
   while ( Point != End && Point->isValid() )
   {
-    const fpoint FPoint = Scales.npoint2fpoint( npoint(*Point) );
+    const fpoint FPoint = Scales.npoint2fpoint( npoint(Point->x(),Point->y()) );
     Polygon->push_back( FPoint );
     ++Point;
   }

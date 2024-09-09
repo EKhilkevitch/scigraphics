@@ -100,7 +100,7 @@ void scigraphics::selection::draw( painter &Painter, const pairScales& Scales ) 
 
 bool scigraphics::selection::pointInSelection( const fpoint &Point, const pairScales& Scales ) const
 { 
-  return getRectangleF(Scales).contain( Point );
+  return getRectangleF(Scales).contains( Point );
 }
 
 // ============================================================

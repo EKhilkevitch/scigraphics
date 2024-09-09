@@ -683,7 +683,7 @@ scigraphics::mouse::movePointGraphAction::movePointGraphAction( plot &P, wpoint 
     return;
 
   const sequence::data::point_t DPoint = (*Graph)[IndexOfPoint];
-  const wpoint GraphWPoint = npoint2wpoint( DPoint ); 
+  const wpoint GraphWPoint = npoint2wpoint( npoint( DPoint.x(), DPoint.y() ) ); 
   if ( distance( GraphWPoint, WPoint ) > pointRadius() )
     return;
 
@@ -729,7 +729,7 @@ void scigraphics::mouse::delPointGraphAction::released( wpoint WPoint )
     return;
 
   const sequence::data::point_t DPoint = (*Graph)[IndexOfPoint];
-  const wpoint GraphWPoint = npoint2wpoint( DPoint ); 
+  const wpoint GraphWPoint = npoint2wpoint( npoint( DPoint.x(), DPoint.y() ) ); 
   if ( distance( GraphWPoint, WPoint ) > pointRadius() )
     return;
 

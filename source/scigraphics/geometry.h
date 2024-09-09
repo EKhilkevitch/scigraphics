@@ -42,8 +42,7 @@ namespace scigraphics
       T X, Y;
 
     public:
-      point( T x, T y );
-      template <class pnt> point( const pnt &Point );
+      inline point( T x, T y );
 
       T x() const { return X; }
       T y() const { return Y; }
@@ -88,7 +87,7 @@ namespace scigraphics
       T width() const;
       T height() const;
       
-      template <class pnt> bool contain( const point<pnt> &Point ) const;
+      template <class pnt> bool contains( const point<pnt> &Point ) const;
       
       void moveX( T Delta );
       void moveY( T Delta );
@@ -145,15 +144,7 @@ namespace scigraphics
   }
   
   // ------------------------------------------------------------
-      
-  template <class T> template <class pnt> point<T>::point( const pnt &Pnt ) : 
-        X( Pnt.x() ), 
-        Y( Pnt.y() ) 
-  {
-  }
-  
-  // ------------------------------------------------------------
-      
+     
   template <class T> point<T>& point<T>::moveX( T Delta ) 
   { 
     X += Delta; 
@@ -318,7 +309,7 @@ namespace scigraphics
 
   // ------------------------------------------------------------
       
-  template <class T> template <class pnt> bool rectangle<T>::contain( const point<pnt> &Point ) const 
+  template <class T> template <class pnt> bool rectangle<T>::contains( const point<pnt> &Point ) const 
   { 
     return left() <= Point.x()  && 
            Point.x() <= right() && 
