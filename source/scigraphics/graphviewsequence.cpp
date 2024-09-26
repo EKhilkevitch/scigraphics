@@ -110,7 +110,7 @@ bool scigraphics::sequence::graphViewOrdered::checkIsLessThan::operator()( const
 
 void scigraphics::sequence::graphViewOrdered::draw( painter &Painter, const pairScales& Scales, const sequence::data &Data ) const 
 {
-  bool Ok = applyStyle( Painter );
+  const bool Ok = applyStyle( Painter );
   if ( ! Ok )
     return;
 
@@ -458,7 +458,7 @@ scigraphics::sequence::graphViewPoints::graphViewPoints( const style &Style ) :
 
 // ------------------------------------------------------------
 
-bool scigraphics::sequence::graphViewPoints::applyStyle( painter& ) const
+bool scigraphics::sequence::graphViewPoints::applyStyle( painter &Painter ) const
 {
   if ( getStyle().getShape() == pointStyle::None )
     return false;
@@ -515,7 +515,7 @@ scigraphics::sequence::graphViewErrorBars::graphViewErrorBars( const style &Styl
 
 // ------------------------------------------------------------
 
-bool scigraphics::sequence::graphViewErrorBars::applyStyle( painter& ) const
+bool scigraphics::sequence::graphViewErrorBars::applyStyle( painter &Painter ) const
 {
   if ( getStyle().getLineStyle().getStyle() == lineStyle::None )
     return false;

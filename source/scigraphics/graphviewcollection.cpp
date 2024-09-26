@@ -151,16 +151,6 @@ scigraphics::sequence::ordinarGraphViewCollection::ordinarGraphViewCollection()
 
 void scigraphics::sequence::ordinarGraphViewCollection::setLineStyle( lineStyle::style LineStyle )
 {
-#if 0
-  lineStyle Style = getViewStyle<graphViewLine>();
-  Style.setStyle( LineStyle );
-  setViewStyle<graphViewLine>( Style );
-  
-  Style = getViewStyle<graphViewLineHystogram>();
-  Style.setStyle( LineStyle );
-  setViewStyle<graphViewLineHystogram>( Style );
-#endif
-
   graphViewGeneralLine *View = NULL;
 
   View = getView<graphViewLine>();
