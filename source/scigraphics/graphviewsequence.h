@@ -82,6 +82,7 @@ namespace scigraphics
       protected:
         virtual void drawUnorderedByX( painter &Painter, const pairScales& Scales, sequence::data::iterator Begin, sequence::data::iterator End ) const = 0;
         virtual void drawOrderedByX( painter &Painter, const pairScales& Scales, sequence::data::iterator Begin, sequence::data::iterator End ) const;
+        virtual bool applyStyle( painter &Painter ) const = 0;
 
       public:
         void draw( painter &Painter, const pairScales& Scales, const sequence::data &Data ) const;
@@ -129,6 +130,7 @@ namespace scigraphics
       protected:
         virtual void drawLineBetweenPoints( painter &Painter, std::vector<wpoint> *Points ) const = 0;
         void drawUnorderedByX( painter &Painter, const pairScales &Scales, sequence::data::iterator Begin, sequence::data::iterator End ) const;
+        bool applyStyle( painter &Painter ) const;
         
       public:
         explicit graphViewGeneralLine( const style &Style );
@@ -155,6 +157,8 @@ namespace scigraphics
     {
       protected:
         void drawUnorderedByX( painter &Painter, const pairScales& Scales, sequence::data::iterator Begin, sequence::data::iterator End ) const;
+        bool applyStyle( painter &Painter ) const;
+
       public:
         explicit graphViewPoints( const style &Style );
 
@@ -171,6 +175,7 @@ namespace scigraphics
         void drawUnorderedByX( painter &Painter, const pairScales& Scales, sequence::data::iterator Begin, sequence::data::iterator End ) const;
         void drawHorizontalErrorBar( painter &Painter, const pairScales& Scales, const npoint &Point, number ErrX ) const;
         void drawVerticalErrorBar( painter &Painter, const pairScales& Scales, const npoint &Point, number ErrY ) const;
+        bool applyStyle( painter &Painter ) const;
 
       public:
         explicit graphViewErrorBars( const style &Style );

@@ -26,6 +26,7 @@
 #include "scigraphics/graphviewsequence.h"
 
 #include <stdexcept>
+#include <cassert>
 
 namespace scigraphics 
 {

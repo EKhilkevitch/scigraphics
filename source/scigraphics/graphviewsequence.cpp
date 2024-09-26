@@ -110,6 +110,10 @@ bool scigraphics::sequence::graphViewOrdered::checkIsLessThan::operator()( const
 
 void scigraphics::sequence::graphViewOrdered::draw( painter &Painter, const pairScales& Scales, const sequence::data &Data ) const 
 {
+  bool Ok = applyStyle( Painter );
+  if ( ! Ok )
+    return;
+
   if ( Data.isOrderedByX() ) 
   {
     drawOrderedByX( Painter, Scales, Data.begin(), Data.end() );
@@ -243,16 +247,22 @@ scigraphics::sequence::graphViewGeneralLine::graphViewGeneralLine( const style &
 
 // ------------------------------------------------------------
 
-void scigraphics::sequence::graphViewGeneralLine::drawUnorderedByX( painter &Painter, const pairScales &Scales, sequence::data::iterator Begin, sequence::data::iterator End ) const
+bool scigraphics::sequence::graphViewGeneralLine::applyStyle( painter &Painter ) const
 {
   if ( getStyle().getStyle() == lineStyle::None )
-    return;
+    return false;
 
+  Painter.setLineStyle( getStyle() );
+  return true;
+}
+
+// ------------------------------------------------------------
+
+void scigraphics::sequence::graphViewGeneralLine::drawUnorderedByX( painter &Painter, const pairScales &Scales, sequence::data::iterator Begin, sequence::data::iterator End ) const
+{
   if ( Begin == End )
     return;
   
-  Painter.setLineStyle( getStyle() );
-
   const size_t MaxPolylineSize = maxPolylineSize( Painter, Begin, End );
   
   pointsWithSameXCoord PointsWithSameXCoord;
@@ -332,30 +342,6 @@ std::vector<scigraphics::sequence::data::point_t>::const_iterator scigraphics::s
   pointsWithSameXCoord *PointsWithSameXCoord, std::vector<wpoint> *Polyline, size_t MaxPolylineSize, 
   std::vector<data::point_t>::const_iterator Iterator, std::vector<data::point_t>::const_iterator End ) const
 {
-#if 0
-  std::vector< fcoord > FCoords( 2 * ( End - Iterator ) + 2 );
-  assert( sizeof(fpoint) == 2*sizeof(fcoord) );
-  const fpoint *FPoints = reinterpret_cast<const fpoint*>( &FCoords[0] );
-
-  const std::vector<data::point_t>::const_iterator Begin = Iterator;
-  while ( Iterator != End && Iterator->isValid() )
-  {
-    const size_t BaseIndex = static_cast<size_t>( Iterator - Begin ) * 2;
-    FCoords[ BaseIndex ] = Scales.numberToFractionX( Iterator->x() );
-    ++Iterator;
-  }
-
-  for ( std::vector<data::point_t>::const_iterator it = Begin; it != Iterator; ++it )
-  {
-    const size_t BaseIndex = static_cast<size_t>( it - Begin ) * 2;
-    FCoords[ BaseIndex+1 ] = Scales.numberToFractionY( it->y() );
-    processValidFPoint( Painter, PointsWithSameXCoord, Polyline, MaxPolylineSize, FPoints[ it - Begin ] );
-  }
-
-  return Iterator;
-#endif
-
-#if 1
   while ( Iterator != End && Iterator->isValid() )
   {
     const fpoint FPoint = Scales.npoint2fpoint( npoint( Iterator->x(), Iterator->y() ) );
@@ -364,7 +350,6 @@ std::vector<scigraphics::sequence::data::point_t>::const_iterator scigraphics::s
   }
 
   return Iterator;
-#endif
 }
 
 // ------------------------------------------------------------
@@ -473,11 +458,18 @@ scigraphics::sequence::graphViewPoints::graphViewPoints( const style &Style ) :
 
 // ------------------------------------------------------------
 
-void scigraphics::sequence::graphViewPoints::drawUnorderedByX( painter &Painter, const pairScales& Scales, sequence::data::iterator Begin, sequence::data::iterator End ) const
+bool scigraphics::sequence::graphViewPoints::applyStyle( painter& ) const
 {
   if ( getStyle().getShape() == pointStyle::None )
-    return;
+    return false;
 
+  return true;
+}
+
+// ------------------------------------------------------------
+
+void scigraphics::sequence::graphViewPoints::drawUnorderedByX( painter &Painter, const pairScales& Scales, sequence::data::iterator Begin, sequence::data::iterator End ) const
+{
   for ( sequence::data::iterator Point = Begin; Point != End; ++Point )
   {
     if ( ! Point->isValid() )
@@ -519,6 +511,16 @@ void scigraphics::sequence::graphViewPoints::setPointShape( pointStyle::shape Sh
 scigraphics::sequence::graphViewErrorBars::graphViewErrorBars( const style &Style ) : 
   graphViewStyle<errorBarStyle,graphViewOrdered>(Style) 
 {
+}
+
+// ------------------------------------------------------------
+
+bool scigraphics::sequence::graphViewErrorBars::applyStyle( painter& ) const
+{
+  if ( getStyle().getLineStyle().getStyle() == lineStyle::None )
+    return false;
+
+  return true;
 }
 
 // ------------------------------------------------------------
