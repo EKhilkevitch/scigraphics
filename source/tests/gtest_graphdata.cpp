@@ -337,7 +337,7 @@ TEST( test_dataMap, set )
   map::dataVector Data( 10, interval<number>( 1, 5 ), 5, interval<number>(-10,-4) );
  
   Data.set( 3, 2, 0.5, 0.1 );
-  scigraphics::map::point Point = Data.at( 3, 2 );
+  scigraphics::map::point Point = Data.at( Data.index( 3, 2 ) );
   ASSERT_NEAR( 0.5, Point.z(), 1e-5 );
   ASSERT_NEAR( 0.1, Point.errZ(), 1e-5 );
 }
@@ -357,10 +357,10 @@ TEST( test_dataMap, resize )
   ASSERT_EQ( 200, Data.size() );
   
   Data.set( 14, 8, 0.5, 0.1 );
-  ASSERT_NEAR( 0.5, Data.at(14,8).z(), 1e-5 );
+  ASSERT_NEAR( 0.5, Data.at(Data.index(14,8)).z(), 1e-5 );
 
   Data.resize( 25, 15 );
-  ASSERT_NEAR( 0.5, Data.at(14,8).z(), 1e-5 );
+  ASSERT_NEAR( 0.5, Data.at(Data.index(14,8)).z(), 1e-5 );
   
   Data.resize( 5, 2 );
   ASSERT_EQ( 5, Data.sizeX() );
