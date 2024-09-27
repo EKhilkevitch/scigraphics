@@ -50,7 +50,7 @@ void scigraphics::mockDrawer::drawRectangle( const wrectangle& Rectangle )
 
 // ---------------------------------------------------------
 
-void scigraphics::mockDrawer::drawText( const std::string &Text, const wrectangle& Rectangle, double Angle )
+void scigraphics::mockDrawer::drawText( const std::string &, const wrectangle& , double  )
 {
 }
 

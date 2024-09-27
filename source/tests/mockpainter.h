@@ -65,9 +65,9 @@ namespace scigraphics
       void setWidth( wcoord W )  { Width = W; }
       void setHeight( wcoord H ) { Height = H; }
 
-      void setLineStyle( const scigraphics::lineStyle &Style ) {}
-      void setBrushStyle( const scigraphics::brushStyle &Style ) {}
-      void setTextStyle( const scigraphics::textStyle &Style ) {}
+      void setLineStyle( const scigraphics::lineStyle & ) {}
+      void setBrushStyle( const scigraphics::brushStyle & ) {}
+      void setTextStyle( const scigraphics::textStyle & ) {}
 
       void clearActions() { Actions.clear(); }
       size_t numOfActions() const { return Actions.size(); }
@@ -76,7 +76,7 @@ namespace scigraphics
       void drawLine( const wpoint &A, const wpoint &B );
       void drawRectangle( const wrectangle& Rectangle );
       void drawText( const std::string &Text, const wrectangle& Rectangle, double Angle = 0 );
-      void drawPolygon( const std::vector<wpoint> &Points ) {}
+      void drawPolygon( const std::vector<wpoint> & ) {}
     
       wcoord width() const  { return Width; }
       wcoord height() const { return Height; }
