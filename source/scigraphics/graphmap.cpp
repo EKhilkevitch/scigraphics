@@ -259,6 +259,20 @@ void scigraphics::map::graphVector::setIntervalY( interval<number> Interval )
 }
 
 // ------------------------------------------------------------
+        
+scigraphics::interval<scigraphics::number> scigraphics::map::graphVector::intervalX() const
+{
+  return getCastedData().intervalX();
+}
+
+// ------------------------------------------------------------
+
+scigraphics::interval<scigraphics::number> scigraphics::map::graphVector::intervalY() const
+{
+  return getCastedData().intervalY();
+}
+
+// ------------------------------------------------------------
     
 scigraphics::number scigraphics::map::graphVector::coordinateX( data::int_t IndexX ) const 
 { 

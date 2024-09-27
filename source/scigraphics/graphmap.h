@@ -124,6 +124,8 @@ namespace scigraphics
         void setIntervalY( number Min, number Max );
         void setIntervalX( interval<number> Interval );
         void setIntervalY( interval<number> Interval );
+        interval<number> intervalX() const;
+        interval<number> intervalY() const;
 
         number coordinateX( data::int_t IndexX ) const;
         number coordinateY( data::int_t IndexY ) const;

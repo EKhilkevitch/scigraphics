@@ -116,7 +116,7 @@ void scigraphics::qt4settings::initSettings( const QString &Name, const qt4setti
 {
   NeedToEmitSelectionChangedAfterApplying = false;
 
-  setName(Name);
+  setName( Name );
   setComposer( Composer );
 
   addSettingWidget( new qt4settingsScaleTypeAllAxis(this,Positions) );
