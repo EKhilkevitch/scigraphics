@@ -195,5 +195,131 @@ scigraphics::map::graphVector::graphVector( const std::string &Legend  ) :
 {
 }
 
+// ------------------------------------------------------------
+        
+scigraphics::map::data::int_t scigraphics::map::graphVector::size() const 
+{ 
+  return getData().size(); 
+}
+
+// ------------------------------------------------------------
+
+scigraphics::map::data::int_t scigraphics::map::graphVector::sizeX() const 
+{ 
+  return getCastedData().sizeX(); 
+}
+
+// ------------------------------------------------------------
+
+scigraphics::map::data::int_t scigraphics::map::graphVector::sizeY() const 
+{ 
+  return getCastedData().sizeY(); 
+}
+
+// ------------------------------------------------------------
+
+void scigraphics::map::graphVector::resize( data::int_t SX, data::int_t SY ) 
+{ 
+  return getCastedData().resize(SX,SY); 
+}
+
+// ------------------------------------------------------------
+ 
+bool scigraphics::map::graphVector::empty() const  
+{ 
+  return getData().empty(); 
+}
+
+// ------------------------------------------------------------
+    
+void scigraphics::map::graphVector::setIntervalX( number Min, number Max ) 
+{ 
+  setIntervalX( interval<number>( Min, Max ) ); 
+}
+
+// ------------------------------------------------------------
+
+void scigraphics::map::graphVector::setIntervalY( number Min, number Max ) 
+{ 
+  setIntervalY( interval<number>( Min, Max ) ); 
+}
+
+// ------------------------------------------------------------
+
+void scigraphics::map::graphVector::setIntervalX( interval<number> Interval ) 
+{ 
+  getCastedData().setIntervalX( Interval ); 
+}
+
+// ------------------------------------------------------------
+
+void scigraphics::map::graphVector::setIntervalY( interval<number> Interval ) 
+{ 
+  getCastedData().setIntervalY( Interval ); 
+}
+
+// ------------------------------------------------------------
+    
+scigraphics::number scigraphics::map::graphVector::coordinateX( data::int_t IndexX ) const 
+{ 
+  return getCastedData().coordinateX(IndexX); 
+}
+
+// ------------------------------------------------------------
+
+scigraphics::number scigraphics::map::graphVector::coordinateY( data::int_t IndexY ) const 
+{ 
+  return getCastedData().coordinateY(IndexY); 
+}
+
+// ------------------------------------------------------------
+
+scigraphics::map::data::int_t scigraphics::map::graphVector::nearestIndexX( number X ) const 
+{ 
+  return getCastedData().nearestIndexX(X); 
+}
+
+// ------------------------------------------------------------
+
+scigraphics::map::data::int_t scigraphics::map::graphVector::nearestIndexY( number Y ) const 
+{ 
+  return getCastedData().nearestIndexY(Y); 
+}
+
+// ------------------------------------------------------------
+
+scigraphics::map::data::point_t scigraphics::map::graphVector::at( data::int_t Index ) const 
+{ 
+  return getData().at(Index); 
+}
+
+// ------------------------------------------------------------
+
+scigraphics::map::data::point_t scigraphics::map::graphVector::operator[]( data::int_t Index ) const 
+{ 
+  return at(Index); 
+}
+
+// ------------------------------------------------------------
+
+scigraphics::map::data::int_t scigraphics::map::graphVector::index( data::int_t IndexX, data::int_t IndexY ) const 
+{ 
+  return getCastedData().index(IndexX,IndexY);
+}
+
+// ------------------------------------------------------------
+
+void scigraphics::map::graphVector::set( data::int_t ix, data::int_t iy, number Val ) 
+{ 
+  getCastedData().set( ix, iy, Val ); 
+}
+
+// ------------------------------------------------------------
+        
+void scigraphics::map::graphVector::setColorStrategy( graphViewRectangle::pointColorStrategy *Strategy )
+{
+  getCastedView().setColorStrategy( Strategy );
+}
+
 // ============================================================
 

@@ -95,7 +95,8 @@ namespace scigraphics
       protected:
         data* createData();
         graphView* createView();
-        
+       
+      protected:
         D& getCastedData();
         const D& getCastedData() const;
         
@@ -104,12 +105,20 @@ namespace scigraphics
 
       public:
         explicit graphSpecified( const std::string &Legend = std::string() );
+    };
+    
+    // ------------------------------------------------------------
 
+    class graphVector : public graphSpecified< dataVector, graphViewRectangle >
+    {
+      public:
+        explicit graphVector( const std::string &Legend = std::string() );
+
+        bool empty() const;
         data::int_t size() const;
         data::int_t sizeX() const;
         data::int_t sizeY() const;
         void resize( data::int_t SX, data::int_t SY );
-        bool empty() const;
 
         void setIntervalX( number Min, number Max );
         void setIntervalY( number Min, number Max );
@@ -124,16 +133,10 @@ namespace scigraphics
         data::point_t operator[]( data::int_t Index ) const;
         data::point_t at( data::int_t Index ) const;
         data::int_t index( data::int_t IndexX, data::int_t IndexY ) const;
-        void set( data::int_t ix, data::int_t iy, number Val );
-    };
-    
-    // ------------------------------------------------------------
 
-    class graphVector : public graphSpecified< dataVector, graphViewRectangle >
-    {
-      public:
-        explicit graphVector( const std::string &Legend = std::string() );
-        graphViewRectangle& getView() { return getCastedView(); }
+        void set( data::int_t ix, data::int_t iy, number Val );
+
+        void setColorStrategy( graphViewRectangle::pointColorStrategy *Strategy );
     };
 
     // ============================================================
@@ -184,125 +187,6 @@ namespace scigraphics
     template < class D, class V > const V& graphSpecified<D,V>::getCastedView() const 
     { 
       return dynamic_cast<const V&>( getView() ); 
-    }
-    
-    // ------------------------------------------------------------
-        
-    template < class D, class V > data::int_t graphSpecified<D,V>::size() const 
-    { 
-      return getData().size(); 
-    }
-    
-    // ------------------------------------------------------------
-    
-    template < class D, class V > data::int_t graphSpecified<D,V>::sizeX() const 
-    { 
-      return getCastedData().sizeX(); 
-    }
-    
-    // ------------------------------------------------------------
-    
-    template < class D, class V > data::int_t graphSpecified<D,V>::sizeY() const 
-    { 
-      return getCastedData().sizeY(); 
-    }
-    
-    // ------------------------------------------------------------
-    
-    template < class D, class V > void graphSpecified<D,V>::resize( data::int_t SX, data::int_t SY ) 
-    { 
-      return getCastedData().resize(SX,SY); 
-    }
-    
-    // ------------------------------------------------------------
-     
-    template < class D, class V > bool graphSpecified<D,V>::empty() const  
-    { 
-      return getData().empty(); 
-    }
-    
-    // ------------------------------------------------------------
-        
-    template < class D, class V > void graphSpecified<D,V>::setIntervalX( number Min, number Max ) 
-    { 
-      setIntervalX( interval<number>( Min, Max ) ); 
-    }
-    
-    // ------------------------------------------------------------
-    
-    template < class D, class V > void graphSpecified<D,V>::setIntervalY( number Min, number Max ) 
-    { 
-      setIntervalY( interval<number>( Min, Max ) ); 
-    }
-    
-    // ------------------------------------------------------------
-    
-    template < class D, class V > void graphSpecified<D,V>::setIntervalX( interval<number> Interval ) 
-    { 
-      getCastedData().setIntervalX( Interval ); 
-    }
-    
-    // ------------------------------------------------------------
-    
-    template < class D, class V > void graphSpecified<D,V>::setIntervalY( interval<number> Interval ) 
-    { 
-      getCastedData().setIntervalY( Interval ); 
-    }
-    
-    // ------------------------------------------------------------
-        
-    template < class D, class V > number graphSpecified<D,V>::coordinateX( data::int_t IndexX ) const 
-    { 
-      return getCastedData().coordinateX(IndexX); 
-    }
-    
-    // ------------------------------------------------------------
-    
-    template < class D, class V > number graphSpecified<D,V>::coordinateY( data::int_t IndexY ) const 
-    { 
-      return getCastedData().coordinateY(IndexY); 
-    }
-    
-    // ------------------------------------------------------------
-    
-    template < class D, class V > data::int_t graphSpecified<D,V>::nearestIndexX( number X ) const 
-    { 
-      return getCastedData().nearestIndexX(X); 
-    }
-    
-    // ------------------------------------------------------------
-    
-    template < class D, class V > data::int_t graphSpecified<D,V>::nearestIndexY( number Y ) const 
-    { 
-      return getCastedData().nearestIndexY(Y); 
-    }
-    
-    // ------------------------------------------------------------
-
-    template < class D, class V > data::point_t graphSpecified<D,V>::at( data::int_t Index ) const 
-    { 
-      return getData().at(Index); 
-    }
-    
-    // ------------------------------------------------------------
-
-    template < class D, class V > data::point_t graphSpecified<D,V>::operator[]( data::int_t Index ) const 
-    { 
-      return at(Index); 
-    }
-    
-    // ------------------------------------------------------------
-
-    template < class D, class V > data::int_t graphSpecified<D,V>::index( data::int_t IndexX, data::int_t IndexY ) const 
-    { 
-      return getCastedData().at(IndexX,IndexY); 
-    }
-
-    // ------------------------------------------------------------
-
-    template < class D, class V > void graphSpecified<D,V>::set( data::int_t ix, data::int_t iy, number Val ) 
-    { 
-      getCastedData().set( ix, iy, Val ); 
     }
     
     // ============================================================
