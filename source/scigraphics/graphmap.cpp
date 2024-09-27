@@ -25,9 +25,9 @@
 #include "scigraphics/scale.h"
 #include "scigraphics/plotlimits.h"
 
-#include <cassert>
 #include <iostream>
 #include <stdexcept>
+#include <cassert>
 
 // ============================================================
 
@@ -66,6 +66,38 @@ void scigraphics::map::graph::init()
   View = createView();
   if ( View == NULL )
     throw std::runtime_error( "createView() must return valid pointer" );
+}
+
+// ------------------------------------------------------------
+        
+scigraphics::map::data& scigraphics::map::graph::getData() 
+{
+  assert( Data != NULL );
+  return *Data; 
+}
+
+// ------------------------------------------------------------
+
+const scigraphics::map::data& scigraphics::map::graph::getData() const 
+{ 
+  assert( Data != NULL );
+  return *Data; 
+}
+
+// ------------------------------------------------------------
+        
+scigraphics::map::graphView& scigraphics::map::graph::getView() 
+{ 
+  assert( View != NULL );
+  return *View; 
+}
+
+// ------------------------------------------------------------
+
+const scigraphics::map::graphView& scigraphics::map::graph::getView() const 
+{ 
+  assert( View != NULL );
+  return *View; 
 }
 
 // ------------------------------------------------------------

@@ -24,10 +24,10 @@
 #include "scigraphics/datamap.h"
 
 #include <limits>
+#include <stdexcept>
 #include <ostream>
 #include <cmath>
 #include <cassert>
-#include <stdexcept>
 
 // ============================================================
 
@@ -41,6 +41,20 @@ scigraphics::map::data::data( interval<number> IX, interval<number> IY ) :
 
 scigraphics::map::data::~data() 
 {
+}
+
+// ------------------------------------------------------------
+        
+scigraphics::interval<scigraphics::number> scigraphics::map::data::intervalX() const 
+{ 
+  return IntervalX; 
+}
+
+// ------------------------------------------------------------
+
+scigraphics::interval<scigraphics::number> scigraphics::map::data::intervalY() const 
+{ 
+  return IntervalY; 
 }
 
 // ------------------------------------------------------------
@@ -69,6 +83,40 @@ void scigraphics::map::data::setIntervalX( interval<number> Interval )
 void scigraphics::map::data::setIntervalY( interval<number> Interval ) 
 { 
   IntervalY = Interval; 
+}
+
+// ------------------------------------------------------------
+        
+const scigraphics::map::data::point_t scigraphics::map::data::at( int_t Index ) const
+{
+  if ( Index < 0 )
+    throw std::out_of_range( "scigraphics::data index is negative" );
+  
+  const int_t Size = size();
+  if ( Index >= Size )
+    throw std::out_of_range( "scigraphics::data index is out of range" );
+
+  return get(Index);
+}
+
+// ------------------------------------------------------------
+        
+const scigraphics::map::data::point_t scigraphics::map::data::first() const 
+{ 
+  const int_t Size = size();
+  if ( Size <= 0 )
+    return point_t();
+  return get(0);
+}
+
+// ------------------------------------------------------------
+
+const scigraphics::map::data::point_t scigraphics::map::data::last() const 
+{ 
+  const int_t Size = size();
+  if ( Size <= 0 )
+    return point_t();
+  return get( Size - 1 );
 }
 
 // ------------------------------------------------------------
@@ -116,7 +164,7 @@ const scigraphics::numberLimits scigraphics::map::data::limitsZ() const
 }
 
 // ============================================================
-           
+  
 scigraphics::map::dataVector::limitsZCache::limitsZCache() :
   IsValid( false )
 {
@@ -171,9 +219,12 @@ scigraphics::map::dataVector::int_t scigraphics::map::dataVector::size() const
 
 // ------------------------------------------------------------
 
-const scigraphics::map::dataVector::point_t scigraphics::map::dataVector::at( int Index ) const
+const scigraphics::map::dataVector::point_t scigraphics::map::dataVector::get( int_t Index ) const
 {
-  value Val = Values.at(Index);
+  assert( Index >= 0 );
+  assert( Index < static_cast<int_t>(Values.size()) );
+
+  const value Val = Values[Index];
   number X = coordinateX(indexX(Index));
   number DX = deltaX();
   number Y = coordinateY(indexY(Index));
@@ -211,10 +262,17 @@ scigraphics::map::dataVector::int_t scigraphics::map::dataVector::nearestIndexY(
 
 // ------------------------------------------------------------
       
-void scigraphics::map::dataVector::set( int IndexX, int IndexY, number Z, number ErrZ )
+void scigraphics::map::dataVector::set( int_t IndexX, int_t IndexY, number Z, number ErrZ )
 {
-  size_t Index = index( IndexX, IndexY );
-  Values.at(Index) = value( Z, ErrZ );
+  const int_t Index = index( IndexX, IndexY );
+
+  if ( Index < 0 )
+    throw std::runtime_error( "Index is negative" );
+
+  if ( Index >= static_cast<int_t>(Values.size()) )
+    throw std::runtime_error( "Index out of range" );
+
+  Values[Index] = value( Z, ErrZ );
   LimitsZCache.IsValid = false;
 }
 

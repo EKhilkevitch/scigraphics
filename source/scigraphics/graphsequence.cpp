@@ -77,14 +77,14 @@ const scigraphics::sequence::data& scigraphics::sequence::graph::getData() const
 
 scigraphics::numberLimits scigraphics::sequence::graph::limitsX() const 
 { 
-  return getData().limitsX(); 
+  return Data->limitsX(); 
 }
 
 // ------------------------------------------------------------
 
 scigraphics::numberLimits scigraphics::sequence::graph::limitsY( const interval<number> &LimitsX ) const 
 { 
-  return getData().limitsY(LimitsX); 
+  return Data->limitsY(LimitsX); 
 }
 
 // ------------------------------------------------------------

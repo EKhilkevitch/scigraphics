@@ -60,6 +60,10 @@ namespace scigraphics
         void init();
         void updateScaleZInterval() const;
 
+      private:
+        graph( const graph& );
+        graph& operator=( const graph& );
+
       public:
         explicit graph( const std::string &Legend );
         ~graph();
@@ -67,11 +71,11 @@ namespace scigraphics
         void draw( painter &Painter, const pairScales& Scales ) const;
         void drawLegendExample( painter &Painter, const wrectangle &Rectangle ) const;
         
-        data& getData() { return *Data; }
-        const data& getData() const { return *Data; }
+        data& getData();
+        const data& getData() const;
 
-        graphView& getView() { return *View; }
-        const graphView& getView() const { return *View; }
+        graphView& getView();
+        const graphView& getView() const;
    
         numberLimits limitsX() const;
         numberLimits limitsY( const interval<number> &LimitsX ) const;
@@ -89,42 +93,38 @@ namespace scigraphics
     template < class D, class V > class graphSpecified : public graph
     {
       protected:
-        data* createData() { return new D(); }
-        graphView* createView() { return new V(); }
+        data* createData();
+        graphView* createView();
         
-      protected:
-        D& getCastedData()  { return dynamic_cast<D&>( getData() ); }
-        const D& getCastedData() const { return dynamic_cast<const D&>( getData() ); }
+        D& getCastedData();
+        const D& getCastedData() const;
         
-        V& getCastedView()  { return dynamic_cast<V&>( getView() ); }
-        const V& getCastedView() const { return dynamic_cast<const V&>( getView() ); }
+        V& getCastedView();
+        const V& getCastedView() const;
 
       public:
         explicit graphSpecified( const std::string &Legend = std::string() );
 
-        size_t size() const { return getData().size(); }
-        size_t sizeX() const { return getCastedData().sizeX(); }
-        size_t sizeY() const { return getCastedData().sizeY(); }
-        void resize( size_t SX, size_t SY ) { return getCastedData().resize(SX,SY); }
-        bool empty() const  { return getData().empty(); }
+        data::int_t size() const;
+        data::int_t sizeX() const;
+        data::int_t sizeY() const;
+        void resize( data::int_t SX, data::int_t SY );
+        bool empty() const;
 
-        void setIntervalX( number Min, number Max ) { setIntervalX( interval<number>( Min, Max ) ); }
-        void setIntervalY( number Min, number Max ) { setIntervalY( interval<number>( Min, Max ) ); }
-        void setIntervalX( interval<number> Interval ) { getCastedData().setIntervalX( Interval ); }
-        void setIntervalY( interval<number> Interval ) { getCastedData().setIntervalY( Interval ); }
+        void setIntervalX( number Min, number Max );
+        void setIntervalY( number Min, number Max );
+        void setIntervalX( interval<number> Interval );
+        void setIntervalY( interval<number> Interval );
 
-        number coordinateX( size_t IndexX ) const { return getCastedData().coordinateX(IndexX); }
-        number coordinateY( size_t IndexY ) const { return getCastedData().coordinateY(IndexY); }
-        int nearestIndexX( number X ) const { return getCastedData().nearestIndexX(X); }
-        int nearestIndexY( number Y ) const { return getCastedData().nearestIndexY(Y); }
+        number coordinateX( data::int_t IndexX ) const;
+        number coordinateY( data::int_t IndexY ) const;
+        data::int_t nearestIndexX( number X ) const;
+        data::int_t nearestIndexY( number Y ) const;
 
-        data::point_t at( data::int_t Index ) const { return getData().at(Index); }
-        data::point_t at( data::int_t IndexX, data::int_t IndexY ) const { return getCastedData().at(IndexX,IndexY); }
-        data::point_t operator[]( data::int_t Index ) const { return at(Index); }
-        data::point_t firstPoint() const { return getData().firstPoint(); }
-        data::point_t lastPoint() const  { return getData().lastPoint();  }
-    
-        void set( data::int_t ix, data::int_t iy, number Val ) { getCastedData().set( ix, iy, Val ); }
+        data::point_t operator[]( data::int_t Index ) const;
+        data::point_t at( data::int_t Index ) const;
+        data::int_t index( data::int_t IndexX, data::int_t IndexY ) const;
+        void set( data::int_t ix, data::int_t iy, number Val );
     };
     
     // ------------------------------------------------------------
@@ -142,6 +142,167 @@ namespace scigraphics
       graph(Legend) 
     {
       init();
+    }
+    
+    // ------------------------------------------------------------
+        
+    template < class D, class V > data* graphSpecified<D,V>::createData() 
+    { 
+      return new D(); 
+    }
+    
+    // ------------------------------------------------------------
+    
+    template < class D, class V > graphView* graphSpecified<D,V>::createView() 
+    { 
+      return new V(); 
+    }
+    
+    // ------------------------------------------------------------
+        
+    template < class D, class V > D& graphSpecified<D,V>::getCastedData()  
+    { 
+      return dynamic_cast<D&>( getData() ); 
+    }
+    
+    // ------------------------------------------------------------
+    
+    template < class D, class V > const D& graphSpecified<D,V>::getCastedData() const 
+    { 
+      return dynamic_cast<const D&>( getData() ); 
+    }
+    
+    // ------------------------------------------------------------
+    
+    template < class D, class V > V& graphSpecified<D,V>::getCastedView()  
+    { 
+      return dynamic_cast<V&>( getView() ); 
+    }
+    
+    // ------------------------------------------------------------
+    
+    template < class D, class V > const V& graphSpecified<D,V>::getCastedView() const 
+    { 
+      return dynamic_cast<const V&>( getView() ); 
+    }
+    
+    // ------------------------------------------------------------
+        
+    template < class D, class V > data::int_t graphSpecified<D,V>::size() const 
+    { 
+      return getData().size(); 
+    }
+    
+    // ------------------------------------------------------------
+    
+    template < class D, class V > data::int_t graphSpecified<D,V>::sizeX() const 
+    { 
+      return getCastedData().sizeX(); 
+    }
+    
+    // ------------------------------------------------------------
+    
+    template < class D, class V > data::int_t graphSpecified<D,V>::sizeY() const 
+    { 
+      return getCastedData().sizeY(); 
+    }
+    
+    // ------------------------------------------------------------
+    
+    template < class D, class V > void graphSpecified<D,V>::resize( data::int_t SX, data::int_t SY ) 
+    { 
+      return getCastedData().resize(SX,SY); 
+    }
+    
+    // ------------------------------------------------------------
+     
+    template < class D, class V > bool graphSpecified<D,V>::empty() const  
+    { 
+      return getData().empty(); 
+    }
+    
+    // ------------------------------------------------------------
+        
+    template < class D, class V > void graphSpecified<D,V>::setIntervalX( number Min, number Max ) 
+    { 
+      setIntervalX( interval<number>( Min, Max ) ); 
+    }
+    
+    // ------------------------------------------------------------
+    
+    template < class D, class V > void graphSpecified<D,V>::setIntervalY( number Min, number Max ) 
+    { 
+      setIntervalY( interval<number>( Min, Max ) ); 
+    }
+    
+    // ------------------------------------------------------------
+    
+    template < class D, class V > void graphSpecified<D,V>::setIntervalX( interval<number> Interval ) 
+    { 
+      getCastedData().setIntervalX( Interval ); 
+    }
+    
+    // ------------------------------------------------------------
+    
+    template < class D, class V > void graphSpecified<D,V>::setIntervalY( interval<number> Interval ) 
+    { 
+      getCastedData().setIntervalY( Interval ); 
+    }
+    
+    // ------------------------------------------------------------
+        
+    template < class D, class V > number graphSpecified<D,V>::coordinateX( data::int_t IndexX ) const 
+    { 
+      return getCastedData().coordinateX(IndexX); 
+    }
+    
+    // ------------------------------------------------------------
+    
+    template < class D, class V > number graphSpecified<D,V>::coordinateY( data::int_t IndexY ) const 
+    { 
+      return getCastedData().coordinateY(IndexY); 
+    }
+    
+    // ------------------------------------------------------------
+    
+    template < class D, class V > data::int_t graphSpecified<D,V>::nearestIndexX( number X ) const 
+    { 
+      return getCastedData().nearestIndexX(X); 
+    }
+    
+    // ------------------------------------------------------------
+    
+    template < class D, class V > data::int_t graphSpecified<D,V>::nearestIndexY( number Y ) const 
+    { 
+      return getCastedData().nearestIndexY(Y); 
+    }
+    
+    // ------------------------------------------------------------
+
+    template < class D, class V > data::point_t graphSpecified<D,V>::at( data::int_t Index ) const 
+    { 
+      return getData().at(Index); 
+    }
+    
+    // ------------------------------------------------------------
+
+    template < class D, class V > data::point_t graphSpecified<D,V>::operator[]( data::int_t Index ) const 
+    { 
+      return at(Index); 
+    }
+    
+    // ------------------------------------------------------------
+
+    template < class D, class V > data::int_t graphSpecified<D,V>::index( data::int_t IndexX, data::int_t IndexY ) const 
+    { 
+      return getCastedData().at(IndexX,IndexY); 
+    }
+
+    // ------------------------------------------------------------
+
+    template < class D, class V > void graphSpecified<D,V>::set( data::int_t ix, data::int_t iy, number Val ) 
+    { 
+      getCastedData().set( ix, iy, Val ); 
     }
     
     // ============================================================

@@ -103,13 +103,13 @@ int main( int argc, char *argv[] )
   Map->setIntervalX( 2, 3 );
   Map->setIntervalY( 2, 3 );
   Map->setForcedIntervalZ( 0.5, 0.9 );
-  for ( size_t ix = 0; ix < Map->sizeX(); ix++ )
+  for ( scigraphics::map::data::int_t ix = 0; ix < Map->sizeX(); ix++ )
   {
-    for ( size_t iy = 0; iy < Map->sizeY(); iy++ ) 
+    for ( scigraphics::map::data::int_t iy = 0; iy < Map->sizeY(); iy++ ) 
     {
-      double x = Map->coordinateX(ix);
-      double y = Map->coordinateY(iy);
-      double Value = sin(0.1*x*x*y);
+      scigraphics::number x = Map->coordinateX(ix);
+      scigraphics::number y = Map->coordinateY(iy);
+      scigraphics::number Value = sin(0.1*x*x*y);
       Map->set( ix, iy, Value );
     }
   }

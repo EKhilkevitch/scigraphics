@@ -69,7 +69,7 @@ namespace scigraphics
         virtual const point_t get( int_t Index ) const = 0;
 
       public:
-        virtual ~data();
+        virtual ~data() = 0;
 
         virtual int_t size() const = 0;
         inline bool empty() const;

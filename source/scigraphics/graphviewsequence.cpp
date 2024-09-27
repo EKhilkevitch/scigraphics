@@ -458,7 +458,7 @@ scigraphics::sequence::graphViewPoints::graphViewPoints( const style &Style ) :
 
 // ------------------------------------------------------------
 
-bool scigraphics::sequence::graphViewPoints::applyStyle( painter &Painter ) const
+bool scigraphics::sequence::graphViewPoints::applyStyle( painter & ) const
 {
   if ( getStyle().getShape() == pointStyle::None )
     return false;
@@ -515,7 +515,7 @@ scigraphics::sequence::graphViewErrorBars::graphViewErrorBars( const style &Styl
 
 // ------------------------------------------------------------
 
-bool scigraphics::sequence::graphViewErrorBars::applyStyle( painter &Painter ) const
+bool scigraphics::sequence::graphViewErrorBars::applyStyle( painter & ) const
 {
   if ( getStyle().getLineStyle().getStyle() == lineStyle::None )
     return false;

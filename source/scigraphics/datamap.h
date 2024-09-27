@@ -54,8 +54,8 @@ namespace scigraphics
         number z()  const { return Z; }
         number errZ() const { return ErrZ; }
 
-        bool isValid() const { return isValidNumber( z() ); }
-        bool isValidError() const { return isValidNumber( errZ() ); }
+        inline bool isValid() const;
+        inline bool isValidError() const;
     };
 
     // ------------------------------------------------------------
@@ -64,7 +64,7 @@ namespace scigraphics
     {
       public:
         typedef point point_t;
-        typedef int int_t;
+        typedef long int int_t;
         typedef data_iterator< data > iterator;
 
       private:
@@ -72,13 +72,16 @@ namespace scigraphics
 
       private:
         static numberLimits limitsForInterval( interval<number> Interval );
+      
+      protected:
+        virtual const point_t get( int_t Index ) const = 0;
 
       public:
         data( interval<number> IntervalX, interval<number> IntervalY );
-        virtual ~data();
+        virtual ~data() = 0;
 
-        interval<number> intervalX() const { return IntervalX; }
-        interval<number> intervalY() const { return IntervalY; }
+        interval<number> intervalX() const;
+        interval<number> intervalY() const;
 
         void setIntervalX( number Min, number Max );
         void setIntervalY( number Min, number Max );
@@ -86,16 +89,16 @@ namespace scigraphics
         void setIntervalY( interval<number> Interval );
 
         virtual int_t size() const = 0;
-        bool empty() const { return size() == 0; }
+        inline bool empty() const;
         
-        virtual const point_t at( int_t Index ) const = 0;
-        const point_t operator[]( int_t Index ) const { return at(Index); }
+        const point_t at( int_t Index ) const;
+        inline const point_t operator[]( int_t Index ) const;
 
-        const point_t firstPoint() const { return at(0); }
-        const point_t lastPoint() const { return at( size()-1 ); }
+        const point_t first() const;
+        const point_t last() const;
         
-        iterator begin() const { return iterator( *this, 0 ); }
-        iterator end() const { return iterator( *this, size() ); }
+        inline iterator begin() const;
+        inline iterator end() const;
 
         virtual const numberLimits limitsX() const;
         virtual const numberLimits limitsY( const interval<number> &LimitsX ) const;
@@ -130,23 +133,26 @@ namespace scigraphics
 
           limitsZCache();
         } LimitsZCache;
+      
+      protected:
+        const point_t get( int_t Index ) const;
 
       public:
         dataVector();
         dataVector( size_t SizeX, interval<number> IntervalX, size_t SizeY, interval<number> IntervalY );
 
-        int_t sizeX() const { return static_cast<int_t>(SizeX); }
-        int_t sizeY() const { return static_cast<int_t>(SizeY); }
+        inline int_t sizeX() const;
+        inline int_t sizeY() const;
         int_t size() const;
 
         void resize( size_t SX, size_t SY );
 
-        int_t indexX( int_t Index ) const { return Index % sizeX(); }
-        int_t indexY( int_t Index ) const { return Index / sizeX(); }
-        int_t index( int_t IndexX, int_t IndexY ) const { return IndexX + IndexY*sizeX(); }
+        inline int_t indexX( int_t Index ) const;
+        inline int_t indexY( int_t Index ) const;
+        inline int_t index( int_t IndexX, int_t IndexY ) const;
 
-        number deltaX() const { return intervalX().distance()/sizeX(); }
-        number deltaY() const { return intervalY().distance()/sizeY(); }
+        inline number deltaX() const;
+        inline number deltaY() const;
 
         number coordinateX( int_t IndexX ) const;
         number coordinateY( int_t IndexY ) const;
@@ -154,8 +160,6 @@ namespace scigraphics
         int_t nearestIndexY( number Y ) const;
 
         void set( int_t IndexX, int_t IndexY, number Z, number ErrZ = 0 );
-        const point_t at( int_t Index ) const;
-        const point_t at( int_t IndexX, int_t IndexY ) const { return at( index(IndexX,IndexY) ); }
         
         const numberLimits limitsZ() const;
     };
@@ -188,8 +192,50 @@ namespace scigraphics
       ErrZ(ez) 
     {
     }
-            
+    
     // ------------------------------------------------------------
+        
+    bool point::isValid() const 
+    { 
+      return isValidNumber( z() ); 
+    }
+    
+    // ------------------------------------------------------------
+
+    bool point::isValidError() const 
+    { 
+      return isValidNumber( errZ() ); 
+    }
+            
+    // ============================================================
+        
+    bool data::empty() const 
+    { 
+      return size() == 0; 
+    }
+    
+    // ------------------------------------------------------------
+        
+    const data::point_t data::operator[]( int_t Index ) const 
+    { 
+      return get(Index); 
+    }
+    
+    // ------------------------------------------------------------
+        
+    data::iterator data::begin() const 
+    { 
+      return iterator( *this, 0 ); 
+    }
+    
+    // ------------------------------------------------------------
+
+    data::iterator data::end() const 
+    { 
+      return iterator( *this, size() ); 
+    }
+    
+    // ============================================================
     
     dataVector::value::value() : 
       Z(invalidNumber()), 
@@ -203,6 +249,55 @@ namespace scigraphics
       Z(z), 
       ErrZ(ez) 
     {
+    }
+    
+    // ------------------------------------------------------------
+        
+    dataVector::int_t dataVector::sizeX() const 
+    { 
+      return static_cast<int_t>(SizeX); 
+    }
+    
+    // ------------------------------------------------------------
+
+    dataVector::int_t dataVector::sizeY() const 
+    { 
+      return static_cast<int_t>(SizeY); 
+    }
+    
+    // ------------------------------------------------------------
+        
+    dataVector::int_t dataVector::indexX( int_t Index ) const 
+    { 
+      return Index % sizeX(); 
+    }
+    
+    // ------------------------------------------------------------
+    
+    dataVector::int_t dataVector::indexY( int_t Index ) const 
+    { 
+      return Index / sizeX(); 
+    }
+    
+    // ------------------------------------------------------------
+    
+    dataVector::int_t dataVector::index( int_t IndexX, int_t IndexY ) const 
+    { 
+      return IndexX + IndexY*sizeX(); 
+    }
+
+    // ------------------------------------------------------------
+        
+    number dataVector::deltaX() const 
+    { 
+      return intervalX().distance()/sizeX(); 
+    }
+    
+    // ------------------------------------------------------------
+
+    number dataVector::deltaY() const 
+    { 
+      return intervalY().distance()/sizeY(); 
     }
 
     // ============================================================
