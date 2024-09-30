@@ -60,13 +60,18 @@ namespace scigraphics
         void init();
         void updateScaleZInterval() const;
 
+        graph( data *Data, graphView *View, const std::string &Legend );
+
       private:
         graph( const graph& );
         graph& operator=( const graph& );
 
+      private:
+        void initInternal( data *Data, graphView *View, const std::string &Legend );
+
       public:
         explicit graph( const std::string &Legend );
-        ~graph();
+        ~graph() = 0;
         
         void draw( painter &Painter, const pairScales& Scales ) const;
         void drawLegendExample( painter &Painter, const wrectangle &Rectangle ) const;

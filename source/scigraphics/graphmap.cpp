@@ -32,16 +32,23 @@
 // ============================================================
 
 scigraphics::map::graph::graph( const std::string &Legend ) : 
-  View(NULL),
-  Data(NULL),
-  ScaleZ(NULL),
+  View( NULL ),
+  Data( NULL ),
+  ScaleZ( NULL ),
   ForcedIntervalZ( plotLimits::autoScaleInterval() )
 {
-  ScaleZ = new scaleLinear();
-  ScaleZ->setNumberOfMarks( 7, 15 );
+  initInternal( NULL, NULL, Legend );
+}
 
-  setGridDrawOrder( plotElement::DrawUnderGrid );
-  setLegend(Legend);
+// ------------------------------------------------------------
+        
+scigraphics::map::graph::graph( data *D, graphView *V, const std::string &Legend ) :
+  View( NULL ),
+  Data( NULL ),
+  ScaleZ( NULL ),
+  ForcedIntervalZ( plotLimits::autoScaleInterval() )
+{
+  initInternal( D, V, Legend );
 }
 
 // ------------------------------------------------------------
@@ -53,17 +60,31 @@ scigraphics::map::graph::~graph()
 }
 
 // ------------------------------------------------------------
+        
+void scigraphics::map::graph::initInternal( data *D, graphView *V, const std::string &Legend )
+{
+  Data = D;
+  View = V;
+  ForcedIntervalZ = plotLimits::autoScaleInterval();
+
+  ScaleZ = new scaleLinear();
+  ScaleZ->setNumberOfMarks( 7, 15 );
+
+  setGridDrawOrder( plotElement::DrawUnderGrid );
+  setLegend( Legend );
+}
+
+// ------------------------------------------------------------
 
 void scigraphics::map::graph::init()
 {
-  assert( Data == NULL );
-  assert( View == NULL );
-
-  Data = createData();
+  if ( Data == NULL )
+    Data = createData();
   if ( Data == NULL )
     throw std::runtime_error( "createData() must return valid pointer" );
 
-  View = createView();
+  if ( View == NULL )
+    View = createView();
   if ( View == NULL )
     throw std::runtime_error( "createView() must return valid pointer" );
 }
