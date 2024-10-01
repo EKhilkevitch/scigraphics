@@ -44,20 +44,6 @@ scigraphics::map::data::~data()
 }
 
 // ------------------------------------------------------------
-        
-scigraphics::interval<scigraphics::number> scigraphics::map::data::intervalX() const 
-{ 
-  return IntervalX; 
-}
-
-// ------------------------------------------------------------
-
-scigraphics::interval<scigraphics::number> scigraphics::map::data::intervalY() const 
-{ 
-  return IntervalY; 
-}
-
-// ------------------------------------------------------------
 
 void scigraphics::map::data::setIntervalX( number Min, number Max )
 { 

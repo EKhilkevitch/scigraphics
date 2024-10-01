@@ -80,8 +80,8 @@ namespace scigraphics
         data( interval<number> IntervalX, interval<number> IntervalY );
         virtual ~data() = 0;
 
-        interval<number> intervalX() const;
-        interval<number> intervalY() const;
+        inline interval<number> intervalX() const;
+        inline interval<number> intervalY() const;
 
         void setIntervalX( number Min, number Max );
         void setIntervalY( number Min, number Max );
@@ -233,6 +233,20 @@ namespace scigraphics
     data::iterator data::end() const 
     { 
       return iterator( *this, size() ); 
+    }
+
+    // ------------------------------------------------------------
+            
+    interval<number> data::intervalX() const 
+    { 
+      return IntervalX; 
+    }
+
+    // ------------------------------------------------------------
+
+    interval<number> data::intervalY() const 
+    { 
+      return IntervalY; 
     }
     
     // ============================================================
