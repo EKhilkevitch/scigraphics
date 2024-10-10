@@ -126,8 +126,6 @@ int main( int argc, char *argv[] )
   AxisPositions << scigraphics::AxisTop;
   AxisPositions << scigraphics::AxisRight;
 
-
-
   scigraphics::qt4settings Settings( NULL, "", AxisPositions, new scigraphics::qt4settingsComposerTabs() );
   Settings.addSettingWidget( new scigraphics::qt4settingsSelections() );
   Settings.addSettingWidget( new scigraphics::qt4settingsDecoration() );

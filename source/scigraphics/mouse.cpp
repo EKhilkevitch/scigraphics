@@ -986,6 +986,8 @@ void scigraphics::mouse::replot()
 
 scigraphics::mouse::mouseActionHandler* scigraphics::mouse::createMouseActionHandler( wpoint Point, unsigned Buttons )
 {
+  //std::cerr << "mouse::createMouseActionHandler: " << Point << " " << std::hex << Buttons << std::endl;
+
   switch ( Buttons )
   {
     case Right:
