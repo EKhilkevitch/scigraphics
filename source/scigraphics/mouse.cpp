@@ -880,9 +880,14 @@ void scigraphics::mouse::mouseReleased( wpoint Point )
 
 void scigraphics::mouse::mouseDoubleClicked( wpoint Point, unsigned Buttons ) 
 { 
-  mousePressed( Point, Middle|Buttons ); 
-  mouseReleased( Point );
-  replot();
+  if ( Buttons & Left )
+  {
+    Buttons = Buttons & (~Left);
+    Buttons = Buttons | Middle;
+    mousePressed( Point, Buttons ); 
+    mouseReleased( Point );
+    replot();
+  }
 }
 
 // ------------------------------------------------------------

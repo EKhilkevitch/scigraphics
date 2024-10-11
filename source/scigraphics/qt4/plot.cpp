@@ -243,7 +243,7 @@ void scigraphics::qt4plot::mouseMoved( QMouseEvent *Event )
 
 void scigraphics::qt4plot::mouseReleased( QMouseEvent *Event )  
 { 
-  scigraphics::wpoint Point = plotMousePoisition( Event );
+  const scigraphics::wpoint Point = plotMousePoisition( Event );
   mouseHandler().mouseReleased( Point ); 
 }
 
@@ -251,8 +251,8 @@ void scigraphics::qt4plot::mouseReleased( QMouseEvent *Event )
 
 void scigraphics::qt4plot::mouseDoubleClicked( QMouseEvent *Event )  
 {
-  scigraphics::wpoint Point = plotMousePoisition( Event );
-  unsigned Buttons = plotMouseModifiers( Event->modifiers() );
+  const scigraphics::wpoint Point = plotMousePoisition( Event );
+  const unsigned Buttons = plotMouseButtons( Event );
   mouseHandler().mouseDoubleClicked( Point, Buttons ); 
 }
 
